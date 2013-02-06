@@ -1,5 +1,7 @@
 <?php
 	require_once('include/misc.inc');
+	
+	// Install the web site
 	function install() {
 		try {
 			debug("Starting to install");
@@ -13,10 +15,11 @@
 			$requests = <<<EOF
 CREATE DATABASE IF NOT EXISTS ${dbname} DEFAULT CHARACTER SET = 'utf8';
 USE ${dbname};
-CREATE TABLE `user` (`id` INT  NOT NULL, `login` VARCHAR(11) NOT NULL,
-`pass` VARCHAR(11) NOT NULL, `mail` VARCHAR(11) NOT NULL, PRIMARY KEY (`id`))
 EOF;
+			debug($requests);
 			
+			$db->exec($requests);
+			$requests = file_get_contents("install.sql");
 			$db->exec($requests);
 			$content = <<<EOF
 <?php
@@ -28,6 +31,7 @@ EOF;
 EOF;
 			
 			file_put_contents(SETTINGS_INI, $content);
+			redirect_to("createadmin.php");
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
@@ -35,6 +39,7 @@ EOF;
 		debug("End install");
 	}
 	
+	// Uninstal the web site
 	function uninstall() {
 		try {
 			debug("Starting to uninstall");
