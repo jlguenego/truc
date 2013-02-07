@@ -4,7 +4,7 @@ CREATE TABLE event(
 	content               Text NOT NULL ,
 	event_date            TimeStamp NOT NULL ,
 	nbr_person_wanted     Int NOT NULL ,
-	nbr_person_registered Int NOT NULL ,
+	nbr_person_registered Int NOT NULL DEFAULT '0',
 	PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
@@ -14,7 +14,7 @@ CREATE TABLE user(
 	lastname Varchar(25) NOT NULL ,
 	email    Varchar(25) NOT NULL ,
 	login    Varchar(25) NOT NULL ,
-	password Varchar(25) NOT NULL ,
+	password Varchar(50) NOT NULL ,
 	admin 	Boolean NOT NULL DEFAULT FALSE,
 	PRIMARY KEY (id)
 )ENGINE=InnoDB;

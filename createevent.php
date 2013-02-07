@@ -1,9 +1,13 @@
 <?php
-	require_once("include/misc.inc");
-
-	$tinyMCE = file_get_contents("tinyMCE.html");
-	echo $tinyMCE;
+	require_once("include/database.inc");
 	
+	if (isset($_POST['title']) && isset($_POST['person']) 
+		&& isset($_POST['content']) && isset($_POST['date'])) {
+		add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
+	}
+	
+	$tinyMCE = file_get_contents("tinyMCE.html");
+	echo $tinyMCE;	
 	$test_content = <<<EOF
 <h1 style="text-align: center;"><em><span style="color: #ff6600; text-decoration: underline;">My Event</span></em></h1>
 <hr />
@@ -58,8 +62,12 @@ EOF;
 			<td>Number of person wanted: </td>
 			<td><input type="text" name="person" value="230"></td>
 		</tr>
+		<tr>
+			<td>Date: </td>
+			<td><input type="text" name="date" value="12/07/13"></td>
+		</tr>
 		</table>
-		<textarea name="content" value="<?php echo $test_content; ?>">
+		<?php echo "<textarea name=\"content\" value=\"${test_content}\">"; ?> 
 		</textarea>
 		<input type="submit" value="Submit">
 	</form>
