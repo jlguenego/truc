@@ -39,7 +39,6 @@ SET
 	`content`="${content}", 
 	`nbr_person_wanted`="${person}"
 EOF;
-			debug($request);
 			$g_pdo->exec($request);
 			return TRUE;
 		} catch (Exception $e) {
@@ -74,7 +73,7 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-SELECT `id`, `title` FROM `${dbname}`.`event`
+SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event` ORDER BY `event_date`
 EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();

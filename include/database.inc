@@ -25,7 +25,6 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$id = create_id();
-			debug(sha1($password));
 			$password = sha1($password);
 			$request = <<<EOF
 INSERT INTO `${dbname}`.`user` 

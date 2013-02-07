@@ -1,5 +1,6 @@
 <?php
 	require_once("include/event.inc");
+	include_once("include/tinyMCE.inc");
 	
 	if (isset($_POST['title']) && isset($_POST['person']) 
 		&& isset($_POST['content']) && isset($_POST['date'])) {
@@ -9,8 +10,6 @@
 		}
 	}
 	
-	$tinyMCE = file_get_contents("tinyMCE.html");
-	echo $tinyMCE;	
 	$test_content = <<<EOF
 <h1 style="text-align: center;"><em><span style="color: #ff6600; text-decoration: underline;">My Event</span></em></h1>
 <hr />
