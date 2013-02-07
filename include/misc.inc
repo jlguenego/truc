@@ -25,10 +25,13 @@
 		}
 	}
 	
+	function create_id() {
+		return rand(0, 10) * date("ymd") * date("Hi");
+	}
+	
 	function check($var) {
 		$var = mysql_escape_string($var);
 		$var = htmlentities($var, 0, "UTF-8");
-		debug($var);
 		// TODO: to implement
 		return $var;
 	}

@@ -21,6 +21,7 @@
 	</head>
 	You are logged.<br/>
 	<a href="createevent.php">Create an event<a/><br/>
+	<a href="event.php">See events<a/><br/>
 	<a href="signout.php">Sign out<a/>
 </html>
 <?php

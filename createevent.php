@@ -1,9 +1,12 @@
 <?php
-	require_once("include/database.inc");
+	require_once("include/event.inc");
 	
 	if (isset($_POST['title']) && isset($_POST['person']) 
 		&& isset($_POST['content']) && isset($_POST['date'])) {
-		add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
+		$created = add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
+		if (!$created) {
+			println("Event already exists");
+		}
 	}
 	
 	$tinyMCE = file_get_contents("tinyMCE.html");
@@ -67,7 +70,8 @@ EOF;
 			<td><input type="text" name="date" value="12/07/13"></td>
 		</tr>
 		</table>
-		<?php echo "<textarea name=\"content\" value=\"${test_content}\">"; ?> 
+		<textarea name="content">
+			<?php echo $test_content; ?>
 		</textarea>
 		<input type="submit" value="Submit">
 	</form>
