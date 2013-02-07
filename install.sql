@@ -1,5 +1,6 @@
 CREATE TABLE event(
 	id                    Integer NOT NULL ,
+	author                Varchar(25) NOT NULL ,
 	title                 Varchar(25) NOT NULL ,
 	content               Text NOT NULL ,
 	event_date            int NOT NULL ,

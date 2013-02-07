@@ -29,11 +29,13 @@ EOF;
 			$timestamp = mktime(0, 0, 0, $day, $month, $year);
 			$dbname = MYSQL_DBNAME;
 			$content = check($content);
+			$author = $SESSION["login"];
 			$id = create_id();
 			$request = <<<EOF
 INSERT INTO `${dbname}`.`event` 
 SET 
 	`id`="${id}",
+	`author`="${author}", 
 	`title`="${title}", 
 	`event_date`="${timestamp}", 
 	`content`="${content}", 

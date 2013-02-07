@@ -12,14 +12,14 @@
 	
 	// Verify if user is logged in to show differents menu.
 	if (!is_logged()) {
-		echo "<a href=\"signin.php\">Sign in</a>";
+		echo "<a href=\"signin.php\">Sign in</a><br/>";
+		echo "<a href=\"event.php\">See events<a/>";
 	} else {
 ?>
 <html>
 	<head>
 		<title>Index</title>
 	</head>
-	You are logged.<br/>
 	<a href="createevent.php">Create an event<a/><br/>
 	<a href="event.php">See events<a/><br/>
 	<a href="signout.php">Sign out<a/>

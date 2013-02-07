@@ -54,6 +54,7 @@ EOF;
 		<title>Create an event</title>
 	</head>
 	
+	<a href="index.php">Go back to index<a/><br/><br/>
 	<form name="input" action="createevent.php" method="POST">
 		<table>
 		<tr>
