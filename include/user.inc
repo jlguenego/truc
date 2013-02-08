@@ -1,6 +1,40 @@
 <?php
 	require_once('include/misc.inc');
 	
+	function user_exists($login) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `login`= :login
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":login" => $login));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function used_mail($mail) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `email`= :mail
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":mail" => $mail));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	// Check if the user has entered correct login and password
 	function authenticate($login, $password) {
 		try {

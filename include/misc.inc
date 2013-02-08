@@ -36,6 +36,10 @@
 		return $var;
 	}
 	
+	function check_mail($mail) {
+		return preg_match("#^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$#", $mail);
+	}
+	
 	function redirect_to($path) {
 		header('Location: ' . $path);
 		header('Cache-Control: no-cache');

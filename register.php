@@ -3,39 +3,40 @@
 	require_once('include/user.inc');
 	
 	$error_msg = '';
-	if (isset($_POST['login'])) {
-		if (check_mail($_POST["email"])) {
-			println("Valid mail");
+	if (isset($_POST['login'])) { // TODO: Correct verification.
+		if (!check_mail($_POST["email"])) {
+			$error_msg .= "Invalid mail<br/>";
 		} else {
-			println("invalid mail");
+			if (used_mail($_POST["email"])) {
+				$error_msg .= "This mail is already used<br/>";
+			} else {
+				if (user_exists($_POST['login'])) {
+					$error_msg .= "User already exists<br/>";
+				} else {
+					add_user(
+						$_POST['name'], 
+						$_POST['lastname'], 
+						$_POST['login'],
+						$_POST['password'], 
+						$_POST['email'], 
+						TRUE);
+					$error_msg = 'ok';
+				}
+			}
 		}
-		try {
-			add_user($_POST['name'], $_POST['lastname'], $_POST['login'], $_POST['password'], $_POST['email'], TRUE);
-			$install_done = <<<EOF
-<html>
-	<head>
-		<title>Install Done</title>
-	</head>
-	<body>
-		<a href="index.php">Go to index</a>
-	</body>
-<html>
-EOF;
-			println($install_done);
-		} catch (Exception $e) {
-			println("Install failed: " . $e->getMessage());
-		}
-	} else {
+	}
+	if ($error_msg != 'ok') {
 ?>
 <html>
 <head>
-	<title>Installer</title>
+	<title>Register</title>
 </head>
+	<a href="index.php">Back to index</a><br/><br/>
 	<?php
 		echo $error_msg;
 	?>
-	Please enter the admin user info:
-	<form name="input" action="createadmin.php" method="POST">
+	Please enter your info:
+	<form name="input" action="register.php" method="POST">
 		<table>
 		<tr>
 			<td>Login: </td>
@@ -66,6 +67,15 @@ EOF;
 		<tr/>
 		</table>		
 	</form>
+</html>
+<?php
+	} else {
+?>
+<html>
+<head>
+	<title>Register</title>
+</head>
+	Registration OK. <a href="index.php">Back to index</a>
 </html>
 <?php
 	}
