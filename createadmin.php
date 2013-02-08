@@ -1,11 +1,11 @@
 <?php
 	require_once('include/install.inc');
-	require_once('include/database.inc');
+	require_once('include/user.inc');
 	
 	$error_msg = '';
 	if (isset($_POST['login'])) {
 		try {
-			add_user("toto", "zozo", $_POST['login'], $_POST['password'], $_POST['email'], TRUE);
+			add_user($_POST['name'], $_POST['lastname'], $_POST['login'], $_POST['password'], $_POST['email'], TRUE);
 			$install_done = <<<EOF
 <html>
 	<head>
@@ -35,6 +35,14 @@ EOF;
 		<tr>
 			<td>Login: </td>
 			<td><input type="text" name="login" value="admin"></td>
+		</tr>
+		<tr>
+			<td>Name: </td>
+			<td><input type="text" name="name" value="yannis"></td>
+		</tr>
+		<tr>
+			<td>Lastname: </td>
+			<td><input type="text" name="lastname" value="thomias"></td>
 		</tr>
 		<tr>
 			<td>Password: </td>

@@ -1,5 +1,5 @@
 <?php
-	require_once("include/database.inc");
+	require_once("include/user.inc");
 	
 	$error_msg = "";
 	if (isset($_POST['login']) && isset($_POST['password'])) {

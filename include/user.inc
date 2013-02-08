@@ -19,6 +19,48 @@ EOF;
 			throw $e;
 		}
 	}
+	
+	function get_user_by_login($login) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT * FROM `${dbname}`.`user`
+WHERE `login`= :login
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":login" => $login));
+			$user = $q->fetch();
+			if (!isset($user['id'])) {
+				return NULL;
+			}
+			return $user;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function get_user($id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT * FROM `${dbname}`.`user`
+WHERE `id`= :id
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$user = $q->fetch();
+			if (!isset($user['id'])) {
+				return NULL;
+			}
+			return $user;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
 
 	function add_user($name, $lastname, $login, $password, $mail, $admin = FALSE) {
 		try {

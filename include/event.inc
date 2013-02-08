@@ -1,5 +1,6 @@
 <?php
 	require_once('include/misc.inc');
+	require_once("include/user.inc");
 	
 	function event_exists($title) {
 		try {
@@ -29,18 +30,23 @@ EOF;
 			$timestamp = mktime(0, 0, 0, $day, $month, $year);
 			$dbname = MYSQL_DBNAME;
 			$content = check($content);
-			$author = $SESSION["login"];
+			$author = get_user_by_login($_SESSION["login"]);
+			if ($author == NULL) {
+				throw new Exception("Not logged");
+			}
+			$author_id = $author["id"];
 			$id = create_id();
 			$request = <<<EOF
 INSERT INTO `${dbname}`.`event` 
 SET 
 	`id`="${id}",
-	`author`="${author}", 
+	`author_id`="${author_id}", 
 	`title`="${title}", 
 	`event_date`="${timestamp}", 
 	`content`="${content}", 
 	`nbr_person_wanted`="${person}"
 EOF;
+			//debug($request);
 			$g_pdo->exec($request);
 			return TRUE;
 		} catch (Exception $e) {

@@ -1,6 +1,6 @@
 CREATE TABLE event(
 	id                    Integer NOT NULL ,
-	author                Varchar(25) NOT NULL ,
+	author_id             Integer NOT NULL ,
 	title                 Varchar(25) NOT NULL ,
 	content               Text NOT NULL ,
 	event_date            int NOT NULL ,
@@ -10,7 +10,7 @@ CREATE TABLE event(
 )ENGINE=InnoDB;
 
 CREATE TABLE user(
-	id       Int NOT NULL ,
+	id       Integer NOT NULL ,
 	name     Varchar(25) NOT NULL ,
 	lastname Varchar(25) NOT NULL ,
 	email    Varchar(25) NOT NULL ,
@@ -26,5 +26,6 @@ CREATE TABLE participate(
         PRIMARY KEY (id_user,id_event)
 )ENGINE=InnoDB;
 
+ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (author_id) REFERENCES user(id);
 ALTER TABLE participate ADD CONSTRAINT FK_participate_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE participate ADD CONSTRAINT FK_participate_id_event FOREIGN KEY (id_event) REFERENCES event(id);
