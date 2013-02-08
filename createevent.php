@@ -4,9 +4,13 @@
 	
 	if (isset($_POST['title']) && isset($_POST['person']) 
 		&& isset($_POST['content']) && isset($_POST['date'])) {
-		$created = add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
-		if (!$created) {
-			println("Event already exists");
+		if (!check_date($_POST['date'])) {
+			println("Not valid date");
+		} else {
+			$created = add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
+			if (!$created) {
+				println("Event already exists");
+			}
 		}
 	}
 	
@@ -66,8 +70,8 @@ EOF;
 			<td><input type="text" name="person" value="230"></td>
 		</tr>
 		<tr>
-			<td>Date: </td>
-			<td><input type="text" name="date" value="12/07/13"></td>
+			<td>Date (DD.MM.YY): </td>
+			<td><input type="text" name="date" value="12.07.13"></td>
 		</tr>
 		</table>
 		<textarea name="content">

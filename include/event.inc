@@ -26,7 +26,7 @@ EOF;
 			if (event_exists($title)) {
 				return FALSE;
 			}
-			list($day, $month, $year) = explode("/", $date);
+			list($day, $month, $year) = explode(".", $date);
 			$timestamp = mktime(0, 0, 0, $day, $month, $year);
 			$dbname = MYSQL_DBNAME;
 			$content = check($content);
