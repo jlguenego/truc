@@ -2,7 +2,7 @@
 	require_once('include/misc.inc');
 	require_once("include/user.inc");
 	
-	function event_exists($title) {
+	function event_title_exists($title) {
 		try {
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
@@ -19,11 +19,28 @@ EOF;
 		}
 	}
 	
+	function event_exists($id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`event` WHERE `id`= :id
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function add_event($title, $content, $date, $person) {
 		try {
 			global $g_pdo;
 			
-			if (event_exists($title)) {
+			if (event_title_exists($title)) {
 				return FALSE;
 			}
 			list($day, $month, $year) = explode(".", $date);
@@ -55,6 +72,40 @@ EOF;
 		}
 	}
 	
+	function update_event($id, $title, $content, $date, $person) {
+		try {
+			global $g_pdo;
+			
+			if (!event_exists($id)) {
+				return FALSE;
+			}
+			list($day, $month, $year) = explode(".", $date);
+			$timestamp = mktime(0, 0, 0, $day, $month, $year);
+			$dbname = MYSQL_DBNAME;
+			$content = check($content);
+			$author = get_user_by_login($_SESSION["login"]);
+			if ($author == NULL) {
+				throw new Exception("Not logged");
+			}
+			$author_id = $author["id"];
+			$request = <<<EOF
+UPDATE `${dbname}`.`event` 
+SET 
+	`author_id`="${author_id}", 
+	`title`="${title}", 
+	`event_date`="${timestamp}", 
+	`content`="${content}", 
+	`nbr_person_wanted`="${person}"
+WHERE `id`="${id}"
+EOF;
+			$g_pdo->exec($request);
+			return TRUE;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function get_event($id) {
 		try {
 			global $g_pdo;
@@ -70,6 +121,21 @@ EOF;
 				return NULL;
 			}
 			return $event;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function delete_event($id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+DELETE FROM `${dbname}`.`event`
+WHERE `id`= ${id}
+EOF;
+			$g_pdo->exec($request);
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
