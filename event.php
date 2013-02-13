@@ -20,6 +20,7 @@ EOF;
 			$content .= "<a href=\"deleteevent.php?id=".$event["id"]."\">Delete event</a><br/>";
 		} else {
 			$content .= "By ".strtoupper($author["lastname"])." ".ucfirst($author["name"])."<br/>";
+			$content .= "<a href=\"participate.php?id=".$_GET["id"]."\">Participate</a><br/>";
 		}
 		$content .= date("d M Y", $event["event_date"])."<br/>";
 		if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {

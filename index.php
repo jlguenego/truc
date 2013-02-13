@@ -24,7 +24,7 @@
 	} else {
 		$user = get_user_by_login($_SESSION['login']);
 		$id = $user['id'];
-		echo "<a href=\"profil.php?id=$id\">Profil<a/><br/>";
+		echo "<a href=\"profile.php?id=$id\">Profil<a/><br/>";
 ?>
 	<a href="createevent.php">Create an event<a/><br/>
 	<a href="event.php">See events<a/><br/>

@@ -18,9 +18,9 @@
 	<a href="index.php">Go back to index</a><br/><br/>
 	
 <?php 
-	echo "Welcome to the profil of $lastname $name<br/>\n";
+	echo "Welcome to the profile of $lastname $name<br/>\n";
 	if ($user['login'] == $_SESSION['login']) {
-		echo "<a href=\"editprofile.php?id=".$user['id']."\">Edit your profil</a><br/>\n";
+		echo "<a href=\"editprofilee.php?id=".$user['id']."\">Edit your profile</a><br/>\n";
 	}
 	$user_events = user_events($_GET["id"]);
 	echo "<h3>Events organize by $lastname $name</h3>\n";

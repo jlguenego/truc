@@ -1,5 +1,4 @@
 <?php
-	require_once('include/install.inc');
 	require_once('include/user.inc');
 	
 	$error_msg = "";
