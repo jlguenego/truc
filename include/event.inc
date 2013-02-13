@@ -163,4 +163,28 @@ EOF;
 			throw $e;
 		}
 	}
+	
+	function user_events($user_id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event` 
+WHERE `author_id`=${user_id}
+ORDER BY `event_date`
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$event = $q->fetch();
+			$events = array();
+			while (isset($event["id"])) {
+				$events[] = $event;
+				$event = $q->fetch();
+			}
+			return $events;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
 ?>

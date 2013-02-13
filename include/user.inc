@@ -39,13 +39,17 @@ EOF;
 	function authenticate($login, $password) {
 		try {
 			global $g_pdo;
+			if (!user_exists($login)) {
+				return FALSE;
+			}
+			$user = get_user_by_login($login);
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
 SELECT COUNT(*) FROM `${dbname}`.`user`
 WHERE `login`= :login AND `password`= :password
 EOF;
 			$q = $g_pdo->prepare($request);
-			$q->execute(array(":login" => $login, ":password" => sha1($password)));
+			$q->execute(array(":login" => $login, ":password" => sha1($user['id'].$login.$password)));
 			$count = $q->fetch();
 			return $count[0] > 0;
 		} catch (Exception $e) {
@@ -101,7 +105,9 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$id = create_id();
-			$password = sha1($password);
+			// With this method it is quite impossible to know who has the same 
+			// password
+			$password = sha1($id.$login.$password);
 			$request = <<<EOF
 INSERT INTO `${dbname}`.`user` 
 SET 
@@ -113,6 +119,7 @@ SET
 	`email`="${mail}", 
 	`admin`=${admin};
 EOF;
+			debug($request);
 			$g_pdo->exec($request);
 		} catch (Exception $e) {
 			println($e->getMessage());

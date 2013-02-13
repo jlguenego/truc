@@ -2,27 +2,35 @@
 	require_once('include/install.inc');
 	require_once('include/user.inc');
 	
-	$error_msg = '';
-	if (isset($_POST['login'])) { // TODO: Correct verification.
+	$error_msg = "";
+	if (isset($_POST['login'])) {
+		foreach ($_POST as $value) {
+			if ($value == "") {
+				$error_msg .= "Please fill all fields<br/>";
+				break;
+			}
+		}
 		if (!check_mail($_POST["email"])) {
 			$error_msg .= "Invalid mail<br/>";
-		} else {
-			if (used_mail($_POST["email"])) {
-				$error_msg .= "This mail is already used<br/>";
-			} else {
-				if (user_exists($_POST['login'])) {
-					$error_msg .= "User already exists<br/>";
-				} else {
-					add_user(
-						$_POST['name'], 
-						$_POST['lastname'], 
-						$_POST['login'],
-						$_POST['password'], 
-						$_POST['email'], 
-						TRUE);
-					$error_msg = 'ok';
-				}
-			}
+		}
+		if (used_mail($_POST["email"])) {
+			$error_msg .= "This mail is already used<br/>";
+		} 
+		if (user_exists($_POST['login'])) {
+			$error_msg .= "User already exists<br/>";
+		}
+		if ($_POST['password'] != $_POST['password2']) {
+			$error_msg .= "Passwords are different<br/>";
+		}
+		if ($error_msg == "") {
+			add_user(
+				$_POST['name'], 
+				$_POST['lastname'], 
+				$_POST['login'],
+				$_POST['password'], 
+				$_POST['email'], 
+				0);
+			$error_msg = 'ok';
 		}
 	}
 	if ($error_msg != 'ok') {

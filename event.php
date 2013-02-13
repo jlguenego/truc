@@ -29,10 +29,14 @@ EOF;
 		}
 		$content .= html_entity_decode($event["content"]);
 	} else {
+		echo "<ul>\n";
 		foreach (list_events() as $event) {
-			$content .= date("d M Y", $event["event_date"]).": 
-				<a href=\"event.php?id=".$event["id"]."\">".$event["title"]."</a><br/>";
+			$content .= "<li>";
+			$content .= date("d M Y", $event["event_date"]).": ";
+			$content .= "<a href=\"event.php?id=".$event['id']."\">".$event['title']."</a>";
+			$content .= "</li>\n";
 		}
+		echo "</ul>\n";
 	}
 	$content .= "</html>";
 	echo $content;

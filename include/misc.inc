@@ -26,7 +26,7 @@
 	}
 	
 	function create_id() {
-		return rand(0, 10) * date("ymd") * date("Hi");
+		return rand(1, 10) * date("ymd") * date("Hi");
 	}
 	
 	function check($var) {

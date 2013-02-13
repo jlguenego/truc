@@ -38,7 +38,7 @@
 		<title>Edit <?php echo $event['title']; ?></title>
 	</head>
 	
-	<a href="index.php">Go back to index<a/><br/><br/>
+	<a href="index.php">Go back to index</a><br/><br/>
 	<form name="input" action="editevent.php" method="POST">
 		<table>
 		<tr>
