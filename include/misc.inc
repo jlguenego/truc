@@ -89,4 +89,8 @@
 		header('Location: ' . $path);
 		header('Cache-Control: no-cache');
 	}
+	
+	function is_number($var) {
+		return preg_match("#^[\d]+$#", $var);
+	}
 ?>
