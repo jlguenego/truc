@@ -44,7 +44,7 @@ EOF;
 				return FALSE;
 			}
 			list($day, $month, $year) = explode(".", $date);
-			$timestamp = mktime(0, 0, 0, $day, $month, $year);
+			$timestamp = mktime(0, 0, 0, $month, $day, $year);
 			$dbname = MYSQL_DBNAME;
 			$content = check($content);
 			$author = get_user_by_login($_SESSION["login"]);

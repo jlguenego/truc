@@ -57,8 +57,9 @@ EOF;
 	<head>
 		<title>Create an event</title>
 	</head>
+	<script type="text/javascript" src="jscript/misc.js"></script>
 	
-	<a href="index.php">Go back to index<a/><br/><br/>
+	<a href="index.php">Go back to index</a><br/><br/>
 	<form name="input" action="createevent.php" method="POST">
 		<table>
 		<tr>
@@ -73,7 +74,30 @@ EOF;
 			<td>Date (DD.MM.YY): </td>
 			<td><input type="text" name="date" value="12.07.13"></td>
 		</tr>
-		</table>
+	</table>
+	<br/><br/>
+		<div id="rates">
+			<div id="<?php echo time(); ?>">
+				<table>
+					<tr>
+						<td>Rate<td>
+						<td>
+							<table>
+								<tr>
+									<td>Label</td>
+									<td><input type="text" name="labels[]"></td>
+								</tr>
+								<tr>
+									<td>Amount</td>
+									<td><input type="text" name="rates[]"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+			<td><input type="button" value="Add a rate" onClick="addRate('rates');"></td>
 		<textarea name="content">
 			<?php echo $test_content; ?>
 		</textarea>
