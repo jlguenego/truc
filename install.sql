@@ -23,6 +23,7 @@ CREATE TABLE user(
 CREATE TABLE participate(
         id_user  Int NOT NULL ,
         id_event Integer NOT NULL ,
+		quantity Integer NOT NULL,
         PRIMARY KEY (id_user,id_event)
 )ENGINE=InnoDB;
 

@@ -1,47 +1,47 @@
 <?php
 	require_once("include/event.inc");
 	require_once("include/user.inc");
+	require_once("include/manage.inc");
 	
 	$error_msg = "";
+	$event = NULL;
 	if (!isset($_SESSION["login"])) {
 		$error_msg = "You have to be logged in";
-	}
-	if (!isset($_GET["id"]) || !isset($_POST["id"])) {
+	} elseif (is_null_or_empty($_GET["id"]) && is_null_or_empty($_POST['participate'])) {
 		$error_msg = "No event selected";
+	} else {
+		$event = get_event($_GET["id"]);
 	}
-	if (isset($_POST["id"]) && event_exists($_POST["id"])) {
-		$event = get_event($_POST["id"]);
-	}
-	if (isset($_POST['confirm'])) {
-		print_r($_POST);
-	}
-	if (isset($_POST['confirm']) && $_POST['confirm'] != TRUE) {
-		$error_msg = "You have to check the engagement";
-	}
-	if (isset($_POST['confirm']) && $_POST['confirm'] == TRUE && $error_msg == "") {
-		
-		redirect_to("event.php?id=".$_GET["id"]);
+	if (!is_null_or_empty($event) && !is_null_or_empty($_POST['participate'])) {
+		if (!isset($_POST['confirm'])) {
+			$error_msg = "You have to check the engagement";
+		}
+		if ($error_msg == "") {
+			$user = get_user_by_login($_SESSION['login']);
+			participate($user['id'], $event["id"], 1);
+			redirect_to("event.php?id=".$event["id"]);
+		}
 	}
 ?>
 <html>
 	<head>
 		<title>Participate</title>
 	</head>
+	<a href="index.php">Back to index</a><br/><br/>
 <?php
 	if ($error_msg != "") {
-		echo $error_msg;
+		echo "$error_msg";
 	} else {
 ?>
-	<a href="index.php">Back to index</a><br/><br/>
 	Are you sure you want to participate to this event?
-	<form name="input" action="participate.php" method="POST">
-		<input type="checkbox" name="confirm"/> I engage myself to participate at this event.<br/>
-		<input type="hidden" name="id" value="<?php echo $event['id']; ?>"/>
+	<form name="input" action="participate.php?id=<?php echo $event['id']; ?>" method="POST">
+		<input type="checkbox" name="confirm"/> I engage myself to participate to this event.<br/>
+		<input type="hidden" name="participate" value="participate"/>
 		<input type="submit" value="Yes"/>		
 	</form>
 	<form name="input" action="event.php?id=<?php echo $event['id']; ?>" method="POST">
 		<input type="hidden" name="confirm" value="no"/>
-		<input type="submit" value="NO"/>		
+		<input type="submit" value="No"/>		
 	</form>
 <?php
 	}

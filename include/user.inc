@@ -5,7 +5,24 @@
 		return sha1($id.$login.$password);
 	}
 	
-	function user_exists($login) {
+	function user_exists($id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `id`= :id
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function user_login_exists($login) {
 		try {
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
@@ -53,7 +70,7 @@ EOF;
 	function authenticate($login, $password) {
 		try {
 			global $g_pdo;
-			if (!user_exists($login)) {
+			if (!user_login_exists($login)) {
 				return FALSE;
 			}
 			$user = get_user_by_login($login);

@@ -106,6 +106,30 @@ EOF;
 		}
 	}
 	
+	function add_person_to_event($id, $nbr) {
+		try {
+			global $g_pdo;
+			
+			if (!event_exists($id)) {
+				return FALSE;
+			}
+			$dbname = MYSQL_DBNAME;
+			$event = get_event($id);
+			$nbr += $event['nbr_person_registered'];
+			$request = <<<EOF
+UPDATE `${dbname}`.`event` 
+SET 
+	`nbr_person_registered`="${nbr}"
+WHERE `id`="${id}"
+EOF;
+			$g_pdo->exec($request);
+			return TRUE;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function get_event($id) {
 		try {
 			global $g_pdo;

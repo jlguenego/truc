@@ -3,6 +3,19 @@
 	
 	session_start();
 	
+	function is_null_or_empty(&$var) {
+		if (!isset($var)) {
+			return TRUE;
+		}
+		if ($var == NULL) {
+			return TRUE;
+		}
+		if ($var == "") {
+			return TRUE;
+		}
+		return FALSE;
+	}
+	
 	function is_logged() {
 		return isset($_SESSION['login']);
 	}
