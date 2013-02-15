@@ -1,6 +1,23 @@
 <?php
 	require_once('include/misc.inc');
 	
+	function is_logged() {
+		return !is_null_or_empty($_SESSION['login']);
+	}
+	
+	function is_admin() {
+		try {
+			if (!is_logged()) {
+				return FALSE;
+			}
+			$user = get_user_by_login($_SESSION['login']);
+			return $user['admin'];
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function hash_pass($id, $login, $password) {
 		return sha1($id.$login.$password);
 	}

@@ -28,8 +28,11 @@
 ?>
 	<a href="createevent.php">Create an event<a/><br/>
 	<a href="event.php">See events<a/><br/>
-	<a href="signout.php">Sign out<a/>
-</html>
+	<a href="signout.php">Sign out<a/><br/>
 <?php
+		if (is_admin()) {
+			echo "<a href=\"launchpayment.php\">Events payment<a/>";
+		}
 	}
 ?>
+</html>

@@ -21,6 +21,24 @@ EOF;
 		}
 	}
 	
+	function participation_quantity($id_user, $id_event) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT `quantity` FROM `${dbname}`.`participate`
+WHERE `id_user`=${id_user} AND `id_event`=${id_event}
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$quantity = $q->fetch();
+			return $quantity[0];
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function participate($id_user, $id_event, $nbr) {
 		try {
 			$nbr=(int)$nbr;
@@ -31,6 +49,7 @@ EOF;
 			}
 			$dbname = MYSQL_DBNAME;
 			if (is_participating($id_user, $id_event)) {
+				$nbr += participation_quantity($id_user, $id_event);
 				$request = <<<EOF
 UPDATE `${dbname}`.`participate` 
 SET `quantity`=${nbr}
@@ -41,7 +60,7 @@ EOF;
 INSERT INTO `${dbname}`.`participate` 
 SET 
 	`id_user`=${id_user}, 
-	`id_event`="${id_event}";
+	`id_event`="${id_event}",
 	`quantity`=${nbr}
 EOF;
 			}
@@ -49,6 +68,30 @@ EOF;
 			$g_pdo->exec($request);
 			add_person_to_event($id_event, $nbr);
 			return TRUE;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}	
+	
+	function user_participations($user_id) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT `id_event`, `quantity` FROM `${dbname}`.`participate` 
+WHERE `id_user`=${user_id}
+EOF;
+			//debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$participation = $q->fetch();
+			$participations = array();
+			while (isset($participation["id_event"])) {
+				$participations[] = $participation;
+				$participation = $q->fetch();
+			}
+			return $participations;
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;

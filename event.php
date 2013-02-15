@@ -21,18 +21,24 @@ EOF;
 			$content .= "<a href=\"deleteevent.php?id=".$event["id"]."\">Delete event</a><br/>";
 		} else {
 			$content .= "By ".strtoupper($author["lastname"])." ".ucfirst($author["name"])."<br/>";
-			$content .= "<a href=\"participate.php?id=".$_GET["id"]."\">Participate</a><br/>";
 		}
 		$content .= date("d M Y", $event["event_date"])."<br/>";
-		if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
-			$content .= $event["nbr_person_registered"]."/".$event["nbr_person_wanted"]." persons registered<br/>";
+		if (time() >= $event["event_date"]) {
+			if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+				$content .= "Cancelled";
+			}
 		} else {
-			$content .= "Will append. Enough persons have registered.";
+			if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+				$content .= $event["nbr_person_registered"]."/".$event["nbr_person_wanted"]." persons registered<br/>";
+			} else {
+				$content .= "Will append. Enough persons have registered.<br/>";
+			}
+			$content .= "<a href=\"participate.php?id=".$_GET["id"]."\">Participate</a><br/>";
 		}
 		$content .= "<h3>Rates for this events</h3>";
 		$content .= "<table>";
 		$content .= "<tr>";
-		$content .= "<th>Labels</th>";
+		$content .= "<th>Categories</th>";
 		$content .= "<th>Rates</th>";
 		$content .= "</tr>";
 		foreach (events_rates($event['id']) as $rate) {
@@ -46,14 +52,14 @@ EOF;
 		$content .= "</table>";
 		$content .= html_entity_decode($event["content"]);
 	} else {
-		echo "<ul>\n";
+		$content .= "<ul>\n";
 		foreach (list_events() as $event) {
 			$content .= "<li>";
 			$content .= date("d M Y", $event["event_date"]).": ";
 			$content .= "<a href=\"event.php?id=".$event['id']."\">".$event['title']."</a>";
 			$content .= "</li>\n";
 		}
-		echo "</ul>\n";
+		$content .= "</ul>\n";
 	}
 	$content .= "</html>";
 	echo $content;

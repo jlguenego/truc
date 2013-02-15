@@ -16,10 +16,6 @@
 		return FALSE;
 	}
 	
-	function is_logged() {
-		return isset($_SESSION['login']);
-	}
-	
 	function is_installed() {
 		if (!file_exists(SETTINGS_INI)) {
 			return false;

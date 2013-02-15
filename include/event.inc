@@ -135,10 +135,11 @@ EOF;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
 SELECT * FROM `${dbname}`.`event`
-WHERE `id`= :id
+WHERE `id`= ${id}
 EOF;
+			//debug($request);
 			$q = $g_pdo->prepare($request);
-			$q->execute(array(":id" => $id));
+			$q->execute();
 			$event = $q->fetch();
 			if (!isset($event['id'])) {
 				return NULL;
@@ -158,7 +159,7 @@ EOF;
 DELETE FROM `${dbname}`.`event`
 WHERE `id`= ${id}
 EOF;
-			debug($request);
+			//debug($request);
 			$g_pdo->exec($request);
 		} catch (Exception $e) {
 			println($e->getMessage());
@@ -171,7 +172,7 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event` ORDER BY `event_date`
+SELECT * FROM `${dbname}`.`event` ORDER BY `event_date`
 EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();
