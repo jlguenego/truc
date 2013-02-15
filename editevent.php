@@ -1,5 +1,6 @@
 <?php
 	require_once("include/event.inc");
+	require_once("include/rate.inc");
 	include_once("include/tinyMCE.inc");
 	
 	if (isset($_POST['title']) && isset($_POST['person']) 
@@ -11,6 +12,14 @@
 			if (!$updated) {
 				println("Event does not exists");
 			}
+			print_r($_POST['labels']);
+			$i = 0;
+			foreach ($_POST['labels'] as $label) {
+				$rate = $_POST['rates'][$i];
+				update_rate($_POST["id"], $label, $rate);
+				$i++;
+			}
+			delete_unuse_rates($_POST["id"], $_POST['labels']);
 		}
 		redirect_to("event.php?id=".$_POST["id"]);
 	}
@@ -26,6 +35,7 @@
 				$error_msg = $author["login"]."!=".$_SESSION["login"]."<br/>
 					Your are not the event creator.";
 			}
+			$rates = events_rates($_GET["id"]);
 		}
 	} else {
 		$error_msg = "No event given.";
@@ -37,6 +47,7 @@
 	<head>
 		<title>Edit <?php echo $event['title']; ?></title>
 	</head>
+	<script type="text/javascript" src="jscript/misc.js"></script>
 	
 	<a href="index.php">Go back to index</a><br/><br/>
 	<form name="input" action="editevent.php" method="POST">
@@ -54,6 +65,23 @@
 			<td><input type="text" name="date" value="<?php echo date("d.m.y", $event['event_date']); ?>"></td>
 		</tr>
 		</table>
+		<div id="rates">
+		</div>
+<?php
+	$i = 0;
+	foreach ($rates as $rate) {
+		$label = $rate["label"];
+		$amount = $rate["amount"];
+		echo "<script language=\"javascript\" type=\"text/javascript\">";
+		echo "addRate('rates', '$label', '$amount');";
+		echo "</script>";
+		$i++;
+	}
+	echo "<script language=\"javascript\" type=\"text/javascript\">";
+	echo "setCounter($i);";
+	echo "</script>";
+?>
+		<input type="button" value="Add a rate" onClick="addRate('rates');">
 		<textarea name="content">
 			<?php echo $event['content']; ?>
 		</textarea>

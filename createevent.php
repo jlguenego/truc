@@ -107,27 +107,11 @@ EOF;
 	</table>
 	<br/><br/>
 		<div id="rates">
-			<div id="<?php echo time(); ?>">
-				<table>
-					<tr>
-						<td>Rate<td>
-						<td>
-							<table>
-								<tr>
-									<td>Label</td>
-									<td><input type="text" name="labels[]"></td>
-								</tr>
-								<tr>
-									<td>Amount</td>
-									<td><input type="text" name="rates[]"></td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</div>
 		</div>
-			<td><input type="button" value="Add a rate" onClick="addRate('rates');"></td>
+		<script language="javascript" type="text/javascript">
+			addRate('rates');
+		</script>
+		<input type="button" value="Add a rate" onClick="addRate('rates');">
 		<textarea name="content">
 			<?php echo $test_content; ?>
 		</textarea>

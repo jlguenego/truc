@@ -8,8 +8,9 @@
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
 SELECT COUNT(*) FROM `${dbname}`.`rate`
-WHERE `label`= :label AND `id_event= :event_id
+WHERE `label`= :label AND `id_event`= :event_id
 EOF;
+			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute(array(":label" => $label,
 				":event_id" => $event_id));
@@ -21,11 +22,30 @@ EOF;
 		}
 	}
 	
-	
-				// $request = <<<EOF
-// UPDATE `${dbname}`.`rate` SET `rate`="${rate}" 
-// WHERE `label`="${label}" AND `event_id`="${event_id}";
-// EOF;
+	function update_rate($event_id, $label, $amount) {
+		try {
+			global $g_pdo;
+			
+			if (!event_exists($event_id)) {
+				return FALSE;
+			}
+			if (!rate_exists($label, $event_id)) {
+				return add_rate($label, $amount, $event_id);
+			}
+			$label = check($label);
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+UPDATE `${dbname}`.`rate` SET `amount`="${amount}" 
+WHERE `label`="${label}" AND `id_event`="${event_id}";
+EOF;
+			debug($request);
+			$g_pdo->exec($request);
+			return TRUE;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
 	
 	function add_rate($label, $rate, $event_id) {
 		try {
@@ -56,6 +76,48 @@ EOF;
 			throw $e;
 		}
 	}
+	
+	function delete_events_rates($id_event) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+DELETE FROM `${dbname}`.`rate`
+WHERE `id_event`=${id_event}
+EOF;
+			$g_pdo->exec($request);
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function delete_unuse_rates($event_id, $labels) {
+		$rates = events_rates($event_id);
+		foreach ($rates as $rate) {
+			if (!in_array($rate["label"], $labels)) {
+				debug("Deleting ".$rate["label"]);
+				delete_rate($rate["label"], $event_id);
+			}
+		}
+	}
+	
+	function delete_rate($label, $id_event) {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+DELETE FROM `${dbname}`.`rate`
+WHERE `label`="${label}" AND `id_event`=${id_event}
+EOF;
+			debug($request);
+			$g_pdo->exec($request);
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function events_rates($id) {
 		try {
 			global $g_pdo;

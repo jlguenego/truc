@@ -1,12 +1,14 @@
 <?php
 	require_once("include/event.inc");
 	require_once("include/user.inc");
+	require_once("include/rate.inc");
 	
 	$error_msg = "";
 	if (isset($_POST['confirm'])){
 		if($_POST['confirm'] != "yes") {
 			redirect_to("index.php");
 		} else {
+			delete_events_rates($_POST['id']);
 			delete_event($_POST['id']);
 			redirect_to("event.php");
 		}

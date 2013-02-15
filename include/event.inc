@@ -158,6 +158,7 @@ EOF;
 DELETE FROM `${dbname}`.`event`
 WHERE `id`= ${id}
 EOF;
+			debug($request);
 			$g_pdo->exec($request);
 		} catch (Exception $e) {
 			println($e->getMessage());

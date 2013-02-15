@@ -1,6 +1,13 @@
-var counter = 1;
+var counter = 0;
 var limit = 5;
-function addRate(divName){
+
+function setCounter(amount) {
+	counter = amount;
+}
+
+function addRate(divName, label, amount){
+	label = label || "";
+	amount = amount || "";
 	if (counter == limit)  {
         alert("You have reached the limit of adding " + counter + " rates");
     } else {
@@ -16,17 +23,15 @@ function addRate(divName){
 							"<table>" +
 								"<tr>" + 
 									"<td>Label</td>" + 
-									"<td><input type=\"text\" name=\"labels[]\"></td>" +
+									"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\"></td>" +
 								"</tr>" +
 								"<tr>" +
 									"<td>Amount</td>" +
-									"<td><input type=\"number\" name=\"rates[]\"></td>" +
+									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
 								"</tr>" +
 							"</table>" +
 						"</td>" +
-						"<td>" + 
-							"<input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + id + "', 'rates');\">" + 
-						"</td>" +
+						"<td><input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + id + "', 'rates');\"></td>" +
 					"</tr>" +
 				"</table>";
 		document.getElementById(divName).appendChild(newdiv);
@@ -37,6 +42,8 @@ function removeRate(el, parent) {
 	if (counter > 1) {
 		counter--;
 		removeElement(el, parent);
+	} else {
+		alert("You have to set at least one rate");
 	}
 }
 
