@@ -2,14 +2,42 @@
 	require_once("include/event.inc");
 	include_once("include/tinyMCE.inc");
 	
-	if (isset($_POST['title']) && isset($_POST['person']) 
-		&& isset($_POST['content']) && isset($_POST['date'])) {
+	$error_msg = "";
+	if (!is_null_or_empty($_POST['title']) && !is_null_or_empty($_POST['person']) 
+		&& !is_null_or_empty($_POST['content']) && !is_null_or_empty($_POST['date'])
+		&& !is_null_or_empty($_POST['rates']) && !is_null_or_empty($_POST['labels'])) {
+		
 		if (!check_date($_POST['date'])) {
-			println("Not valid date");
-		} else {
-			$created = add_event($_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
+			$error_msg .= "Not valid date<br/>";
+		}
+		foreach ($_POST['rates'] as $rate) {
+			if (is_null_or_empty($rate)
+				|| (!is_null_or_empty($rate) && !is_number($rate))) {
+				
+				$error_msg .= "Please enter a number for the rates<br/>";
+				break;
+			}
+		}
+		foreach ($_POST['labels'] as $label) {
+			if (is_null_or_empty($label)) {				
+				$error_msg .= "Please enter a label for each rate<br/>";
+				break;
+			}
+		}
+		if ($error_msg == "") {
+			$id = create_id();
+			$created = add_event($id, $_POST['title'], $_POST['content'],
+				$_POST['date'], $_POST['person']);
+				
 			if (!$created) {
 				println("Event already exists");
+			} else {
+				$i = 0;
+				foreach ($_POST['labels'] as $label) {
+					$rate = $_POST['rates'][$i];
+					add_rate($label, $rate, $id);
+					$i++;
+				}
 			}
 		}
 	}
@@ -60,6 +88,7 @@ EOF;
 	<script type="text/javascript" src="jscript/misc.js"></script>
 	
 	<a href="index.php">Go back to index</a><br/><br/>
+	<?php echo "$error_msg<br/><br/>"; ?>
 	<form name="input" action="createevent.php" method="POST">
 		<table>
 		<tr>

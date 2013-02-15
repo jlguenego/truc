@@ -36,7 +36,7 @@ EOF;
 		}
 	}
 	
-	function add_event($title, $content, $date, $person) {
+	function add_event($id, $title, $content, $date, $person) {
 		try {
 			global $g_pdo;
 			
@@ -52,7 +52,6 @@ EOF;
 				throw new Exception("Not logged");
 			}
 			$author_id = $author["id"];
-			$id = create_id();
 			$request = <<<EOF
 INSERT INTO `${dbname}`.`event` 
 SET 
@@ -210,5 +209,9 @@ EOF;
 			println($e->getMessage());
 			throw $e;
 		}
+	}
+	
+	function add_rate($label, $rate, $id) {
+		debug("$label|$rate|$id");
 	}
 ?>
