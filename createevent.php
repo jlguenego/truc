@@ -1,5 +1,6 @@
 <?php
 	require_once("include/event.inc");
+	require_once("include/rate.inc");
 	include_once("include/tinyMCE.inc");
 	
 	$error_msg = "";

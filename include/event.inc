@@ -210,8 +210,4 @@ EOF;
 			throw $e;
 		}
 	}
-	
-	function add_rate($label, $rate, $id) {
-		debug("$label|$rate|$id");
-	}
 ?>

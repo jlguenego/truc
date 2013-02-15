@@ -1,6 +1,7 @@
 <?php
 	require_once("include/event.inc");
 	require_once("include/user.inc");
+	require_once("include/rate.inc");
 	
 	$event = NULL;
 	if (isset($_GET["id"])) {
@@ -28,6 +29,21 @@ EOF;
 		} else {
 			$content .= "Will append. Enough persons have registered.";
 		}
+		$content .= "<h3>Rates for this events</h3>";
+		$content .= "<table>";
+		$content .= "<tr>";
+		$content .= "<th>Labels</th>";
+		$content .= "<th>Rates</th>";
+		$content .= "</tr>";
+		foreach (events_rates($event['id']) as $rate) {
+			$label = $rate['label'];
+			$rate = $rate['amount'];
+			$content .= "<tr>";
+			$content .= "<td>$label</td>";
+			$content .= "<td>$rate</td>";
+			$content .= "</tr>";
+		}
+		$content .= "</table>";
 		$content .= html_entity_decode($event["content"]);
 	} else {
 		echo "<ul>\n";
