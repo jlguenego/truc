@@ -9,19 +9,19 @@
 		&& !is_null_or_empty($_POST['rates']) && !is_null_or_empty($_POST['labels'])) {
 		
 		if (!check_date($_POST['date'])) {
-			$error_msg .= "Not valid date<br/>";
+			$g_error_msg .= "Not valid date<br/>";
 		}
 		foreach ($_POST['rates'] as $rate) {
 			if (is_null_or_empty($rate)
 				|| (!is_null_or_empty($rate) && !is_number($rate))) {
 				
-				$error_msg .= "Please enter a number for the rates<br/>";
+				$g_error_msg .= "Please enter a number for the rates<br/>";
 				break;
 			}
 		}
 		foreach ($_POST['labels'] as $label) {
 			if (is_null_or_empty($label)) {				
-				$error_msg .= "Please enter a label for each rate<br/>";
+				$g_error_msg .= "Please enter a label for each rate<br/>";
 				break;
 			}
 		}
@@ -31,7 +31,7 @@
 				$_POST['date'], $_POST['person']);
 				
 			if (!$created) {
-				println("Event already exists");
+				$g_error_msg .= "Event already exists";
 			} else {
 				$i = 0;
 				foreach ($_POST['labels'] as $label) {
@@ -39,6 +39,7 @@
 					add_rate($label, $rate, $id);
 					$i++;
 				}
+				redirect_to("?action=retrieve&type=event&id=${id}");
 			}
 		}
 	}
@@ -89,8 +90,8 @@ EOF;
 	<script type="text/javascript" src="jscript/misc.js"></script>
 	
 	<a href="index.php">Go back to index</a><br/><br/>
-	<?php echo "$error_msg<br/><br/>"; ?>
-	<form name="input" action="createevent.php" method="POST">
+	<?php echo "$g_error_msg<br/><br/>"; ?>
+	<form name="input" action="?action=create&amp;type=event" method="POST">
 		<table>
 		<tr>
 			<td>Title: </td>

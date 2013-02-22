@@ -5,6 +5,14 @@
 		return !is_null_or_empty($_SESSION['login']);
 	}
 	
+	function need_authentication() {
+		if (!is_logged()) {
+			debug("\$_SERVER[\"REQUEST_URI\"]=".$_SERVER["REQUEST_URI"]);
+			$_SESSION["url"] = $_SERVER["REQUEST_URI"];
+			redirect_to("?action=sign_in");
+		}
+	}
+	
 	function is_admin() {
 		try {
 			if (!is_logged()) {
@@ -101,6 +109,27 @@ EOF;
 				":password" => hash_pass($user['id'], $login, $password)));
 			$count = $q->fetch();
 			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
+	function get_id_from_account() {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT `id` FROM `${dbname}`.`user`
+WHERE `login`= :login
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":login" => $_SESSION["login"]));
+			$user = $q->fetch();
+			if (!isset($user['id'])) {
+				return NULL;
+			}
+			return $user["id"];
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;

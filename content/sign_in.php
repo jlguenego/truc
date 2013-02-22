@@ -1,24 +1,16 @@
 <?php
 	require_once("include/user.inc");
 	
-	$error_msg = "";
-	if (isset($_POST['login']) && isset($_POST['password'])) {
-		if (authenticate($_POST['login'], $_POST['password'])) {
-			$_SESSION['login'] = $_POST['login'];
-			redirect_to("index.php");
-		} else {
-			$error_msg = "Wrong login or password";
-		}
-	}
 ?>
 <html>
 <head>
 	<title>Sign in</title>
 </head>
+	<a href="index.php">Go back to index</a><br/><br/>
 	<?php
-		echo $error_msg;
+		echo $g_error_msg;
 	?>
-	<form name="input" action="signin.php" method="POST">
+	<form name="input" action="?action=authenticate" method="POST">
 		<table>
 		<tr>
 			<td>Login: </td>

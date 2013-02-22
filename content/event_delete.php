@@ -10,7 +10,7 @@
 		} else {
 			delete_events_rates($_POST['id']);
 			delete_event($_POST['id']);
-			redirect_to("event.php");
+			redirect_to("index.php");
 		}
 	}
 	if (isset($_GET['id']) && event_exists($_GET['id'])) {
@@ -40,7 +40,7 @@ EOF;
 		<title>Delete "<?php echo $event['title']; ?>"</title>
 	</head>
 	Are you sure you want to delete this event?
-	<form name="input" action="deleteevent.php" method="POST">
+	<form name="input" action="?action=delete&amp;type=event" method="POST">
 		<input type="hidden" name="confirm" value="yes"/>
 		<input type="hidden" name="id" value="<?php echo $event['id']; ?>"/>
 		<input type="submit" value="Yes"/>		

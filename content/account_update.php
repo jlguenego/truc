@@ -36,7 +36,6 @@
 				$user['password'], 
 				$user['email']);
 			$error_msg = 'ok';
-			print_r($user);
 		}
 	}
 	if ($error_msg != 'ok') {
@@ -50,7 +49,7 @@
 		echo $error_msg;
 	?>
 	Please enter your info:
-	<form name="input" action="editprofilee.php" method="POST">
+	<form name="input" action="?action=update&amp;type=account" method="POST">
 		<table>
 		<tr>
 			<td>New Password: </td>
@@ -83,7 +82,7 @@
 	<title>Profil edited</title>
 </head>
 	Profil correctly edited.<br/>
-	<a href="profile.php?id=<?php echo $user['id']; ?>">Back to your profile</a>
+	<a href="?action=retrieve&amp;type=account">Back to your profile</a>
 </html>
 <?php
 	}

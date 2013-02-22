@@ -50,7 +50,7 @@
 	<script type="text/javascript" src="jscript/misc.js"></script>
 	
 	<a href="index.php">Go back to index</a><br/><br/>
-	<form name="input" action="editevent.php" method="POST">
+	<form name="input" action="?action=update&amp;type=event" method="POST">
 		<table>
 		<tr>
 			<td>Title: </td>

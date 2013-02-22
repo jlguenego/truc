@@ -43,7 +43,7 @@
 		echo $error_msg;
 	?>
 	Please enter your info:
-	<form name="input" action="register.php" method="POST">
+	<form name="input" action="?action=create&amp;type=account" method="POST">
 		<table>
 		<tr>
 			<td>Login: </td>

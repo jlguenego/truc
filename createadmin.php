@@ -1,7 +1,9 @@
 <?php
-	require_once('include/install.inc');
-	require_once('include/user.inc');
-	
+	require_once("include/constants.inc");
+	require_once("include/globals.inc");
+	require_once("include/misc.inc");
+	require_once("include/user.inc");
+		
 	$error_msg = '';
 	if (isset($_POST['login'])) {
 		if (check_mail($_POST["email"])) {

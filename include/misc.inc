@@ -1,7 +1,10 @@
 <?php
 	require_once("include/constants.inc");
 	
-	session_start();
+	function _t($msg) {
+		// TODO: implement i18n
+		return $msg;
+	}
 	
 	function is_null_or_empty(&$var) {
 		if (!isset($var)) {
@@ -23,6 +26,23 @@
 		return true;
 	}
 	
+	function admin_exists() {
+		try {
+			global $g_pdo;
+			$dbname = MYSQL_DBNAME;
+			$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `admin`=1
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$count = $q->fetch();
+			return $count[0] > 0;
+		} catch (Exception $e) {
+			println($e->getMessage());
+			throw $e;
+		}
+	}
+	
 	function println($txt) {
 		echo $txt . "<br/>";
 	}
@@ -35,7 +55,7 @@
 	}
 	
 	function create_id() {
-		return rand(1, 10) * date("ymd") * date("Hi");
+		return abs((rand(0, 999) * time()) % 100000000);
 	}
 	
 	function check($var) {

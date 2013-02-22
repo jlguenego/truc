@@ -31,7 +31,7 @@ EOF;
 EOF;
 			
 			file_put_contents(SETTINGS_INI, $content);
-			redirect_to("createadmin.php");
+			redirect_to("index.php");
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
