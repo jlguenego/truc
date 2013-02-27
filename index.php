@@ -137,5 +137,5 @@
 	
 	debug("Session after: ".$_SESSION["state"]);
 	debug("<hr/>");
-	include_once("content/${page}.php");
+	include_once(SKIN_DIR."/${page}.php");
 ?>
