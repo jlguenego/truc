@@ -13,6 +13,7 @@
 		"event_update",
 		"event_delete",
 		"events_list",
+		"account_create",
 		"account_retrieve",
 		"account_update",
 	);
@@ -28,4 +29,6 @@
 		} catch (Exception $e) {
 		}
 	}
+	
+	$g_display = array(); // Layout pages should access only to this one
 ?>

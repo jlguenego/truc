@@ -1,48 +1,5 @@
 <?php
-	require_once("include/event.inc");
-	require_once("include/rate.inc");
 	include_once("include/tinyMCE.inc");
-	
-	$error_msg = "";
-	if (!is_null_or_empty($_POST['title']) && !is_null_or_empty($_POST['person']) 
-		&& !is_null_or_empty($_POST['content']) && !is_null_or_empty($_POST['date'])
-		&& !is_null_or_empty($_POST['rates']) && !is_null_or_empty($_POST['labels'])) {
-		
-		if (!check_date($_POST['date'])) {
-			$g_error_msg .= "Not valid date<br/>";
-		}
-		foreach ($_POST['rates'] as $rate) {
-			if (is_null_or_empty($rate)
-				|| (!is_null_or_empty($rate) && !is_number($rate))) {
-				
-				$g_error_msg .= "Please enter a number for the rates<br/>";
-				break;
-			}
-		}
-		foreach ($_POST['labels'] as $label) {
-			if (is_null_or_empty($label)) {				
-				$g_error_msg .= "Please enter a label for each rate<br/>";
-				break;
-			}
-		}
-		if ($error_msg == "") {
-			$id = create_id();
-			$created = add_event($id, $_POST['title'], $_POST['content'],
-				$_POST['date'], $_POST['person']);
-				
-			if (!$created) {
-				$g_error_msg .= "Event already exists";
-			} else {
-				$i = 0;
-				foreach ($_POST['labels'] as $label) {
-					$rate = $_POST['rates'][$i];
-					add_rate($label, $rate, $id);
-					$i++;
-				}
-				redirect_to("?action=retrieve&type=event&id=${id}");
-			}
-		}
-	}
 	
 	$test_content = <<<EOF
 <h1 style="text-align: center;"><em><span style="color: #ff6600; text-decoration: underline;">My Event</span></em></h1>
@@ -87,35 +44,42 @@ EOF;
 	<head>
 		<title>Create an event</title>
 	</head>
+<?php 
+	layout_header();
+?>
 	<script type="text/javascript" src="jscript/misc.js"></script>
-	
 	<a href="index.php">Go back to index</a><br/><br/>
-	<?php echo "$g_error_msg<br/><br/>"; ?>
+	<span style="color:red;">
+		<?php echo "$g_error_msg<br/>"; ?>
+	</span>
 	<form name="input" action="?action=create&amp;type=event" method="POST">
 		<table>
 		<tr>
 			<td>Title: </td>
-			<td><input type="text" name="title" value="My event"></td>
+			<td><input type="text" name="title" value="My event"/></td>
 		</tr>
 		<tr>
 			<td>Number of person wanted: </td>
-			<td><input type="text" name="person" value="230"></td>
+			<td><input type="text" name="person" value="230"/></td>
 		</tr>
 		<tr>
 			<td>Date (DD.MM.YY): </td>
 			<td><input type="text" name="date" value="12.07.13"></td>
 		</tr>
-	</table>
-	<br/><br/>
+		</table>
+		<br/><br/>
 		<div id="rates">
 		</div>
 		<script language="javascript" type="text/javascript">
 			addRate('rates');
 		</script>
-		<input type="button" value="Add a rate" onClick="addRate('rates');">
+		<input type="button" value="Add a rate" onClick="addRate('rates');"/>
 		<textarea name="content">
 			<?php echo $test_content; ?>
 		</textarea>
-		<input type="submit" value="Submit">
+		<input type="submit" value="Submit"/>
 	</form>
+<?php 
+	layout_footer();
+?>
 </html>

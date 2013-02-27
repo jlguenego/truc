@@ -79,9 +79,9 @@
 ?>
 <html>
 <head>
-	<title>Profil edited</title>
+	<title>Account edited</title>
 </head>
-	Profil correctly edited.<br/>
+	Account correctly edited.<br/>
 	<a href="?action=retrieve&amp;type=account">Back to your profile</a>
 </html>
 <?php

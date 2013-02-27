@@ -1,54 +1,66 @@
 <?php
-	require_once("include/event.inc");
-	require_once("include/user.inc");
-	require_once("include/rate.inc");
-	
-	if (event_exists($_GET["id"])) {
-		$event = get_event($_GET["id"]);
-		$content = <<<EOF
+	$event = $g_display["event"];
+	$author = $g_display["author"];
+?>
 <html>
 	<head>
-		<title>Events lists</title>
+		<title>Event</title>
 	</head>
 	<a href="index.php">Go back to index<a/><br/><br/>
-EOF;
-		$author = get_user($event["author_id"]);
-		if ($author['login'] == $_SESSION['login']) {
-			$content .= "<a href=\"?action=update&amp;type=event&amp;id=".$event["id"]."\">Edit event</a><br/>";
-			$content .= "<a href=\"?action=delete&amp;type=event&amp;id=".$event["id"]."\">Delete event</a><br/>";
-		} else {
-			$content .= "By ".strtoupper($author["lastname"])." ".ucfirst($author["name"])."<br/>";
-		}
-		$content .= date("d M Y", $event["event_date"])."<br/>";
-		if (time() >= $event["event_date"]) {
-			if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
-				$content .= "Cancelled";
-			}
-		} else {
-			if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
-				$content .= $event["nbr_person_registered"]."/".$event["nbr_person_wanted"]." persons registered<br/>";
-			} else {
-				$content .= "Will append. Enough persons have registered.<br/>";
-			}
-			$content .= "<a href=\"?action=participate&amp;id=".$_GET["id"]."\">Participate</a><br/>";
-		}
-		$content .= "<h3>Rates for this events</h3>";
-		$content .= "<table>";
-		$content .= "<tr>";
-		$content .= "<th>Categories</th>";
-		$content .= "<th>Rates</th>";
-		$content .= "</tr>";
-		foreach (events_rates($event['id']) as $rate) {
-			$label = $rate['label'];
-			$rate = $rate['amount'];
-			$content .= "<tr>";
-			$content .= "<td>$label</td>";
-			$content .= "<td>$rate</td>";
-			$content .= "</tr>";
-		}
-		$content .= "</table>";
-		$content .= html_entity_decode($event["content"]);
-	}
-	$content .= "</html>";
-	echo $content;
+<?php
+	layout_header();
+	
+	echo "<h1>".$event["title"]."</h1>";
+	if ($author['login'] == $_SESSION['login']) {
 ?>
+		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event["id"] ?>">Edit event</a><br/>
+		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event["id"] ?>">Delete event</a><br/>
+<?php
+		echo $event["nbr_person_registered"]."/".$event["nbr_person_wanted"]." persons registered<br/>";
+	} else {
+?>
+		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
+<?php
+	}
+	if (time() >= $event["event_date"]) {
+		if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+?>
+		This event has already happened.<br/>
+<?php
+		}
+	} else if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+?>
+		This event needs to be confirmed to happen. More people are wanted.<br/>
+<?php
+	} else {
+?>
+		Will append. Enough persons have registered.<br/>
+<?php
+	}
+	echo date("d M Y", $event["event_date"])."<br/>";
+?>
+	<a href=\"?action=participate&amp;id=<?php echo $_GET["id"] ?>">Participate</a><br/>
+	<h3>Rates for this events</h3>
+	<table border="1px">
+		<tr>
+			<th>Categories</th>
+			<th>Rates</th>
+		</tr>
+<?php
+	foreach (events_rates($event['id']) as $rate) {
+		$label = $rate['label'];
+		$rate = $rate['amount'];
+?>
+		<tr>
+			<td><?php echo $label ?></td>
+			<td><?php echo $rate ?></td>
+		</tr>
+<?php
+	}
+?>
+	</table>
+<?php
+	echo html_entity_decode($event["content"]);
+	layout_footer();
+?>
+</html>

@@ -30,8 +30,9 @@
 		try {
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
+			$admin = ROLE_ADMIN;
 			$request = <<<EOF
-SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `admin`=1
+SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `role`=${admin}
 EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();

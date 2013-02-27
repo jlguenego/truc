@@ -2,7 +2,16 @@
 	require_once('include/misc.inc');
 	
 	function is_logged() {
-		return !is_null_or_empty($_SESSION['login']);
+		if (!is_null_or_empty($_SESSION['login'])) {
+			if (user_login_exists($_SESSION['login'])) {
+				return TRUE;
+			} else {
+				unset($_SESSION['login']);
+				return FALSE;
+			}
+		} else {
+			return FALSE;
+		}
 	}
 	
 	function need_authentication() {
@@ -19,7 +28,7 @@
 				return FALSE;
 			}
 			$user = get_user_by_login($_SESSION['login']);
-			return $user['admin'];
+			return $user['role'] == ROLE_ADMIN;
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
@@ -104,6 +113,8 @@ EOF;
 SELECT COUNT(*) FROM `${dbname}`.`user`
 WHERE `login`= :login AND `password`= :password
 EOF;
+			debug("SELECT COUNT(*) FROM `${dbname}`.`user`
+WHERE `login`= ${login} AND `password`= ".hash_pass($user['id'], $login, $password));
 			$q = $g_pdo->prepare($request);
 			$q->execute(array(":login" => $login, 
 				":password" => hash_pass($user['id'], $login, $password)));
@@ -171,6 +182,8 @@ EOF;
 			if (!isset($user['id'])) {
 				return NULL;
 			}
+			$user["lastname"] = strtoupper($user["lastname"]);
+			$user["firstname"] = ucfirst($user["firstname"]);
 			return $user;
 		} catch (Exception $e) {
 			println($e->getMessage());
@@ -178,7 +191,7 @@ EOF;
 		}
 	}
 
-	function add_user($name, $lastname, $login, $password, $mail, $admin = FALSE) {
+	function add_user($firstname, $lastname, $login, $password, $mail, $role = ROLE_USER) {
 		try {
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
@@ -190,15 +203,17 @@ EOF;
 INSERT INTO `${dbname}`.`user` 
 SET 
 	`id`=${id}, 
-	`name`="${name}", 
+	`firstname`="${firstname}", 
 	`lastname`="${lastname}", 
 	`login`="${login}", 
 	`password`="${password}", 
 	`email`="${mail}", 
-	`admin`=${admin};
+	`role`=${role};
 EOF;
 			debug($request);
-			$g_pdo->exec($request);
+			if ($g_pdo->exec($request) == 0) {
+				throw new Exception("Bad Request...");
+			}
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
@@ -224,6 +239,28 @@ EOF;
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
+		}
+	}
+	
+	function valid_user() {
+		if (isset($_GET['login'])) {
+			foreach ($_GET as $value) {
+				if ($value == "") {
+					throw new Exception("Please fill all fields");
+				}
+			}
+			if (!check_mail($_GET["email"])) {
+				throw new Exception("Invalid mail");
+			}
+			if (used_mail($_GET["email"])) {
+				throw new Exception("This mail is already used");
+			} 
+			if (user_login_exists($_GET['login'])) {
+				throw new Exception("User already exists");
+			}
+			if ($_GET['password'] != $_GET['password2']) {
+				throw new Exception("Passwords are different");
+			}
 		}
 	}
 ?>

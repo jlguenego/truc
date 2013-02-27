@@ -1,47 +1,8 @@
 <?php
-	require_once("include/event.inc");
-	require_once("include/rate.inc");
 	include_once("include/tinyMCE.inc");
 	
-	if (isset($_POST['title']) && isset($_POST['person']) 
-		&& isset($_POST['content']) && isset($_POST['date'])) {
-		if (!check_date($_POST['date'])) {
-			println("Not valid date");
-		} else {
-			$updated = update_event($_POST["id"], $_POST['title'], $_POST['content'], $_POST['date'], $_POST['person']);
-			if (!$updated) {
-				println("Event does not exists");
-			}
-			print_r($_POST['labels']);
-			$i = 0;
-			foreach ($_POST['labels'] as $label) {
-				$rate = $_POST['rates'][$i];
-				update_rate($_POST["id"], $label, $rate);
-				$i++;
-			}
-			delete_unuse_rates($_POST["id"], $_POST['labels']);
-		}
-		redirect_to("event.php?id=".$_POST["id"]);
-	}
-	
-	$error_msg = "";
-	if (isset($_GET["id"])) {
-		$event = get_event($_GET["id"]);
-		if ($event == NULL) {
-			$error_msg = "Event doesn't exists.";
-		} else {
-			$author = get_user($event['author_id']);
-			if ($author["login"] != $_SESSION["login"]) {
-				$error_msg = $author["login"]."!=".$_SESSION["login"]."<br/>
-					Your are not the event creator.";
-			}
-			$rates = events_rates($_GET["id"]);
-		}
-	} else {
-		$error_msg = "No event given.";
-	}
-	
-	if ($error_msg == "") {
+	$event = $g_display["event"];
+	$rates = $g_display["rates"];
 ?>
 <html>
 	<head>
@@ -58,7 +19,7 @@
 		</tr>
 		<tr>
 			<td>Number of person wanted: </td>
-			<td><input type="text" name="person" value="<?php echo $event['nbr_person_wanted']; ?>"></td>
+			<td><input type="text" name="persons" value="<?php echo $event['nbr_person_wanted']; ?>"></td>
 		</tr>
 		<tr>
 			<td>Date (DD.MM.YY): </td>
@@ -89,8 +50,3 @@
 		<input type="submit" value="Submit"/>
 	</form>
 </html>
-<?php
-	} else {
-		println($error_msg);
-	}
-?>

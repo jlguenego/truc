@@ -9,41 +9,77 @@
 	
 	$user = get_user($_GET["id"]);
 	$lastname = strtoupper($user['lastname']);
-	$name = ucfirst($user['name']);
+	$firstname = ucfirst($user['firstname']);
 ?>
 <html>
 	<head>
-		<title><?php echo "Profil of $lastname $name"; ?></title>
+		<title>Account retrieve</title>
 	</head>
 	
 	<a href="index.php">Go back to index</a><br/><br/>
+	Account details:
+	<table border="2px">
+		<tr>
+			<td>Username</td>
+			<td><?php echo $user['login'] ?></td>
+		</tr>
+		<tr>
+			<td>Firstname</td>
+			<td><?php echo $firstname ?></td>
+		</tr>
+		<tr>
+			<td>Lastname</td>
+			<td><?php echo $lastname ?></td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td><?php echo $user['email'] ?></td>
+		</tr>
+	</table>
 	
-<?php 
-	echo "Welcome to the profile of $lastname $name<br/>\n";
-	if ($user['login'] == $_SESSION['login']) {
-		echo "<a href=\"?action=update&amp;type=account\">Edit your profile</a><br/>\n";
+<?php
+	if ($user['login'] == $_SESSION['login']) { // If the user is the owner
+?>
+	<a href="?action=update&amp;type=account">Edit your account</a><br/>
+<?php
 	}
-	echo "<h3>Events organized by $lastname $name</h3>\n";
-	echo "<ul>\n";
+?>
+	<h3>Events organized:</h3>
+	<ul>
+<?php
 	foreach (user_events($_GET["id"]) as $event) {
-		echo "<li>";
-		echo date("d M Y", $event["event_date"]).": ";
-		echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$event['id']."\">".$event['title']."</a>";
-		echo "</li>\n";
+		$id = $event['id'];
+		$title = $event['title'];
+?>
+		<li>
+			<?php echo date("d M Y", $event["event_date"]) ?>: 
+			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
+				<?php echo $title ?>
+			</a>
+		</li>
+<?php
 	}
-	echo "</ul>\n";
+?>
+	</ul>
 	
-	echo "<h3>You are participating to:</h3>\n";
-	echo "<ul>\n";
+	<h3>Participations:</h3>
+	<ul>
+<?php
 	$user_part = user_participations($_GET["id"]);
 	foreach ($user_part as $participation) {
-		$event = get_event($participation["id_event"]);
-		echo "<li>";
-		echo date("d M Y", $event["event_date"]).": ";
-		echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$event['id']."\">".$event['title']."</a> (".$participation["quantity"]." tickets)";
-		echo "</li>\n";
-	}
-	echo "</ul>\n";
+		$event = get_event($participation["id_event"]);$id = $event['id'];
+		$title = $event['title'];
+		$quantity = $participation["quantity"];
 ?>
-	
+		<li>
+			<?php echo date("d M Y", $event["event_date"]) ?>: 
+			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
+				<?php echo $title ?>
+			</a>
+			(<?php echo $quantity ?> tickets)
+		</li>
+<?php
+	}
+?>
+	</ul>
 </html>

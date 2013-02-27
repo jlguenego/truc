@@ -1,15 +1,16 @@
 <?php
 	require_once("include/user.inc");
-	
 ?>
 <html>
 <head>
 	<title>Sign in</title>
 </head>
 	<a href="index.php">Go back to index</a><br/><br/>
+	<span style="color:red;">
 	<?php
 		echo $g_error_msg;
 	?>
+	</span><br/>
 	<form name="input" action="?action=authenticate" method="POST">
 		<table>
 		<tr>
