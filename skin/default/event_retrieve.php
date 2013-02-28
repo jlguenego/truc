@@ -11,30 +11,37 @@
 		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event["id"] ?>">Edit event</a><br/>
 		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event["id"] ?>">Delete event</a><br/>
 <?php
-		echo $event["nbr_person_registered"]."/".$event["nbr_person_wanted"]." persons registered<br/>";
+		echo $event["funding_acquired"]."€/".$event["funding_wanted"]."€ funding acquired.<br/>";
 	} else {
 ?>
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
 <?php
 	}
 	if (time() >= $event["event_date"]) {
-		if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+		if ($event["funding_wanted"] > $event["funding_acquired"]) {
 ?>
 		This event has already happened.<br/>
 <?php
 		}
-	} else if ($event["nbr_person_wanted"] > $event["nbr_person_registered"]) {
+	} else if ($event["funding_wanted"] > $event["funding_acquired"]) {
 ?>
-		This event needs to be confirmed to happen. More people are wanted.<br/>
+		This event needs to be confirmed to happen. More people needed.<br/>
 <?php
 	} else {
 ?>
 		Will append. Enough persons have registered.<br/>
 <?php
 	}
-	echo date("d M Y", $event["event_date"])."<br/>";
+	echo "Date: ".date("d M Y", $event["event_date"])."<br/>";
+	echo "Location: ".$event["location"]."<br/>";
+	echo "Deadline: ".date("d M Y", $event["event_deadline"])."<br/>";
 ?>
 	<a href="?action=participate&amp;id=<?php echo $_GET["id"] ?>">Participate</a><br/>
+	<h3>In short</h3>
+<?php
+	echo "Event website: <a href=\"".$event["link"]."\">".$event["link"]."</a><br/>";
+	echo $event["short_description"]."<br/><br/><br/>";
+?>
 	<h3>Rates for this events</h3>
 	<table border="1px">
 		<tr>
@@ -55,5 +62,5 @@
 ?>
 	</table>
 <?php
-	echo html_entity_decode($event["content"]);
+	echo $event["long_description"]."<br/>";
 ?>

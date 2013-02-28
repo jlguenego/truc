@@ -1,6 +1,4 @@
 <?php
-	include_once("include/tinyMCE.inc");
-	
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 ?>
