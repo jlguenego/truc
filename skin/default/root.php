@@ -1,7 +1,4 @@
-<html>
-	<body>
 <?php
-	layout_header();
 	// Verify if user is logged in to show differents menu.
 	if (!is_logged()) {
 ?>
@@ -22,7 +19,4 @@
 <?php
 		}
 	}
-	layout_footer();
 ?>
-	</body>
-</html>

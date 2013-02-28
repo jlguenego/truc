@@ -40,46 +40,35 @@
 <p><span style="color: #000000; font-size: small;">And a link to my event's web site: <a href="google.com">My Event</a><br /></span></p>
 EOF;
 ?>
-<html>
-	<head>
-		<title>Create an event</title>
-	</head>
-<?php 
-	layout_header();
-?>
-	<script type="text/javascript" src="jscript/misc.js"></script>
-	<a href="index.php">Go back to index</a><br/><br/>
-	<span style="color:red;">
-		<?php echo "$g_error_msg<br/>"; ?>
-	</span>
-	<form name="input" action="?action=create&amp;type=event" method="POST">
-		<table>
-		<tr>
-			<td>Title: </td>
-			<td><input type="text" name="title" value="My event"/></td>
-		</tr>
-		<tr>
-			<td>Number of person wanted: </td>
-			<td><input type="text" name="person" value="230"/></td>
-		</tr>
-		<tr>
-			<td>Date (DD.MM.YY): </td>
-			<td><input type="text" name="date" value="12.07.13"></td>
-		</tr>
-		</table>
-		<br/><br/>
-		<div id="rates">
-		</div>
-		<script language="javascript" type="text/javascript">
-			addRate('rates');
-		</script>
-		<input type="button" value="Add a rate" onClick="addRate('rates');"/>
-		<textarea name="content">
-			<?php echo $test_content; ?>
-		</textarea>
-		<input type="submit" value="Submit"/>
-	</form>
-<?php 
-	layout_footer();
-?>
-</html>
+<script type="text/javascript" src="jscript/misc.js"></script>
+<a href="index.php">Go back to index</a><br/><br/>
+<span style="color:red;">
+	<?php echo "$g_error_msg<br/>"; ?>
+</span>
+<form name="input" action="?action=create&amp;type=event" method="POST">
+	<table>
+	<tr>
+		<td>Title: </td>
+		<td><input type="text" name="title" value="My event"/></td>
+	</tr>
+	<tr>
+		<td>Number of person wanted: </td>
+		<td><input type="text" name="person" value="230"/></td>
+	</tr>
+	<tr>
+		<td>Date (DD.MM.YY): </td>
+		<td><input type="text" name="date" value="12.07.13"></td>
+	</tr>
+	</table>
+	<br/><br/>
+	<div id="rates">
+	</div>
+	<script language="javascript" type="text/javascript">
+		addRate('rates');
+	</script>
+	<input type="button" value="Add a rate" onClick="addRate('rates');"/>
+	<textarea name="content">
+		<?php echo $test_content; ?>
+	</textarea>
+	<input type="submit" value="Submit"/>
+</form>
