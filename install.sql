@@ -1,10 +1,11 @@
 #Ma base de données : 
 
 CREATE TABLE event(
-        id                    Integer NOT NULL ,
+        id                    Int NOT NULL ,
         title                 Varchar(25) NOT NULL ,
-        content               Text NOT NULL ,
+        event_deadline        Int NOT NULL ,
         event_date            Int NOT NULL ,
+        content               Text NOT NULL ,
         nbr_person_wanted     Int NOT NULL ,
         nbr_person_registered Int NOT NULL ,
         id_user               Int NOT NULL ,
@@ -26,13 +27,13 @@ CREATE TABLE rate(
         id       Int NOT NULL ,
         label    Varchar(25) NOT NULL ,
         amount   Int NOT NULL ,
-        id_event Integer NOT NULL ,
+        id_event Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
 CREATE TABLE participate(
         id_user  Int NOT NULL ,
-        id_event Integer NOT NULL ,
+        id_event Int NOT NULL ,
         PRIMARY KEY (id_user,id_event)
 )ENGINE=InnoDB;
 

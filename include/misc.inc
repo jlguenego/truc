@@ -110,4 +110,10 @@ EOF;
 	function is_number($var) {
 		return preg_match("#^[\d]+$#", $var);
 	}
+	
+	function echo_default_value($name) {
+		if (isset($_GET[$name])) {
+			echo $_GET[$name];
+		}
+	}
 ?>

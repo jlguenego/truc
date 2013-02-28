@@ -6,8 +6,8 @@ function setCounter(amount) {
 }
 
 function addRate(divName, label, amount){
-	label = label || "toto";
-	amount = amount || "123";
+	label = label || "";
+	amount = amount || "";
 	if (counter == limit)  {
         alert("You have reached the limit of adding " + counter + " rates");
     } else {

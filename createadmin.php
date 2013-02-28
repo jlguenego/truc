@@ -6,12 +6,10 @@
 		
 	$error_msg = '';
 	if (isset($_POST['login'])) {
-		if (check_mail($_POST["email"])) {
-			println("Valid mail");
-		} else {
-			println("invalid mail");
-		}
 		try {
+			if (!check_mail($_POST["email"])) {
+				throw new Exception("Invalid mail");
+			}
 			add_user($_POST['name'], $_POST['lastname'], $_POST['login'], $_POST['password'], $_POST['email'], TRUE);
 			$install_done = <<<EOF
 <html>

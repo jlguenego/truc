@@ -1,21 +1,8 @@
 <?php
-	require_once("include/user.inc");
-	require_once("include/event.inc");
-	require_once("include/manage.inc");
-	
-	if (!isset($_GET["id"])) {
-		redirect_to("index.php");
-	}
-	
-	$user = get_user($_GET["id"]);
-	$lastname = strtoupper($user['lastname']);
-	$firstname = ucfirst($user['firstname']);
+	$user = $g_display["user"];
+	$lastname = $user['lastname'];
+	$firstname = $user['firstname'];
 ?>
-<html>
-	<head>
-		<title>Account retrieve</title>
-	</head>
-	
 	<a href="index.php">Go back to index</a><br/><br/>
 	Account details:
 	<table border="2px">
@@ -40,14 +27,14 @@
 <?php
 	if ($user['login'] == $_SESSION['login']) { // If the user is the owner
 ?>
-	<a href="?action=update&amp;type=account">Edit your account</a><br/>
+	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $_GET["id"] ?>">Edit your account</a><br/>
 <?php
 	}
 ?>
 	<h3>Events organized:</h3>
 	<ul>
 <?php
-	foreach (user_events($_GET["id"]) as $event) {
+	foreach ($g_display["events_organized"] as $event) {
 		$id = $event['id'];
 		$title = $event['title'];
 ?>
@@ -65,9 +52,9 @@
 	<h3>Participations:</h3>
 	<ul>
 <?php
-	$user_part = user_participations($_GET["id"]);
-	foreach ($user_part as $participation) {
-		$event = get_event($participation["id_event"]);$id = $event['id'];
+	foreach ($g_display["participations"] as $participation) {
+		$event = $participation["event"];
+		$id = $event['id'];
 		$title = $event['title'];
 		$quantity = $participation["quantity"];
 ?>
@@ -82,4 +69,3 @@
 	}
 ?>
 	</ul>
-</html>

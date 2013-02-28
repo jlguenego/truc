@@ -49,23 +49,44 @@ EOF;
 	<table>
 	<tr>
 		<td>Title: </td>
-		<td><input type="text" name="title" value="My event"/></td>
+		<td><input type="text" name="title" value="<?php echo_default_value("title"); ?>"/></td>
 	</tr>
 	<tr>
 		<td>Number of person wanted: </td>
-		<td><input type="text" name="person" value="230"/></td>
+		<td><input type="text" name="persons" value="<?php echo_default_value("persons"); ?>"/></td>
 	</tr>
 	<tr>
 		<td>Date (DD.MM.YY): </td>
-		<td><input type="text" name="date" value="12.07.13"></td>
+		<td><input type="text" name="date" value="<?php echo_default_value("date"); ?>"></td>
+	</tr>
+	<tr>
+		<td>Deadline (DD.MM.YY): </td>
+		<td><input type="text" name="deadline" value="<?php echo_default_value("deadline"); ?>"></td>
 	</tr>
 	</table>
 	<br/><br/>
 	<div id="rates">
 	</div>
-	<script language="javascript" type="text/javascript">
-		addRate('rates');
-	</script>
+<?php
+	if (isset($_GET["rates"])) {
+		$i = 0;
+		foreach ($_GET["rates"] as $rate) {
+			$label = $_GET["labels"][$i];
+			$amount = $rate;
+			echo "<script language=\"javascript\" type=\"text/javascript\">";
+			echo "addRate('rates', '$label', '$amount');";
+			echo "</script>";
+			$i++;
+		}
+		echo "<script language=\"javascript\" type=\"text/javascript\">";
+		echo "setCounter($i);";
+		echo "</script>";
+	} else {
+		echo "<script language=\"javascript\" type=\"text/javascript\">";
+		echo "addRate('rates', '', '');";
+		echo "</script>";
+	}
+?>
 	<input type="button" value="Add a rate" onClick="addRate('rates');"/>
 	<textarea name="content">
 		<?php echo $test_content; ?>

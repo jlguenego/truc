@@ -7,6 +7,7 @@
 	require_once("include/event.inc");
 	require_once("include/rate.inc");
 	require_once("include/actions.inc");
+	require_once("include/manage.inc");
 	
 	// If not installed, goto installation page
 	if (!is_installed()) {
@@ -53,7 +54,12 @@
 					}
 					break;
 				case "account":
+					if (is_null_or_empty($_GET["id"])) {
 					$_SESSION["state"] = "account_create";
+					} else {
+						$g_display["user"] = get_user($_GET["id"]);
+						$_SESSION["state"] = "account_update";
+					}
 					break;
 			}
 			break;
@@ -64,12 +70,12 @@
 					try {
 						valid_event();
 						$id = create_id();
-						add_event($id, $_POST['title'], $_POST['content'],
-							$_POST['date'], $_POST['person']);
+						add_event($id, $_GET['title'], $_GET['content'],
+							$_GET['date'], $_GET['persons']);
 							
 						$i = 0;
-						foreach ($_POST['labels'] as $label) {
-							$rate = $_POST['rates'][$i];
+						foreach ($_GET['labels'] as $label) {
+							$rate = $_GET['rates'][$i];
 							add_rate($label, $rate, $id);
 							$i++;
 						}
@@ -120,8 +126,13 @@
 					break;
 				case "account":
 					need_authentication();
-					if (is_null_or_empty($_GET["id"])) {
-						$_GET["id"] = get_id_from_account();
+					$_GET["id"] = get_id_from_account();
+					$g_display["user"] = get_user($_GET["id"]);
+					$g_display["events_organized"] = user_events($_GET["id"]);
+					$g_display["participations"] = user_participations($_GET["id"]);
+					foreach ($g_display["participations"] as $participation) {
+						$g_display["participations"]["event"] = 
+							get_event($participation["id_event"]);
 					}
 					$_SESSION["state"] = "account_retrieve";
 					break;
@@ -134,21 +145,37 @@
 		case "update":
 			switch ($_GET["type"]) {
 				case "account":
-					need_authentication();
-					if (is_null_or_empty($_GET["id"])) {
-						$_GET["id"] = get_id_from_account();
+					try {
+						need_authentication();
+						if (is_null_or_empty($_GET["id"])) {
+							$_GET["id"] = get_id_from_account();
+						}
+						if (user_exists($_GET["id"])) {
+							$g_display["user"] = get_user($_GET["id"]);
+							valid_user_update();
+							update_user($user['id'], $user['password'], 
+								$user['email']);
+							redirect_to("?action=retrieve&type=account&id=".$_GET["id"]);
+						} else {
+							throw new Exception(_t("This user does not exists."));
+						}
+					} catch (Exception $e) {
+						$g_error_msg = $e->getMessage();
+						$_SESSION["state"] = "account_update";
 					}
-					$_SESSION["state"] = "account_update";
 					break;
 				case "event":
 					try {
 						need_authentication();
+						debug("event_id=".$_GET["id"]);
 						if (!is_null_or_empty($_GET["id"])) {
 							if (event_exists($_GET["id"])) {
 								$_SESSION["state"] = "event_update";
 								$g_display["event"] = get_event($_GET["id"]);
+								$g_display["rates"] = events_rates($_GET["id"]);
 								check_owner($g_display["event"]);
 								valid_event();
+								debug("PLOUF");
 								update_event($_GET["id"], $_GET['title'], 
 									$_GET['content'], $_GET['date'], $_GET['persons']);
 								$i = 0;
@@ -208,6 +235,10 @@
 					break;
 			}
 			break;
+		case "participate":
+			$_SESSION["state"] = "not_allowed";
+			$g_error_msg = "Not implemented.";
+			break;
 		default:
 			break;
 	}
@@ -221,5 +252,5 @@
 	
 	debug("Session after: ".$_SESSION["state"]);
 	debug("<hr/>");
-	include_once(SKIN_DIR."/${page}.php");
+	include_once(SKIN_DIR."/layout.php");
 ?>
