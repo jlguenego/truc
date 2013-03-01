@@ -6,6 +6,7 @@
 **/
 	$g_states = array(
 		"root",
+		"error",
 		"sign_in",
 		"not_allowed",
 		"event_create",
@@ -19,7 +20,9 @@
 	);
 
 	$g_debug = true;
+	$g_debug_lines = array();
 	$g_error_msg = "";
+	$g_info_msg = "";
 	
 	// Allows to have only one entity of PDO
 	if (file_exists(SETTINGS_INI)) {

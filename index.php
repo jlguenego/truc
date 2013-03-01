@@ -70,8 +70,10 @@
 					try {
 						valid_event();
 						$id = create_id();
-						add_event($id, $_GET['title'], $_GET['content'],
-							$_GET['date'], $_GET['persons']);
+						add_event($id, $_GET['title'], $_GET['date'],
+							$_GET['deadline'], $_GET['funding_wanted'], 
+							$_GET['location'], $_GET['link'],
+							$_GET['short_description'], $_GET['long_description']);
 							
 						$i = 0;
 						foreach ($_GET['labels'] as $label) {
@@ -92,7 +94,7 @@
 						valid_user();
 						add_user($_GET['firstname'], $_GET['lastname'], $_GET['login'],
 							$_GET['password'], $_GET['email']);
-						action_authenticate();
+						$g_info_msg = "Account successfully created. Check your email for activation.";
 						$_SESSION["state"] = "root";
 					} catch (Exception $e) {
 						$g_error_msg = $e->getMessage();
@@ -238,6 +240,17 @@
 		case "participate":
 			$_SESSION["state"] = "not_allowed";
 			$g_error_msg = "Not implemented.";
+			break;
+		case "activation":
+			try {
+				$user = user_activate($_GET["key"]);
+				$g_info_msg = "Account successfully activated";
+				$_GET["login"] = $user["login"];
+				$_SESSION["state"] = "sign_in";
+			} catch (Exception $e) {
+				$g_error_msg = $e->getMessage();
+				$_SESSION["state"] = "error";
+			}
 			break;
 		default:
 			break;

@@ -1,25 +1,34 @@
 #Ma base de données : 
 
 CREATE TABLE event(
-        id                    Int NOT NULL ,
-        title                 Varchar(25) NOT NULL ,
-        event_deadline        Int NOT NULL ,
-        event_date            Int NOT NULL ,
-        content               Text NOT NULL ,
-        nbr_person_wanted     Int NOT NULL ,
-        nbr_person_registered Int NOT NULL ,
-        id_user               Int NOT NULL ,
+        id                Int NOT NULL ,
+        created_t         Varchar(25) NOT NULL ,
+        mod_t             Varchar(25) NOT NULL ,
+        title             Varchar(25) NOT NULL ,
+        event_deadline    Varchar(25) NOT NULL ,
+        event_date        Varchar(25) NOT NULL ,
+        funding_wanted    Int NOT NULL ,
+        funding_acquired  Int NOT NULL ,
+        location          Varchar(25) NOT NULL ,
+        link              Varchar(255),
+        short_description Varchar(255) NOT NULL ,
+        long_description  Text,
+        id_user           Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
 CREATE TABLE user(
-        id        Int NOT NULL ,
-        login     Varchar(25) NOT NULL ,
-        password  Varchar(120) NOT NULL ,
-        email     Varchar(25) NOT NULL ,
-        lastname  Varchar(25) NOT NULL ,
-        firstname Varchar(25) NOT NULL ,
-        role      Int NOT NULL ,
+        id                Int NOT NULL ,
+        created_t         Varchar(25) NOT NULL ,
+        mod_t             Varchar(25) NOT NULL ,
+        login             Varchar(25) NOT NULL ,
+        password          Varchar(120) NOT NULL ,
+        email             Varchar(25) NOT NULL ,
+        lastname          Varchar(25) NOT NULL ,
+        firstname         Varchar(25) NOT NULL ,
+        role              Int NOT NULL ,
+        activation_status Int NOT NULL ,
+        activation_key    Varchar(255),
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 

@@ -18,10 +18,12 @@
 </style>
 <?php
 	layout_header();
+	layout_message();
 	
 	include_once(SKIN_DIR."/${page}.php");
 	
 	layout_footer();
+	layout_trace();
 ?>
 	</body>
 </html>

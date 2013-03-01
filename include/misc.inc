@@ -50,8 +50,9 @@ EOF;
 	
 	function debug($msg) {
 		global $g_debug;
+		global $g_debug_lines;
 		if ($g_debug) {
-			echo "<p>[DEBUG] $msg</p>";
+			$g_debug_lines[] = "<p>[DEBUG] $msg</p>";
 		}
 	}
 	
@@ -71,10 +72,10 @@ EOF;
 	}
 	
 	function check_date($date) {
-		if (!preg_match("#^[0-3][\d]\.[0-1][\d]\.[\d]{2}$#", $date)) {
+		if (!preg_match("#^[\d]{4}-[0-1][\d]-[0-3][\d]$#", $date)) {
 			return FALSE;
 		}
-		list($day, $month, $year) = explode(".", $date);
+		list($day, $month, $year) = explode("-", $date);
 		if ($month > 12) {
 			return FALSE;
 		}
@@ -111,9 +112,62 @@ EOF;
 		return preg_match("#^[\d]+$#", $var);
 	}
 	
-	function echo_default_value($name) {
-		if (isset($_GET[$name])) {
+	function echo_default_value($name, $default = "") {
+		if (!is_null_or_empty($_GET[$name])) {
 			echo $_GET[$name];
+		} else {
+			echo $default;
 		}
 	}
+	
+	function mail_to($mail, $login, $key) {
+		$mailcrypt = sha1($mail);
+		if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)){ //Mise aux normes
+			$passage_ligne = "\r\n";
+		}else{
+			$passage_ligne = "\n";
+		}
+		
+		$lien = HOST.'/?action=activation&amp;key='.$key;
+		$msg_html = '<p>Ceci est un mail automatique. Veuillez ne pas y répondre.<br/><br/>'.$passage_ligne.$passage_ligne;
+		$msg_html.= 'Merci '.$login.' de vous être inscrit.<br/>'.$passage_ligne;
+		$msg_html.= 'Veuillez cliquer sur le liens suivant pour activer votre compte:<br/>'.$passage_ligne;
+		$msg_html.= '<a href="'.$lien.'">'.$lien.'</a><br/><br/>'.$passage_ligne.$passage_ligne.'</p>';
+	
+
+		$msg_txt = htmlspecialchars($msg_html);		
+		$boundary = '----='.md5(rand());
+		$boundary_alt = "-----=".md5(rand());
+				
+		/*FORMATION DU HEADER*/
+		$header = 'From: "'.CONTACT_MAIL.'" <'.CONTACT_MAIL.'>'.$passage_ligne;
+		$header.= 'MIME-Version: 1.0'.$passage_ligne;
+		$header.= 'Content-Type: multipart/mixed;'.$passage_ligne.' boundary="'.$boundary.'"'.$passage_ligne;
+	
+		/*CONTENU DU MAIL*/
+		$content = $passage_ligne.'--'.$boundary.$passage_ligne;
+		$content.= 'Content-Type: multipart/alternative;'.$passage_ligne.' boundary="'.$boundary_alt.'"'.$passage_ligne;
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+		
+		//Message texte
+		$content.= 'Content-Type: text/plain; charset="utf-8"'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_txt.$passage_ligne;
+		
+		//-----------------------------------------------------------
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+		
+		//Message html
+		$content.= 'Content-Type: text/html; charset=utf-8'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_html.$passage_ligne;
+		
+		//-----------------------------------------------------------
+		$content.= $passage_ligne."--".$boundary_alt."--".$passage_ligne;
+		$content.= $passage_ligne."--".$boundary."--".$passage_ligne;
+		
+		/*ENVOI DU MAIL*/
+		$subject = "Activate your account";
+		mail($mail, $subject, $content, $header);
+  	}
 ?>

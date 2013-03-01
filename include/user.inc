@@ -14,6 +14,10 @@
 		}
 	}
 	
+	function is_activated($user) {
+		return $user["activation_status"] == ACTIVATION_STATUS_ACTIVATED;
+	}
+	
 	function need_authentication() {
 		if (!is_logged()) {
 			debug("\$_SERVER[\"REQUEST_URI\"]=".$_SERVER["REQUEST_URI"]);
@@ -83,18 +87,17 @@ EOF;
 	// Check if the user has entered correct login and password
 	function authenticate($login, $password) {
 		global $g_pdo;
+		global $g_error_msg;
 		if (!user_login_exists($login)) {
 			return FALSE;
 		}
-		$user = get_user_by_login($login);
 		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
 SELECT COUNT(*) FROM `${dbname}`.`user`
 WHERE `login`= :login AND `password`= :password
 EOF;
-			debug("SELECT COUNT(*) FROM `${dbname}`.`user`
-WHERE `login`= ${login} AND `password`= ".hash_pass($user['id'], $login, $password));
 		$q = $g_pdo->prepare($request);
+		$user = get_user_by_login($login);
 		$q->execute(array(":login" => $login, 
 			":password" => hash_pass($user['id'], $login, $password)));
 		$count = $q->fetch();
@@ -150,51 +153,102 @@ EOF;
 		$user["firstname"] = ucfirst($user["firstname"]);
 		return $user;
 	}
+	
+	function generate_activation_key() {
+		return sha1(rand().time().RANDOM_SALT);
+	}
 
-	function add_user($firstname, $lastname, $login, $password, $mail, $role = ROLE_USER) {
+	function add_user($firstname, $lastname, $login, $password, $mail, 
+		$role = ROLE_USER, $activation_status = ACTIVATION_STATUS_NOT_ACTIVATED) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$id = create_id();
 		// With this method it is quite impossible to know who has the same 
 		// password
 		$password = hash_pass($id, $login, $password);
+		$created_t = time();
+		$mod_t = $created_t;
+		$key = generate_activation_key();
 		$request = <<<EOF
 INSERT INTO `${dbname}`.`user` 
 SET 
 	`id`=${id}, 
+	`created_t`=${created_t}, 
+	`mod_t`=${mod_t}, 
 	`firstname`="${firstname}", 
 	`lastname`="${lastname}", 
 	`login`="${login}", 
 	`password`="${password}", 
 	`email`="${mail}", 
-	`role`=${role};
+	`role`=${role},
+	`activation_status`=${activation_status},
+	`activation_key`="${key}";
 EOF;
 		debug($request);
 		if ($g_pdo->exec($request) == 0) {
-			throw new Exception("Bad Request...");
+			$error = $g_pdo->errorInfo();
+			throw new Exception($error[2]."<br/>");
+		}
+		$user = get_user($id);
+		if (!is_activated($user)) {
+			mail_to($mail, $login, $key);
 		}
 	}
 	
 	function update_user($id, $password, $mail) {
-		try {
-			global $g_pdo;
-			$dbname = MYSQL_DBNAME;
-			// With this method it is quite impossible to know who has the same 
-			// password
-			$password = hash_pass($id, $_SESSION['login'], $password);
-			$request = <<<EOF
+		global $g_pdo;
+		$dbname = MYSQL_DBNAME;
+		// With this method it is quite impossible to know who has the same 
+		// password
+		$password = hash_pass($id, $_SESSION['login'], $password);
+		$mod_t = time();
+		$request = <<<EOF
 UPDATE `${dbname}`.`user` 
 SET 
 	`password`="${password}", 
-	`email`="${mail}"
+	`email`="${mail}",
+	`mod_t`="${mod_t}"
 WHERE `id`=${id}
 EOF;
-			debug($request);
-			$g_pdo->exec($request);
-		} catch (Exception $e) {
-			println($e->getMessage());
-			throw $e;
+		debug($request);
+		if ($g_pdo->exec($request) == 0) {
+			$error = $g_pdo->errorInfo();
+			throw new Exception($error[2]."<br/>");
 		}
+	}
+	
+	function user_activate($key) {
+		global $g_pdo;
+		$dbname = MYSQL_DBNAME;
+		$request = <<<EOF
+SELECT COUNT(*) FROM `${dbname}`.`user`
+WHERE `activation_key`="${key}"
+EOF;
+		$q = $g_pdo->prepare($request);
+		$q->execute();
+		$count = $q->fetch();
+		if ($count[0] == 0) {
+			throw new Exception("This account does not exist or is already activated");
+		}
+		$mod_t = time();
+		$status = ACTIVATION_STATUS_ACTIVATED;
+		$request = <<<EOF
+UPDATE `${dbname}`.`user` 
+SET 
+	`activation_status`="${status}",
+	`mod_t`="${mod_t}"
+WHERE `activation_key`="${key}"
+EOF;
+		$q = $g_pdo->prepare($request);
+		$q->execute();$request = <<<EOF
+SELECT * FROM `${dbname}`.`user`
+WHERE `activation_key`="${key}"
+EOF;
+		debug($request);
+		$q = $g_pdo->prepare($request);
+		$q->execute();
+		$user = $q->fetch();
+		return $user;
 	}
 	
 	function valid_user() {

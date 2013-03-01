@@ -26,26 +26,39 @@ EOF;
 		return $count[0] > 0;
 	}
 	
-	function add_event($id, $title, $content, $date, $person) {
+	function add_event($id, $title, $date, $deadline, $funding_wanted, $location,
+						$link, $short, $long) {
 		global $g_pdo;
-		list($day, $month, $year) = explode(".", $date);
-		$timestamp = mktime(0, 0, 0, $month, $day, $year);
+		
+		list($year, $month, $day) = explode("-", $date);
+		$event_date = mktime(0, 0, 0, $month, $day, $year);
+		list($year, $month, $day) = explode("-", $deadline);
+		$event_deadline = mktime(0, 0, 0, $month, $day, $year);
+		
+		$title = check($title);
+		$link = check($link);
+		$long = check($long);
+		$short = check($short);
+		$location = check($location);
 		$dbname = MYSQL_DBNAME;
-		$content = check($content);
-		$author = get_user_by_login($_SESSION["login"]);
-		if ($author == NULL) {
-			throw new Exception("Not logged");
-		}
-		$id_user = $author["id"];
+		$id_user = get_id_from_account();
+		$created_t = time();
+		$mod_t = $created_t;
 		$request = <<<EOF
 INSERT INTO `${dbname}`.`event` 
 SET 
 	`id`="${id}",
+	`created_t`="${created_t}",
+	`mod_t`="${mod_t}",
 	`id_user`="${id_user}", 
 	`title`="${title}", 
-	`event_date`="${timestamp}",
-	`content`="${content}", 
-	`nbr_person_wanted`="${person}"
+	`location`="${location}", 
+	`link`="${link}", 
+	`short_description`="${short}", 
+	`long_description`="${long}", 
+	`event_date`="${event_date}",
+	`event_deadline`="${event_deadline}",
+	`funding_wanted`="${funding_wanted}"
 EOF;
 		debug($request);
 		$g_pdo->exec($request);
@@ -64,10 +77,12 @@ EOF;
 			throw new Exception("Not logged");
 		}
 		$id_user = $author["id"];
+		$mod_t = time();
 		$request = <<<EOF
 UPDATE `${dbname}`.`event` 
 SET 
 	`id_user`="${id_user}", 
+	`mod_t`="${id_user}", 
 	`title`="${title}", 
 	`event_date`="${timestamp}", 
 	`content`="${content}", 
@@ -204,9 +219,9 @@ EOF;
 			}
 		}
 		
-		if (!check_date($_GET['date'])) {
-			throw new Exception("Not valid date");
-		}
+		// if (!check_date($_GET['date'])) {
+			// throw new Exception("Not valid date");
+		// }
 		foreach ($_GET['rates'] as $rate) {
 			if (is_null_or_empty($rate)
 				|| (!is_null_or_empty($rate) && !is_number($rate))) {

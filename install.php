@@ -47,6 +47,10 @@ EOF;
 			<td><input type="text" name="host" value="localhost"></td>
 		</tr>
 		<tr>
+			<td>Contact mail: </td>
+			<td><input type="email" name="contact_email" value="contact@jlg-utilities.com"></td>
+		</tr>
+		<tr>
 			<td><input type="submit" value="Submit"></td>
 		<tr/>
 		</table>		

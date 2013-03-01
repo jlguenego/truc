@@ -3,14 +3,14 @@
 	require_once("include/globals.inc");
 	require_once("include/misc.inc");
 	require_once("include/user.inc");
-		
-	$error_msg = '';
+	
 	if (isset($_POST['login'])) {
 		try {
 			if (!check_mail($_POST["email"])) {
 				throw new Exception("Invalid mail");
 			}
-			add_user($_POST['name'], $_POST['lastname'], $_POST['login'], $_POST['password'], $_POST['email'], TRUE);
+			add_user($_POST['name'], $_POST['lastname'], $_POST['login'], 
+				$_POST['password'], $_POST['email'], TRUE, ACTIVATION_STATUS_ACTIVATED);
 			$install_done = <<<EOF
 <html>
 	<head>
@@ -32,7 +32,7 @@ EOF;
 	<title>Installer</title>
 </head>
 	<?php
-		echo $error_msg;
+		echo $g_error_msg;
 	?>
 	Please enter the admin user info:
 	<form name="input" action="createadmin.php" method="POST">

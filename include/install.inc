@@ -9,6 +9,10 @@
 			$password = check($_POST['password']);
 			$host = check($_POST['host']);
 			$dbname = check($_POST['dbname']);
+			if (!check_mail($_POST["contact_email"])) {
+				throw new Exception("Invalid contact mail");
+			}
+			$contact_email = $_POST["contact_email"];
 			
 			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
 			
@@ -27,6 +31,8 @@ EOF;
 	define("MYSQL_PASSWORD", "$password");
 	define("MYSQL_HOST", "$host");
 	define("MYSQL_DBNAME", "$dbname");
+	
+	define("CONTACT_MAIL", "$contact_email");
 ?>
 EOF;
 			
@@ -36,7 +42,6 @@ EOF;
 			println($e->getMessage());
 			throw $e;
 		}
-		debug("End install");
 	}
 	
 	// Uninstal the web site
