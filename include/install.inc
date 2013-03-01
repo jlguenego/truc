@@ -22,9 +22,12 @@ USE ${dbname};
 EOF;
 			debug($requests);
 			
-			$db->exec($requests);
-			$requests = file_get_contents("install.sql");
-			$db->exec($requests);
+			if ($db->exec($requests) === FALSE) {
+				throw new Exception("DB creation: ".sprint_r($db->errorInfo()));
+			};
+			
+			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
+			
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -35,8 +38,15 @@ EOF;
 	define("CONTACT_MAIL", "$contact_email");
 ?>
 EOF;
-			
 			file_put_contents(SETTINGS_INI, $content);
+			$requests = file_get_contents("install.sql");
+			
+			$st = $db->prepare($requests, 
+				array(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE));
+			if ($st->execute() == FALSE) {
+				throw new Exception("Table creation: ".sprint_r($db->errorInfo()));
+			};
+			
 			redirect_to("index.php");
 		} catch (Exception $e) {
 			println($e->getMessage());

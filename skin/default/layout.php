@@ -2,11 +2,11 @@
 	<head>
 		<title>EventIf</title>
 	</head>
-<link rel="stylesheet" href="jscript/jquery-ui.css" />
+<link rel="stylesheet" href="ext/jquery-ui.css" />
 
 <script type="text/javascript" src="jscript/misc.js"></script>
-<script src="jscript/jquery-1.9.1.js"></script>
-<script src="jscript/jquery-ui.js"></script>
+<script src="ext/jquery-1.9.1.js"></script>
+<script src="ext/jquery-ui.js"></script>
 
 <style type="text/css">
 	div.ui-datepicker{

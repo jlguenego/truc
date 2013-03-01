@@ -15,7 +15,7 @@ CREATE TABLE event(
         long_description  Text,
         id_user           Int NOT NULL ,
         PRIMARY KEY (id)
-)ENGINE=InnoDB;
+);
 
 CREATE TABLE user(
         id                Int NOT NULL ,
@@ -30,7 +30,7 @@ CREATE TABLE user(
         activation_status Int NOT NULL ,
         activation_key    Varchar(255),
         PRIMARY KEY (id)
-)ENGINE=InnoDB;
+);
 
 CREATE TABLE rate(
         id       Int NOT NULL ,
@@ -38,13 +38,13 @@ CREATE TABLE rate(
         amount   Int NOT NULL ,
         id_event Int NOT NULL ,
         PRIMARY KEY (id)
-)ENGINE=InnoDB;
+);
 
 CREATE TABLE participate(
         id_user  Int NOT NULL ,
         id_event Int NOT NULL ,
         PRIMARY KEY (id_user,id_event)
-)ENGINE=InnoDB;
+);
 
 ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE rate ADD CONSTRAINT FK_rate_id_event FOREIGN KEY (id_event) REFERENCES event(id);

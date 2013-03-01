@@ -32,19 +32,19 @@ EOF;
 		<table>
 		<tr>
 			<td>Username: </td>
-			<td><input type="text" name="login" value="root"></td>
+			<td><input type="text" name="login" value="jlgutilidb1"></td>
 		</tr>
 		<tr>
 			<td>Password: </td>
-			<td><input type="password" name="password"></td>
+			<td><input type="password" name="jlgyt12"></td>
 		</tr>
 		<tr>
 			<td>Database Name: </td>
-			<td><input type="text" name="dbname" value="eventif"></td>
+			<td><input type="text" name="dbname" value="jlgutilidb1"></td>
 		</tr>
 		<tr>
 			<td>Hostname: </td>
-			<td><input type="text" name="host" value="localhost"></td>
+			<td><input type="text" name="host" value="mysql5-7.start"></td>
 		</tr>
 		<tr>
 			<td>Contact mail: </td>
