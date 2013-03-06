@@ -36,7 +36,7 @@ EOF;
 		</tr>
 		<tr>
 			<td>Password: </td>
-			<td><input type="password" name="jlgyt12"></td>
+			<td><input type="password" name="password"></td>
 		</tr>
 		<tr>
 			<td>Database Name: </td>

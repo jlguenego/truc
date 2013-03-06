@@ -61,6 +61,17 @@
 						$_SESSION["state"] = "account_update";
 					}
 					break;
+				case "participation":
+					need_authentication();
+					if (!is_null_or_empty($_GET["event_id"])) {
+						$g_display["event"] = get_event($_GET["event_id"]);
+						$g_display["rates"] = events_rates($_GET["event_id"]);
+						$_SESSION["state"] = "participation";
+					} else {
+						$_SESSION["state"] = "not_allowed";
+						$g_error_msg = "No event selected.";
+					}
+					break;
 			}
 			break;
 		case "create":
@@ -68,6 +79,7 @@
 				case "event":
 					need_authentication();	
 					try {
+						debug("Taxe_rate array: ".sprint_r($_GET['taxe_rates']));
 						valid_event();
 						$id = create_id();
 						add_event($id, $_GET['title'], $_GET['date'],
@@ -78,7 +90,8 @@
 						$i = 0;
 						foreach ($_GET['labels'] as $label) {
 							$rate = $_GET['rates'][$i];
-							add_rate($label, $rate, $id);
+							$taxe_rate = $_GET['taxe_rates'][$i];
+							add_rate($label, $rate, $taxe_rate, $id);
 							$i++;
 						}
 						// $_GET["id"] = $id;
@@ -176,7 +189,7 @@
 								$g_display["event"] = get_event($_GET["id"]);
 								$g_display["rates"] = events_rates($_GET["id"]);
 								check_owner($g_display["event"]);
-								valid_event();
+								valid_event(TRUE);
 								debug("PLOUF");
 								update_event($_GET["id"], $_GET['title'], 
 									$_GET['content'], $_GET['date'], $_GET['persons']);
@@ -238,8 +251,39 @@
 			}
 			break;
 		case "participate":
-			$_SESSION["state"] = "not_allowed";
-			$g_error_msg = "Not implemented.";
+			need_authentication();
+			try {
+				if (!isset($_GET['confirm'])) {
+					throw new Exception("You have to check the engagement");
+				}
+				
+				$rates = events_rates($_GET["event_id"]);
+				$event = get_event($_GET["event_id"]);
+				$purchase = array();
+				$i = 0;
+				while (isset($_GET["ticket_${i}"])) {
+					if (!is_number($_GET["ticket_${i}"])) {
+						throw new Exception("Please enter a number for the amount of person");
+					}
+					if ($_GET["ticket_${i}"] > 0) {
+						$purchase[] = array(
+							"label" => $rates[$i]["label"],
+							"rate" => $rates[$i]["amount"],
+							"quantity" => $_GET["ticket_${i}"],
+							"event_title" => $event["title"]
+						);
+					}
+					$i++;
+				}
+				$g_display["purchase"] = $purchase;
+				$g_display["event_confirmed"] = $event["funding_wanted"] >= $event["funding_acquired"];
+				$_SESSION["state"] = "participation_recapitulation";
+			} catch (Exception $e) {
+				$g_error_msg = $e->getMessage();
+				$g_display["event"] = get_event($_GET["event_id"]);
+				$g_display["rates"] = events_rates($_GET["event_id"]);
+				$_SESSION["state"] = "participation";
+			}
 			break;
 		case "activation":
 			try {

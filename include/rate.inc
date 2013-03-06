@@ -22,7 +22,7 @@ EOF;
 		}
 	}
 	
-	function update_rate($event_id, $label, $amount) {
+	function update_rate($event_id, $label, $taxe_rate, $amount) {
 		try {
 			global $g_pdo;
 			
@@ -30,12 +30,13 @@ EOF;
 				return FALSE;
 			}
 			if (!rate_exists($label, $event_id)) {
-				return add_rate($label, $amount, $event_id);
+				return add_rate($label, $amount, $taxe_rate, $event_id);
 			}
 			$label = check($label);
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-UPDATE `${dbname}`.`rate` SET `amount`="${amount}" 
+UPDATE `${dbname}`.`rate` 
+SET `amount`="${amount}" , `taxe_rate`="${taxe_rate}"
 WHERE `label`="${label}" AND `id_event`="${event_id}";
 EOF;
 			debug($request);
@@ -47,7 +48,7 @@ EOF;
 		}
 	}
 	
-	function add_rate($label, $rate, $event_id) {
+	function add_rate($label, $rate, $taxe_rate, $event_id) {
 		try {
 			global $g_pdo;
 			
@@ -66,10 +67,12 @@ SET
 	`id`="${id}",
 	`label`="${label}", 
 	`id_event`="${event_id}", 
+	`taxe_rate`="${taxe_rate}",
 	`amount`="${rate}";
 EOF;
 			debug($request);
-			$g_pdo->exec($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
 			return TRUE;
 		} catch (Exception $e) {
 			println($e->getMessage());
@@ -96,7 +99,7 @@ EOF;
 		$rates = events_rates($event_id);
 		foreach ($rates as $rate) {
 			if (!in_array($rate["label"], $labels)) {
-				debug("Deleting ".$rate["label"]);
+				debug("Deleted ".$rate["label"]);
 				delete_rate($rate["label"], $event_id);
 			}
 		}
@@ -123,9 +126,10 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-SELECT `label`, `amount` FROM `${dbname}`.`rate`
+SELECT `label`, `amount`, `taxe_rate` FROM `${dbname}`.`rate`
 WHERE `id_event`=${id}
 EOF;
+			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute();
 			$rate = $q->fetch();

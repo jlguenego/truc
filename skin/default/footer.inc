@@ -1,4 +1,4 @@
 <div id="footer">
 	<hr/>
-	JLG Consulting -  ©2013
+	JLG Consulting -  Â©2013
 </div>

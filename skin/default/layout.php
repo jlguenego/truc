@@ -1,6 +1,7 @@
 <html>
 	<head>
 		<title>EventIf</title>
+		<meta charset="utf-8"/>
 	</head>
 <link rel="stylesheet" href="ext/jquery-ui.css" />
 
@@ -14,6 +15,11 @@
 	}
 	.help {
 		font-size:12px;
+	}
+	
+	table, td, th {
+		border-collapse: collapse;
+		border: 1px solid #000;
 	}
 </style>
 <?php

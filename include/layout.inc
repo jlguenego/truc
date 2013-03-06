@@ -26,4 +26,15 @@
 			}
 		}
 	}
+	
+	function paypal_button() {
+		global $g_display;
+		$event_confirmed = $g_display["event_confirmed"];
+		
+		if ($event_confirmed) {
+			echo "Confirmed";
+		} else {
+			echo "Non confirmed";
+		}
+	}
 ?>

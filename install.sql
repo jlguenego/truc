@@ -36,6 +36,7 @@ CREATE TABLE rate(
         id       Int NOT NULL ,
         label    Varchar(25) NOT NULL ,
         amount   Int NOT NULL ,
+        taxe_rate     Decimal (25, 5) NOT NULL ,
         id_event Int NOT NULL ,
         PRIMARY KEY (id)
 );

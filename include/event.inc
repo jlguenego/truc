@@ -205,11 +205,11 @@ EOF;
 		return $events;
 	}
 	
-	function valid_event() {
+	function valid_event($update = FALSE) {
 		if (is_null_or_empty($_GET["title"])) {
 			throw new Exception("Event must have a title");
 		}
-		if (event_title_exists($_GET["title"])) {
+		if (!$update && event_title_exists($_GET["title"])) {
 			throw new Exception("Event already exists");
 		}
 		
@@ -219,14 +219,19 @@ EOF;
 			}
 		}
 		
-		// if (!check_date($_GET['date'])) {
-			// throw new Exception("Not valid date");
-		// }
 		foreach ($_GET['rates'] as $rate) {
 			if (is_null_or_empty($rate)
 				|| (!is_null_or_empty($rate) && !is_number($rate))) {
 				
 				throw new Exception("Please enter a number for the rates");
+			}
+		}
+		
+		foreach ($_GET['taxe_rate'] as $taxe_rate) {
+			if (is_null_or_empty($taxe_rate)
+				|| (!is_null_or_empty($taxe_rate) && !is_number($taxe_rate))) {
+				
+				throw new Exception("Please enter a number for the taxe rates");
 			}
 		}
 		foreach ($_GET['labels'] as $label) {

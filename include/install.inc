@@ -43,13 +43,12 @@ EOF;
 			
 			$st = $db->prepare($requests, 
 				array(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE));
-			if ($st->execute() == FALSE) {
-				throw new Exception("Table creation: ".sprint_r($db->errorInfo()));
+			if ($st->execute() === FALSE) {
+				throw new Exception("Table creation: ".sprint_r($db->errorInfo()." InnoDB?"));
 			};
 			
 			redirect_to("index.php");
 		} catch (Exception $e) {
-			println($e->getMessage());
 			throw $e;
 		}
 	}

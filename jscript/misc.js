@@ -5,9 +5,10 @@ function setCounter(amount) {
 	counter = amount;
 }
 
-function addRate(divName, label, amount){
+function addRate(divName, label, amount, taxe_rate){
 	label = label || "";
 	amount = amount || "";
+	taxe_rate = taxe_rate || "";
 	if (counter == limit)  {
         alert("You have reached the limit of adding " + counter + " rates");
     } else {
@@ -28,6 +29,15 @@ function addRate(divName, label, amount){
 								"<tr>" +
 									"<td>Amount</td>" +
 									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
+								"</tr>" +
+								"<tr>" +
+									"<td>Taxe</td>" +
+									"<td>" +
+										"<select name=\"taxe_rates[]\" \">" +
+											"<option value=\"19.6\">19.6%</option>" +
+											"<option value=\"0\">0%</option>" +
+										"</select>" +
+									"</td>" +
 								"</tr>" +
 							"</table>" +
 						"</td>" +

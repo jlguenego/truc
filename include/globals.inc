@@ -8,6 +8,8 @@
 		"root",
 		"error",
 		"sign_in",
+		"participation",
+		"participation_recapitulation",
 		"not_allowed",
 		"event_create",
 		"event_retrieve",

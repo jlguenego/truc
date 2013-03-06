@@ -109,7 +109,7 @@ EOF;
 	}
 	
 	function is_number($var) {
-		return preg_match("#^[\d]+$#", $var);
+		return preg_match("#^[\d]+[\.,]?[\d]*$#", $var);
 	}
 	
 	function echo_default_value($name, $default = "") {

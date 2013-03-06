@@ -36,7 +36,7 @@
 	echo "Location: ".$event["location"]."<br/>";
 	echo "Deadline: ".date("d M Y", $event["event_deadline"])."<br/>";
 ?>
-	<a href="?action=participate&amp;id=<?php echo $_GET["id"] ?>">Participate</a><br/>
+	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $_GET["id"] ?>">Participate</a><br/>
 	<h3>In short</h3>
 <?php
 	echo "Event website: <a href=\"".$event["link"]."\">".$event["link"]."</a><br/>";

@@ -90,8 +90,9 @@
 		foreach ($_GET["rates"] as $rate) {
 			$label = $_GET["labels"][$i];
 			$amount = $rate;
+			$taxe_rate = $_GET["taxe_rates"][$i];
 			echo "<script language=\"javascript\" type=\"text/javascript\">";
-			echo "addRate('rates', '$label', '$amount');";
+			echo "addRate('rates', '$label', '$amount', '$taxe_rate');";
 			echo "</script>";
 			$i++;
 		}
