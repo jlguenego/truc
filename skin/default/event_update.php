@@ -13,15 +13,79 @@
 	<tr>
 		<td>Title: </td>
 		<td><input type="text" name="title" value="<?php echo $event['title']; ?>"></td>
+		<td>
+			<span class="help">The name of your event.</span>
+		</td>
 	</tr>
 	<tr>
-		<td>Number of person wanted: </td>
-		<td><input type="text" name="persons" value="<?php echo $event['nbr_person_wanted']; ?>"></td>
+		<td>Required funding: </td>
+		<td><input type="text" name="persons" value="<?php echo $event['funding_wanted']; ?>"></td>
+		<td>
+			<span class="help">Minimum funding wanted in Euro.</span>
+		</td>
 	</tr>
 	<tr>
-		<td>Date (DD.MM.YY): </td>
-		<td><input type="text" name="date" value="<?php echo date("d.m.y", $event['event_date']); ?>"></td>
+		<td>Event date: </td>
+		<td><input type="text" name="date" id="calendar"
+			value="<?php echo date("Y-m-d", $event["event_date"]); ?>"></td>
+		<td>
+			<span class="help">The date of your event (yyyy-mm-dd).</span>
+		</td>
 	</tr>
+	<tr>
+		<td>Event deadline: </td>
+		<td><input type="text" name="date" id="calendar"
+			value="<?php echo date("Y-m-d", $event["event_deadline"]); ?>"></td>
+		<td>
+			<span class="help">Deadline for validation (yyyy-mm-dd).</span>
+		</td>
+	</tr>
+		<tr>
+			<td>Location: </td>
+			<td>
+				<input type="text" name="location"
+					value="<?php echo $event["location"] ?>"/>
+			</td>
+			<td>
+				<span class="help">Where this event will happend.</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Link:</td>
+			<td>
+				<input type="text" name="link" 
+					value="<?php echo $event["link"] ?>"/>
+			</td>
+			<td>
+				<span class="help">Link to the event page, if any.</span>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Short description: </td>
+			<td>
+				<textarea name="short_description" maxlength="255" 
+					title="Up to 255 characters"
+					style="width: 500px; height: 100; resize: none;">
+<?php echo $event["short_description"] ?></textarea>
+			</td>
+			<td>
+				<span class="help">Give a short description of your event.</span>
+			</td>
+		</tr>
+		<tr>
+			<td>Long description: </td>
+			<td>
+				<textarea name="long_description" maxlength="1000" 
+					title="Up to 1000 characters"
+					style="width: 500; height: 450; resize: none;">
+<?php echo $event["long_description"]; ?></textarea>
+			</td>
+			<td>
+				<span class="help">Give a complete description of your event.</span>
+			</td>
+		</tr>
 	</table>
 	<div id="rates">
 	</div>
@@ -40,9 +104,6 @@
 	echo "</script>";
 ?>
 	<input type="button" value="Add a rate" onClick="addRate('rates');">
-	<textarea name="content">
-		<?php echo $event['content']; ?>
-	</textarea>
 	<input type="hidden" name="id" value="<?php echo $event['id']; ?>"/>
 	<input type="submit" value="Submit"/>
 </form>
