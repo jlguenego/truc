@@ -19,6 +19,13 @@
 		"account_create",
 		"account_retrieve",
 		"account_update",
+		"cancel_payment",
+		"success_payment",
+	);
+	
+	$g_tax_rates = array(
+		"With tax (19.6%)" => 19.6,
+		"Without tax" => 0	
 	);
 
 	$g_debug = true;

@@ -32,7 +32,7 @@ EOF;
 		<table>
 		<tr>
 			<td>Username: </td>
-			<td><input type="text" name="login" value="jlgutilidb1"></td>
+			<td><input type="text" name="login" value="root"></td>
 		</tr>
 		<tr>
 			<td>Password: </td>
@@ -44,7 +44,7 @@ EOF;
 		</tr>
 		<tr>
 			<td>Hostname: </td>
-			<td><input type="text" name="host" value="mysql5-7.start"></td>
+			<td><input type="text" name="host" value="localhost"></td>
 		</tr>
 		<tr>
 			<td>Contact mail: </td>

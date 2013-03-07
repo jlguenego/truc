@@ -11,7 +11,7 @@
 		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event["id"] ?>">Edit event</a><br/>
 		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event["id"] ?>">Delete event</a><br/>
 <?php
-		echo $event["funding_acquired"]."€/".$event["funding_wanted"]."€ funding acquired.<br/>";
+		echo $event["funding_acquired"]."â‚¬/".$event["funding_wanted"]."â‚¬ funding acquired.<br/>";
 	} else {
 ?>
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>

@@ -79,7 +79,7 @@
 				case "event":
 					need_authentication();	
 					try {
-						debug("Taxe_rate array: ".sprint_r($_GET['taxe_rates']));
+						debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
 						valid_event();
 						$id = create_id();
 						add_event($id, $_GET['title'], $_GET['date'],
@@ -90,8 +90,8 @@
 						$i = 0;
 						foreach ($_GET['labels'] as $label) {
 							$rate = $_GET['rates'][$i];
-							$taxe_rate = $_GET['taxe_rates'][$i];
-							add_rate($label, $rate, $taxe_rate, $id);
+							$tax_rate = $_GET['tax_rates'][$i];
+							add_rate($label, $rate, $tax_rate, $id);
 							$i++;
 						}
 						// $_GET["id"] = $id;
@@ -192,7 +192,7 @@
 								valid_event(TRUE);
 								debug("PLOUF");
 								update_event($_GET["id"], $_GET['title'], 
-									$_GET['content'], $_GET['date'], $_GET['persons']);
+									$_GET['content'], $_GET['date'], $_GET['funding_wanted']);
 								$i = 0;
 								foreach ($_GET['labels'] as $label) {
 									$rate = $_GET['rates'][$i];
@@ -268,6 +268,7 @@
 					if ($_GET["ticket_${i}"] > 0) {
 						$purchase[] = array(
 							"label" => $rates[$i]["label"],
+							"tax" => $rates[$i]["tax_rate"],
 							"rate" => $rates[$i]["amount"],
 							"quantity" => $_GET["ticket_${i}"],
 							"event_title" => $event["title"]
@@ -276,7 +277,7 @@
 					$i++;
 				}
 				$g_display["purchase"] = $purchase;
-				$g_display["event_confirmed"] = $event["funding_wanted"] >= $event["funding_acquired"];
+				$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
 				$_SESSION["state"] = "participation_recapitulation";
 			} catch (Exception $e) {
 				$g_error_msg = $e->getMessage();
@@ -295,6 +296,12 @@
 				$g_error_msg = $e->getMessage();
 				$_SESSION["state"] = "error";
 			}
+			break;
+		case "cancel_payment":
+			$_SESSION["state"] = "cancel_payment";
+			break;
+		case "success_payment":
+			$_SESSION["state"] = "success_payment";
 			break;
 		default:
 			break;

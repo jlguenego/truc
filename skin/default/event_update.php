@@ -2,7 +2,22 @@
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 ?>
-<script type="text/javascript" src="jscript/misc.js"></script>
+<script type="text/javascript">
+	taxes = new Array(
+	
+	<?php
+		$is_first = TRUE;
+		foreach ($g_tax_rates as $name => $rate) {
+			if ($is_first) {
+				$is_first = FALSE;
+			} else {
+				echo ',';
+			}
+			echo "new Array('${name}', '${rate}')";
+		}
+	?>
+	);
+</script>
 
 <a href="index.php">Go back to index</a><br/><br/>
 <span style="color:red;">
@@ -19,7 +34,7 @@
 	</tr>
 	<tr>
 		<td>Required funding: </td>
-		<td><input type="text" name="persons" value="<?php echo $event['funding_wanted']; ?>"></td>
+		<td><input type="text" name="funding_wanted" value="<?php echo $event['funding_wanted']; ?>"></td>
 		<td>
 			<span class="help">Minimum funding wanted in Euro.</span>
 		</td>
@@ -94,9 +109,8 @@
 	foreach ($rates as $rate) {
 		$label = $rate["label"];
 		$amount = $rate["amount"];
-		$taxe_rate = $rate["taxe_rate"];
 		echo "<script language=\"javascript\" type=\"text/javascript\">";
-		echo "addRate('rates', '$label', '$amount', '$taxe_rate');";
+		echo "addRate('rates', '$label', '$amount');";
 		echo "</script>";
 		$i++;
 	}

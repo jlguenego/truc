@@ -2,6 +2,24 @@
 <span style="color:red;">
 	<?php echo "$g_error_msg<br/>"; ?>
 </span>
+
+<script type="text/javascript">
+	taxes = new Array(
+	
+	<?php
+		$is_first = TRUE;
+		foreach ($g_tax_rates as $name => $rate) {
+			if ($is_first) {
+				$is_first = FALSE;
+			} else {
+				echo ',';
+			}
+			echo "new Array('${name}', '${rate}')";
+		}
+	?>
+	);
+</script>
+
 <form name="input" action="?action=create&amp;type=event" method="POST" id="form">
 	<table>
 		<tr>
@@ -90,9 +108,8 @@
 		foreach ($_GET["rates"] as $rate) {
 			$label = $_GET["labels"][$i];
 			$amount = $rate;
-			$taxe_rate = $_GET["taxe_rates"][$i];
 			echo "<script language=\"javascript\" type=\"text/javascript\">";
-			echo "addRate('rates', '$label', '$amount', '$taxe_rate');";
+			echo "addRate('rates', '$label', '$amount');";
 			echo "</script>";
 			$i++;
 		}

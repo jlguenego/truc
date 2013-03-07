@@ -22,7 +22,7 @@ EOF;
 		}
 	}
 	
-	function update_rate($event_id, $label, $taxe_rate, $amount) {
+	function update_rate($event_id, $label, $tax_rate, $amount) {
 		try {
 			global $g_pdo;
 			
@@ -30,13 +30,13 @@ EOF;
 				return FALSE;
 			}
 			if (!rate_exists($label, $event_id)) {
-				return add_rate($label, $amount, $taxe_rate, $event_id);
+				return add_rate($label, $amount, $tax_rate, $event_id);
 			}
 			$label = check($label);
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
 UPDATE `${dbname}`.`rate` 
-SET `amount`="${amount}" , `taxe_rate`="${taxe_rate}"
+SET `amount`="${amount}" , `tax_rate`="${tax_rate}"
 WHERE `label`="${label}" AND `id_event`="${event_id}";
 EOF;
 			debug($request);
@@ -48,7 +48,7 @@ EOF;
 		}
 	}
 	
-	function add_rate($label, $rate, $taxe_rate, $event_id) {
+	function add_rate($label, $rate, $tax_rate, $event_id) {
 		try {
 			global $g_pdo;
 			
@@ -67,7 +67,7 @@ SET
 	`id`="${id}",
 	`label`="${label}", 
 	`id_event`="${event_id}", 
-	`taxe_rate`="${taxe_rate}",
+	`tax_rate`="${tax_rate}",
 	`amount`="${rate}";
 EOF;
 			debug($request);
@@ -126,7 +126,7 @@ EOF;
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-SELECT `label`, `amount`, `taxe_rate` FROM `${dbname}`.`rate`
+SELECT `label`, `amount`, `tax_rate` FROM `${dbname}`.`rate`
 WHERE `id_event`=${id}
 EOF;
 			debug($request);

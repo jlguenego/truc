@@ -36,5 +36,7 @@
 		} else {
 			echo "Non confirmed";
 		}
+		
+		include_once('include/paypal_button_direct.php');
 	}
 ?>

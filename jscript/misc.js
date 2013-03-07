@@ -5,10 +5,9 @@ function setCounter(amount) {
 	counter = amount;
 }
 
-function addRate(divName, label, amount, taxe_rate){
+function addRate(divName, label, amount){
 	label = label || "";
 	amount = amount || "";
-	taxe_rate = taxe_rate || "";
 	if (counter == limit)  {
         alert("You have reached the limit of adding " + counter + " rates");
     } else {
@@ -16,7 +15,7 @@ function addRate(divName, label, amount, taxe_rate){
 		var newdiv = document.createElement('div');
 		var id = new Date().getTime();
 		newdiv.setAttribute('id', id);
-		newdiv.innerHTML =
+		var content =
 				"<table>" +
 					"<tr>" +
 						"<td>Rate<td>" +
@@ -33,10 +32,11 @@ function addRate(divName, label, amount, taxe_rate){
 								"<tr>" +
 									"<td>Taxe</td>" +
 									"<td>" +
-										"<select name=\"taxe_rates[]\" \">" +
-											"<option value=\"19.6\">19.6%</option>" +
-											"<option value=\"0\">0%</option>" +
-										"</select>" +
+										"<select name=\"tax_rates[]\" \">";
+		for (var i = 0; i < taxes.length; i++) {
+			content += 				"<option value=\"" + taxes[i][1] + "\">" + taxes[i][0] + "</option>";
+		}
+		content +=				"</select>" +
 									"</td>" +
 								"</tr>" +
 							"</table>" +
@@ -44,6 +44,7 @@ function addRate(divName, label, amount, taxe_rate){
 						"<td><input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + id + "', 'rates');\"></td>" +
 					"</tr>" +
 				"</table>";
+		newdiv.innerHTML = content;
 		document.getElementById(divName).appendChild(newdiv);
 	}
 }

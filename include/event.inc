@@ -227,11 +227,11 @@ EOF;
 			}
 		}
 		
-		foreach ($_GET['taxe_rate'] as $taxe_rate) {
-			if (is_null_or_empty($taxe_rate)
-				|| (!is_null_or_empty($taxe_rate) && !is_number($taxe_rate))) {
+		foreach ($_GET['tax_rates'] as $tax_rate) {
+			if (is_null_or_empty($tax_rate)
+				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
 				
-				throw new Exception("Please enter a number for the taxe rates");
+				throw new Exception("Please enter a number for the tax rates");
 			}
 		}
 		foreach ($_GET['labels'] as $label) {
