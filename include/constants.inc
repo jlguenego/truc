@@ -4,20 +4,25 @@
 	} else {
 		define('HOST', "http://".$_SERVER['HTTP_HOST']);
 	}
-	
+
 	define('SITE_ROOT', ".");
 	define('SETTINGS_INI', "settings.ini");
 	define('SKIN_DIR', "skin/default");
-	
+
 	define('CAPTCHA_PUB_KEY', '6LcxnN0SAAAAAJY7qJPcZl0eQHeEUo_N-8uOSEyo');
 	define('CAPTCHA_PRIV_KEY', '6LcxnN0SAAAAANaQNIfxoIEErqdhkCTPDB7Dv746');
-	
+
+	define('COMPANY_NAME', 'Eventual');
+
 	define('MAX_DEADLINE', '+29d'); // ex: '-3d +5w +6m +1y'
-	
+
 	define('ROLE_USER', 0);
 	define('ROLE_ADMIN', 1);
 	define('ACTIVATION_STATUS_NOT_ACTIVATED', 0);
 	define('ACTIVATION_STATUS_ACTIVATED', 1);
-	
+
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
+
+	define('PAYMENT_PROVIDER', 'intern');
+	require_once('payment/'.PAYMENT_PROVIDER.'/constants.inc');
 ?>

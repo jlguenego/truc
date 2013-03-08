@@ -1,6 +1,6 @@
 <?php
 	require_once('include/misc.inc');
-	
+
 	function is_logged() {
 		if (!is_null_or_empty($_SESSION['login'])) {
 			if (user_login_exists($_SESSION['login'])) {
@@ -13,11 +13,11 @@
 			return FALSE;
 		}
 	}
-	
+
 	function is_activated($user) {
 		return $user["activation_status"] == ACTIVATION_STATUS_ACTIVATED;
 	}
-	
+
 	function need_authentication() {
 		if (!is_logged()) {
 			debug("\$_SERVER[\"REQUEST_URI\"]=".$_SERVER["REQUEST_URI"]);
@@ -25,7 +25,7 @@
 			redirect_to("?action=sign_in");
 		}
 	}
-	
+
 	function is_admin() {
 		if (!is_logged()) {
 			return FALSE;
@@ -33,11 +33,11 @@
 		$user = get_user_by_login($_SESSION['login']);
 		return $user['role'] == ROLE_ADMIN;
 	}
-	
+
 	function hash_pass($id, $login, $password) {
 		return sha1($id.$login.$password);
 	}
-	
+
 	function user_exists($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -49,7 +49,7 @@ EOF;
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
-	
+
 	function user_login_exists($login) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -61,7 +61,7 @@ EOF;
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
-	
+
 	function used_mail($mail) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -83,7 +83,7 @@ EOF;
 		$count = $q->fetch();
 			return $count[0] > 0;
 	}
-	
+
 	// Check if the user has entered correct login and password
 	function authenticate($login, $password) {
 		global $g_pdo;
@@ -98,12 +98,12 @@ WHERE `login`= :login AND `password`= :password
 EOF;
 		$q = $g_pdo->prepare($request);
 		$user = get_user_by_login($login);
-		$q->execute(array(":login" => $login, 
+		$q->execute(array(":login" => $login,
 			":password" => hash_pass($user['id'], $login, $password)));
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
-	
+
 	function get_id_from_account() {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -119,7 +119,7 @@ EOF;
 		}
 		return $user["id"];
 	}
-	
+
 	function get_user_by_login($login) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -135,7 +135,7 @@ EOF;
 		}
 		return $user;
 	}
-	
+
 	function get_user($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -153,36 +153,37 @@ EOF;
 		$user["firstname"] = ucfirst($user["firstname"]);
 		return $user;
 	}
-	
+
 	function generate_activation_key() {
 		return sha1(rand().time().RANDOM_SALT);
 	}
 
-	function add_user($firstname, $lastname, $login, $password, $mail, 
+	function add_user($firstname, $lastname, $login, $password, $mail, $address,
 		$role = ROLE_USER, $activation_status = ACTIVATION_STATUS_NOT_ACTIVATED) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$id = create_id();
-		// With this method it is quite impossible to know who has the same 
+		// With this method it is quite impossible to know who has the same
 		// password
 		$password = hash_pass($id, $login, $password);
 		$created_t = time();
 		$mod_t = $created_t;
 		$key = generate_activation_key();
 		$request = <<<EOF
-INSERT INTO `${dbname}`.`user` 
-SET 
-	`id`=${id}, 
-	`created_t`=${created_t}, 
-	`mod_t`=${mod_t}, 
-	`firstname`="${firstname}", 
-	`lastname`="${lastname}", 
-	`login`="${login}", 
-	`password`="${password}", 
-	`email`="${mail}", 
+INSERT INTO `${dbname}`.`user`
+SET
+	`id`=${id},
+	`created_t`=${created_t},
+	`mod_t`=${mod_t},
+	`firstname`="${firstname}",
+	`lastname`="${lastname}",
+	`login`="${login}",
+	`password`="${password}",
+	`email`="${mail}",
 	`role`=${role},
 	`activation_status`=${activation_status},
-	`activation_key`="${key}";
+	`activation_key`="${key}",
+	`address`="${address}";
 EOF;
 		debug($request);
 		if ($g_pdo->exec($request) == 0) {
@@ -194,18 +195,18 @@ EOF;
 			mail_to($mail, $login, $key);
 		}
 	}
-	
+
 	function update_user($id, $password, $mail) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
-		// With this method it is quite impossible to know who has the same 
+		// With this method it is quite impossible to know who has the same
 		// password
 		$password = hash_pass($id, $_SESSION['login'], $password);
 		$mod_t = time();
 		$request = <<<EOF
-UPDATE `${dbname}`.`user` 
-SET 
-	`password`="${password}", 
+UPDATE `${dbname}`.`user`
+SET
+	`password`="${password}",
 	`email`="${mail}",
 	`mod_t`="${mod_t}"
 WHERE `id`=${id}
@@ -216,7 +217,7 @@ EOF;
 			throw new Exception($error[2]."<br/>");
 		}
 	}
-	
+
 	function user_activate($key) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -233,8 +234,8 @@ EOF;
 		$mod_t = time();
 		$status = ACTIVATION_STATUS_ACTIVATED;
 		$request = <<<EOF
-UPDATE `${dbname}`.`user` 
-SET 
+UPDATE `${dbname}`.`user`
+SET
 	`activation_status`="${status}",
 	`mod_t`="${mod_t}"
 WHERE `activation_key`="${key}"
@@ -250,7 +251,7 @@ EOF;
 		$user = $q->fetch();
 		return $user;
 	}
-	
+
 	function valid_user() {
 		if (isset($_GET['login'])) {
 			foreach ($_GET as $value) {
@@ -263,7 +264,7 @@ EOF;
 			}
 			if (used_mail($_GET["email"])) {
 				throw new Exception("This mail is already used");
-			} 
+			}
 			if (user_login_exists($_GET['login'])) {
 				throw new Exception("User already exists");
 			}
@@ -283,7 +284,7 @@ EOF;
 			}
 		}
 	}
-	
+
 	function valid_user_update() {
 		global $g_display;
 		if (isset($_GET['password'])) {

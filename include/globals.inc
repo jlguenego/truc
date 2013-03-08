@@ -22,18 +22,19 @@
 		"cancel_payment",
 		"success_payment",
 	);
-	
+
 	$g_tax_rates = array(
 		"With tax (19.6%)" => 19.6,
-		"Without tax" => 0	
+		"Without tax" => 0
 	);
 
 	$g_debug = true;
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";
-	
+
 	// Allows to have only one entity of PDO
+	$g_pdo = null;
 	if (file_exists(SETTINGS_INI)) {
 		require_once(SETTINGS_INI);
 		try {
@@ -41,6 +42,6 @@
 		} catch (Exception $e) {
 		}
 	}
-	
+
 	$g_display = array(); // Layout pages should access only to this one
 ?>

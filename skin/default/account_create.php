@@ -32,6 +32,10 @@ Please enter your info:
 			<td><input type="email" name="email" value="<?php echo_default_value("email"); ?>"></td>
 		</tr>
 		<tr>
+			<td>Full postal address: </td>
+			<td><input type="text" name="address" placeholder="<numero><rue><code postal><ville><pays>"></td>
+		</tr>
+		<tr>
 			<td colspan="2">
 				<?php
 					require_once('include/recaptcha.inc');

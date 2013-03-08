@@ -3,8 +3,9 @@
 	global $g_error_msg;
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
-	
-	
+	$user = $g_display["user"];
+
+
 	//if ($error_msg == "") {
 		//$user = get_user_by_login($_SESSION['login']);
 		//participate($user['id'], $event["id"], $_POST['person_amount']);
@@ -61,6 +62,7 @@
 			</tr>
 		</table>
 		<br/>
+
 		<table>
 			<?php
 				$i2 = 0;
@@ -84,18 +86,31 @@
 				<td id="total_due"><b>0.00</b></td>
 			</tr>
 		</table>
-		<input type="checkbox" name="confirm"/> I engage myself to participate to this event.<br/>
-		<input type="submit" value="Yes"/>		
+		<br/>
+
+		<table>
+			<tr>
+				<td>Billing name: </td>
+				<td><input type="text" name="username" value="<?php echo $user['firstname'].' '.$user['lastname']; ?>"/></td>
+				<td class="help">The person or organisation name to be charged.</td>
+			</tr>
+			<tr>
+				<td>Billing address: </td>
+				<td><textarea  rows=3 name="address"><?php echo $user['address']; ?></textarea></td>
+				<td class="help">numero - rue - code postal - ville - pays</td>
+			</tr>
+		</table>
+		<input type="checkbox" name="confirm"/> I have read the <a href="terms.html">Terms and polices</a> and accept them.<br/>
+		<input type="submit" value="Next" disabled/>
 	</form>
-	<form name="input" action="event.php?id=<?php echo $event['id']; ?>" method="POST">
-		<input type="hidden" name="confirm" value="no"/>
-		<input type="submit" value="No"/>		
+	<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event['id']; ?>" method="POST">
+		<input type="submit" value="Cancel"/>
 	</form>
 	<script>
 		var rate_nbr = <?php echo $i; ?>;
 		var tax_nbr = <?php echo $i2; ?>;
 		var taxes = new Array(
-			<?php 
+			<?php
 				$is_first = TRUE;
 				$i = 0;
 				foreach ($tax_array as $tax_rate) {
@@ -112,60 +127,13 @@
 		$('input').change(update);
 		$('input').keyup(update);
 		$('input[id]').each(update);
-		
-		
-		function update() {
-			var amount = Math.abs($(this).val());
-			$(this).val(amount);
-			
-			var id = $(this).attr('id');
-			var unit_price = $('#unit_price_' + id).html();
-			var total_ht = amount * unit_price;
-			$('#total_ht_' + id).html(total_ht.toFixed(2));
-			
-			var tax_rate = $('#tax_rate_' + id).html();
-			var tax_amount = (tax_rate/100) * total_ht;
-			$('#tax_amount_' + id).html(tax_amount.toFixed(2));
-			
-			$('#ttc_' + id).html((tax_amount + total_ht).toFixed(2));
-			
-			var sub_total = 0;
-			for (i = 0; i < rate_nbr; i++) {
-				var current_ttc = $('#total_ht_' + i).html();
-				sub_total = parseFloat(sub_total) + parseFloat(current_ttc);
+
+		$('input[type=checkbox]').change(function() {
+			if ($('input[type=checkbox]').is(':checked')) {
+				$('input[value=Next]').removeAttr('disabled');
+			} else {
+				$('input[value=Next]').attr('disabled', 'disabled');
 			}
-			$('#sub_total').html(sub_total.toFixed(2));
-			
-			update_total(tax_rate);
-		}
-		
-		function update_total(tax_rate) {
-			for (i = 0; i < taxes.length; i++) {
-				var tax = taxes[i][0];
-				var id = taxes[i][1];
-				if (tax == tax_rate) {
-					var sub_total = 0;
-					for (i = 0; i < rate_nbr; i++) {
-						var tax_rate2 = $('#tax_rate_' + i).html();
-						if (tax_rate2 == tax) {
-							var current_total = $('#total_ht_' + i).html();
-							sub_total = parseFloat(sub_total) + parseFloat(current_total);
-						}
-					}
-					$('#tax_base_' + id).html(sub_total.toFixed(2));
-					sub_total *= (tax/100);
-					$('#tax_total_' + id).html(sub_total.toFixed(2));
-				}
-			}
-			
-			sub_total = 0;
-			for (i = 0; i < tax_nbr; i++) {
-				var current_total = $('#tax_total_' + i).html();
-				sub_total = parseFloat(sub_total) + parseFloat(current_total);
-			}
-			$('#tax_total').html(sub_total.toFixed(2));
-			var total = parseFloat($('#sub_total').html()) + parseFloat($('#tax_total').html());
-			$('#total_due').html('<b>' + total.toFixed(2) + '</b>');
-		}
+		});
 	</script>
 </html>

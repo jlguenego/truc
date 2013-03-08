@@ -28,5 +28,5 @@ Please enter your info:
 	<tr>
 		<td><input type="submit" value="Submit"></td>
 	<tr/>
-	</table>		
+	</table>
 </form>

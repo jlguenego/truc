@@ -1,4 +1,5 @@
 <div id="header">
+	<a href="index.php">Go back to index</a><br/><br/>
 <?php
 	if (is_logged()) {
 		$user = get_user_by_login($_SESSION['login']);
@@ -8,7 +9,7 @@
 ?>
 	<div id="user_info">
 
-		
+
 		Welcome <?php echo $login ?><br/>
 		You are <?php echo "${firstname} ${lastname}" ?>
 <?php

@@ -1,6 +1,6 @@
 <?php
 	require_once('include/misc.inc');
-	
+
 	// Install the web site
 	function install() {
 		try {
@@ -13,46 +13,48 @@
 				throw new Exception("Invalid contact mail");
 			}
 			$contact_email = $_POST["contact_email"];
-			
+
 			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
-			
+
 			$requests = <<<EOF
 CREATE DATABASE IF NOT EXISTS ${dbname} DEFAULT CHARACTER SET = 'utf8';
 USE ${dbname};
 EOF;
 			debug($requests);
-			
+
 			if ($db->exec($requests) === FALSE) {
 				throw new Exception("DB creation: ".sprint_r($db->errorInfo()));
 			};
-			
+
 			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
-			
+
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
 	define("MYSQL_PASSWORD", "$password");
 	define("MYSQL_HOST", "$host");
 	define("MYSQL_DBNAME", "$dbname");
-	
+
 	define("CONTACT_MAIL", "$contact_email");
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
 			$requests = file_get_contents("install.sql");
-			
-			$st = $db->prepare($requests, 
+			$requests = str_replace("ENGINE=InnoDB", "", $requests);
+
+			$st = $db->prepare($requests,
 				array(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE));
 			if ($st->execute() === FALSE) {
-				throw new Exception("Table creation: ".sprint_r($db->errorInfo()." InnoDB?"));
+				echo($requests.'<br/>');
+				throw new Exception("Table creation: ".sprint_r($db->errorInfo())." InnoDB?");
 			};
-			
+
 			redirect_to("index.php");
 		} catch (Exception $e) {
 			throw $e;
 		}
 	}
-	
+
 	// Uninstal the web site
 	function uninstall() {
 		try {
@@ -61,7 +63,7 @@ EOF;
 			$password = MYSQL_PASSWORD;
 			$host = MYSQL_HOST;
 			$dbname = MYSQL_DBNAME;
-			
+
 			$pdo = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
 			$pdo->exec("DROP DATABASE IF EXISTS $dbname");
 			unlink(SETTINGS_INI);

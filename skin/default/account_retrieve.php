@@ -22,8 +22,12 @@
 			<td>Email</td>
 			<td><?php echo $user['email'] ?></td>
 		</tr>
+		<tr>
+			<td>Postal address</td>
+			<td><?php echo $user['address'] ?></td>
+		</tr>
 	</table>
-	
+
 <?php
 	if ($user['login'] == $_SESSION['login']) { // If the user is the owner
 ?>
@@ -39,7 +43,7 @@
 		$title = $event['title'];
 ?>
 		<li>
-			<?php echo date("d M Y", $event["event_date"]) ?>: 
+			<?php echo date("d M Y", $event["event_date"]) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>
@@ -48,7 +52,7 @@
 	}
 ?>
 	</ul>
-	
+
 	<h3>Participations:</h3>
 	<ul>
 <?php
@@ -59,7 +63,7 @@
 		$quantity = $participation["quantity"];
 ?>
 		<li>
-			<?php echo date("d M Y", $event["event_date"]) ?>: 
+			<?php echo date("d M Y", $event["event_date"]) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>

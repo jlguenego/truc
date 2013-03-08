@@ -8,32 +8,33 @@
 	require_once("include/rate.inc");
 	require_once("include/actions.inc");
 	require_once("include/manage.inc");
-	
+	require_once("include/payment.inc");
+
 	// If not installed, goto installation page
 	if (!is_installed()) {
 		redirect_to("install.php");
 	}
-	
+
 	if (!admin_exists()) {
-		redirect_to("createadmin.php");
+		redirect_to("deploy.php");
 	}
-	
+
 	// If installed
 	require_once(SETTINGS_INI);
-	
+
 	session_start();
-		
+
 	$_GET = array_merge($_GET, $_POST);
 	if (is_null_or_empty($_SESSION["state"])) {
 		$_SESSION["state"] = "root";
 	}
 	debug("Session before: ".$_SESSION["state"]);
-	
+
 	if (is_null_or_empty($_GET["action"])) {
 		$_SESSION["state"] = "root";
 		$_GET["action"] = "none";
 	}
-	
+
 	switch ($_GET["action"]) {
 		case "sign_out":
 			action_signout();
@@ -64,6 +65,7 @@
 				case "participation":
 					need_authentication();
 					if (!is_null_or_empty($_GET["event_id"])) {
+						$g_display["user"] = get_user(get_id_from_account());
 						$g_display["event"] = get_event($_GET["event_id"]);
 						$g_display["rates"] = events_rates($_GET["event_id"]);
 						$_SESSION["state"] = "participation";
@@ -77,16 +79,16 @@
 		case "create":
 			switch ($_GET["type"]) {
 				case "event":
-					need_authentication();	
+					need_authentication();
 					try {
 						debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
 						valid_event();
 						$id = create_id();
 						add_event($id, $_GET['title'], $_GET['date'],
-							$_GET['deadline'], $_GET['funding_wanted'], 
+							$_GET['deadline'], $_GET['funding_wanted'],
 							$_GET['location'], $_GET['link'],
 							$_GET['short_description'], $_GET['long_description']);
-							
+
 						$i = 0;
 						foreach ($_GET['labels'] as $label) {
 							$rate = $_GET['rates'][$i];
@@ -106,7 +108,7 @@
 					try {
 						valid_user();
 						add_user($_GET['firstname'], $_GET['lastname'], $_GET['login'],
-							$_GET['password'], $_GET['email']);
+							$_GET['password'], $_GET['email'], $_GET['address']);
 						$g_info_msg = "Account successfully created. Check your email for activation.";
 						$_SESSION["state"] = "root";
 					} catch (Exception $e) {
@@ -146,7 +148,7 @@
 					$g_display["events_organized"] = user_events($_GET["id"]);
 					$g_display["participations"] = user_participations($_GET["id"]);
 					foreach ($g_display["participations"] as $participation) {
-						$g_display["participations"]["event"] = 
+						$g_display["participations"]["event"] =
 							get_event($participation["id_event"]);
 					}
 					$_SESSION["state"] = "account_retrieve";
@@ -155,7 +157,7 @@
 					$_SESSION["state"] = "not_allowed";
 					break;
 			}
-			
+
 			break;
 		case "update":
 			switch ($_GET["type"]) {
@@ -168,7 +170,7 @@
 						if (user_exists($_GET["id"])) {
 							$g_display["user"] = get_user($_GET["id"]);
 							valid_user_update();
-							update_user($user['id'], $user['password'], 
+							update_user($user['id'], $user['password'],
 								$user['email']);
 							redirect_to("?action=retrieve&type=account&id=".$_GET["id"]);
 						} else {
@@ -191,7 +193,7 @@
 								check_owner($g_display["event"]);
 								valid_event(TRUE);
 								debug("PLOUF");
-								update_event($_GET["id"], $_GET['title'], 
+								update_event($_GET["id"], $_GET['title'],
 									$_GET['content'], $_GET['date'], $_GET['funding_wanted']);
 								$i = 0;
 								foreach ($_GET['labels'] as $label) {
@@ -253,34 +255,10 @@
 		case "participate":
 			need_authentication();
 			try {
-				if (!isset($_GET['confirm'])) {
-					throw new Exception("You have to check the engagement");
-				}
-				
-				$rates = events_rates($_GET["event_id"]);
-				$event = get_event($_GET["event_id"]);
-				$purchase = array();
-				$i = 0;
-				while (isset($_GET["ticket_${i}"])) {
-					if (!is_number($_GET["ticket_${i}"])) {
-						throw new Exception("Please enter a number for the amount of person");
-					}
-					if ($_GET["ticket_${i}"] > 0) {
-						$purchase[] = array(
-							"label" => $rates[$i]["label"],
-							"tax" => $rates[$i]["tax_rate"],
-							"rate" => $rates[$i]["amount"],
-							"quantity" => $_GET["ticket_${i}"],
-							"event_title" => $event["title"]
-						);
-					}
-					$i++;
-				}
-				$g_display["purchase"] = $purchase;
-				$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
-				$_SESSION["state"] = "participation_recapitulation";
+				action_participate();
 			} catch (Exception $e) {
 				$g_error_msg = $e->getMessage();
+				$g_display["user"] = get_user(get_id_from_account());
 				$g_display["event"] = get_event($_GET["event_id"]);
 				$g_display["rates"] = events_rates($_GET["event_id"]);
 				$_SESSION["state"] = "participation";
@@ -301,19 +279,19 @@
 			$_SESSION["state"] = "cancel_payment";
 			break;
 		case "success_payment":
-			$_SESSION["state"] = "success_payment";
+			action_success_payment();
 			break;
 		default:
 			break;
 	}
-	
+
 	if (!in_array($_SESSION["state"], $g_states)) {
 		$g_error_msg = "Undeclared state: ".$_SESSION["state"].".";
 		$_SESSION["state"] = "not_allowed";
-		
+
 	}
 	$page = $_SESSION["state"];
-	
+
 	debug("Session after: ".$_SESSION["state"]);
 	debug("<hr/>");
 	include_once(SKIN_DIR."/layout.php");

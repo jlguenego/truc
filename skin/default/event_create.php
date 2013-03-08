@@ -1,11 +1,10 @@
-<a href="index.php">Go back to index</a><br/><br/>
 <span style="color:red;">
 	<?php echo "$g_error_msg<br/>"; ?>
 </span>
 
 <script type="text/javascript">
 	taxes = new Array(
-	
+
 	<?php
 		$is_first = TRUE;
 		foreach ($g_tax_rates as $name => $rate) {
@@ -65,7 +64,7 @@
 		<tr>
 			<td>Link:</td>
 			<td>
-				<input type="text" name="link" 
+				<input type="text" name="link"
 					value="<?php echo_default_value("link", "http://") ?>"/>
 			</td>
 			<td>
@@ -77,7 +76,7 @@
 		<tr>
 			<td>Short description: </td>
 			<td>
-				<textarea name="short_description" maxlength="255" 
+				<textarea name="short_description" maxlength="255"
 					title="Up to 255 characters"
 					style="width: 500px; height: 100; resize: none;">
 <?php echo_default_value("short_description") ?></textarea>
@@ -89,7 +88,7 @@
 		<tr>
 			<td>Long description: </td>
 			<td>
-				<textarea name="long_description" maxlength="1000" 
+				<textarea name="long_description" maxlength="1000"
 					title="Up to 1000 characters"
 					style="width: 500; height: 450; resize: none;">
 <?php echo_default_value("long_description"); ?></textarea>
@@ -127,7 +126,7 @@
 </form>
 <script>
 	$(function() {
-		$( "#deadline" ).datepicker({ maxDate: "<?php echo MAX_DEADLINE; ?>", 
+		$( "#deadline" ).datepicker({ maxDate: "<?php echo MAX_DEADLINE; ?>",
 			minDate: "+0d", dateFormat: "yy-mm-dd"});
 		$( "#calendar" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	});
