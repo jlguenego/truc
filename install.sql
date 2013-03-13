@@ -13,6 +13,7 @@ CREATE TABLE event(
         link              Varchar(255),
         short_description Varchar(255) NOT NULL ,
         long_description  Text,
+        nominative        Bool NOT NULL ,
         id_user           Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;

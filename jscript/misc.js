@@ -75,9 +75,7 @@ function removeRate(el, parent) {
 }
 
 function removeElement(el, parent) {
-	var d = document.getElementById(parent);
-	var olddiv = document.getElementById(el);
-	d.removeChild(olddiv);
+	$("#" + parent).children("#" + el).remove();
 }
 
 function eb_sync_amount() {
@@ -132,4 +130,12 @@ function update_total(tax_rate) {
 	$('#tax_total').html(sub_total.toFixed(2));
 	var total = parseFloat($('#sub_total').html()) + parseFloat($('#tax_total').html());
 	$('#total_due').html('<b>' + total.toFixed(2) + '</b>');
+}
+
+function eb_sync_next_button() {
+	if ($('input[type=checkbox]').is(':checked')) {
+		$('input[value=Next]').removeAttr('disabled');
+	} else {
+		$('input[value=Next]').attr('disabled', 'disabled');
+	}
 }

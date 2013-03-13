@@ -68,7 +68,11 @@
 						$g_display["user"] = get_user(get_id_from_account());
 						$g_display["event"] = get_event($_GET["event_id"]);
 						$g_display["rates"] = events_rates($_GET["event_id"]);
-						$_SESSION["state"] = "participation";
+						if ($g_display["event"]["nominative"] == 1) {
+							$_SESSION["state"] = "nominative_participation";
+						} else {
+							$_SESSION["state"] = "regular_participation";
+						}
 					} else {
 						$_SESSION["state"] = "not_allowed";
 						$g_error_msg = "No event selected.";
@@ -84,10 +88,15 @@
 						debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
 						valid_event();
 						$id = create_id();
+						$nominative = 0;
+						if (isset($_GET['nominative'])) {
+							$nominative = 1;
+						}
 						add_event($id, $_GET['title'], $_GET['date'],
 							$_GET['deadline'], $_GET['funding_wanted'],
 							$_GET['location'], $_GET['link'],
-							$_GET['short_description'], $_GET['long_description']);
+							$_GET['short_description'], $_GET['long_description'],
+							$nominative);
 
 						$i = 0;
 						foreach ($_GET['labels'] as $label) {
@@ -198,7 +207,8 @@
 								$i = 0;
 								foreach ($_GET['labels'] as $label) {
 									$rate = $_GET['rates'][$i];
-									update_rate($_GET["id"], $label, $rate);
+									$tax_rate = $_GET['tax_rates'][$i];
+									update_rate($_GET["id"], $label, $tax_rate, $rate);
 									$i++;
 								}
 								delete_unuse_rates($_GET["id"], $_GET['labels']);
@@ -261,7 +271,11 @@
 				$g_display["user"] = get_user(get_id_from_account());
 				$g_display["event"] = get_event($_GET["event_id"]);
 				$g_display["rates"] = events_rates($_GET["event_id"]);
-				$_SESSION["state"] = "participation";
+				if ($g_display["event"]["nominative"] == 1) {
+					$_SESSION["state"] = "nominative_participation";
+				} else {
+					$_SESSION["state"] = "regular_participation";
+				}
 			}
 			break;
 		case "activation":

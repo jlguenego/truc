@@ -18,12 +18,12 @@
 	foreach ($devis->items as $item) {
 		$event_name = $item->event_name;
 		$event_rate_name = $item->event_rate_name;
-		$event_rate_amount = $item->event_rate_amount;
+		$event_rate_amount = curr($item->event_rate_amount);
 		$event_rate_tax = $item->event_rate_tax;
 		$quantity = $item->quantity;
-		$total_ht = $item->total_ht;
-		$total_tax = $item->total_tax;
-		$total_ttc = $item->total_ttc;
+		$total_ht = curr($item->total_ht);
+		$total_tax = curr($item->total_tax);
+		$total_ttc = curr($item->total_ttc);
 ?>
 	<tr>
 		<td><?php echo $event_name; ?></td>
@@ -40,7 +40,7 @@
 ?>
 	<tr>
 		<th colspan="4">TOTAL HT</th>
-		<th><?php echo $devis->total_ht; ?></th>
+		<th><?php echo curr($devis->total_ht); ?></th>
 	</tr>
 </table>
 <br/>

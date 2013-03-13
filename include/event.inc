@@ -1,7 +1,7 @@
 <?php
 	require_once('include/misc.inc');
 	require_once("include/user.inc");
-	
+
 	function event_title_exists($title) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -13,7 +13,7 @@ EOF;
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
-	
+
 	function event_exists($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -25,16 +25,16 @@ EOF;
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
-	
+
 	function add_event($id, $title, $date, $deadline, $funding_wanted, $location,
-						$link, $short, $long) {
+						$link, $short, $long, $nominative) {
 		global $g_pdo;
-		
+
 		list($year, $month, $day) = explode("-", $date);
 		$event_date = mktime(0, 0, 0, $month, $day, $year);
 		list($year, $month, $day) = explode("-", $deadline);
 		$event_deadline = mktime(0, 0, 0, $month, $day, $year);
-		
+
 		$title = check($title);
 		$link = check($link);
 		$long = check($long);
@@ -45,29 +45,30 @@ EOF;
 		$created_t = time();
 		$mod_t = $created_t;
 		$request = <<<EOF
-INSERT INTO `${dbname}`.`event` 
-SET 
+INSERT INTO `${dbname}`.`event`
+SET
 	`id`="${id}",
 	`created_t`="${created_t}",
 	`mod_t`="${mod_t}",
-	`id_user`="${id_user}", 
-	`title`="${title}", 
-	`location`="${location}", 
-	`link`="${link}", 
-	`short_description`="${short}", 
-	`long_description`="${long}", 
+	`id_user`="${id_user}",
+	`title`="${title}",
+	`location`="${location}",
+	`link`="${link}",
+	`short_description`="${short}",
+	`long_description`="${long}",
 	`event_date`="${event_date}",
 	`event_deadline`="${event_deadline}",
-	`funding_wanted`="${funding_wanted}"
+	`funding_wanted`="${funding_wanted}",
+	`nominative`=${nominative}
 EOF;
 		debug($request);
 		$g_pdo->exec($request);
 		return TRUE;
 	}
-	
+
 	function update_event($id, $title, $content, $date, $person) {
 		global $g_pdo;
-		
+
 		list($day, $month, $year) = explode(".", $date);
 		$timestamp = mktime(0, 0, 0, $day, $month, $year);
 		$dbname = MYSQL_DBNAME;
@@ -79,13 +80,13 @@ EOF;
 		$id_user = $author["id"];
 		$mod_t = time();
 		$request = <<<EOF
-UPDATE `${dbname}`.`event` 
-SET 
-	`id_user`="${id_user}", 
-	`mod_t`="${id_user}", 
-	`title`="${title}", 
-	`event_date`="${timestamp}", 
-	`content`="${content}", 
+UPDATE `${dbname}`.`event`
+SET
+	`id_user`="${id_user}",
+	`mod_t`="${id_user}",
+	`title`="${title}",
+	`event_date`="${timestamp}",
+	`content`="${content}",
 	`nbr_person_wanted`="${person}"
 WHERE `id`="${id}"
 EOF;
@@ -93,10 +94,10 @@ EOF;
 		$g_pdo->exec($request);
 		return TRUE;
 	}
-	
+
 	function add_person_to_event($id, $nbr) {
 		global $g_pdo;
-		
+
 		if (!event_exists($id)) {
 			return FALSE;
 		}
@@ -104,15 +105,15 @@ EOF;
 		$event = get_event($id);
 		$nbr += $event['nbr_person_registered'];
 		$request = <<<EOF
-UPDATE `${dbname}`.`event` 
-SET 
+UPDATE `${dbname}`.`event`
+SET
 	`nbr_person_registered`="${nbr}"
 WHERE `id`="${id}"
 EOF;
 		$g_pdo->exec($request);
 		return TRUE;
 	}
-	
+
 	function get_event($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -129,13 +130,13 @@ EOF;
 		}
 		return $event;
 	}
-	
+
 	function check_owner($event) {
 		if ($event['id_user'] != get_id_from_account() && !is_admin()) {
 			throw new Exception("You are not the creator of this event");
 		}
 	}
-	
+
 	function delete_event() {
 		if (isset($_GET['confirm'])) {
 			if (is_null_or_empty($_GET['id'])) {
@@ -156,7 +157,7 @@ EOF;
 			}
 		}
 	}
-	
+
 	function erase_event($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -167,7 +168,7 @@ EOF;
 		debug($request);
 		$g_pdo->exec($request);
 	}
-	
+
 	function list_events() {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -185,12 +186,12 @@ EOF;
 		}
 		return $events;
 	}
-	
+
 	function user_events($user_id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
-SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event` 
+SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event`
 WHERE `id_user`=${user_id}
 ORDER BY `event_date`
 EOF;
@@ -204,7 +205,7 @@ EOF;
 		}
 		return $events;
 	}
-	
+
 	function valid_event($update = FALSE) {
 		if (is_null_or_empty($_GET["title"])) {
 			throw new Exception("Event must have a title");
@@ -212,30 +213,30 @@ EOF;
 		if (!$update && event_title_exists($_GET["title"])) {
 			throw new Exception("Event already exists");
 		}
-		
+
 		foreach ($_GET as $value) {
 			if (is_null_or_empty($value)) {
 				throw new Exception("Please fill all fields");
 			}
 		}
-		
+
 		foreach ($_GET['rates'] as $rate) {
 			if (is_null_or_empty($rate)
 				|| (!is_null_or_empty($rate) && !is_number($rate))) {
-				
+
 				throw new Exception("Please enter a number for the rates");
 			}
 		}
-		
+
 		foreach ($_GET['tax_rates'] as $tax_rate) {
 			if (is_null_or_empty($tax_rate)
 				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
-				
+
 				throw new Exception("Please enter a number for the tax rates");
 			}
 		}
 		foreach ($_GET['labels'] as $label) {
-			if (is_null_or_empty($label)) {				
+			if (is_null_or_empty($label)) {
 				throw new Exception("Please enter a label for each rate");
 			}
 		}

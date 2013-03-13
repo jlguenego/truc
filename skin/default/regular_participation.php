@@ -130,13 +130,5 @@
 
 		$('input[type=checkbox]').ready(eb_sync_next_button);
 		$('input[type=checkbox]').change(eb_sync_next_button);
-
-		function eb_sync_next_button() {
-			if ($('input[type=checkbox]').is(':checked')) {
-				$('input[value=Next]').removeAttr('disabled');
-			} else {
-				$('input[value=Next]').attr('disabled', 'disabled');
-			}
-		}
 	</script>
 </html>
