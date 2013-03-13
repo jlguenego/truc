@@ -10,8 +10,8 @@
 		public $total_ttc;
 
 		public function compute() {
-			$this->total_ht = number_format($this->event_rate_amount * $this->quantity, 2);
-			$this->total_tax = number_format(($this->total_ht * ($this->event_rate_tax/100)), 2);
+			$this->total_ht = curr($this->event_rate_amount * $this->quantity);
+			$this->total_tax = curr(($this->total_ht * ($this->event_rate_tax/100)));
 			$this->total_ttc = $this->total_ht + $this->total_tax;
 		}
 

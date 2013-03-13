@@ -15,7 +15,8 @@
 		<td><input type="password" name="password" value=""></td>
 	</tr>
 	<tr>
+		<td><a href="?action=get_form&type=account">Create an account</a></td>
 		<td><input type="submit" value="Sign in"></td>
-	<tr/>
-	</table>		
+	</tr>
+	</table>
 </form>

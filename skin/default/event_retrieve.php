@@ -47,15 +47,21 @@
 		<tr>
 			<th>Categories</th>
 			<th>Rates</th>
+			<th>Taxes</th>
+			<th>Rate TTC</th>
 		</tr>
 <?php
 	foreach (events_rates($event['id']) as $rate) {
+		$tax = $rate['tax_rate'];
 		$label = $rate['label'];
-		$rate = $rate['amount'];
+		$amount_ht = curr($rate['amount']);
+		$amount_ttc = curr($amount_ht * (($tax/100) + 1));
 ?>
 		<tr>
 			<td><?php echo $label ?></td>
-			<td><?php echo $rate ?></td>
+			<td><?php echo $amount_ht ?></td>
+			<td><?php echo $tax ?>%</td>
+			<td><?php echo $amount_ttc ?></td>
 		</tr>
 <?php
 	}

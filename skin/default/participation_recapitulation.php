@@ -59,7 +59,7 @@
 
 <table>
 	<tr>
-		<td>Billing name: </td>
+		<td>Billing Entity name: </td>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>

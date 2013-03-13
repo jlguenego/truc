@@ -121,7 +121,7 @@
 		echo "</script>";
 	}
 ?>
-	<input type="button" value="Add a rate" onClick="addRate('rates');"/><br/>
+	<a href="JavaScript:addRate('rates');">Add another rate</a><br/>
 	<input type="submit" value="Submit"/>
 </form>
 <script>

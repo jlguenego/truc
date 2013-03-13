@@ -1,7 +1,7 @@
 <?php
 	require_once("include/user.inc");
 	require_once("include/event.inc");
-	
+
 	function rate_exists($label, $event_id) {
 		try {
 			global $g_pdo;
@@ -21,11 +21,11 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function update_rate($event_id, $label, $tax_rate, $amount) {
 		try {
 			global $g_pdo;
-			
+
 			if (!event_exists($event_id)) {
 				return FALSE;
 			}
@@ -35,7 +35,7 @@ EOF;
 			$label = check($label);
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-UPDATE `${dbname}`.`rate` 
+UPDATE `${dbname}`.`rate`
 SET `amount`="${amount}" , `tax_rate`="${tax_rate}"
 WHERE `label`="${label}" AND `id_event`="${event_id}";
 EOF;
@@ -47,11 +47,11 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function add_rate($label, $rate, $tax_rate, $event_id) {
 		try {
 			global $g_pdo;
-			
+
 			if (!event_exists($event_id)) {
 				return FALSE;
 			}
@@ -62,11 +62,11 @@ EOF;
 			$id = create_id();
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-INSERT INTO `${dbname}`.`rate` 
-SET 
+INSERT INTO `${dbname}`.`rate`
+SET
 	`id`="${id}",
-	`label`="${label}", 
-	`id_event`="${event_id}", 
+	`label`="${label}",
+	`id_event`="${event_id}",
 	`tax_rate`="${tax_rate}",
 	`amount`="${rate}";
 EOF;
@@ -79,7 +79,7 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function delete_events_rates($id_event) {
 		try {
 			global $g_pdo;
@@ -94,7 +94,7 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function delete_unuse_rates($event_id, $labels) {
 		$rates = events_rates($event_id);
 		foreach ($rates as $rate) {
@@ -104,7 +104,7 @@ EOF;
 			}
 		}
 	}
-	
+
 	function delete_rate($label, $id_event) {
 		try {
 			global $g_pdo;
@@ -120,7 +120,7 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function events_rates($id) {
 		try {
 			global $g_pdo;

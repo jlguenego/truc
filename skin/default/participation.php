@@ -34,7 +34,7 @@
 				$tax_array = array();
 				foreach ($rates as $rate) {
 					$event_title = $event["title"];
-					$amount = $rate["amount"];
+					$amount_ht = curr($rate["amount"]);
 					$label = $rate["label"];
 					$tax_rate = $rate["tax_rate"];
 					if (!in_array($tax_rate, $tax_array)) {
@@ -44,10 +44,10 @@
 			<tr>
 				<td><?php echo $event_title; ?></td>
 				<td><?php echo $label; ?></td>
-				<td id="unit_price_<?php echo $i; ?>"><?php echo $amount; ?></td>
+				<td id="unit_price_<?php echo $i; ?>"><?php echo $amount_ht; ?></td>
 				<td><input id="<?php echo $i; ?>" type="number" name="ticket_<?php echo $i; ?>" value="<?php echo_default_value("ticket_${i}", 1) ?>"/></td>
 				<td id="total_ht_<?php echo $i; ?>">0.00</td>
-				<td id="tax_rate_<?php echo $i; ?>"><?php echo number_format($tax_rate, 2); ?></td>
+				<td id="tax_rate_<?php echo $i; ?>"><?php echo $tax_rate; ?></td>
 				<td id="tax_amount_<?php echo $i; ?>">0.00</td>
 				<td id="ttc_<?php echo $i; ?>">0.00</td>
 			</tr>
@@ -69,7 +69,7 @@
 				foreach ($tax_array as $tax_rate) {
 			?>
 			<tr>
-				<td>Tax(<?php echo number_format($tax_rate, 2); ?>)</td>
+				<td>Tax(<?php echo $tax_rate; ?>)</td>
 				<td id="tax_base_<?php echo $i2; ?>">0.00</td>
 				<td id="tax_total_<?php echo $i2; ?>">0.00</td>
 			</tr>
@@ -90,7 +90,7 @@
 
 		<table>
 			<tr>
-				<td>Billing name: </td>
+				<td>Billing Entity name: </td>
 				<td><input type="text" name="username" value="<?php echo $user['firstname'].' '.$user['lastname']; ?>"/></td>
 				<td class="help">The person or organisation name to be charged.</td>
 			</tr>
@@ -124,16 +124,19 @@
 				}
 			?>
 		);
-		$('input').change(update);
-		$('input').keyup(update);
-		$('input[id]').each(update);
+		$('input').change(eb_sync_amount);
+		$('input').keyup(eb_sync_amount);
+		$('input[id]').each(eb_sync_amount);
 
-		$('input[type=checkbox]').change(function() {
+		$('input[type=checkbox]').ready(eb_sync_next_button);
+		$('input[type=checkbox]').change(eb_sync_next_button);
+
+		function eb_sync_next_button() {
 			if ($('input[type=checkbox]').is(':checked')) {
 				$('input[value=Next]').removeAttr('disabled');
 			} else {
 				$('input[value=Next]').attr('disabled', 'disabled');
 			}
-		});
+		}
 	</script>
 </html>

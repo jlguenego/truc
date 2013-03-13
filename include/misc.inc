@@ -118,6 +118,10 @@ EOF;
 		return preg_match("#^[\d]+[\.,]?[\d]*$#", $var);
 	}
 
+	function curr($nbr) {
+		return "".number_format($nbr, 2);
+	}
+
 	function echo_default_value($name, $default = "") {
 		if (!is_null_or_empty($_GET[$name])) {
 			echo $_GET[$name];
