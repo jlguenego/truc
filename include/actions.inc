@@ -52,11 +52,13 @@
 			}
 			if ($_GET["ticket_${i}"] > 0) {
 				$item = new Item();
+
 				$item->event_name = $event["title"];
 				$item->event_rate_name = $rates[$i]["label"];
 				$item->event_rate_amount = $rates[$i]["amount"];
 				$item->event_rate_tax = $rates[$i]["tax_rate"];
 				$item->quantity = $_GET["ticket_${i}"];
+
 				$item->compute();
 
 				$devis->items[] = $item;
@@ -68,6 +70,22 @@
 		$_SESSION["devis"] = $devis;
 		$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
 		$_SESSION["state"] = "participation_recapitulation";
+	}
+
+	function action_nominative_participate() {
+		global $g_display;
+
+		if (!isset($_GET['confirm'])) {
+			throw new Exception("You must read and accept the policies.");
+		}
+		$devis = new Devis();
+		$devis->username = $_GET['username'];
+		$devis->address = $_GET['address'];
+		$rates = events_rates($_GET["event_id"]);
+		$event = get_event($_GET["event_id"]);
+		$total_ttc = 0.00;
+
+
 	}
 
 	function action_success_payment() {

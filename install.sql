@@ -62,16 +62,19 @@ CREATE TABLE devis(
 )ENGINE=InnoDB;
 
 CREATE TABLE devis_item(
-        id                Int NOT NULL ,
-        event_name        Varchar(255) NOT NULL ,
-        event_rate_name   Varchar(255) NOT NULL ,
-        event_rate_amount Int NOT NULL ,
-        event_rate_tax    Int NOT NULL ,
-        quantity          Int NOT NULL ,
-        total_ht          Int NOT NULL ,
-        total_tax         Int NOT NULL ,
-        total_ttc         Int NOT NULL ,
-        id_devis          Int NOT NULL ,
+        id                    Int NOT NULL ,
+        event_name            Varchar(255) NOT NULL ,
+        event_rate_name       Varchar(255) NOT NULL ,
+        event_rate_amount     Int NOT NULL ,
+        event_rate_tax        Int NOT NULL ,
+        quantity              Int NOT NULL ,
+        total_ht              Int NOT NULL ,
+        total_tax             Int NOT NULL ,
+        total_ttc             Int NOT NULL ,
+        participant_firstname Varchar(255),
+        participant_lastname  Varchar(255),
+        participant_title     Varchar(25),
+        id_devis              Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 

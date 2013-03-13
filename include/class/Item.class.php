@@ -8,6 +8,9 @@
 		public $total_ht;
 		public $total_tax;
 		public $total_ttc;
+		public $participant_firstname;
+		public $participant_lastname;
+		public $participant_title;
 
 		public function compute() {
 			$this->total_ht = curr($this->event_rate_amount * $this->quantity);
@@ -27,6 +30,9 @@
 			$total_ht = $this->total_ht;
 			$total_tax = $this->total_tax;
 			$total_ttc = $this->total_ttc;
+			$participant_firstname = $this->participant_firstname;
+			$participant_lastname = $this->participant_lastname;
+			$participant_title = $this->participant_title;
 
 			$request = <<<EOF
 INSERT INTO `devis_item`
@@ -40,7 +46,10 @@ SET
 	`total_ht`=${total_ht},
 	`total_tax`=${total_tax},
 	`total_ttc`=${total_ttc},
-	`id_devis`=${id_devis};
+	`id_devis`=${id_devis},
+	`participant_firstname`=${participant_firstname},
+	`participant_lastname`=${participant_lastname},
+	`participant_title`=${participant_title};
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {

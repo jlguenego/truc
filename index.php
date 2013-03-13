@@ -265,7 +265,11 @@
 		case "participate":
 			need_authentication();
 			try {
-				action_participate();
+				if ($_SESSION["state"] == "nominative_participation") {
+					action_nominative_participate();
+				} else {
+					action_participate();
+				}
 			} catch (Exception $e) {
 				$g_error_msg = $e->getMessage();
 				$g_display["user"] = get_user(get_id_from_account());
