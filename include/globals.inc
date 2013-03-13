@@ -26,6 +26,7 @@
 
 	$g_tax_rates = array(
 		"With tax (19.6%)" => 19.6,
+		"With tax (5.5%)" => 5.5,
 		"Without tax" => 0
 	);
 

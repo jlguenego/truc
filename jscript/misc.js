@@ -132,10 +132,6 @@ function update_total(tax_rate) {
 	$('#total_due').html('<b>' + total.toFixed(2) + '</b>');
 }
 
-function eb_sync_next_button() {
-	if ($('input[type=checkbox]').is(':checked')) {
-		$('input[value=Next]').removeAttr('disabled');
-	} else {
-		$('input[value=Next]').attr('disabled', 'disabled');
-	}
+function eb_curr(m) {
+	return parseFloat(m).toFixed(2);
 }

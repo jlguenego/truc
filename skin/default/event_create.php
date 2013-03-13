@@ -99,7 +99,7 @@
 		</tr>
 	</table>
 	<br/><br/>
-	<input type="checkbox" name="nominative"/>This event is nominative.<br/>
+	<input type="checkbox" name="nominative" />This event is nominative.<br/>
 	<div id="rates">
 	</div>
 <?php

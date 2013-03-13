@@ -128,6 +128,7 @@ EOF;
 			$request = <<<EOF
 SELECT `label`, `amount`, `tax_rate` FROM `${dbname}`.`rate`
 WHERE `id_event`=${id}
+ORDER BY tax_rate DESC
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
