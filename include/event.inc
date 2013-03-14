@@ -26,7 +26,7 @@ EOF;
 		return $count[0] > 0;
 	}
 
-	function add_event($id, $title, $date, $deadline, $funding_wanted, $location,
+	function event_create($id, $title, $date, $deadline, $funding_wanted, $location,
 						$link, $short, $long, $nominative) {
 		global $g_pdo;
 
@@ -44,6 +44,7 @@ EOF;
 		$id_user = get_id_from_account();
 		$created_t = time();
 		$mod_t = $created_t;
+		$status = EVENT_STATUS_SUBMITTED;
 		$request = <<<EOF
 INSERT INTO `${dbname}`.`event`
 SET
@@ -59,14 +60,15 @@ SET
 	`event_date`="${event_date}",
 	`event_deadline`="${event_deadline}",
 	`funding_wanted`="${funding_wanted}",
-	`nominative`=${nominative}
+	`nominative`=${nominative},
+	`status`=${status}
 EOF;
 		debug($request);
 		$g_pdo->exec($request);
 		return TRUE;
 	}
 
-	function update_event($id, $title, $content, $date, $person) {
+	function event_update($id, $title, $content, $date, $person) {
 		global $g_pdo;
 
 		list($day, $month, $year) = explode(".", $date);
@@ -91,11 +93,10 @@ SET
 WHERE `id`="${id}"
 EOF;
 		debug($request);
-		$g_pdo->exec($request);
-		return TRUE;
+		return $g_pdo->exec($request);
 	}
 
-	function add_person_to_event($id, $nbr) {
+	function event_add_person($id, $nbr) {
 		global $g_pdo;
 
 		if (!event_exists($id)) {
@@ -131,34 +132,13 @@ EOF;
 		return $event;
 	}
 
-	function check_owner($event) {
+	function event_check_owner($event) {
 		if ($event['id_user'] != get_id_from_account() && !is_admin()) {
 			throw new Exception("You are not the creator of this event");
 		}
 	}
 
-	function delete_event() {
-		if (isset($_GET['confirm'])) {
-			if (is_null_or_empty($_GET['id'])) {
-				throw new Exception("No event given.");
-			}
-			if (!event_exists($_GET['id'])) {
-				throw new Exception("Event does not exists.");
-			}
-			$event = get_event($_GET['id']);
-			$user = get_user_by_login($_SESSION["login"]);
-			check_owner($event);
-			if($_GET['confirm'] != "yes") {
-				redirect_to("index.php");
-			} else {
-				delete_events_rates($_GET['id']);
-				erase_event($_GET['id']);
-				redirect_to("index.php");
-			}
-		}
-	}
-
-	function erase_event($id) {
+	function event_delete($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
@@ -169,7 +149,7 @@ EOF;
 		$g_pdo->exec($request);
 	}
 
-	function list_events() {
+	function event_list() {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
@@ -206,46 +186,24 @@ EOF;
 		return $events;
 	}
 
-	function valid_event($update = FALSE) {
-		if (is_null_or_empty($_GET["title"])) {
-			throw new Exception("Event must have a title");
-		}
-		if (!$update && event_title_exists($_GET["title"])) {
-			throw new Exception("Event already exists");
-		}
-
-		foreach ($_GET as $value) {
-			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields");
-			}
-		}
-
-		foreach ($_GET['rates'] as $rate) {
-			if (is_null_or_empty($rate)
-				|| (!is_null_or_empty($rate) && !is_number($rate))) {
-
-				throw new Exception("Please enter a number for the rates");
-			}
-		}
-
-		foreach ($_GET['tax_rates'] as $tax_rate) {
-			if (is_null_or_empty($tax_rate)
-				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
-
-				throw new Exception("Please enter a number for the tax rates");
-			}
-		}
-		foreach ($_GET['labels'] as $label) {
-			if (is_null_or_empty($label)) {
-				throw new Exception("Please enter a label for each rate");
-			}
-		}
-	}
-
 	function event_is_confirmed($event) {
 		if ($event['funding_wanted'] <= $event['funding_acquired']) {
 			return TRUE;
 		}
 		return FALSE;
+	}
+
+	function event_valid($id) {
+		global $g_pdo;
+
+		$status = EVENT_STATUS_VALIDATED;
+		$request = <<<EOF
+UPDATE `event`
+SET
+	`status`=${status}
+WHERE `id`="${id}"
+EOF;
+		debug($request);
+		return $g_pdo->exec($request);
 	}
 ?>

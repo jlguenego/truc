@@ -11,7 +11,7 @@
 	<a href="index.php">Go back to index<a/><br/><br/>
 EOF;
 	$content .= "<ul>\n";
-	foreach (list_events() as $event) {
+	foreach (event_list() as $event) {
 		debug(time()." | ".$event["event_date"]);
 		if (time() <= $event["event_date"] ||
 			$event["nbr_person_wanted"] > $event["nbr_person_registered"]) {

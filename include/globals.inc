@@ -23,6 +23,11 @@
 		"account_update",
 		"cancel_payment",
 		"success_payment",
+		"supervision",
+	);
+
+	$g_event_states = array(
+		"Submitted",
 	);
 
 	$g_tax_rates = array(

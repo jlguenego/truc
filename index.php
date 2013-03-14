@@ -45,73 +45,20 @@
 		case "get_form":
 			switch ($_GET["type"]) {
 				case "event":
-					need_authentication();
-					if (is_null_or_empty($_GET["id"])) {
-						$_SESSION["state"] = "event_create";
-					} else {
-						$g_display["event"] = get_event($_GET["id"]);
-						$g_display["rates"] = events_rates($_GET["id"]);
-						$_SESSION["state"] = "event_update";
-					}
+					action_get_form_event();
 					break;
 				case "account":
-					if (is_null_or_empty($_GET["id"])) {
-					$_SESSION["state"] = "account_create";
-					} else {
-						$g_display["user"] = get_user($_GET["id"]);
-						$_SESSION["state"] = "account_update";
-					}
+					action_get_form_account();
 					break;
 				case "participation":
-					need_authentication();
-					if (!is_null_or_empty($_GET["event_id"])) {
-						$g_display["user"] = get_user(get_id_from_account());
-						$g_display["event"] = get_event($_GET["event_id"]);
-						$g_display["rates"] = events_rates($_GET["event_id"]);
-						if ($g_display["event"]["nominative"] == 1) {
-							$_SESSION["state"] = "nominative_participation";
-						} else {
-							$_SESSION["state"] = "regular_participation";
-						}
-					} else {
-						$_SESSION["state"] = "not_allowed";
-						$g_error_msg = "No event selected.";
-					}
+					action_get_form_participation();
 					break;
 			}
 			break;
 		case "create":
 			switch ($_GET["type"]) {
 				case "event":
-					need_authentication();
-					try {
-						debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
-						valid_event();
-						$id = create_id();
-						$nominative = 0;
-						if (isset($_GET['nominative'])) {
-							$nominative = 1;
-						}
-						add_event($id, $_GET['title'], $_GET['date'],
-							$_GET['deadline'], $_GET['funding_wanted'],
-							$_GET['location'], $_GET['link'],
-							$_GET['short_description'], $_GET['long_description'],
-							$nominative);
-
-						$i = 0;
-						foreach ($_GET['labels'] as $label) {
-							$rate = $_GET['rates'][$i];
-							$tax_rate = $_GET['tax_rates'][$i];
-							add_rate($label, $rate, $tax_rate, $id);
-							$i++;
-						}
-						// $_GET["id"] = $id;
-						// $_SESSION["state"] = "event_retrieve";
-						redirect_to("?action=retrieve&type=event&id=${id}");
-					} catch (Exception $e) {
-						$g_error_msg = $e->getMessage();
-						$_SESSION["state"] = "event_create";
-					}
+					action_create_event();
 					break;
 				case "account":
 					try {
@@ -132,7 +79,7 @@
 		case "retrieve":
 			switch ($_GET["type"]) {
 				case "events":
-					$g_display["events"] = list_events();
+					$g_display["events"] = event_list();
 					$_SESSION["state"] = "events_list";
 					break;
 				case "event":
@@ -199,10 +146,10 @@
 								$_SESSION["state"] = "event_update";
 								$g_display["event"] = get_event($_GET["id"]);
 								$g_display["rates"] = events_rates($_GET["id"]);
-								check_owner($g_display["event"]);
-								valid_event(TRUE);
+								event_check_owner($g_display["event"]);
+								action_event_valid(TRUE);
 								debug("PLOUF");
-								update_event($_GET["id"], $_GET['title'],
+								event_update($_GET["id"], $_GET['title'],
 									$_GET['content'], $_GET['date'], $_GET['funding_wanted']);
 								$i = 0;
 								foreach ($_GET['labels'] as $label) {
@@ -237,7 +184,7 @@
 					if ($_SESSION["state"] == "event_delete") {
 						try {
 							need_authentication();
-							delete_event();
+							action_event_delete();
 							$_SESSION["state"] = "root";
 						} catch (Exception $e) {
 							$g_error_msg = $e->getMessage();
@@ -301,6 +248,12 @@
 			break;
 		case "success_payment":
 			action_success_payment();
+			break;
+		case "supervision" :
+			action_supervision();
+			break;
+		case "valid_event":
+			action_valid_event();
 			break;
 		default:
 			break;

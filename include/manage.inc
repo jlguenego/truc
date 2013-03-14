@@ -66,7 +66,7 @@ EOF;
 			}
 			debug($request);
 			$g_pdo->exec($request);
-			add_person_to_event($id_event, $nbr);
+			event_add_person($id_event, $nbr);
 			return TRUE;
 		} catch (Exception $e) {
 			println($e->getMessage());

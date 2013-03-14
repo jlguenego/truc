@@ -24,6 +24,11 @@
 	define('DEVIS_STATUS_AUTHORIZED', 0);
 	define('DEVIS_STATUS_CAPTURED', 1);
 	define('DEVIS_STATUS_REFUSED', 2);
+	
+	define('EVENT_STATUS_SUBMITTED', 0);
+	define('EVENT_STATUS_VALIDATED', 1);
+	define('EVENT_STATUS_CONFIRMED', 2);
+	define('EVENT_STATUS_CANCELLED', 3);
 
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 

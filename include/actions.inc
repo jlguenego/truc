@@ -139,4 +139,159 @@
 			$_SESSION["state"] = "error";
 		}
 	}
+
+	function action_event_delete() {
+		if (isset($_GET['confirm'])) {
+			if (is_null_or_empty($_GET['id'])) {
+				throw new Exception("No event given.");
+			}
+			if (!event_exists($_GET['id'])) {
+				throw new Exception("Event does not exists.");
+			}
+			$event = get_event($_GET['id']);
+			$user = get_user_by_login($_SESSION["login"]);
+			event_check_owner($event);
+			if($_GET['confirm'] != "yes") {
+				redirect_to("index.php");
+			} else {
+				delete_events_rates($_GET['id']);
+				event_delete($_GET['id']);
+				redirect_to("index.php");
+			}
+		}
+	}
+
+	function action_supervision() {
+		global $g_display;
+		need_authentication();
+		if (!is_admin()) {
+			$g_error_msg = "You are not admin.";
+			return;
+		}
+		$g_display["events"] = event_list();
+		$_SESSION["state"] = "supervision";
+	}
+
+	function action_event_valid($update = FALSE) {
+		if (is_null_or_empty($_GET["title"])) {
+			throw new Exception("Event must have a title");
+		}
+		if (!$update && event_title_exists($_GET["title"])) {
+			throw new Exception("Event already exists");
+		}
+
+		foreach ($_GET as $value) {
+			if (is_null_or_empty($value)) {
+				throw new Exception("Please fill all fields");
+			}
+		}
+
+		foreach ($_GET['rates'] as $rate) {
+			if (is_null_or_empty($rate)
+				|| (!is_null_or_empty($rate) && !is_number($rate))) {
+
+				throw new Exception("Please enter a number for the rates");
+			}
+		}
+
+		foreach ($_GET['tax_rates'] as $tax_rate) {
+			if (is_null_or_empty($tax_rate)
+				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
+
+				throw new Exception("Please enter a number for the tax rates");
+			}
+		}
+		foreach ($_GET['labels'] as $label) {
+			if (is_null_or_empty($label)) {
+				throw new Exception("Please enter a label for each rate");
+			}
+		}
+	}
+
+	function action_get_form_account() {
+		if (is_null_or_empty($_GET["id"])) {
+		$_SESSION["state"] = "account_create";
+		} else {
+			$g_display["user"] = get_user($_GET["id"]);
+			$_SESSION["state"] = "account_update";
+		}
+	}
+
+	function action_get_form_event() {
+		need_authentication();
+		if (is_null_or_empty($_GET["id"])) {
+			$_SESSION["state"] = "event_create";
+		} else {
+			$g_display["event"] = get_event($_GET["id"]);
+			$g_display["rates"] = events_rates($_GET["id"]);
+			$_SESSION["state"] = "event_update";
+		}
+	}
+
+	function action_get_form_participation() {
+		global $g_display;
+
+		need_authentication();
+		if (!is_null_or_empty($_GET["event_id"])) {
+			$g_display["user"] = get_user(get_id_from_account());
+			$g_display["event"] = get_event($_GET["event_id"]);
+			$g_display["rates"] = events_rates($_GET["event_id"]);
+			if ($g_display["event"]["nominative"] == 1) {
+				$_SESSION["state"] = "nominative_participation";
+			} else {
+				$_SESSION["state"] = "regular_participation";
+			}
+		} else {
+			$_SESSION["state"] = "not_allowed";
+			$g_error_msg = "No event selected.";
+		}
+	}
+
+	function action_create_event() {
+		global $g_error_msg;
+
+		need_authentication();
+		try {
+			debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
+			action_event_valid();
+			$id = create_id();
+			$nominative = 0;
+			if (isset($_GET['nominative'])) {
+				$nominative = 1;
+			}
+			event_create($id, $_GET['title'], $_GET['date'],
+				$_GET['deadline'], $_GET['funding_wanted'],
+				$_GET['location'], $_GET['link'],
+				$_GET['short_description'], $_GET['long_description'],
+				$nominative);
+
+			$i = 0;
+			foreach ($_GET['labels'] as $label) {
+				$rate = $_GET['rates'][$i];
+				$tax_rate = $_GET['tax_rates'][$i];
+				add_rate($label, $rate, $tax_rate, $id);
+				$i++;
+			}
+			redirect_to("?action=retrieve&type=event&id=${id}");
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+			$_SESSION["state"] = "event_create";
+		}
+	}
+
+	function action_valid_event() {
+		global $g_error_msg;
+
+		need_authentication();
+		if (!is_admin()) {
+			$g_error_msg = "You are not admin.";
+			return;
+		}
+		if (!isset($_GET['id'])) {
+			$g_error_msg = "No event selected.";
+			return;
+		}
+		event_valid($_GET['id']);
+		redirect_to("?action=supervision");
+	}
 ?>
