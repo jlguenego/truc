@@ -72,7 +72,7 @@
 			foreach ($tax_array as $tax_rate) {
 				$tax_rate_id = str_replace(".", "_", $tax_rate);
 		?>
-		<tr>
+		<tr id="row_total_<?php echo $tax_rate_id; ?>">
 			<td>Tax(<?php echo $tax_rate; ?>)</td>
 			<td id="total_ht_<?php echo $tax_rate_id; ?>">0.00</td>
 			<td id="total_tax_<?php echo $tax_rate_id; ?>">0.00</td>
@@ -141,19 +141,28 @@
 		var id = new Date().getTime();
 		var content = 	"<tr id=\"ticket_" + id + "\">" +
 							"<td>" + event + "</td>" +
-							"<td>" + label + "</td>" +
-							"<td type=\"amount_ht\">" + eb_curr(amount_ht) + "</td>" +
-							"<td type=\"tax\" value=\"" + eb_curr(tax).replace(".", "_") + "\">" + eb_curr(tax) + "%</td>" +
+							"<td>" +
+								label +
+								"<input type=\"hidden\" name=\"labels[]\" value=\"" + label + "\"/>" +
+							"</td>" +
+							"<td type=\"amount_ht\">" +
+								eb_curr(amount_ht) +
+								"<input type=\"hidden\" name=\"amount_ht[]\" value=\"" + eb_curr(amount_ht) + "\"/>" +
+							"</td>" +
+							"<td type=\"tax\" value=\"" + eb_curr(tax).replace(".", "_") + "\">" +
+								eb_curr(tax) + "%" +
+								"<input type=\"hidden\" name=\"taxes[]\" value=\"" + eb_curr(tax) + "\"/>" +
+							"</td>" +
 							"<td type=\"tax_amount\">" + eb_curr(tax_amount) + "</td>" +
 							"<td>" + eb_curr(amount_ttc) + "</td>" +
-							"<td><input type=\"text\" name=\"title[]\" placeholder=\"(optional) ex: Professor\"/></td>" +
-							"<td><input type=\"text\" name=\"lastname[]\" placeholder=\"mandatory\"/></td>" +
-							"<td><input type=\"text\" name=\"firstname[]\" placeholder=\"mandatory\"/></td>" +
-							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "')\"></td>"
+							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\"/></td>" +
+							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\"/></td>" +
+							"<td><input type=\"text\" name=\"firstnames[]\" placeholder=\"mandatory\"/></td>" +
+							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "')\"/></td>" +
 						"</tr>";
 		$("#tickets").append(content);
 		eb_update_total();
-		$('input').keyup(eb_sync_next_button);
+		$('input[type="text"]').keyup(eb_sync_next_button);
 		eb_sync_next_button();
 	}
 
@@ -175,7 +184,6 @@
 	}
 
 	function eb_update_total() {
-		//alert($('#tickets').html());
 		$('[id*="total_tax_"]').html("0.00");
 		$('[id*="total_ht_"]').html("0.00");
 		$('[id*="total_ttc_"]').html("0.00");
@@ -184,11 +192,8 @@
 		$('#total_due').html("0.00");
 
 		$('#tickets').find($('tr[id*="ticket_"]')).each(function() {
-			//alert($(this).html());
 			var amount_ht = $(this).find($("td[type='amount_ht']")).html();
-			//alert('amount_ht=' + amount_ht);
 			var tax = $(this).find($("td[type='tax']")).attr("value");
-			//alert('tax_amount=' + tax_amount);
 			var tax_amount = $(this).find($("td[type='tax_amount']")).html();
 
 			var total_tax = eb_curr(parseFloat($("#total_tax_" + tax).html()) + parseFloat(tax_amount));
@@ -203,20 +208,33 @@
 			var total_due = eb_curr(parseFloat($("#total_due").html()) + parseFloat(amount_ht) + parseFloat(tax_amount));
 			$("#total_due").html(total_due);
 		});
+
+		$('td[id*="total_ht_"]').each(function() {
+			var id = $(this).attr("id");
+			var tax_id = id.replace("total_ht_", "");
+			var total_ht = parseFloat($(this).html());
+
+			if (total_ht == 0) {
+				$('#row_total_' + tax_id).css("display", "none");
+			} else {
+				$('#row_total_' + tax_id).css("display", "");
+			}
+		});
 	}
 
 
 
 	function eb_sync_next_button() {
 		var test = $('input[type=checkbox]').is(':checked');
-		var c = $("input[name='lastname[]']").length;
+		var c = $("input[name='lastnames[]']").length;
+
 		test = test && (c > 0);
-		$("input[name='firstname[]']").each(function(){
+		$("input[name='firstnames[]']").each(function(){
 			if ($(this).val() == "") {
 				test = false;
 			}
 		});
-		$("input[name='lastname[]']").each(function(){
+		$("input[name='lastnames[]']").each(function(){
 			if ($(this).val() == "") {
 				test = false;
 			}

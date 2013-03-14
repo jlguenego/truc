@@ -8,11 +8,12 @@
 		<th>Event</th>
 		<th>Rate name</th>
 		<th>Unit price</th>
-		<th>Quantity</th>
-		<th>Total tax excluded</th>
 		<th>Taxe rate</th>
 		<th>Taxe amount</th>
 		<th>TTC</th>
+		<th>Title</th>
+		<th>Lastname</th>
+		<th>Firstname</th>
 	</tr>
 <?php
 	foreach ($devis->items as $item) {
@@ -20,20 +21,23 @@
 		$event_rate_name = $item->event_rate_name;
 		$event_rate_amount = curr($item->event_rate_amount);
 		$event_rate_tax = $item->event_rate_tax;
-		$quantity = $item->quantity;
 		$total_ht = curr($item->total_ht);
 		$total_tax = curr($item->total_tax);
 		$total_ttc = curr($item->total_ttc);
+		$participant_firstname = $item->participant_firstname;
+		$participant_lastname = $item->participant_lastname;
+		$participant_title = $item->participant_title;
 ?>
 	<tr>
 		<td><?php echo $event_name; ?></td>
 		<td><?php echo $event_rate_name; ?></td>
 		<td><?php echo $event_rate_amount; ?></td>
-		<td><?php echo $quantity; ?></td>
-		<td><?php echo $total_ht; ?></td>
 		<td><?php echo $event_rate_tax; ?></td>
 		<td><?php echo $total_tax; ?></td>
 		<td><?php echo $total_ttc; ?></td>
+		<td><?php echo $participant_title; ?></td>
+		<td><?php echo $participant_lastname; ?></td>
+		<td><?php echo $participant_firstname; ?></td>
 	</tr>
 <?php
 	}

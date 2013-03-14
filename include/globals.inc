@@ -10,6 +10,7 @@
 		"sign_in",
 		"regular_participation",
 		"nominative_participation",
+		"participation_nominative_recapitulation",
 		"participation_recapitulation",
 		"not_allowed",
 		"event_create",

@@ -7,6 +7,7 @@
 		public $label;
 		public $username;
 		public $address;
+		public $status;
 
 
 		public function compute() {
@@ -34,6 +35,7 @@
 			$label = $this->label;
 			$username = $this->username;
 			$address = $this->address;
+			$status = $this->status;
 
 			$request = <<<EOF
 INSERT INTO `devis`
@@ -45,11 +47,12 @@ SET
 	`total_ttc`="${total_ttc}",
 	`label`="${label}",
 	`username`="${username}",
-	`address`="${address}";
+	`address`="${address}",
+	`status`=${status};
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {
-				echo($request.'<br/>');
+				debug($request);
 				throw new Exception("Devis insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
 

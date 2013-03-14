@@ -265,9 +265,12 @@
 		case "participate":
 			need_authentication();
 			try {
-				if ($_SESSION["state"] == "nominative_participation") {
+				if ($_SESSION["state"] == "nominative_participation"
+					|| $_SESSION["state"] == "participation_nominative_recapitulation") {
+					debug("nominative_participation");
 					action_nominative_participate();
 				} else {
+					debug("regular_participation");
 					action_participate();
 				}
 			} catch (Exception $e) {

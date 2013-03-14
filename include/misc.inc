@@ -130,7 +130,7 @@ EOF;
 		}
 	}
 
-	function mail_to($mail, $login, $key) {
+	function mail_inscription($mail, $login, $key) {
 		$mailcrypt = sha1($mail);
 		if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)){ //Mise aux normes
 			$passage_ligne = "\r\n";
@@ -144,6 +144,54 @@ EOF;
 		$msg_html.= 'Veuillez cliquer sur le liens suivant pour activer votre compte:<br/>'.$passage_ligne;
 		$msg_html.= '<a href="'.$lien.'">'.$lien.'</a><br/><br/>'.$passage_ligne.$passage_ligne.'</p>';
 
+		$msg_txt = htmlspecialchars($msg_html);
+		$boundary = '----='.md5(rand());
+		$boundary_alt = "-----=".md5(rand());
+
+		/*FORMATION DU HEADER*/
+		$header = 'From: "'.CONTACT_MAIL.'" <'.CONTACT_MAIL.'>'.$passage_ligne;
+		$header.= 'MIME-Version: 1.0'.$passage_ligne;
+		$header.= 'Content-Type: multipart/mixed;'.$passage_ligne.' boundary="'.$boundary.'"'.$passage_ligne;
+
+		/*CONTENU DU MAIL*/
+		$content = $passage_ligne.'--'.$boundary.$passage_ligne;
+		$content.= 'Content-Type: multipart/alternative;'.$passage_ligne.' boundary="'.$boundary_alt.'"'.$passage_ligne;
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+
+		//Message texte
+		$content.= 'Content-Type: text/plain; charset="utf-8"'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_txt.$passage_ligne;
+
+		//-----------------------------------------------------------
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+
+		//Message html
+		$content.= 'Content-Type: text/html; charset=utf-8'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_html.$passage_ligne;
+
+		//-----------------------------------------------------------
+		$content.= $passage_ligne."--".$boundary_alt."--".$passage_ligne;
+		$content.= $passage_ligne."--".$boundary."--".$passage_ligne;
+
+		/*ENVOI DU MAIL*/
+		$subject = "Activate your account";
+		mail($mail, $subject, $content, $header);
+  	}
+
+  	function mail_payment($mail) {
+		$mailcrypt = sha1($mail);
+		if (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $mail)){ //Mise aux normes
+			$passage_ligne = "\r\n";
+		}else{
+			$passage_ligne = "\n";
+		}
+
+		//if () {
+			$msg_html = '<p>Your payment has been autho.';
+			$msg_html.= $passage_ligne.$passage_ligne.'</p>';
+		//}
 
 		$msg_txt = htmlspecialchars($msg_html);
 		$boundary = '----='.md5(rand());

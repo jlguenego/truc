@@ -47,9 +47,9 @@ SET
 	`total_tax`=${total_tax},
 	`total_ttc`=${total_ttc},
 	`id_devis`=${id_devis},
-	`participant_firstname`=${participant_firstname},
-	`participant_lastname`=${participant_lastname},
-	`participant_title`=${participant_title};
+	`participant_firstname`="${participant_firstname}",
+	`participant_lastname`="${participant_lastname}",
+	`participant_title`="${participant_title}";
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {

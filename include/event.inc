@@ -241,4 +241,11 @@ EOF;
 			}
 		}
 	}
+
+	function event_is_confirmed($event) {
+		if ($event['funding_wanted'] <= $event['funding_acquired']) {
+			return TRUE;
+		}
+		return FALSE;
+	}
 ?>

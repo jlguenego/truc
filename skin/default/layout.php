@@ -1,3 +1,6 @@
+<?php
+	header("Cache-Control: no-cache");
+?>
 <html>
 	<head>
 		<title>EventIf</title>

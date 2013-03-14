@@ -21,6 +21,10 @@
 	define('ACTIVATION_STATUS_NOT_ACTIVATED', 0);
 	define('ACTIVATION_STATUS_ACTIVATED', 1);
 
+	define('DEVIS_STATUS_AUTHORIZED', 0);
+	define('DEVIS_STATUS_CAPTURED', 1);
+	define('DEVIS_STATUS_REFUSED', 2);
+
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 
 	define('PAYMENT_PROVIDER', 'intern');

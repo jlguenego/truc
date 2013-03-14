@@ -192,7 +192,7 @@ EOF;
 		}
 		$user = get_user($id);
 		if (!is_activated($user)) {
-			mail_to($mail, $login, $key);
+			mail_inscription($mail, $login, $key);
 		}
 	}
 

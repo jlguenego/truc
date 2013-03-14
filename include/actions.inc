@@ -81,11 +81,45 @@
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
 		$devis->address = $_GET['address'];
-		$rates = events_rates($_GET["event_id"]);
 		$event = get_event($_GET["event_id"]);
+		if (event_is_confirmed($event)) {
+			$devis->status = DEVIS_STATUS_CAPTURED;
+		} else {
+			$devis->status = DEVIS_STATUS_AUTHORIZED;
+		}
+
 		$total_ttc = 0.00;
 
+		$labels = $_GET['labels'];
+		$amount_ht = $_GET['amount_ht'];
+		$taxes = $_GET['taxes'];
+		$lastnames = $_GET['lastnames'];
+		$titles = $_GET['titles'];
+		$i = 0;
+		foreach ($_GET['firstnames'] as $firstname) {
+			$item = new Item();
 
+			$item->event_name = $event["title"];
+			$item->event_rate_name = $labels[$i];
+			$item->event_rate_amount = $amount_ht[$i];
+			$item->event_rate_tax = $taxes[$i];
+			$item->quantity = 1;
+			$item->participant_firstname = $firstname;
+			$item->participant_lastname = $lastnames[$i];
+			$item->participant_title = $titles[$i];
+
+			$item->compute();
+
+			$devis->items[] = $item;
+			$i++;
+		}
+
+		$devis->compute();
+
+		$g_display["devis"] = $devis;
+		$_SESSION["devis"] = $devis;
+		$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
+		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
 
 	function action_success_payment() {
@@ -96,7 +130,9 @@
 			}
 			$devis = $_SESSION['devis'];
 			$devis->store();
-			//send_success_payment_mail();
+			$user = get_user(get_id_from_account());
+			debug($user["email"]);
+			mail_payment($user["email"]);
 			$_SESSION['state'] = "success_payment";
 		} catch (Exception $e) {
 			$g_error_message = $e->getMessage();

@@ -58,6 +58,7 @@ CREATE TABLE devis(
         label     Varchar(255) NOT NULL ,
         username  Varchar(255) NOT NULL ,
         address   Varchar(255) NOT NULL ,
+        status    Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
