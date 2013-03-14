@@ -34,7 +34,7 @@ How many ticket do you want?
 			$tax_array = array();
 			foreach ($rates as $rate) {
 				$event_title = $event["title"];
-				$amount_ht = curr($rate["amount"]);
+				$amount_ht = str_replace(",", "", curr($rate["amount"]));
 				$label = $rate["label"];
 				$tax_rate = $rate["tax_rate"];
 				if (!in_array($tax_rate, $tax_array)) {

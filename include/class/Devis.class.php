@@ -7,7 +7,8 @@
 		public $label;
 		public $username;
 		public $address;
-		public $status;
+		public $status = DEVIS_STATUS_AUTHORIZED;
+		public $event_id;
 
 
 		public function compute() {
@@ -36,6 +37,8 @@
 			$username = $this->username;
 			$address = $this->address;
 			$status = $this->status;
+			$id_user = get_id_from_account();
+			$id_event = $this->event_id;
 
 			$request = <<<EOF
 INSERT INTO `devis`
@@ -48,7 +51,9 @@ SET
 	`label`="${label}",
 	`username`="${username}",
 	`address`="${address}",
-	`status`=${status};
+	`status`=${status},
+	`id_user`=${id_user},
+	`id_event`=${id_event};
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {

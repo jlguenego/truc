@@ -138,13 +138,14 @@ EOF;
 
 	function get_user($id) {
 		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
+
 		$request = <<<EOF
-SELECT * FROM `${dbname}`.`user`
-WHERE `id`= :id
+SELECT * FROM `user`
+WHERE `id`= ${id}
 EOF;
+		debug($request);
 		$q = $g_pdo->prepare($request);
-		$q->execute(array(":id" => $id));
+		$q->execute();
 		$user = $q->fetch();
 		if (!isset($user['id'])) {
 			return NULL;

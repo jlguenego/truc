@@ -44,7 +44,8 @@ EOF;
 		$id_user = get_id_from_account();
 		$created_t = time();
 		$mod_t = $created_t;
-		$status = EVENT_STATUS_SUBMITTED;
+		$status = EVENT_STATUS_PLANNED;
+		$publish_flag = EVENT_PUBLISH_FLAG_NO;
 		$request = <<<EOF
 INSERT INTO `${dbname}`.`event`
 SET
@@ -61,7 +62,8 @@ SET
 	`event_deadline`="${event_deadline}",
 	`funding_wanted`="${funding_wanted}",
 	`nominative`=${nominative},
-	`status`=${status}
+	`status`=${status},
+	`publish_flag`=${publish_flag}
 EOF;
 		debug($request);
 		$g_pdo->exec($request);
@@ -193,10 +195,10 @@ EOF;
 		return FALSE;
 	}
 
-	function event_valid($id) {
+	// Planned, Confirmed, Cancelled.
+	function event_set_status($id, $status) {
 		global $g_pdo;
 
-		$status = EVENT_STATUS_VALIDATED;
 		$request = <<<EOF
 UPDATE `event`
 SET
@@ -205,5 +207,42 @@ WHERE `id`="${id}"
 EOF;
 		debug($request);
 		return $g_pdo->exec($request);
+	}
+
+	function event_set_publish_flag($id, $flag) {
+		global $g_pdo;
+
+		$request = <<<EOF
+UPDATE `event`
+SET
+	`publish_flag`=${flag}
+WHERE `id`="${id}"
+EOF;
+		debug($request);
+		return $g_pdo->exec($request);
+	}
+
+	function event_get_participants_mails($event_id) {
+		global $g_pdo;
+
+		$request = <<<EOF
+SELECT `id_user` FROM `devis`
+WHERE `id_event`=${event_id}
+EOF;
+		debug($request);
+		$q = $g_pdo->prepare($request);
+		if ($q->execute() === FALSE) {
+			debug($request);
+			throw new Exception("Get event participants mails: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
+		};
+
+		$mails = array();
+		while ($tbl = $q->fetch()) {
+			$user_id = $tbl[0];
+			$user = get_user($user_id);
+			$mails[] = $user['email'];
+		}
+		debug("mails=".sprint_r($mails));
+		return $mails;
 	}
 ?>

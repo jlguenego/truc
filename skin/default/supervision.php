@@ -3,35 +3,46 @@
 	<tr>
 		<th>Event name</th>
 		<th>Event date</th>
-		<th>Deadline</th>
+		<th>Confirmation date</th>
 		<th>Status</th>
+		<th>Publish flag</th>
 	</tr>
 <?php
 		foreach ($g_display["events"] as $event) {
+			$status = $g_event_states[$event['status']];
+			$publish_flag = $g_event_publish_flag[$event['publish_flag']];
 ?>
 	<tr>
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event['id'] ?>"><?php echo $event['title'] ?></a></td>
 		<td><?php echo date("d M Y", $event["event_date"]); ?></td>
 		<td><?php echo date("d M Y", $event["event_deadline"]); ?></td>
-		<td><?php echo $event["status"]; ?></td>
+		<td><?php echo $status; ?></td>
+		<td><?php echo $publish_flag; ?></td>
 <?php
-		$publish_button_grey = "";
-		$unpublish_button_grey = "";
-		$confirm_button_grey = "";
-		$cancel_button_grey = "";
-		if ($event["status"] == EVENT_STATUS_SUBMITTED) {
-			$confirm_button_grey = "disabled";
-			$cancel_button_grey = "disabled";
-			$unpublish_button_grey = "disabled";
-		} else {
-			$publish_button_grey = "disabled";
-		}
+			$confirm_button_grey = "";
+			$cancel_button_grey = "";
+			if ($event["status"] != EVENT_STATUS_PLANNED) {
+				$confirm_button_grey = "disabled";
+				$cancel_button_grey = "disabled";
+			}
+			if ($event["publish_flag"] == EVENT_PUBLISH_FLAG_NO) {
 ?>
 		<td>
-			<form action="?action=valid_event&amp;id=<?php echo $event['id'] ?>" method="POST">
-				<input type="submit" value="Publish event" <?php echo $publish_button_grey ?>/>
+			<form action="?action=publish_event&amp;id=<?php echo $event['id'] ?>" method="POST">
+				<input type="submit" value="Publish event"/>
 			</form>
 		</td>
+<?php
+			} else {
+?>
+		<td>
+			<form action="?action=unpublish_event&amp;id=<?php echo $event['id'] ?>" method="POST">
+				<input type="submit" value="Unpublish event"/>
+			</form>
+		</td>
+<?php
+			}
+?>
 		<td>
 			<form action="?action=confirm_event&amp;id=<?php echo $event['id'] ?>" method="POST">
 				<input type="submit" value="Confirm event" <?php echo $confirm_button_grey ?>/>
@@ -40,11 +51,6 @@
 		<td>
 			<form action="?action=cancel_event&amp;id=<?php echo $event['id'] ?>" method="POST">
 				<input type="submit" value="Cancel event" <?php echo $cancel_button_grey ?>/>
-			</form>
-		</td>
-		<td>
-			<form action="?action=unpublish_event&amp;id=<?php echo $event['id'] ?>" method="POST">
-				<input type="submit" value="Unpublish event" <?php echo $unpublish_button_grey ?>/>
 			</form>
 		</td>
 	</tr>

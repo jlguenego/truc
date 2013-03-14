@@ -24,11 +24,13 @@
 	define('DEVIS_STATUS_AUTHORIZED', 0);
 	define('DEVIS_STATUS_CAPTURED', 1);
 	define('DEVIS_STATUS_REFUSED', 2);
-	
-	define('EVENT_STATUS_SUBMITTED', 0);
-	define('EVENT_STATUS_VALIDATED', 1);
-	define('EVENT_STATUS_CONFIRMED', 2);
-	define('EVENT_STATUS_CANCELLED', 3);
+
+	define('EVENT_PUBLISH_FLAG_NO', 0);
+	define('EVENT_PUBLISH_FLAG_YES', 1);
+
+	define('EVENT_STATUS_PLANNED', 0);
+	define('EVENT_STATUS_CONFIRMED', 1);
+	define('EVENT_STATUS_CANCELLED', 2);
 
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 

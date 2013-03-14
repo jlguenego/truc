@@ -15,6 +15,7 @@ CREATE TABLE event(
         long_description  Text,
         nominative        Bool NOT NULL ,
         status            Int NOT NULL ,
+        publish_flag      Int NOT NULL ,
         id_user           Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
@@ -60,6 +61,8 @@ CREATE TABLE devis(
         username  Varchar(255) NOT NULL ,
         address   Varchar(255) NOT NULL ,
         status    Int NOT NULL ,
+        id_user   Int NOT NULL ,
+        id_event  Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
@@ -80,14 +83,8 @@ CREATE TABLE devis_item(
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
-CREATE TABLE participate(
-        id_user  Int NOT NULL ,
-        id_event Int NOT NULL ,
-        PRIMARY KEY (id_user,id_event)
-)ENGINE=InnoDB;
-
 ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE rate ADD CONSTRAINT FK_rate_id_event FOREIGN KEY (id_event) REFERENCES event(id);
+ALTER TABLE devis ADD CONSTRAINT FK_devis_id_user FOREIGN KEY (id_user) REFERENCES user(id);
+ALTER TABLE devis ADD CONSTRAINT FK_devis_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE devis_item ADD CONSTRAINT FK_devis_item_id_devis FOREIGN KEY (id_devis) REFERENCES devis(id);
-ALTER TABLE participate ADD CONSTRAINT FK_participate_id_user FOREIGN KEY (id_user) REFERENCES user(id);
-ALTER TABLE participate ADD CONSTRAINT FK_participate_id_event FOREIGN KEY (id_event) REFERENCES event(id);

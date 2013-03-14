@@ -27,7 +27,14 @@
 	);
 
 	$g_event_states = array(
-		"Submitted",
+		EVENT_STATUS_PLANNED => "Planned",
+		EVENT_STATUS_CONFIRMED => "Confirmed",
+		EVENT_STATUS_CANCELLED => "Cancelled",
+	);
+
+	$g_event_publish_flag = array(
+		EVENT_PUBLISH_FLAG_YES => "Published",
+		EVENT_PUBLISH_FLAG_NO => "Non Published",
 	);
 
 	$g_tax_rates = array(

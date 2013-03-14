@@ -252,8 +252,17 @@
 		case "supervision" :
 			action_supervision();
 			break;
-		case "valid_event":
-			action_valid_event();
+		case "publish_event":
+			action_publish_event();
+			break;
+		case "unpublish_event":
+			action_unpublish_event();
+			break;
+		case "confirm_event":
+			action_confirm_event();
+			break;
+		case "cancel_event":
+			action_cancel_event();
 			break;
 		default:
 			break;

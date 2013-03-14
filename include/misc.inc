@@ -119,7 +119,7 @@ EOF;
 	}
 
 	function curr($nbr) {
-		return "".number_format($nbr, 2);
+		return "".str_replace(",", "",number_format($nbr, 2));
 	}
 
 	function echo_default_value($name, $default = "") {
@@ -188,10 +188,8 @@ EOF;
 			$passage_ligne = "\n";
 		}
 
-		//if () {
-			$msg_html = '<p>Your payment has been autho.';
-			$msg_html.= $passage_ligne.$passage_ligne.'</p>';
-		//}
+		$msg_html = '<p>Your payment has been autho.';
+		$msg_html.= $passage_ligne.$passage_ligne.'</p>';
 
 		$msg_txt = htmlspecialchars($msg_html);
 		$boundary = '----='.md5(rand());
@@ -225,8 +223,54 @@ EOF;
 		$content.= $passage_ligne."--".$boundary."--".$passage_ligne;
 
 		/*ENVOI DU MAIL*/
-		$subject = "Activate your account";
+		$subject = "Payment authorization";
 		mail($mail, $subject, $content, $header);
+  	}
+
+  	function mail_event_confirm($event_id) {
+		$passage_ligne = "\r\n";
+
+		$msg_html = '<p>Event is confirmed. We will take your money.';
+		$msg_html.= $passage_ligne.$passage_ligne.'</p>';
+
+		$msg_txt = htmlspecialchars($msg_html);
+		$boundary = '----='.md5(rand());
+		$boundary_alt = "-----=".md5(rand());
+
+		/*CONTENU DU MAIL*/
+		$content = $passage_ligne.'--'.$boundary.$passage_ligne;
+		$content.= 'Content-Type: multipart/alternative;'.$passage_ligne.' boundary="'.$boundary_alt.'"'.$passage_ligne;
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+
+		//Message texte
+		$content.= 'Content-Type: text/plain; charset="utf-8"'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_txt.$passage_ligne;
+
+		//-----------------------------------------------------------
+		$content.= $passage_ligne.'--'.$boundary_alt.$passage_ligne;
+
+		//Message html
+		$content.= 'Content-Type: text/html; charset=utf-8'.$passage_ligne;
+		$content.= 'Content-Transfer-Encoding: 8bit'.$passage_ligne;
+		$content.= $passage_ligne.$msg_html.$passage_ligne;
+
+		//-----------------------------------------------------------
+		$content.= $passage_ligne."--".$boundary_alt."--".$passage_ligne;
+		$content.= $passage_ligne."--".$boundary."--".$passage_ligne;
+
+		/*ENVOI DU MAIL*/
+		$subject = "Event confirmation";
+
+		$mails = event_get_participants_mails($event_id);
+		foreach ($mails as $mail) {
+			/*FORMATION DU HEADER*/
+			$header = 'From: "'.CONTACT_MAIL.'" <'.CONTACT_MAIL.'>'.$passage_ligne;
+			$header.= 'MIME-Version: 1.0'.$passage_ligne;
+			$header.= 'Content-Type: multipart/mixed;'.$passage_ligne.' boundary="'.$boundary.'"'.$passage_ligne;
+
+			mail($mail, $subject, $content, $header);
+		}
   	}
 
 	function sprint_r($var) {

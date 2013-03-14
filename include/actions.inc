@@ -42,6 +42,7 @@
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
 		$devis->address = $_GET['address'];
+		$devis->event_id = $_GET["event_id"];
 		$rates = events_rates($_GET["event_id"]);
 		$event = get_event($_GET["event_id"]);
 		$total_ttc = 0.00;
@@ -81,6 +82,7 @@
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
 		$devis->address = $_GET['address'];
+		$devis->event_id = $_GET["event_id"];
 		$event = get_event($_GET["event_id"]);
 		if (event_is_confirmed($event)) {
 			$devis->status = DEVIS_STATUS_CAPTURED;
@@ -279,7 +281,7 @@
 		}
 	}
 
-	function action_valid_event() {
+	function action_publish_event() {
 		global $g_error_msg;
 
 		need_authentication();
@@ -291,7 +293,56 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		event_valid($_GET['id']);
+		event_set_publish_flag($_GET['id'], EVENT_PUBLISH_FLAG_YES);
+		redirect_to("?action=supervision");
+	}
+
+	function action_unpublish_event() {
+		global $g_error_msg;
+
+		need_authentication();
+		if (!is_admin()) {
+			$g_error_msg = "You are not admin.";
+			return;
+		}
+		if (!isset($_GET['id'])) {
+			$g_error_msg = "No event selected.";
+			return;
+		}
+		event_set_publish_flag($_GET['id'], EVENT_PUBLISH_FLAG_NO);
+		redirect_to("?action=supervision");
+	}
+
+	function action_confirm_event() {
+		global $g_error_msg;
+
+		need_authentication();
+		if (!is_admin()) {
+			$g_error_msg = "You are not admin.";
+			return;
+		}
+		if (!isset($_GET['id'])) {
+			$g_error_msg = "No event selected.";
+			return;
+		}
+		event_set_status($_GET['id'], EVENT_STATUS_CONFIRMED);
+		mail_event_confirm($_GET['id']);
+		redirect_to("?action=supervision");
+	}
+
+	function action_cancel_event() {
+		global $g_error_msg;
+
+		need_authentication();
+		if (!is_admin()) {
+			$g_error_msg = "You are not admin.";
+			return;
+		}
+		if (!isset($_GET['id'])) {
+			$g_error_msg = "No event selected.";
+			return;
+		}
+		event_set_status($_GET['id'], EVENT_STATUS_CANCELLED);
 		redirect_to("?action=supervision");
 	}
 ?>
