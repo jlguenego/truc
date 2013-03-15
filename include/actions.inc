@@ -1,4 +1,299 @@
 <?php
+	function action() {
+		switch ($_GET["action"]) {
+			case "sign_out":
+				action_signout();
+				break;
+			case "sign_in":
+				$_SESSION["state"] = "sign_in";
+				break;
+			case "get_form":
+				action_get_form();
+				break;
+			case "create":
+				action_create();
+				break;
+			case "retrieve":
+				switch ($_GET["type"]) {
+					case "events":
+						global $g_display;
+						$g_display["events"] = event_list();
+						$_SESSION["state"] = "events_list";
+						break;
+					case "event":
+						action_retrieve_event();
+						break;
+					case "account":
+						action_retrieve_account();
+						break;
+					default:
+						$_SESSION["state"] = "not_allowed";
+						break;
+				}
+
+				break;
+			case "update":
+				switch ($_GET["type"]) {
+					case "account":
+						try {
+							need_authentication();
+							if (is_null_or_empty($_GET["id"])) {
+								$_GET["id"] = get_id_from_account();
+							}
+							if (user_exists($_GET["id"])) {
+								$g_display["user"] = get_user($_GET["id"]);
+								valid_user_update();
+								update_user($user['id'], $user['password'],
+									$user['email']);
+								redirect_to("?action=retrieve&type=account&id=".$_GET["id"]);
+							} else {
+								throw new Exception(_t("This user does not exists."));
+							}
+						} catch (Exception $e) {
+							$g_error_msg = $e->getMessage();
+							$_SESSION["state"] = "account_update";
+						}
+						break;
+					case "event":
+						action_update_event();
+						break;
+					default:
+						$_SESSION["state"] = "not_allowed";
+						break;
+				}
+				break;
+			case "delete":
+				switch ($_GET["type"]) {
+					case "event":
+						$g_display["event"] = get_event($_GET["id"]);
+						if ($_SESSION["state"] == "event_delete") {
+							try {
+								need_authentication();
+								action_event_delete();
+								$_SESSION["state"] = "root";
+							} catch (Exception $e) {
+								$g_error_msg = $e->getMessage();
+							}
+						} else {
+							$_SESSION["state"] = "event_delete";
+						}
+						break;
+					default:
+						$_SESSION["state"] = "not_allowed";
+						break;
+				}
+				break;
+			case "authenticate":
+				switch ($_SESSION["state"]) {
+					case "sign_in":
+						action_authenticate();
+						break;
+					default:
+						$_SESSION["state"] = "not_allowed";
+						$g_error_msg = "Action not permitted from the state we are.";
+						break;
+				}
+				break;
+			case "participate":
+				need_authentication();
+				try {
+					if ($_SESSION["state"] == "nominative_participation"
+						|| $_SESSION["state"] == "participation_nominative_recapitulation") {
+						debug("nominative_participation");
+						action_nominative_participate();
+					} else {
+						debug("regular_participation");
+						action_participate();
+					}
+				} catch (Exception $e) {
+					$g_error_msg = $e->getMessage();
+					$g_display["user"] = get_user(get_id_from_account());
+					$g_display["event"] = get_event($_GET["event_id"]);
+					$g_display["rates"] = events_rates($_GET["event_id"]);
+					if ($g_display["event"]["nominative"] == 1) {
+						$_SESSION["state"] = "nominative_participation";
+					} else {
+						$_SESSION["state"] = "regular_participation";
+					}
+				}
+				break;
+			case "activation":
+				try {
+					$user = user_activate($_GET["key"]);
+					$g_info_msg = "Account successfully activated";
+					$_GET["login"] = $user["login"];
+					$_SESSION["state"] = "sign_in";
+				} catch (Exception $e) {
+					$g_error_msg = $e->getMessage();
+					$_SESSION["state"] = "error";
+				}
+				break;
+			case "payment_cancel":
+				$_SESSION["state"] = "payment_cancel";
+				break;
+			case "payment_success":
+				action_payment_success();
+				break;
+			case "supervision" :
+				action_supervision();
+				break;
+			case "publish_event":
+				action_publish_event();
+				break;
+			case "unpublish_event":
+				action_unpublish_event();
+				break;
+			case "confirm_event":
+				action_confirm_event();
+				break;
+			case "cancel_event":
+				action_cancel_event();
+				break;
+			default:
+				break;
+		}
+	}
+
+	function action_signout() {
+		unset($_SESSION["login"]);
+		$_SESSION["state"] = "root";
+	}
+
+	function action_get_form() {
+		switch ($_GET["type"]) {
+			case "event":
+				action_get_form_event();
+				break;
+			case "account":
+				action_get_form_account();
+				break;
+			case "participation":
+				action_get_form_participation();
+				break;
+		}
+	}
+
+	function action_get_form_account() {
+		global $g_display;
+
+		if (is_null_or_empty($_GET["id"])) {
+		$_SESSION["state"] = "account_create";
+		} else {
+			$g_display["user"] = get_user($_GET["id"]);
+			$_SESSION["state"] = "account_update";
+		}
+	}
+
+	function action_get_form_event() {
+		global $g_display;
+
+		need_authentication();
+		if (is_null_or_empty($_GET["id"])) {
+			$_SESSION["state"] = "event_create";
+		} else {
+			$g_display["event"] = get_event($_GET["id"]);
+			$g_display["rates"] = events_rates($_GET["id"]);
+			$_SESSION["state"] = "event_update";
+		}
+	}
+
+	function action_get_form_participation() {
+		global $g_display;
+		global $g_error_msg;
+
+		need_authentication();
+		if (!is_null_or_empty($_GET["event_id"])) {
+			$event = new Event();
+			$event->load($_GET["event_id"]);
+			if (!$event->is_published()) {
+				$_SESSION["state"] = "not_allowed";
+				$g_error_msg = "This event is not published yet.";
+				return;
+			}
+			$g_display["user"] = get_user(get_id_from_account());
+			$g_display["event"] = $event;
+			$g_display["rates"] = events_rates($_GET["event_id"]);
+			if ($g_display["event"]->nominative == 1) {
+				$_SESSION["state"] = "nominative_participation";
+			} else {
+				$_SESSION["state"] = "regular_participation";
+			}
+		} else {
+			$_SESSION["state"] = "not_allowed";
+			$g_error_msg = "No event selected.";
+		}
+	}
+
+	function action_create() {
+		switch ($_GET["type"]) {
+			case "event":
+				action_create_event();
+				break;
+			case "account":
+				action_create_account();
+				break;
+			default:
+				$_SESSION["state"] = "not_allowed";
+				break;
+		}
+	}
+
+	function action_create_account() {
+		global $g_info_msg;
+		global $g_error_msg;
+
+		try {
+			valid_user();
+			add_user($_GET['firstname'], $_GET['lastname'], $_GET['login'],
+				$_GET['password'], $_GET['email'], $_GET['address']);
+			$g_info_msg = "Account successfully created. Check your email for activation.";
+			$_SESSION["state"] = "root";
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+		}
+	}
+
+	function action_retrieve_event() {
+		global $g_display;
+		global $g_error_msg;
+
+		if (!is_null_or_empty($_GET["id"])) {
+			if (event_exists($_GET["id"])) {
+				$event = new Event();
+				$event->load($_GET["id"]);
+				if (!$event->is_published() && !user_can_administrate_event($event)) {
+					$_SESSION["state"] = "not_allowed";
+					$g_error_msg = "This event is not published yet.";
+				} else {
+					$_SESSION["state"] = "event_retrieve";
+					$g_display["event"] = $event;
+					$g_display["author"] = get_user($event->user_id);
+				}
+			} else {
+				$_SESSION["state"] = "not_allowed";
+				$g_error_msg = "Event does not exists.";
+			}
+		} else {
+			$_SESSION["state"] = "not_allowed";
+			$g_error_msg = "No event selected.";
+		}
+	}
+
+	function action_retrieve_account() {
+		global $g_display;
+
+		need_authentication();
+		$_GET["id"] = get_id_from_account();
+		$g_display["user"] = get_user($_GET["id"]);
+		$g_display["events_organized"] = user_events($_GET["id"]);
+		$g_display["participations"] = user_participations($_GET["id"]);
+		foreach ($g_display["participations"] as $participation) {
+			$g_display["participations"]["event"] =
+				get_event($participation["id_event"]);
+		}
+		$_SESSION["state"] = "account_retrieve";
+	}
+
 	function action_authenticate() {
 		global $g_error_msg;
 		if (isset($_GET['login']) && isset($_GET['password'])) {
@@ -23,11 +318,6 @@
 		debug("END Action_Authenticate");
 	}
 
-	function action_signout() {
-		unset($_SESSION["login"]);
-		$_SESSION["state"] = "root";
-	}
-
 	function action_activate_account() {
 		return activate($_GET["key"]);
 	}
@@ -44,7 +334,8 @@
 		$devis->address = $_GET['address'];
 		$devis->event_id = $_GET["event_id"];
 		$rates = events_rates($_GET["event_id"]);
-		$event = get_event($_GET["event_id"]);
+		$event = new Event();
+		$event->load($_GET["event_id"]);
 		$total_ttc = 0.00;
 		$i = 0;
 		while (isset($_GET["ticket_${i}"])) {
@@ -54,7 +345,7 @@
 			if ($_GET["ticket_${i}"] > 0) {
 				$item = new Item();
 
-				$item->event_name = $event["title"];
+				$item->event_name = $event->title;
 				$item->event_rate_name = $rates[$i]["label"];
 				$item->event_rate_amount = $rates[$i]["amount"];
 				$item->event_rate_tax = $rates[$i]["tax_rate"];
@@ -69,7 +360,7 @@
 		$devis->compute();
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
-		$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
+		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_recapitulation";
 	}
 
@@ -124,18 +415,18 @@
 		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
 
-	function action_success_payment() {
+	function action_payment_success() {
 		global $g_error_message;
 		try {
-			if ($_SESSION['state'] == "success_payment") {
+			if ($_SESSION['state'] == "payment_success") {
 				return;
 			}
 			$devis = $_SESSION['devis'];
 			$devis->store();
 			$user = get_user(get_id_from_account());
 			debug($user["email"]);
-			mail_payment($user["email"]);
-			$_SESSION['state'] = "success_payment";
+			mail_payment($user["email"], $devis);
+			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
 			$g_error_message = $e->getMessage();
 			$_SESSION["state"] = "error";
@@ -210,45 +501,6 @@
 		}
 	}
 
-	function action_get_form_account() {
-		if (is_null_or_empty($_GET["id"])) {
-		$_SESSION["state"] = "account_create";
-		} else {
-			$g_display["user"] = get_user($_GET["id"]);
-			$_SESSION["state"] = "account_update";
-		}
-	}
-
-	function action_get_form_event() {
-		need_authentication();
-		if (is_null_or_empty($_GET["id"])) {
-			$_SESSION["state"] = "event_create";
-		} else {
-			$g_display["event"] = get_event($_GET["id"]);
-			$g_display["rates"] = events_rates($_GET["id"]);
-			$_SESSION["state"] = "event_update";
-		}
-	}
-
-	function action_get_form_participation() {
-		global $g_display;
-
-		need_authentication();
-		if (!is_null_or_empty($_GET["event_id"])) {
-			$g_display["user"] = get_user(get_id_from_account());
-			$g_display["event"] = get_event($_GET["event_id"]);
-			$g_display["rates"] = events_rates($_GET["event_id"]);
-			if ($g_display["event"]["nominative"] == 1) {
-				$_SESSION["state"] = "nominative_participation";
-			} else {
-				$_SESSION["state"] = "regular_participation";
-			}
-		} else {
-			$_SESSION["state"] = "not_allowed";
-			$g_error_msg = "No event selected.";
-		}
-	}
-
 	function action_create_event() {
 		global $g_error_msg;
 
@@ -261,11 +513,20 @@
 			if (isset($_GET['nominative'])) {
 				$nominative = 1;
 			}
-			event_create($id, $_GET['title'], $_GET['date'],
-				$_GET['deadline'], $_GET['funding_wanted'],
-				$_GET['location'], $_GET['link'],
-				$_GET['short_description'], $_GET['long_description'],
-				$nominative);
+			$event = new Event();
+			$event->id = $id;
+			$event->title = $_GET['title'];
+			$event->deadline = $_GET['deadline'];
+			$event->date = $_GET['date'];
+			$event->funding_wanted = $_GET['funding_wanted'];
+			$event->location = $_GET['location'];
+			$event->link = $_GET['link'];
+			$event->description_short = $_GET['short_description'];
+			$event->description_long = $_GET['long_description'];
+			$event->nominative = $nominative;
+			$event->user_id = get_id_from_account();
+			$event->store();
+			debug(sprint_r($event));
 
 			$i = 0;
 			foreach ($_GET['labels'] as $label) {
@@ -326,6 +587,7 @@
 			return;
 		}
 		event_set_status($_GET['id'], EVENT_STATUS_CONFIRMED);
+		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CAPTURED);
 		mail_event_confirm($_GET['id']);
 		redirect_to("?action=supervision");
 	}
@@ -343,6 +605,57 @@
 			return;
 		}
 		event_set_status($_GET['id'], EVENT_STATUS_CANCELLED);
+		mail_event_cancel($_GET['id']);
 		redirect_to("?action=supervision");
+	}
+
+	function action_update_event() {
+		global $g_display;
+		global $g_error_msg;
+
+		try {
+			need_authentication();
+			debug("event_id=".$_GET["id"]);
+			if (!is_null_or_empty($_GET["id"])) {
+				if (event_exists($_GET["id"])) {
+					$_SESSION["state"] = "event_update";
+					$g_display["event"] = get_event($_GET["id"]);
+					$g_display["rates"] = events_rates($_GET["id"]);
+					event_check_owner($g_display["event"]);
+					action_event_valid(TRUE);
+					$event = new Event();
+					$event->load($_GET["id"]);
+					$event->id = $_GET["id"];
+					$event->title = $_GET['title'];
+					$event->deadline = $_GET['deadline'];
+					$event->date = $_GET['date'];
+					$event->funding_wanted = $_GET['funding_wanted'];
+					$event->location = $_GET['location'];
+					$event->link = $_GET['link'];
+					$event->description_short = $_GET['short_description'];
+					$event->description_long = $_GET['long_description'];
+					//$event->nominative = $_GET['nominative'];
+					$event->update();
+
+					$i = 0;
+					foreach ($_GET['labels'] as $label) {
+						$rate = $_GET['rates'][$i];
+						$tax_rate = $_GET['tax_rates'][$i];
+						update_rate($_GET["id"], $label, $tax_rate, $rate);
+						$i++;
+					}
+					delete_unuse_rates($_GET["id"], $_GET['labels']);
+					redirect_to("?action=retrieve&type=event&id=".$_GET["id"]);
+				} else {
+					redirect_to("?action=create&type=event");
+				}
+			} else {
+				$_SESSION["state"] = "not_allowed";
+				$g_error_msg = "No event selected.";
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+			$_SESSION["state"] = "event_update";
+		}
 	}
 ?>

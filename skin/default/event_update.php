@@ -4,7 +4,7 @@
 ?>
 <script type="text/javascript">
 	taxes = new Array(
-	
+
 	<?php
 		$is_first = TRUE;
 		foreach ($g_tax_rates as $name => $rate) {
@@ -42,15 +42,15 @@
 	<tr>
 		<td>Event date: </td>
 		<td><input type="text" name="date" id="calendar"
-			value="<?php echo date("Y-m-d", $event["event_date"]); ?>"></td>
+			value="<?php echo $event["event_date"]; ?>"></td>
 		<td>
 			<span class="help">The date of your event (yyyy-mm-dd).</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Event deadline: </td>
-		<td><input type="text" name="date" id="calendar"
-			value="<?php echo date("Y-m-d", $event["event_deadline"]); ?>"></td>
+		<td><input type="text" name="deadline" id="calendar"
+			value="<?php echo $event["event_deadline"]; ?>"></td>
 		<td>
 			<span class="help">Deadline for validation (yyyy-mm-dd).</span>
 		</td>
@@ -68,7 +68,7 @@
 		<tr>
 			<td>Link:</td>
 			<td>
-				<input type="text" name="link" 
+				<input type="text" name="link"
 					value="<?php echo $event["link"] ?>"/>
 			</td>
 			<td>
@@ -80,7 +80,7 @@
 		<tr>
 			<td>Short description: </td>
 			<td>
-				<textarea name="short_description" maxlength="255" 
+				<textarea name="short_description" maxlength="255"
 					title="Up to 255 characters"
 					style="width: 500px; height: 100; resize: none;">
 <?php echo $event["short_description"] ?></textarea>
@@ -92,7 +92,7 @@
 		<tr>
 			<td>Long description: </td>
 			<td>
-				<textarea name="long_description" maxlength="1000" 
+				<textarea name="long_description" maxlength="1000"
 					title="Up to 1000 characters"
 					style="width: 500; height: 450; resize: none;">
 <?php echo $event["long_description"]; ?></textarea>

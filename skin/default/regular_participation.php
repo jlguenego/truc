@@ -17,7 +17,7 @@
 	<?php echo "$g_error_msg<br/>"; ?>
 </span>
 How many ticket do you want?
-<form name="input" action="?action=participate&amp;event_id=<?php echo $event['id']; ?>" method="POST">
+<form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table>
 		<tr>
 			<th>Event</th>
@@ -33,7 +33,7 @@ How many ticket do you want?
 			$i = 0;
 			$tax_array = array();
 			foreach ($rates as $rate) {
-				$event_title = $event["title"];
+				$event_title = $event->title;
 				$amount_ht = str_replace(",", "", curr($rate["amount"]));
 				$label = $rate["label"];
 				$tax_rate = $rate["tax_rate"];
@@ -103,7 +103,7 @@ How many ticket do you want?
 	<input type="checkbox" name="confirm"/> I have read the <a href="terms.html">Terms and polices</a> and accept them.<br/>
 	<input type="submit" value="Next" disabled/>
 </form>
-<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event['id']; ?>" method="POST">
+<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
 	<input type="submit" value="Cancel"/>
 </form>
 <script>

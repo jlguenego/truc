@@ -5,42 +5,54 @@
 ?>
 <a href="index.php">Go back to index<a/><br/><br/>
 <?php
-	echo "<h1>".$event["title"]."</h1>";
-	if ($author['login'] == $_SESSION['login'] || is_admin()) {
+	echo "<h1>".$event->title."</h1>";
+	if (user_can_administrate_event($event)) {
+		if ($event->is_published()) {
 ?>
-		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event["id"] ?>">Edit event</a><br/>
-		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event["id"] ?>">Delete event</a><br/>
+			This event is published.<br/>
 <?php
-		echo $event["funding_acquired"]."€/".$event["funding_wanted"]."€ funding acquired.<br/>";
+		} else {
+?>
+			This event is not published.<br/>
+<?php
+		}
+?>
+		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a><br/>
+		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a><br/>
+<?php
+		echo $event->funding_acquired."€/".$event->funding_wanted."€ funding acquired.<br/>";
 	} else {
 ?>
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
 <?php
 	}
-	if (time() >= $event["event_date"]) {
-		if ($event["funding_wanted"] > $event["funding_acquired"]) {
+	if (time() >= $event->event_date) {
 ?>
 		This event has already happened.<br/>
 <?php
-		}
-	} else if ($event["funding_wanted"] > $event["funding_acquired"]) {
-?>
-		This event needs to be confirmed to happen. More people needed.<br/>
-<?php
-	} else {
+	} else if ($event->is_confirmed()) {
 ?>
 		Will append. Enough persons have registered.<br/>
 <?php
-	}
-	echo "Date: ".date("d M Y", $event["event_date"])."<br/>";
-	echo "Location: ".$event["location"]."<br/>";
-	echo "Deadline: ".date("d M Y", $event["event_deadline"])."<br/>";
+	} else if ($event->is_cancelled()) {
 ?>
-	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $_GET["id"] ?>">Participate</a><br/>
+		This event is cancelled.<br/>
+<?php
+	} else {
+?>
+		This event needs to be confirmed to happen. More people needed.<br/>
+<?php
+	}
+	debug("event->event_date=".$event->event_date);
+	echo "Date: ".$event->event_date."<br/>";
+	echo "Location: ".$event->location."<br/>";
+	echo "Deadline: ".$event->event_deadline."<br/>";
+?>
+	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">Participate</a><br/>
 	<h3>In short</h3>
 <?php
-	echo "Event website: <a href=\"".$event["link"]."\">".$event["link"]."</a><br/>";
-	echo $event["short_description"]."<br/><br/><br/>";
+	echo "Event website: <a href=\"".$event->link."\">".$event->link."</a><br/>";
+	echo $event->short_description."<br/><br/><br/>";
 ?>
 	<h3>Rates for this events</h3>
 	<table border="1px">
@@ -51,7 +63,7 @@
 			<th>Rate TTC</th>
 		</tr>
 <?php
-	foreach (events_rates($event['id']) as $rate) {
+	foreach (events_rates($event->id) as $rate) {
 		$tax = $rate['tax_rate'];
 		$label = $rate['label'];
 		$amount_ht = curr($rate['amount']);
@@ -68,5 +80,5 @@
 ?>
 	</table>
 <?php
-	echo $event["long_description"]."<br/>";
+	echo $event->long_description."<br/>";
 ?>

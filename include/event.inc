@@ -26,50 +26,6 @@ EOF;
 		return $count[0] > 0;
 	}
 
-	function event_create($id, $title, $date, $deadline, $funding_wanted, $location,
-						$link, $short, $long, $nominative) {
-		global $g_pdo;
-
-		list($year, $month, $day) = explode("-", $date);
-		$event_date = mktime(0, 0, 0, $month, $day, $year);
-		list($year, $month, $day) = explode("-", $deadline);
-		$event_deadline = mktime(0, 0, 0, $month, $day, $year);
-
-		$title = check($title);
-		$link = check($link);
-		$long = check($long);
-		$short = check($short);
-		$location = check($location);
-		$dbname = MYSQL_DBNAME;
-		$id_user = get_id_from_account();
-		$created_t = time();
-		$mod_t = $created_t;
-		$status = EVENT_STATUS_PLANNED;
-		$publish_flag = EVENT_PUBLISH_FLAG_NO;
-		$request = <<<EOF
-INSERT INTO `${dbname}`.`event`
-SET
-	`id`="${id}",
-	`created_t`="${created_t}",
-	`mod_t`="${mod_t}",
-	`id_user`="${id_user}",
-	`title`="${title}",
-	`location`="${location}",
-	`link`="${link}",
-	`short_description`="${short}",
-	`long_description`="${long}",
-	`event_date`="${event_date}",
-	`event_deadline`="${event_deadline}",
-	`funding_wanted`="${funding_wanted}",
-	`nominative`=${nominative},
-	`status`=${status},
-	`publish_flag`=${publish_flag}
-EOF;
-		debug($request);
-		$g_pdo->exec($request);
-		return TRUE;
-	}
-
 	function event_update($id, $title, $content, $date, $person) {
 		global $g_pdo;
 
@@ -87,7 +43,7 @@ EOF;
 UPDATE `${dbname}`.`event`
 SET
 	`id_user`="${id_user}",
-	`mod_t`="${id_user}",
+	`mod_t`="${mod_t}",
 	`title`="${title}",
 	`event_date`="${timestamp}",
 	`content`="${content}",
@@ -153,18 +109,19 @@ EOF;
 
 	function event_list() {
 		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
-SELECT * FROM `${dbname}`.`event` ORDER BY `event_date`
+SELECT `id` FROM `event` ORDER BY `event_date`
 EOF;
 		debug($request);
 		$q = $g_pdo->prepare($request);
 		$q->execute();
-		$event = $q->fetch();
+		$event_record = $q->fetch();
 		$events = array();
-		while (isset($event["id"])) {
+		while (isset($event_record["id"])) {
+			$event = new Event();
+			$event->load($event_record["id"]);
 			$events[] = $event;
-			$event = $q->fetch();
+			$event_record = $q->fetch();
 		}
 		return $events;
 	}
@@ -186,13 +143,6 @@ EOF;
 			$event = $q->fetch();
 		}
 		return $events;
-	}
-
-	function event_is_confirmed($event) {
-		if ($event['funding_wanted'] <= $event['funding_acquired']) {
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	// Planned, Confirmed, Cancelled.
@@ -229,7 +179,6 @@ EOF;
 SELECT `id_user` FROM `devis`
 WHERE `id_event`=${event_id}
 EOF;
-		debug($request);
 		$q = $g_pdo->prepare($request);
 		if ($q->execute() === FALSE) {
 			debug($request);
@@ -244,5 +193,22 @@ EOF;
 		}
 		debug("mails=".sprint_r($mails));
 		return $mails;
+	}
+
+	function event_add_funding_aquired($id, $amount) {
+		global $g_pdo;
+
+		$event = get_event($id);
+		$funding_acquired = $event["funding_acquired"] + $amount;
+		$mod_t = time();
+		$request = <<<EOF
+UPDATE `event`
+SET
+	`mod_t`="${mod_t}",
+	`funding_acquired`="${funding_acquired}"
+WHERE `id`="${id}"
+EOF;
+		debug($request);
+		return $g_pdo->exec($request);
 	}
 ?>

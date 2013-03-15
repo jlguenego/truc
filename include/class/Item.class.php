@@ -57,5 +57,35 @@ EOF;
 				throw new Exception("Devis item insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
 		}
+
+		public function build($item) {
+			$this->event_name = $item["event_name"];
+			$this->event_rate_name = $item["event_rate_name"];
+			$this->event_rate_amount = curr($item["event_rate_amount"]);
+			$this->event_rate_tax = curr($item["event_rate_tax"]);
+			$this->quantity = $item["quantity"];
+			$this->total_ht = curr($item["total_ht"]);
+			$this->total_tax = curr($item["total_tax"]);
+			$this->total_ttc = curr($item["total_ttc"]);
+			$this->participant_firstname = $item["participant_firstname"];
+			$this->participant_lastname = $item["participant_lastname"];
+			$this->participant_title = $item["participant_title"];
+		}
+
+		public function to_string() {
+			$result = "|event_name=".$this->event_name;
+			$result .= "|event_rate_name=".$this->event_rate_name;
+			$result .= "|event_rate_amount=".curr($this->event_rate_amount);
+			$result .= "|event_rate_tax=".curr($this->event_rate_tax);
+			$result .= "|quantity=".$this->quantity;
+			$result .= "|total_ht=".curr($this->total_ht);
+			$result .= "|total_tax=".curr($this->total_tax);
+			$result .= "|total_ttc=".curr($this->total_ttc);
+			$result .= "|participant_firstname=".$this->participant_firstname;
+			$result .= "|participant_lastname=".$this->participant_lastname;
+			$result .= "|participant_title=".$this->participant_title;
+
+			return $result;
+		}
 	}
 ?>

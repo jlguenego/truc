@@ -1,0 +1,1 @@
+﻿The payment/authorization succeed. We just sent a mail to you for details.

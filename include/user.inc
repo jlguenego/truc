@@ -312,4 +312,13 @@ EOF;
 			}
 		}
 	}
+
+	function user_can_administrate_event($event) {
+		if (is_admin() || $event->id_user == get_id_from_account()) {
+			debug("Can administrate.");
+			return TRUE;
+		}
+		debug("Cannot administrate.");
+		return FALSE;
+	}
 ?>

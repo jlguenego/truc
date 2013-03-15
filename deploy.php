@@ -14,9 +14,6 @@
 				$_POST['password'], $_POST['email'], $_POST['address'],
 				TRUE, ACTIVATION_STATUS_ACTIVATED);
 			seq_create('devis', 1000);
-			debug("sequence=".seq_next('devis'));
-			debug("sequence=".seq_next('devis'));
-			debug("sequence=".seq_next('devis'));
 			$install_done = <<<EOF
 <html>
 	<head>

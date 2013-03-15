@@ -21,8 +21,8 @@
 		"account_create",
 		"account_retrieve",
 		"account_update",
-		"cancel_payment",
-		"success_payment",
+		"payment_cancel",
+		"payment_success",
 		"supervision",
 	);
 
