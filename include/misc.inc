@@ -185,4 +185,13 @@ EOF;
 		};
 		return $value;
 	}
+	
+	//string to timestamp conversion
+	// TODO: implement this.
+	function s2t($string, $format) {
+		//$a = array();
+		
+		//$result = mktime(0, 0, 0, $a['tm_mon']+1, $a['tm_mday'], $a['tm_year']+1900);
+		return 0;
+	}
 ?>

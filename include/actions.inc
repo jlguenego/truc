@@ -517,8 +517,8 @@
 			$event = new Event();
 			$event->id = $id;
 			$event->title = $_GET['title'];
-			$event->deadline = $_GET['deadline'];
-			$event->date = $_GET['date'];
+			$event->event_deadline = $_GET['deadline'];
+			$event->event_date = $_GET['date'];
 			$event->funding_wanted = $_GET['funding_wanted'];
 			$event->location = $_GET['location'];
 			$event->link = $_GET['link'];

@@ -1,5 +1,7 @@
 <?php
 	require_once("include/user.inc");
+	require_once("include/misc.inc");
+	
 	$event = $g_display["event"];
 	$author = $g_display["author"];
 ?>
@@ -26,7 +28,7 @@
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
 <?php
 	}
-	if (time() >= $event->event_date) {
+	if (time() >= s2t($event->event_date, '%Y-%m-%d')) {
 ?>
 		This event has already happened.<br/>
 <?php
