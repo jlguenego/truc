@@ -31,7 +31,7 @@
 
 	$i = 0;
 	while (isset($_GET["item_${i}"])) {
-		preg_match_all("|([\w. ]+)=([\w. ]+)|", $_GET["item_${i}"], $pairs);
+		preg_match_all("|([\w. ]+)=([\w. ]*)|", $_GET["item_${i}"], $pairs);
 		$item = array_combine($pairs[1], $pairs[2]);
 ?>
 		<tr>
@@ -51,9 +51,9 @@
 <?php
 		if ($_GET['nominative'] == 1) {
 ?>
+			<td><?php echo $item["participant_title"]; ?></td>
 			<td><?php echo $item["participant_firstname"]; ?></td>
 			<td><?php echo $item["participant_lastname"]; ?></td>
-			<td><?php echo $item["participant_title"]; ?></td>
 <?php
 		}
 ?>

@@ -21,7 +21,7 @@
 	<?php
 		$tax_array = array();
 		foreach ($rates as $rate) {
-			$event_title = $event["title"];
+			$event_title = $event->title;
 			$amount_ht = curr($rate["amount"]);
 			$label = $rate["label"];
 			$tax_rate = $rate["tax_rate"];
@@ -47,7 +47,7 @@
 	?>
 </table>
 <br/>
-<form name="input" action="?action=participate&amp;event_id=<?php echo $event['id']; ?>" method="POST">
+<form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table id="tickets" style="display:none;">
 		<tr>
 			<th colspan="6">Event details</th>
@@ -107,7 +107,7 @@
 	<input type="checkbox" name="confirm"/> I have read the <a href="terms.html">Terms and polices</a> and accept them.<br/>
 	<input type="submit" value="Next" disabled/>
 </form>
-<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event['id']; ?>" method="POST">
+<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
 	<input type="submit" value="Cancel"/>
 </form>
 <script>

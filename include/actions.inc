@@ -374,8 +374,9 @@
 		$devis->username = $_GET['username'];
 		$devis->address = $_GET['address'];
 		$devis->event_id = $_GET["event_id"];
-		$event = get_event($_GET["event_id"]);
-		if (event_is_confirmed($event)) {
+		$event = new Event();
+		$event->load($_GET["event_id"]);
+		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CAPTURED;
 		} else {
 			$devis->status = DEVIS_STATUS_AUTHORIZED;
@@ -392,7 +393,7 @@
 		foreach ($_GET['firstnames'] as $firstname) {
 			$item = new Item();
 
-			$item->event_name = $event["title"];
+			$item->event_name = $event->title;
 			$item->event_rate_name = $labels[$i];
 			$item->event_rate_amount = $amount_ht[$i];
 			$item->event_rate_tax = $taxes[$i];
@@ -411,7 +412,7 @@
 
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
-		$g_display["event_confirmed"] = $event["funding_wanted"] <= $event["funding_acquired"];
+		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
 
