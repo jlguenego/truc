@@ -1,9 +1,4 @@
 <?php
-	if ($_SERVER['HTTP_HOST'] == "localhost") {
-		define('HOST', "http://".$_SERVER['HTTP_HOST']."/truc");
-	} else {
-		define('HOST', "http://".$_SERVER['HTTP_HOST']);
-	}
 
 	define('SITE_ROOT', ".");
 	define('SETTINGS_INI', "settings.ini");

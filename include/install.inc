@@ -27,6 +27,7 @@ EOF;
 			};
 
 			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
+			$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
 
 			$content = <<<EOF
 <?php
@@ -36,6 +37,9 @@ EOF;
 	define("MYSQL_DBNAME", "$dbname");
 
 	define("CONTACT_MAIL", "$contact_email");
+	
+	define('HOST', "$base_url");
+
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
