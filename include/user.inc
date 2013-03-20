@@ -125,9 +125,9 @@ EOF;
 
 	function get_id_from_account() {
 		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
+
 		$request = <<<EOF
-SELECT `id` FROM `${dbname}`.`user`
+SELECT `id` FROM `user`
 WHERE `login`= :login
 EOF;
 		$q = $g_pdo->prepare($request);
@@ -291,7 +291,7 @@ EOF;
 			if ($_GET['password'] != $_GET['password2']) {
 				throw new Exception("Passwords are different");
 			}
-			require_once(BASE_DIR . 'recaptcha.inc');
+			require_once(BASE_DIR . '/include/recaptcha.inc');
 		    $privatekey = CAPTCHA_PRIV_KEY;
 		    $resp = recaptcha_check_answer ($privatekey,
 										$_SERVER["REMOTE_ADDR"],

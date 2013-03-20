@@ -12,11 +12,7 @@
 	<a href="?action=get_form&amp;type=event">Create an event</a><br/>
 	<a href="?action=retrieve&amp;type=events">See events</a><br/>
 	<a href="?action=sign_out">Sign out<a/><br/>
-<?php
-		if (is_admin()) {
-?>
 	<a href="?action=supervision">Events supervision</a>
 <?php
-		}
 	}
 ?>

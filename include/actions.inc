@@ -710,7 +710,8 @@
 		global $g_display;
 		need_authentication();
 		if (!is_admin()) {
-			$g_error_msg = "You are not admin.";
+			$g_display["events"] = event_list(get_id_from_account());
+			$_SESSION["state"] = "supervision";
 			return;
 		}
 		$g_display["events"] = event_list();

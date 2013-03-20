@@ -26,10 +26,15 @@ EOF;
 		return $count[0] > 0;
 	}
 
-	function event_list() {
+	function event_list($user_id = NULL) {
 		global $g_pdo;
+		$where_clause = "";
+		if ($user_id != NULL) {
+			$where_clause = " WHERE `id_user`=" . $user_id;
+		}
+
 		$request = <<<EOF
-SELECT `id` FROM `event` ORDER BY `happening_t`
+SELECT `id` FROM `event`${where_clause} ORDER BY `happening_t`
 EOF;
 		debug($request);
 		$q = $g_pdo->prepare($request);
