@@ -47,7 +47,9 @@
 				} catch (Exception $e) {
 					$g_error_msg = $e->getMessage();
 					$g_display["user"] = get_user(get_id_from_account());
-					$g_display["event"] = get_event($_GET["event_id"]);
+					$event = new Event();
+					$event->load($_GET["event_id"]);
+					$g_display["event"] = $event;
 					$g_display["rates"] = events_rates($_GET["event_id"]);
 					if ($g_display["event"]["nominative"] == 1) {
 						$_SESSION["state"] = "nominative_participation";
@@ -200,8 +202,9 @@
 		$g_display["events_organized"] = user_events($_GET["id"]);
 		$g_display["participations"] = user_participations($_GET["id"]);
 		foreach ($g_display["participations"] as $participation) {
-			$g_display["participations"]["event"] =
-				get_event($participation["id_event"]);
+			$event = new Event();
+			$event->load($participation["id_event"]);
+			$g_display["participations"]["event"] = $event;
 		}
 		$_SESSION["state"] = "account_retrieve";
 	}
@@ -253,8 +256,9 @@
 			$event = new Event();
 			$event->id = $id;
 			$event->title = $_GET['title'];
-			$event->confirmation_t = $_GET['confirmation_t'];
 			$event->happening_t = $_GET['happening_t'];
+			$event->confirmation_t = $_GET['confirmation_t'];
+			$event->open_t = $_GET['open_t'];
 			$event->funding_needed = $_GET['funding_needed'];
 			$event->location = $_GET['location'];
 			$event->link = $_GET['link'];
@@ -315,7 +319,6 @@
 			if (!is_null_or_empty($_GET["id"])) {
 				if (event_exists($_GET["id"])) {
 					$_SESSION["state"] = "event_update";
-					$g_display["event"] = get_event($_GET["id"]);
 					$g_display["rates"] = events_rates($_GET["id"]);
 					action_event_valid(TRUE);
 					$event = new Event();
@@ -330,6 +333,8 @@
 					$event->description_short = $_GET['short_description'];
 					$event->description_long = $_GET['long_description'];
 					//$event->nominative = $_GET['nominative'];
+
+					$g_display["event"] = $event;
 
 					$event->check_owner();
 
@@ -402,7 +407,9 @@
 		if (is_null_or_empty($_GET["id"])) {
 			$_SESSION["state"] = "event_create";
 		} else {
-			$g_display["event"] = get_event($_GET["id"]);
+			$event = new Event();
+			$event->load($_GET["id"]);
+			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["id"]);
 			$_SESSION["state"] = "event_update";
 		}
@@ -420,6 +427,9 @@
 		}
 		if (!check_date($_GET["confirmation_t"])) {
 			throw new Exception("Please choose a date for your event");
+		}
+		if (!check_date($_GET["open_t"])) {
+			throw new Exception("The given date is wrong");
 		}
 
 		foreach ($_GET as $value) {

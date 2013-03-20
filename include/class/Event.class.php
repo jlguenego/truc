@@ -4,6 +4,7 @@
 		public $title;
 		public $confirmation_t;
 		public $happening_t;
+		public $open_t;
 		public $funding_needed;
 		public $funding_authorized;
 		public $location;
@@ -42,39 +43,29 @@ EOF;
 		public function store() {
 			global $g_pdo;
 
-			$id = $this->id;
 			$created_t = time();
 			$mod_t = date('Y-m-d H:i:s', time());
-			$title = $this->title;
-			$happening_t = $this->happening_t;
-			$confirmation_t = $this->confirmation_t;
-			$funding_needed = $this->funding_needed;
-			$location = $this->location;
-			$link = $this->link;
-			$description_short = $this->description_short;
-			$description_long = $this->description_long;
-			$nominative = $this->nominative;
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
-			$id_user = $this->user_id;
 
 			$request = <<<EOF
 INSERT INTO `event`
 SET
-	`id`="${id}",
+	`id`="{$this->id}",
 	`created_t`="${created_t}",
 	`mod_t`='${mod_t}',
-	`id_user`="${id_user}",
-	`title`="${title}",
-	`location`="${location}",
-	`link`="${link}",
-	`short_description`="${description_short}",
-	`long_description`="${description_long}",
-	`happening_t`="${happening_t}",
-	`confirmation_t`="${confirmation_t}",
-	`funding_needed`="${funding_needed}",
+	`id_user`="{$this->user_id}",
+	`title`="{$this->title}",
+	`location`="{$this->location}",
+	`link`="{$this->link}",
+	`short_description`="{$this->description_short}",
+	`long_description`="{$this->description_long}",
+	`happening_t`="{$this->happening_t}",
+	`confirmation_t`="{$this->confirmation_t}",
+	`open_t`="{$this->open_t}",
+	`funding_needed`="{$this->funding_needed}",
 	`funding_acquired`=0,
-	`nominative`=${nominative},
+	`nominative`={$this->nominative},
 	`status`=${status},
 	`publish_flag`=${publish_flag}
 EOF;
@@ -87,28 +78,20 @@ EOF;
 		public function update() {
 			global $g_pdo;
 
-			$id = $this->id;
 			$mod_t = time();
-			$title = $this->title;
-			$location = $this->location;
-			$link = $this->link;
-			$description_short = $this->description_short;
-			$description_long = $this->description_long;
-			$happening_t = $this->happening_t;
-			$confirmation_t = $this->confirmation_t;
-			$funding_needed = $this->funding_needed;
 			$request = <<<EOF
 UPDATE `event`
 SET
 	`mod_t`="${mod_t}",
-	`title`="${title}",
-	`location`="${location}",
-	`link`="${link}",
-	`short_description`="${description_short}",
-	`long_description`="${description_long}",
-	`happening_t`="${happening_t}",
-	`confirmation_t`="${confirmation_t}",
-	`funding_needed`="${funding_needed}"
+	`title`="{$this->title}",
+	`location`="{$this->location}",
+	`link`="{$this->link}",
+	`short_description`="{$this->description_short}",
+	`long_description`="{$this->description_long}",
+	`happening_t`="{$this->happening_t}",
+	`open_t`="{$this->open_t}",
+	`confirmation_t`="{$this->confirmation_t}",
+	`funding_needed`="{$this->funding_needed}"
 WHERE `id`="${id}"
 EOF;
 			debug($request);
@@ -165,6 +148,12 @@ EOF;
 			$count = $q->fetch();
 			if($count[0] > 0) {
 				throw new Exception("This event can not be deleted for accountancy reasons.");
+			}
+		}
+
+		public function can_participate() {
+			if (s2t($this->open_t, "%Y-%m-%d") > time()) {
+				return FALSE;
 			}
 		}
 	}

@@ -5,6 +5,7 @@ CREATE TABLE event(
         created_t         Varchar(25) NOT NULL ,
         mod_t             Varchar(25) NOT NULL ,
         title             Varchar(25) NOT NULL ,
+        open_t            Varchar(25) NOT NULL ,
         confirmation_t    Varchar(25) NOT NULL ,
         happening_t       Varchar(25) NOT NULL ,
         funding_needed    Decimal (25,2) NOT NULL ,

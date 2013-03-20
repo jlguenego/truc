@@ -1,10 +1,11 @@
 ﻿<?php
 	function mail_payment($mail, $devis) {
-		$event = get_event($devis->event_id);
+		$event = new Event();
+		$event->load($devis->event_id);
 		$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=payment&'.
 				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event['title']).
-				'&nominative='.$event['nominative']);
+				'&event_name='.str_replace(" ", "%20", $event->title).
+				'&nominative='.$event->nominative);
 		$msg = mail_build($msg_html, $mail);
 		$subject = "Payment authorization";
 		mail($mail, $subject, $msg["content"], $msg["header"]);
@@ -17,11 +18,12 @@
 			$user = get_user($devis->user_id);
 			$mail = $user["email"];
 
-			$event = get_event($devis->event_id);
+			$event = new Event();
+			$event->load($devis->event_id);
 			$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=event_confirm&'.
 				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event['title']).
-				'&nominative='.$event['nominative']);
+				'&event_name='.str_replace(" ", "%20", $event->title).
+				'&nominative='.$event->nominative);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);
@@ -35,11 +37,12 @@
 			$user = get_user($devis->user_id);
 			$mail = $user["email"];
 
-			$event = get_event($devis->event_id);
+			$event = new Event();
+			$event->load($devis->event_id);
 			$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=event_cancel&'.
 				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event['title']).
-				'&nominative='.$event['nominative']);
+				'&event_name='.str_replace(" ", "%20", $event->title).
+				'&nominative='.$event->nominative);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);

@@ -52,6 +52,14 @@
 			</td>
 		</tr>
 		<tr>
+			<td>Participation open date: </td>
+			<td><input type="text" name="open_t" id="open_t"
+				value="<?php echo_default_value("happening_t"); ?>"></td>
+			<td>
+				<span class="help">The date of your event (yyyy-mm-dd).</span>
+			</td>
+		</tr>
+		<tr>
 			<td>Location: </td>
 			<td>
 				<input type="text" name="location"
@@ -130,16 +138,36 @@
 	function update_form() {
 		console.log("update_form");
 		console.log("date=" + $("#happening_t").val());
-		var max_date = $("#happening_t").val();
-		$( "#confirmation_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+
 		if ($("#happening_t").val() == "") {
 			$("#confirmation_t").val("");
 			$( "#confirmation_t" ).attr("disabled", "");
 		} else {
 			$( "#confirmation_t" ).removeAttr("disabled");
 		}
-		$( "#confirmation_t" ).datepicker('option', 'maxDate', max_date);
+
+		if ($("#confirmation_t").val() == "") {
+			$("#open_t").val("");
+			$( "#open_t" ).attr("disabled", "");
+		} else {
+			$( "#open_t" ).removeAttr("disabled");
+		}
+
+		$( "#open_t" ).datepicker('option', 'maxDate', $("#confirmation_t").val());
+		var date = $("#confirmation_t").datepicker('getDate');
+		if (date) {
+			date.setDate(date.getDate() - 29);
+			var today = new Date();
+			if (date < today) {
+				date = today;
+			}
+		}
+		$( "#open_t" ).datepicker('option', 'minDate', date);
+		$( "#confirmation_t" ).datepicker('option', 'maxDate', $("#happening_t").val());
+
 		$( "#happening_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+		$( "#confirmation_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+		$( "#open_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	}
 
 	$("form").change(update_form);

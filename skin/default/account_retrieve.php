@@ -39,11 +39,11 @@
 	<ul>
 <?php
 	foreach ($g_display["events_organized"] as $event) {
-		$id = $event['id'];
-		$title = $event['title'];
+		$id = $event->id;
+		$title = $event->title;
 ?>
 		<li>
-			<?php echo $event["happening_t"] ?>:
+			<?php echo $event->happening_t ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>
@@ -58,16 +58,15 @@
 <?php
 	foreach ($g_display["participations"] as $participation) {
 		$event = $participation["event"];
-		$id = $event['id'];
-		$title = $event['title'];
+		$id = $event->id;
+		$title = $event->title;
 		$quantity = $participation["quantity"];
 ?>
 		<li>
-			<?php echo date("d M Y", $event["happening_t"]) ?>:
+			<?php echo date("d M Y", $event->happening_t) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>
-			(<?php echo $quantity ?> tickets)
 		</li>
 <?php
 	}

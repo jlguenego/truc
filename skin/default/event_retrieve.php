@@ -43,11 +43,17 @@
 <?php
 	}
 	debug("event->happening_t=".$event->happening_t);
-	echo "Date: ".$event->happening_t."<br/>";
 	echo "Location: ".$event->location."<br/>";
-	echo "Deadline: ".$event->confirmation_t."<br/>";
+	echo "Happening date: ".$event->happening_t."<br/>";
+	echo "Confirmation date: ".$event->confirmation_t."<br/>";
+	echo "Participation opening date: ".$event->open_t."<br/>";
+
+	if ($event->can_participate()) {
 ?>
 	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">Participate</a><br/>
+<?php
+	}
+?>
 	<h3>In short</h3>
 <?php
 	echo "Event website: <a href=\"".$event->link."\">".$event->link."</a><br/>";

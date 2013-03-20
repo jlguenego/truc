@@ -103,8 +103,9 @@ EOF;
 	function event_add_funding_aquired($id, $amount) {
 		global $g_pdo;
 
-		$event = get_event($id);
-		$funding_acquired = $event["funding_acquired"] + $amount;
+		$event = new Event();
+		$event->load($id);
+		$funding_acquired = $event->funding_acquired + $amount;
 		$mod_t = time();
 		$request = <<<EOF
 UPDATE `event`
