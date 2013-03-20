@@ -14,6 +14,25 @@
 		}
 	}
 
+	function user_events($user_id) {
+		global $g_pdo;
+
+		$request = <<<EOF
+SELECT `id`, `title`, `happening_t` FROM `event`
+WHERE `id_user`=${user_id}
+ORDER BY `happening_t`
+EOF;
+		$q = $g_pdo->prepare($request);
+		$q->execute();
+		$event = $q->fetch();
+		$events = array();
+		while (isset($event["id"])) {
+			$events[] = $event;
+			$event = $q->fetch();
+		}
+		return $events;
+	}
+
 	function is_activated($user) {
 		return $user["activation_status"] == ACTIVATION_STATUS_ACTIVATED;
 	}

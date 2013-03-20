@@ -17,7 +17,7 @@
 		"event_retrieve",
 		"event_update",
 		"event_delete",
-		"events_list",
+		"event_list",
 		"account_create",
 		"account_retrieve",
 		"account_update",

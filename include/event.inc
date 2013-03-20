@@ -26,87 +26,6 @@ EOF;
 		return $count[0] > 0;
 	}
 
-	function event_update($id, $title, $content, $date, $person) {
-		global $g_pdo;
-
-		list($day, $month, $year) = explode(".", $date);
-		$timestamp = mktime(0, 0, 0, $day, $month, $year);
-		$dbname = MYSQL_DBNAME;
-		$content = check($content);
-		$author = get_user_by_login($_SESSION["login"]);
-		if ($author == NULL) {
-			throw new Exception("Not logged");
-		}
-		$id_user = $author["id"];
-		$mod_t = time();
-		$request = <<<EOF
-UPDATE `${dbname}`.`event`
-SET
-	`id_user`="${id_user}",
-	`mod_t`="${mod_t}",
-	`title`="${title}",
-	`happening_t`="${timestamp}",
-	`content`="${content}",
-	`nbr_person_wanted`="${person}"
-WHERE `id`="${id}"
-EOF;
-		debug($request);
-		return $g_pdo->exec($request);
-	}
-
-	function event_add_person($id, $nbr) {
-		global $g_pdo;
-
-		if (!event_exists($id)) {
-			return FALSE;
-		}
-		$dbname = MYSQL_DBNAME;
-		$event = get_event($id);
-		$nbr += $event['nbr_person_registered'];
-		$request = <<<EOF
-UPDATE `${dbname}`.`event`
-SET
-	`nbr_person_registered`="${nbr}"
-WHERE `id`="${id}"
-EOF;
-		$g_pdo->exec($request);
-		return TRUE;
-	}
-
-	function get_event($id) {
-		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
-		$request = <<<EOF
-SELECT * FROM `${dbname}`.`event`
-WHERE `id`= ${id}
-EOF;
-		debug($request);
-		$q = $g_pdo->prepare($request);
-		$q->execute();
-		$event = $q->fetch();
-		if (!isset($event['id'])) {
-			return NULL;
-		}
-		return $event;
-	}
-
-	function event_check_owner($event) {
-		if ($event['id_user'] != get_id_from_account() && !is_admin()) {
-			throw new Exception("You are not the creator of this event");
-		}
-	}
-
-	function event_delete($id) {
-		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
-		$request = <<<EOF
-DELETE FROM `${dbname}`.`event`
-WHERE `id`= ${id}
-EOF;
-		debug($request);
-		$g_pdo->exec($request);
-	}
-
 	function event_list() {
 		global $g_pdo;
 		$request = <<<EOF
@@ -122,25 +41,6 @@ EOF;
 			$event->load($event_record["id"]);
 			$events[] = $event;
 			$event_record = $q->fetch();
-		}
-		return $events;
-	}
-
-	function user_events($user_id) {
-		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
-		$request = <<<EOF
-SELECT `id`, `title`, `happening_t` FROM `${dbname}`.`event`
-WHERE `id_user`=${user_id}
-ORDER BY `happening_t`
-EOF;
-		$q = $g_pdo->prepare($request);
-		$q->execute();
-		$event = $q->fetch();
-		$events = array();
-		while (isset($event["id"])) {
-			$events[] = $event;
-			$event = $q->fetch();
 		}
 		return $events;
 	}

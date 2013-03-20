@@ -80,12 +80,8 @@ SET
 EOF;
 			if(!$g_pdo->exec($request)) {
 				debug($request);
-			throw new Exception("Get event participants mails: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
+				throw new Exception("Get event participants mails: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			}
-
-			//foreach ($this->items as $item) {
-			//	$item->create();
-			//}
 		}
 
 		public function update() {
@@ -119,6 +115,28 @@ EOF;
 			$g_pdo->exec($request);
 		}
 
+		public function delete() {
+			global $g_pdo;
+
+			$this->check_linked_devis();
+
+			$request = <<<EOF
+DELETE FROM `rate`
+WHERE `id_event`={$this->id}
+EOF;
+			debug($request);
+			$g_pdo->exec($request);
+
+			$request = <<<EOF
+DELETE FROM `event`
+WHERE `id`={$this->id}
+EOF;
+			debug($request);
+			if(!$g_pdo->exec($request)) {
+				throw new Exception("Event delete:".sprint_r($g_pdo->errorInfo()));
+			}
+		}
+
 		public function is_published() {
 			return $this->publish_flag == EVENT_PUBLISH_FLAG_YES;
 		}
@@ -129,6 +147,25 @@ EOF;
 
 		public function is_cancelled() {
 			return $this->status == EVENT_STATUS_CANCELLED;
+		}
+
+		public function check_owner() {
+			if ($this->user_id != get_id_from_account() && !is_admin()) {
+				throw new Exception("You are not the creator of this event");
+			}
+		}
+
+		public function check_linked_devis() {
+			global $g_pdo;
+
+			$request = "SELECT COUNT(*) FROM `devis` WHERE `id_event`=" . $this->id;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$count = $q->fetch();
+			if($count[0] > 0) {
+				throw new Exception("This event can not be deleted for accountancy reasons.");
+			}
 		}
 	}
 ?>
