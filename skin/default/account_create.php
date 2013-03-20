@@ -38,7 +38,7 @@ Please enter your info:
 		<tr>
 			<td colspan="2">
 				<?php
-					require_once('include/recaptcha.inc');
+					require_once(BASE_DIR . '/include/recaptcha.inc');
 					$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
 					echo recaptcha_get_html($publickey);
 				?>

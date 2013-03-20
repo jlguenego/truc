@@ -1,5 +1,4 @@
 <?php
-
 	define('SITE_ROOT', ".");
 	define('SETTINGS_INI', "settings.ini");
 	define('SKIN_DIR', "skin/default");
@@ -30,5 +29,5 @@
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 
 	define('PAYMENT_PROVIDER', 'intern');
-	require_once('payment/'.PAYMENT_PROVIDER.'/constants.inc');
+	require_once(BASE_DIR . '/payment/'.PAYMENT_PROVIDER.'/constants.inc');
 ?>

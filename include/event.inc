@@ -1,6 +1,6 @@
 <?php
-	require_once('include/misc.inc');
-	require_once("include/user.inc");
+	require_once(BASE_DIR . '/include/misc.inc');
+	require_once(BASE_DIR . "/include/user.inc");
 
 	function event_title_exists($title) {
 		global $g_pdo;
@@ -45,7 +45,7 @@ SET
 	`id_user`="${id_user}",
 	`mod_t`="${mod_t}",
 	`title`="${title}",
-	`event_date`="${timestamp}",
+	`happening_t`="${timestamp}",
 	`content`="${content}",
 	`nbr_person_wanted`="${person}"
 WHERE `id`="${id}"
@@ -110,7 +110,7 @@ EOF;
 	function event_list() {
 		global $g_pdo;
 		$request = <<<EOF
-SELECT `id` FROM `event` ORDER BY `event_date`
+SELECT `id` FROM `event` ORDER BY `happening_t`
 EOF;
 		debug($request);
 		$q = $g_pdo->prepare($request);
@@ -130,9 +130,9 @@ EOF;
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		$request = <<<EOF
-SELECT `id`, `title`, `event_date` FROM `${dbname}`.`event`
+SELECT `id`, `title`, `happening_t` FROM `${dbname}`.`event`
 WHERE `id_user`=${user_id}
-ORDER BY `event_date`
+ORDER BY `happening_t`
 EOF;
 		$q = $g_pdo->prepare($request);
 		$q->execute();

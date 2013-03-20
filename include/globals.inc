@@ -50,8 +50,8 @@
 
 	// Allows to have only one entity of PDO
 	$g_pdo = null;
-	if (file_exists(SETTINGS_INI)) {
-		require_once(SETTINGS_INI);
+	if (file_exists(BASE_DIR . "/" . SETTINGS_INI)) {
+		require_once(BASE_DIR . "/" . SETTINGS_INI);
 		try {
 			$g_pdo = new PDO('mysql:host='.MYSQL_HOST.';dbname='.MYSQL_DBNAME.';charset=UTF-8', MYSQL_USER, MYSQL_PASSWORD);
 		} catch (Exception $e) {

@@ -1,7 +1,4 @@
 <?php
-	require_once("include/user.inc");
-	require_once("include/misc.inc");
-	
 	$event = $g_display["event"];
 	$author = $g_display["author"];
 ?>
@@ -22,13 +19,13 @@
 		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a><br/>
 		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a><br/>
 <?php
-		echo $event->funding_acquired."€/".$event->funding_wanted."€ funding acquired.<br/>";
+		echo $event->funding_acquired."€/".$event->funding_needed."€ funding acquired.<br/>";
 	} else {
 ?>
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
 <?php
 	}
-	if (time() >= s2t($event->event_date, '%Y-%m-%d')) {
+	if (time() >= s2t($event->happening_t, "%Y-%m-%d")) {
 ?>
 		This event has already happened.<br/>
 <?php
@@ -45,10 +42,10 @@
 		This event needs to be confirmed to happen. More people needed.<br/>
 <?php
 	}
-	debug("event->event_date=".$event->event_date);
-	echo "Date: ".$event->event_date."<br/>";
+	debug("event->happening_t=".$event->happening_t);
+	echo "Date: ".$event->happening_t."<br/>";
 	echo "Location: ".$event->location."<br/>";
-	echo "Deadline: ".$event->event_deadline."<br/>";
+	echo "Deadline: ".$event->confirmation_t."<br/>";
 ?>
 	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">Participate</a><br/>
 	<h3>In short</h3>

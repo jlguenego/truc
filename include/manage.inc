@@ -1,7 +1,7 @@
-<?php 
-	require_once('include/user.inc');
-	require_once('include/event.inc');
-	
+<?php
+	require_once(BASE_DIR . '/include/user.inc');
+	require_once(BASE_DIR . '/include/event.inc');
+
 	function is_participating($id_user, $id_event) {
 		try {
 			global $g_pdo;
@@ -11,7 +11,7 @@ SELECT COUNT(*) FROM `${dbname}`.`participate`
 WHERE `id_user`= :id_user AND `id_event`= :id_event
 EOF;
 			$q = $g_pdo->prepare($request);
-			$q->execute(array(":id_user" => $id_user, 
+			$q->execute(array(":id_user" => $id_user,
 				":id_event" => $id_event));
 			$count = $q->fetch();
 			return $count[0] > 0;
@@ -20,7 +20,7 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function participation_quantity($id_user, $id_event) {
 		try {
 			global $g_pdo;
@@ -38,7 +38,7 @@ EOF;
 			throw $e;
 		}
 	}
-	
+
 	function participate($id_user, $id_event, $nbr) {
 		try {
 			$nbr=(int)$nbr;
@@ -51,15 +51,15 @@ EOF;
 			if (is_participating($id_user, $id_event)) {
 				$nbr += participation_quantity($id_user, $id_event);
 				$request = <<<EOF
-UPDATE `${dbname}`.`participate` 
+UPDATE `${dbname}`.`participate`
 SET `quantity`=${nbr}
 WHERE `id_user`=${id_user} AND `id_event`="${id_event}";
 EOF;
 			} else {
 				$request = <<<EOF
-INSERT INTO `${dbname}`.`participate` 
-SET 
-	`id_user`=${id_user}, 
+INSERT INTO `${dbname}`.`participate`
+SET
+	`id_user`=${id_user},
 	`id_event`="${id_event}",
 	`quantity`=${nbr}
 EOF;
@@ -72,14 +72,14 @@ EOF;
 			println($e->getMessage());
 			throw $e;
 		}
-	}	
-	
+	}
+
 	function user_participations($user_id) {
 		try {
 			global $g_pdo;
 			$dbname = MYSQL_DBNAME;
 			$request = <<<EOF
-SELECT `id_event`, `quantity` FROM `${dbname}`.`participate` 
+SELECT `id_event`, `quantity` FROM `${dbname}`.`participate`
 WHERE `id_user`=${user_id}
 EOF;
 			//debug($request);

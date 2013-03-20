@@ -34,23 +34,23 @@
 	</tr>
 	<tr>
 		<td>Required funding: </td>
-		<td><input type="text" name="funding_wanted" value="<?php echo $event['funding_wanted']; ?>"></td>
+		<td><input type="text" name="funding_needed" value="<?php echo $event['funding_needed']; ?>"></td>
 		<td>
 			<span class="help">Minimum funding wanted in Euro.</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Event date: </td>
-		<td><input type="text" name="date" id="calendar"
-			value="<?php echo $event["event_date"]; ?>"></td>
+		<td><input type="text" name="happening_t" id="happening_t"
+			value="<?php echo $event["happening_t"]; ?>"></td>
 		<td>
 			<span class="help">The date of your event (yyyy-mm-dd).</span>
 		</td>
 	</tr>
 	<tr>
-		<td>Event deadline: </td>
-		<td><input type="text" name="deadline" id="calendar"
-			value="<?php echo $event["event_deadline"]; ?>"></td>
+		<td>Confirmation date: </td>
+		<td><input type="text" name="confirmation_t" id="confirmation_t"
+			value="<?php echo $event["confirmation_t"]; ?>"></td>
 		<td>
 			<span class="help">Deadline for validation (yyyy-mm-dd).</span>
 		</td>
@@ -122,3 +122,10 @@
 	<input type="hidden" name="id" value="<?php echo $event['id']; ?>"/>
 	<input type="submit" value="Submit"/>
 </form>
+<script>
+	$(function() {
+		$( "#confirmation_t" ).datepicker({ maxDate: "<?php echo MAX_DEADLINE; ?>",
+			minDate: "+0d", dateFormat: "yy-mm-dd"});
+		$( "#happening_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+	});
+</script>

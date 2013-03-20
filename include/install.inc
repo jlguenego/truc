@@ -1,5 +1,5 @@
 <?php
-	require_once('include/misc.inc');
+	require_once(BASE_DIR . '/include/misc.inc');
 
 	// Install the web site
 	function install() {
@@ -37,7 +37,7 @@ EOF;
 	define("MYSQL_DBNAME", "$dbname");
 
 	define("CONTACT_MAIL", "$contact_email");
-	
+
 	define('HOST', "$base_url");
 
 ?>

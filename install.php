@@ -1,5 +1,7 @@
 <?php
-	require_once('include/install.inc');
+	define("BASE_DIR", ".");
+
+	require_once(BASE_DIR . '/include/install.inc');
 	$error_msg = '';
 	if (isset($_POST['login'])) {
 		try {
@@ -53,7 +55,7 @@ EOF;
 		<tr>
 			<td><input type="submit" value="Submit"></td>
 		<tr/>
-		</table>		
+		</table>
 	</form>
 </html>
 <?php

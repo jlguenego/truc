@@ -2,9 +2,9 @@
 	class Event {
 		public $id;
 		public $title;
-		public $event_deadline;
-		public $event_date;
-		public $funding_wanted;
+		public $confirmation_t;
+		public $happening_t;
+		public $funding_needed;
 		public $funding_authorized;
 		public $location;
 		public $link;
@@ -44,11 +44,11 @@ EOF;
 
 			$id = $this->id;
 			$created_t = time();
-			$mod_t = time();
+			$mod_t = date('Y-m-d H:i:s', time());
 			$title = $this->title;
-			$event_date = $this->event_date;
-			$event_deadline = $this->event_deadline;
-			$funding_wanted = $this->funding_wanted;
+			$happening_t = $this->happening_t;
+			$confirmation_t = $this->confirmation_t;
+			$funding_needed = $this->funding_needed;
 			$location = $this->location;
 			$link = $this->link;
 			$description_short = $this->description_short;
@@ -63,16 +63,16 @@ INSERT INTO `event`
 SET
 	`id`="${id}",
 	`created_t`="${created_t}",
-	`mod_t`="${mod_t}",
+	`mod_t`='${mod_t}',
 	`id_user`="${id_user}",
 	`title`="${title}",
 	`location`="${location}",
 	`link`="${link}",
 	`short_description`="${description_short}",
 	`long_description`="${description_long}",
-	`event_date`="${event_date}",
-	`event_deadline`="${event_deadline}",
-	`funding_wanted`="${funding_wanted}",
+	`happening_t`="${happening_t}",
+	`confirmation_t`="${confirmation_t}",
+	`funding_needed`="${funding_needed}",
 	`funding_acquired`=0,
 	`nominative`=${nominative},
 	`status`=${status},
@@ -98,9 +98,9 @@ EOF;
 			$link = $this->link;
 			$description_short = $this->description_short;
 			$description_long = $this->description_long;
-			$event_date = $this->event_date;
-			$event_deadline = $this->event_deadline;
-			$funding_wanted = $this->funding_wanted;
+			$happening_t = $this->happening_t;
+			$confirmation_t = $this->confirmation_t;
+			$funding_needed = $this->funding_needed;
 			$request = <<<EOF
 UPDATE `event`
 SET
@@ -110,9 +110,9 @@ SET
 	`link`="${link}",
 	`short_description`="${description_short}",
 	`long_description`="${description_long}",
-	`event_date`="${event_date}",
-	`event_deadline`="${event_deadline}",
-	`funding_wanted`="${funding_wanted}"
+	`happening_t`="${happening_t}",
+	`confirmation_t`="${confirmation_t}",
+	`funding_needed`="${funding_needed}"
 WHERE `id`="${id}"
 EOF;
 			debug($request);

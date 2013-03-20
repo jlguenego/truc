@@ -1,8 +1,8 @@
 <?php
-	require_once("include/constants.inc");
+	require_once(BASE_DIR . "/include/constants.inc");
 
 	function my_autoloader($class) {
-		require_once('include/class/'.$class.'.class.php');
+		require_once(BASE_DIR . '/include/class/'.$class.'.class.php');
 	}
 
 	spl_autoload_register('my_autoloader');
@@ -81,21 +81,21 @@ EOF;
 		if (!preg_match("#^[\d]{4}-[0-1][\d]-[0-3][\d]$#", $date)) {
 			return FALSE;
 		}
-		list($day, $month, $year) = explode("-", $date);
-		if ($month > 12) {
-			return FALSE;
-		}
-		if (($month == "01" || $month == "03" || $month == "05"|| $month == "07"
-			|| $month == "08" || $month == "10" || $month == "12")
-			&& $day > 31) {
-			return FALSE;
-		} elseif (($month == "04" || $month == "06"|| $month == "09"
-			|| $month == "11") && $day > 30) {
-			return FALSE;
-		} elseif ((is_bisextil($year) && $day > 29)
-			|| (!is_bisextil($year) && $day > 28)) {
-			return FALSE;
-		}
+//		list($day, $month, $year) = explode("-", $date);
+//		if ($month > 12) {
+//			return FALSE;
+//		}
+//		if (($month == "01" || $month == "03" || $month == "05"|| $month == "07"
+//			|| $month == "08" || $month == "10" || $month == "12")
+//			&& $day > 31) {
+//			return FALSE;
+//		} elseif (($month == "04" || $month == "06"|| $month == "09"
+//			|| $month == "11") && $day > 30) {
+//			return FALSE;
+//		} elseif ((is_bisextil($year) && $day > 29)
+//			|| (!is_bisextil($year) && $day > 28)) {
+//			return FALSE;
+//		}
 		return TRUE;
 	}
 
@@ -185,13 +185,48 @@ EOF;
 		};
 		return $value;
 	}
-	
+
 	//string to timestamp conversion
-	// TODO: implement this.
+	//s2t("2013-09-qwe v22", "%Y-%m-qwe v%d");
 	function s2t($string, $format) {
-		//$a = array();
-		
-		//$result = mktime(0, 0, 0, $a['tm_mon']+1, $a['tm_mday'], $a['tm_year']+1900);
-		return 0;
+		list($hour, $minute, $second, $month, $day, $year) = array(0, 0, 0, 0, 0, 0);
+		$i = 0;
+		$j = 0;
+		while ($i < strlen($format)) {
+			$c_format = substr ($format , $i, 1);
+			$c_string = substr ($string , $j, 1);
+			if ($c_format != "%") {
+				//echo "$c_format | $c_string<br/>";
+				if ($c_format != $c_string) {
+					throw new Exception("String and format do not match. format=" .
+						$format . " and string=" . $string);
+				}
+				$i++;
+				$j++;
+			} else {
+				$i++;
+				$c_format = substr ($format , $i, 1);
+				switch ($c_format) {
+					case "Y":
+						$year = substr($string, $j, 4);
+						//echo $year;
+						$j += 4;
+						break;
+					case "m":
+						$month = substr($string, $j, 2);
+						$j += 2;
+						break;
+					case "d":
+						$day = substr($string, $j, 2);
+						$j += 2;
+						break;
+					default:
+						throw new Exception("Escaped character not understood. c=" . $c_format);
+				}
+				$i++;
+			}
+		}
+		$result = mktime($hour, $minute, $second, $month, $day, $year);
+		return $result;
 	}
 ?>

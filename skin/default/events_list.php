@@ -7,7 +7,7 @@
 			} else {
 ?>
 	<li>
-		<?php echo $event->event_date.": "; ?>
+		<?php echo $event->happening_t.": "; ?>
 		<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a>
 		<?php
 				if (!$event->is_published()) {

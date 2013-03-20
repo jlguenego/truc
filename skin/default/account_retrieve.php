@@ -43,7 +43,7 @@
 		$title = $event['title'];
 ?>
 		<li>
-			<?php echo date("d M Y", $event["event_date"]) ?>:
+			<?php echo date("d M Y", $event["happening_t"]) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>
@@ -63,7 +63,7 @@
 		$quantity = $participation["quantity"];
 ?>
 		<li>
-			<?php echo date("d M Y", $event["event_date"]) ?>:
+			<?php echo date("d M Y", $event["happening_t"]) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>

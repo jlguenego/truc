@@ -14,8 +14,8 @@
 ?>
 	<tr>
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
-		<td><?php echo $event->event_date; ?></td>
-		<td><?php echo $event->event_deadline; ?></td>
+		<td><?php echo $event->happening_t; ?></td>
+		<td><?php echo $event->confirmation_t; ?></td>
 		<td><?php echo $status; ?></td>
 		<td><?php echo $publish_flag; ?></td>
 <?php

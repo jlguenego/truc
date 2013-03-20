@@ -1,7 +1,9 @@
 <?php
-	require_once("include/constants.inc");
-	require_once(SETTINGS_INI);
-	require_once('include/install.inc');
+	define("BASE_DIR", ".");
+
+	require_once(BASE_DIR . "/include/constants.inc");
+	require_once(BASE_DIR . "/" . SETTINGS_INI);
+	require_once(BASE_DIR . '/include/install.inc');
 	$error_msg = '';
 	if (isset($_POST['confirm'])) {
 		try {
@@ -29,7 +31,7 @@ EOF;
 	Are you sure you want to uninstall all?
 	<form name="input" action="uninstall.php" method="POST">
 		<input type="hidden" name="confirm" value="yes"/>
-		<input type="submit" value="Submit"/>		
+		<input type="submit" value="Submit"/>
 	</form>
 </html>
 <?php

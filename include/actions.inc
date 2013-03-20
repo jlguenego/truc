@@ -473,6 +473,12 @@
 		if (!$update && event_title_exists($_GET["title"])) {
 			throw new Exception("Event already exists");
 		}
+		if (!check_date($_GET["happening_t"])) {
+			throw new Exception("The given date is wrong");
+		}
+		if (!check_date($_GET["confirmation_t"])) {
+			throw new Exception("Please choose a date for your event");
+		}
 
 		foreach ($_GET as $value) {
 			if (is_null_or_empty($value)) {
@@ -517,9 +523,9 @@
 			$event = new Event();
 			$event->id = $id;
 			$event->title = $_GET['title'];
-			$event->event_deadline = $_GET['deadline'];
-			$event->event_date = $_GET['date'];
-			$event->funding_wanted = $_GET['funding_wanted'];
+			$event->confirmation_t = $_GET['confirmation_t'];
+			$event->happening_t = $_GET['happening_t'];
+			$event->funding_needed = $_GET['funding_needed'];
 			$event->location = $_GET['location'];
 			$event->link = $_GET['link'];
 			$event->description_short = $_GET['short_description'];
@@ -628,9 +634,9 @@
 					$event->load($_GET["id"]);
 					$event->id = $_GET["id"];
 					$event->title = $_GET['title'];
-					$event->deadline = $_GET['deadline'];
-					$event->date = $_GET['date'];
-					$event->funding_wanted = $_GET['funding_wanted'];
+					$event->confirmation_t = $_GET['confirmation_t'];
+					$event->date = $_GET['happening_t'];
+					$event->funding_needed = $_GET['funding_needed'];
 					$event->location = $_GET['location'];
 					$event->link = $_GET['link'];
 					$event->description_short = $_GET['short_description'];

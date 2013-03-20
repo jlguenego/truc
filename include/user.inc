@@ -1,5 +1,5 @@
 <?php
-	require_once('include/misc.inc');
+	require_once(BASE_DIR . '/include/misc.inc');
 
 	function is_logged() {
 		if (!is_null_or_empty($_SESSION['login'])) {
@@ -272,7 +272,7 @@ EOF;
 			if ($_GET['password'] != $_GET['password2']) {
 				throw new Exception("Passwords are different");
 			}
-			require_once('recaptcha.inc');
+			require_once(BASE_DIR . 'recaptcha.inc');
 		    $privatekey = CAPTCHA_PRIV_KEY;
 		    $resp = recaptcha_check_answer ($privatekey,
 										$_SERVER["REMOTE_ADDR"],

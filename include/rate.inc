@@ -1,6 +1,6 @@
 <?php
-	require_once("include/user.inc");
-	require_once("include/event.inc");
+	require_once(BASE_DIR . "/include/user.inc");
+	require_once(BASE_DIR . "/include/event.inc");
 
 	function rate_exists($label, $event_id) {
 		try {

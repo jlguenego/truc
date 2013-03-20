@@ -1,9 +1,11 @@
 <?php
-	require_once("include/constants.inc");
-	require_once("include/globals.inc");
-	require_once("include/misc.inc");
-	require_once("include/user.inc");
-	require_once("include/layout.inc");
+	define("BASE_DIR", ".");
+
+	require_once(BASE_DIR . "/include/constants.inc");
+	require_once(BASE_DIR . "/include/globals.inc");
+	require_once(BASE_DIR . "/include/misc.inc");
+	require_once(BASE_DIR . "/include/user.inc");
+	require_once(BASE_DIR . "/include/layout.inc");
 
 	if (isset($_POST['login'])) {
 		try {

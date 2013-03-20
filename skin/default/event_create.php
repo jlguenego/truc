@@ -30,23 +30,23 @@
 		</tr>
 		<tr>
 			<td>Required funding: </td>
-			<td><input type="number" name="funding_wanted" value="<?php echo_default_value("funding_wanted"); ?>"/></td>
+			<td><input type="number" name="funding_needed" value="<?php echo_default_value("funding_needed"); ?>"/></td>
 			<td>
 				<span class="help">Minimum funding wanted in Euro.</span>
 			</td>
 		</tr>
 		<tr>
 			<td>Event date: </td>
-			<td><input type="text" name="date" id="calendar"
-				value="<?php echo_default_value("date"); ?>"></td>
+			<td><input type="text" name="happening_t" id="happening_t"
+				value="<?php echo_default_value("happening_t"); ?>"></td>
 			<td>
 				<span class="help">The date of your event (yyyy-mm-dd).</span>
 			</td>
 		</tr>
 		<tr>
-			<td>Go/NoGo date:</td>
-			<td><input type="text" name="deadline" id="deadline"
-					value="<?php echo_default_value("deadline"); ?>"/></td>
+			<td>Confirmation date:</td>
+			<td><input type="text" name="confirmation_t" id="confirmation_t"
+					value="<?php echo_default_value("confirmation_t"); ?>"/></td>
 			<td>
 				<span class="help">Deadline for validation (yyyy-mm-dd).</span>
 			</td>
@@ -105,6 +105,7 @@
 <?php
 	if (isset($_GET["rates"])) {
 		$i = 0;
+
 		foreach ($_GET["rates"] as $rate) {
 			$label = $_GET["labels"][$i];
 			$amount = $rate;
@@ -126,9 +127,21 @@
 	<input type="submit" value="Submit"/>
 </form>
 <script>
-	$(function() {
-		$( "#deadline" ).datepicker({ maxDate: "<?php echo MAX_DEADLINE; ?>",
-			minDate: "+0d", dateFormat: "yy-mm-dd"});
-		$( "#calendar" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
-	});
+	function update_form() {
+		console.log("update_form");
+		console.log("date=" + $("#happening_t").val());
+		var max_date = $("#happening_t").val();
+		$( "#confirmation_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+		if ($("#happening_t").val() == "") {
+			$("#confirmation_t").val("");
+			$( "#confirmation_t" ).attr("disabled", "");
+		} else {
+			$( "#confirmation_t" ).removeAttr("disabled");
+		}
+		$( "#confirmation_t" ).datepicker('option', 'maxDate', max_date);
+		$( "#happening_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+	}
+
+	$("form").change(update_form);
+	$(document).ready(update_form);
 </script>

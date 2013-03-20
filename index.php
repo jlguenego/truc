@@ -1,16 +1,18 @@
 <?php
-	require_once("include/constants.inc");
-	require_once("include/globals.inc");
-	require_once("include/misc.inc");
-	require_once("include/layout.inc");
-	require_once("include/user.inc");
-	require_once("include/event.inc");
-	require_once("include/rate.inc");
-	require_once("include/actions.inc");
-	require_once("include/manage.inc");
-	require_once("include/payment.inc");
-	require_once("include/devis.inc");
-	require_once("include/mail.inc");
+	define("BASE_DIR", ".");
+
+	require_once(BASE_DIR . "/include/constants.inc");
+	require_once(BASE_DIR . "/include/globals.inc");
+	require_once(BASE_DIR . "/include/misc.inc");
+	require_once(BASE_DIR . "/include/layout.inc");
+	require_once(BASE_DIR . "/include/user.inc");
+	require_once(BASE_DIR . "/include/event.inc");
+	require_once(BASE_DIR . "/include/rate.inc");
+	require_once(BASE_DIR . "/include/actions.inc");
+	require_once(BASE_DIR . "/include/manage.inc");
+	require_once(BASE_DIR . "/include/payment.inc");
+	require_once(BASE_DIR . "/include/devis.inc");
+	require_once(BASE_DIR . "/include/mail.inc");
 
 	// If not installed, goto installation page
 	if (!is_installed()) {
@@ -22,7 +24,7 @@
 	}
 
 	// If installed
-	require_once(SETTINGS_INI);
+	require_once(BASE_DIR . "/" . SETTINGS_INI);
 
 	session_start();
 
