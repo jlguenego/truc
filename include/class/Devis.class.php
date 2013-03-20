@@ -1,5 +1,6 @@
 ﻿<?php
 	class Devis {
+		public $id;
 		public $items = array();
 		public $total_ht;
 		public $total_tax;
@@ -11,6 +12,11 @@
 		public $event_id;
 		public $user_id;
 
+		private function hydrate($array) {
+			foreach ($array as $key => $value) {
+				$this->$key = $value;
+			}
+		}
 
 		public function compute() {
 			$this->total_ht = 0.00;
@@ -26,12 +32,13 @@
 			debug($this->label);
 
 			$this->user_id = get_id_from_account();
+			$this->id = create_id();
 		}
 
 		public function store() {
 			global $g_pdo;
 
-			$id = create_id();
+			$id = $this->id;
 			$created_t = time();
 			$total_ht = $this->total_ht;
 			$total_tax = $this->total_tax;
@@ -70,6 +77,39 @@ EOF;
 			}
 		}
 
+		public function load($id) {
+			global $g_pdo;
+
+			$request = "SELECT * FROM `devis` WHERE `id`= ${id}";
+
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$devis = $q->fetch(PDO::FETCH_ASSOC);
+			if (!isset($devis['id'])) {
+				return NULL;
+			}
+			$this->hydrate($devis);
+			$q->closeCursor();
+
+			$request = <<<EOF
+SELECT * FROM `devis_item`
+WHERE `id_devis`=${id}
+ORDER BY event_rate_name
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$items = $q->fetchAll(PDO::FETCH_ASSOC);
+
+			foreach ($items as $record) {
+				$item = new Item();
+				$item->load($record);
+				$this->items[] = $item;
+			}
+			debug(sprint_r($this));
+		}
+
 		public function update() {
 			global $g_pdo;
 
@@ -86,26 +126,6 @@ EOF;
 				debug($request);
 				throw new Exception("Devis update: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
-		}
-
-		public function build($devis) { // Generate devis from MySQL array
-			$this->total_ht = curr($devis["total_ht"]);
-			$this->total_tax = curr($devis["total_tax"]);
-			$this->total_ttc = curr($devis["total_ttc"]);
-			$this->label = $devis["label"];
-			$this->username = $devis["username"];
-			$this->address = $devis["address"];
-			$this->status = $devis["status"];
-			$this->event_id = $devis["id_event"];
-			$this->user_id = $devis["id_user"];
-
-			foreach ($devis["items"] as $row) {
-				$item = new Item();
-				$item->build($row);
-				debug("Item=".sprint_r($item));
-				$this->items[] = $item;
-			}
-			debug("Items=".sprint_r($this->items));
 		}
 
 		public function to_string() {
@@ -126,6 +146,10 @@ EOF;
 			}
 
 			return $result;
+		}
+
+		public function url() {
+			return HOST . "/index.php?action=retrieve&type=devis&id=" . $this->id;
 		}
 	}
 ?>

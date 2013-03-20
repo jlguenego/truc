@@ -3,7 +3,7 @@
 		global $g_pdo;
 
 		$request = <<<EOF
-SELECT * FROM `devis`
+SELECT `id` FROM `devis`
 WHERE `id_event`=${event_id}
 EOF;
 		debug($request);
@@ -14,11 +14,9 @@ EOF;
 		};
 
 		$devis_array = array();
-		while ($row = $q->fetch()) {
-			$items = devis_get_items($row["id"]);
-			$row["items"] = $items;
+		while ($record = $q->fetch()) {
 			$devis = new Devis();
-			$devis->build($row);
+			$devis->load($record["id"]);
 			$devis_array[] = $devis;
 		}
 		return $devis_array;
@@ -54,5 +52,18 @@ EOF;
 	function devis_set_status($devis, $status) {
 		$devis->status = $status;
 		$devis->update();
+	}
+
+	function devis_exists($id) {
+		global $g_pdo;
+
+		$request = <<<EOF
+SELECT COUNT(*) FROM `devis` WHERE `id`= :id
+EOF;
+		debug($request);
+		$q = $g_pdo->prepare($request);
+		$q->execute(array(":id" => $id));
+		$count = $q->fetch();
+		return $count[0] > 0;
 	}
 ?>

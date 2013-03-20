@@ -39,7 +39,12 @@
 		$_GET["action"] = "none";
 	}
 
-	action();
+	try {
+		action();
+	} catch (Exception $e) {
+		$_SESSION["state"] = "error";
+		$g_error_msg = $e->getMessage();
+	}
 
 	if (!in_array($_SESSION["state"], $g_states)) {
 		$g_error_msg = "Undeclared state: ".$_SESSION["state"].".";

@@ -12,6 +12,12 @@
 		public $participant_lastname;
 		public $participant_title;
 
+		private function hydrate($array) {
+			foreach ($array as $key => $value) {
+				$this->$key = $value;
+			}
+		}
+
 		public function compute() {
 			$this->total_ht = curr($this->event_rate_amount * $this->quantity);
 			$this->total_tax = curr(($this->total_ht * ($this->event_rate_tax/100)));
@@ -58,18 +64,8 @@ EOF;
 			};
 		}
 
-		public function build($item) {
-			$this->event_name = $item["event_name"];
-			$this->event_rate_name = $item["event_rate_name"];
-			$this->event_rate_amount = curr($item["event_rate_amount"]);
-			$this->event_rate_tax = curr($item["event_rate_tax"]);
-			$this->quantity = $item["quantity"];
-			$this->total_ht = curr($item["total_ht"]);
-			$this->total_tax = curr($item["total_tax"]);
-			$this->total_ttc = curr($item["total_ttc"]);
-			$this->participant_firstname = $item["participant_firstname"];
-			$this->participant_lastname = $item["participant_lastname"];
-			$this->participant_title = $item["participant_title"];
+		public function load($item) {
+			$this->hydrate($item);
 		}
 
 		public function to_string() {

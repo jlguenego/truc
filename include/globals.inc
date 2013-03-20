@@ -21,6 +21,7 @@
 		"account_create",
 		"account_retrieve",
 		"account_update",
+		"devis_retrieve",
 		"payment_cancel",
 		"payment_success",
 		"supervision",

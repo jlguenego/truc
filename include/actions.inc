@@ -14,23 +14,7 @@
 				action_create();
 				break;
 			case "retrieve":
-				switch ($_GET["type"]) {
-					case "events":
-						global $g_display;
-						$g_display["events"] = event_list();
-						$_SESSION["state"] = "events_list";
-						break;
-					case "event":
-						action_retrieve_event();
-						break;
-					case "account":
-						action_retrieve_account();
-						break;
-					default:
-						$_SESSION["state"] = "not_allowed";
-						break;
-				}
-
+				action_retrieve();
 				break;
 			case "update":
 				switch ($_GET["type"]) {
@@ -236,6 +220,29 @@
 				$_SESSION["state"] = "not_allowed";
 				break;
 		}
+	}
+
+	function action_retrieve() {
+		switch ($_GET["type"]) {
+			case "events":
+				global $g_display;
+				$g_display["events"] = event_list();
+				$_SESSION["state"] = "events_list";
+				break;
+			case "event":
+				action_retrieve_event();
+				break;
+			case "account":
+				action_retrieve_account();
+				break;
+			case "devis":
+				action_devis_retrieve();
+				break;
+			default:
+				$_SESSION["state"] = "not_allowed";
+				break;
+		}
+
 	}
 
 	function action_create_account() {
@@ -664,5 +671,25 @@
 			$g_error_msg = $e->getMessage();
 			$_SESSION["state"] = "event_update";
 		}
+	}
+
+	function action_devis_retrieve() {
+		global $g_display;
+
+		if (!isset($_GET['id'])) {
+			throw new Exception("No devis given.");
+		}
+		if (!devis_exists($_GET['id'])) {
+			throw new Exception("Devis does not exists.");
+		}
+		$devis = new Devis();
+		$devis->load($_GET['id']);
+
+		$event = new Event();
+		$event->load($devis->event_id);
+
+		$g_display["devis"] = $devis;
+		$g_display["event"] = $event;
+		$_SESSION["state"] = "devis_retrieve";
 	}
 ?>

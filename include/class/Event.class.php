@@ -18,9 +18,9 @@
 
 		public function load($id) {
 			global $g_pdo;
-			$dbname = MYSQL_DBNAME;
+
 			$request = <<<EOF
-SELECT * FROM `${dbname}`.`event`
+SELECT * FROM `event`
 WHERE `id`= ${id}
 EOF;
 			debug($request);
