@@ -104,7 +104,7 @@
 			<td class="help">numero - rue - code postal - ville - pays</td>
 		</tr>
 	</table>
-	<input type="checkbox" name="confirm"/> I have read the <a href="terms.html">Terms and polices</a> and accept them.<br/>
+	<input type="checkbox" name="confirm"/> I have read the <a href="CGV.pdf">CGV</a> and accept them.<br/>
 	<input type="submit" value="Next" disabled/>
 </form>
 <form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
