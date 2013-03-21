@@ -6,6 +6,9 @@
 <?php
 	echo "<h1>".$event->title."</h1>";
 	if (user_can_administrate_event($event)) {
+?>
+<div id="event_administration">
+<?php
 		if ($event->is_published()) {
 ?>
 			This event is published.<br/>
@@ -20,6 +23,9 @@
 		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a><br/>
 <?php
 		echo $event->funding_acquired."€/".$event->funding_needed."€ funding acquired.<br/>";
+?>
+</div>
+<?php
 	} else {
 ?>
 		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>

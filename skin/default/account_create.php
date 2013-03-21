@@ -45,7 +45,22 @@ Please enter your info:
 			</td>
 		</tr>
 		<tr>
+			<td><input type="checkbox" name="confirm"/> I have read and understood the <a href="CGU.pdf" target="_blank">CGU</a> and accept them.<br/></td>
+		</tr>
+		<tr>
 			<td><input type="submit" value="Submit"></td>
-		<tr/>
+		</tr>
 	</table>
 </form>
+<script>
+	$('input[type=checkbox]').ready(eb_sync_next_button);
+	$('input[type=checkbox]').change(eb_sync_next_button);
+
+	function eb_sync_next_button() {
+		if ($('input[type=checkbox]').is(':checked')) {
+			$('input[value=Submit]').removeAttr('disabled');
+		} else {
+			$('input[value=Submit]').attr('disabled', 'disabled');
+		}
+	}
+</script>

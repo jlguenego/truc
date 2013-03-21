@@ -179,6 +179,9 @@ EOF;
 			if (!$this->is_published()) {
 				return FALSE;
 			}
+			if ($this->is_cancelled()) {
+				return FALSE;
+			}
 			return TRUE;
 		}
 

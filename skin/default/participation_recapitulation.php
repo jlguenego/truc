@@ -10,9 +10,9 @@
 		<th>Unit price</th>
 		<th>Quantity</th>
 		<th>Total tax excluded</th>
-		<th>Taxe rate</th>
-		<th>Taxe amount</th>
-		<th>TTC</th>
+		<th>Tax rate</th>
+		<th>Tax amount</th>
+		<th>Total</th>
 	</tr>
 <?php
 	foreach ($devis->items as $item) {
@@ -51,7 +51,7 @@
 		<td><?php echo $devis->total_tax; ?></td>
 	</tr>
 	<tr>
-		<th>TOTAL TTC</th>
+		<th>TOTAL DUE</th>
 		<th><?php echo $devis->total_ttc; ?></th>
 	</tr>
 </table>

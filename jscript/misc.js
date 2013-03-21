@@ -29,7 +29,7 @@ function addRate(divName, label, amount){
 									"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\"></td>" +
 								"</tr>" +
 								"<tr>" +
-									"<td>Amount</td>" +
+									"<td>Amount (Tax excluded)</td>" +
 									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
 								"</tr>" +
 								"<tr>" +

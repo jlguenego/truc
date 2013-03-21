@@ -1,5 +1,6 @@
 <?php
 	$devis = $g_display['devis'];
+	// TODO: image authorization only
 ?>
 
 <form action="<?php echo PAYPAL_URL; ?>" method="post">

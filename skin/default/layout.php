@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<title>EventIf</title>
+		<link href="<?php echo HOST . "/" . SKIN_DIR; ?>/default.css" rel="stylesheet">
 		<meta charset="utf-8"/>
 	</head>
 
@@ -13,19 +14,6 @@
 <script src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 <script src="ext/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.js"></script>
 
-<style type="text/css">
-	div.ui-datepicker{
-		font-size:10px;
-	}
-	.help {
-		font-size:12px;
-	}
-
-	table, td, th {
-		border-collapse: collapse;
-		border: 1px solid #000;
-	}
-</style>
 <?php
 	layout_header();
 	layout_message();

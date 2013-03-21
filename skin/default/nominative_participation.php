@@ -14,9 +14,9 @@
 	<tr>
 		<th>Event name</th>
 		<th>Categories</th>
-		<th>Rates</th>
-		<th>Taxes</th>
-		<th>Rate TTC</th>
+		<th>Rate</th>
+		<th>Tax</th>
+		<th>Total</th>
 	</tr>
 	<?php
 		$tax_array = array();
@@ -34,7 +34,7 @@
 		<td><?php echo $event_title; ?></td>
 		<td><?php echo $label; ?></td>
 		<td><?php echo $amount_ht; ?></td>
-		<td><?php echo $tax_rate; ?></td>
+		<td><?php echo $tax_rate; ?>%</td>
 		<td><?php echo $amount_ttc; ?></td>
 		<td><button OnClick="add_ticket(<?php
 			echo "'$event_title', '$label', $amount_ht, $tax_rate";
@@ -57,8 +57,8 @@
 			<th>Event</th>
 			<th>Rate</th>
 			<th>Unit price</th>
-			<th>Taxe rate</th>
-			<th>Taxe amount</th>
+			<th>Tax rate</th>
+			<th>Tax amount</th>
 			<th>TTC</th>
 			<th>Title</th>
 			<th>Lastname</th>

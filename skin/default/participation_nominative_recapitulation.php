@@ -8,9 +8,9 @@
 		<th>Event</th>
 		<th>Rate name</th>
 		<th>Unit price</th>
-		<th>Taxe rate</th>
-		<th>Taxe amount</th>
-		<th>TTC</th>
+		<th>Tax rate</th>
+		<th>Tax amount</th>
+		<th>Total</th>
 		<th>Title</th>
 		<th>Lastname</th>
 		<th>Firstname</th>
@@ -55,7 +55,7 @@
 		<td><?php echo $devis->total_tax; ?></td>
 	</tr>
 	<tr>
-		<th>TOTAL TTC</th>
+		<th>TOTAL DUE</th>
 		<th><?php echo $devis->total_ttc; ?></th>
 	</tr>
 </table>
