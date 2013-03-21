@@ -1,6 +1,5 @@
 <?php
 	require_once(BASE_DIR . "/include/user.inc");
-	require_once(BASE_DIR . "/include/event.inc");
 
 	function rate_exists($label, $event_id) {
 		try {
@@ -26,7 +25,7 @@ EOF;
 		try {
 			global $g_pdo;
 
-			if (!event_exists($event_id)) {
+			if (!Event::exists($event_id)) {
 				return FALSE;
 			}
 			if (!rate_exists($label, $event_id)) {
@@ -52,17 +51,17 @@ EOF;
 		try {
 			global $g_pdo;
 
-			if (!event_exists($event_id)) {
-				return FALSE;
+			if (!Event::exists($event_id)) {
+				throw new Exception("Cannot add rate on a none existing event.");
 			}
 			if (rate_exists($label, $event_id)) {
-				return FALSE;
+				return;
 			}
 			$label = check($label);
 			$id = create_id();
-			$dbname = MYSQL_DBNAME;
+
 			$request = <<<EOF
-INSERT INTO `${dbname}`.`rate`
+INSERT INTO `rate`
 SET
 	`id`="${id}",
 	`label`="${label}",
@@ -73,7 +72,6 @@ EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute();
-			return TRUE;
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;

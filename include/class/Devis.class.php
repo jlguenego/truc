@@ -16,6 +16,8 @@
 			foreach ($array as $key => $value) {
 				$this->$key = $value;
 			}
+			$this->event_id = $array["id_event"];
+			$this->user_id = $array["id_user"];
 		}
 
 		public function compute() {
@@ -70,7 +72,9 @@ EOF;
 				debug($request);
 				throw new Exception("Devis insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
-			event_add_funding_aquired($id_event, $total_ttc);
+			$event = new Event();
+			$event->load($id_event);
+			$event->add_funding_acquired($total_ttc);
 
 			foreach ($this->items as $item) {
 				$item->store($id);

@@ -1,6 +1,5 @@
 <?php
 	require_once(BASE_DIR . '/include/user.inc');
-	require_once(BASE_DIR . '/include/event.inc');
 
 	function is_participating($id_user, $id_event) {
 		try {
@@ -43,7 +42,7 @@ EOF;
 		try {
 			$nbr=(int)$nbr;
 			global $g_pdo;
-			if (!user_exists($id_user) || !event_exists($id_event)) {
+			if (!user_exists($id_user) || !Event::exists($id_event)) {
 				debug("error");
 				return FALSE;
 			}

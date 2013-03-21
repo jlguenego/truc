@@ -29,7 +29,7 @@ EOF;
 			$q->execute();
 			$event = $q->fetch(PDO::FETCH_ASSOC);
 			if (!isset($event['id'])) {
-				return NULL;
+				throw new Exception("Cannot load the event with id=" . $id);
 			}
 			$this->hydrate($event);
 		}
@@ -173,9 +173,85 @@ EOF;
 		}
 
 		public function can_participate() {
-			if (s2t($this->open_t, "%Y-%m-%d") > time()) {
+			if (s2t($this->open_t, "%Y-%m-%d") >= time()) {
 				return FALSE;
 			}
+			return TRUE;
+		}
+
+		function add_funding_acquired($amount) {
+			global $g_pdo;
+
+			$funding_acquired = $this->funding_acquired + $amount;
+			$mod_t = time();
+			$request = <<<EOF
+UPDATE `event`
+SET
+	`mod_t`="${mod_t}",
+	`funding_acquired`="${funding_acquired}"
+WHERE `id`="{$this->id}"
+EOF;
+			debug($request);
+			return $g_pdo->exec($request);
+		}
+
+		public static function exists($id) {
+			global $g_pdo;
+
+			$request = "SELECT COUNT(*) FROM `event` WHERE `id`= :id";
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		}
+
+		public static function list_all($user_id = NULL) {
+			global $g_pdo;
+			$where_clause = "";
+			if ($user_id != NULL) {
+				$where_clause = " WHERE `id_user`=" . $user_id;
+			}
+
+			$request = <<<EOF
+SELECT `id` FROM `event`${where_clause} ORDER BY `happening_t`
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$event_record = $q->fetch();
+			$events = array();
+			while (isset($event_record["id"])) {
+				$event = new Event();
+				$event->load($event_record["id"]);
+				$events[] = $event;
+				$event_record = $q->fetch();
+			}
+			return $events;
+		}
+
+		// Planned, Confirmed, Cancelled.
+		public function set_status($status) {
+			global $g_pdo;
+
+			$request = <<<EOF
+UPDATE `event`
+SET	`status`=${status}
+WHERE `id`="{$this->id}"
+EOF;
+			debug($request);
+			return $g_pdo->exec($request);
+		}
+
+		public function set_publish_flag($flag) {
+			global $g_pdo;
+
+			$request = <<<EOF
+UPDATE `event`
+SET	`publish_flag`=${flag}
+WHERE `id`="{$this->id}"
+EOF;
+			debug($request);
+			return $g_pdo->exec($request);
 		}
 	}
 ?>

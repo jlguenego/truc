@@ -19,6 +19,7 @@
 			$mail = $user["email"];
 
 			$event = new Event();
+			debug("event id=".$devis->event_id);
 			$event->load($devis->event_id);
 			$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=event_confirm&'.
 				$devis->to_string().
@@ -26,6 +27,7 @@
 				'&nominative='.$event->nominative);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
+			debug("send mail to: ". $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);
 		}
   	}

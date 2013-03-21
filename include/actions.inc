@@ -247,14 +247,12 @@
 		need_authentication();
 		try {
 			debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
-			action_event_valid();
-			$id = create_id();
+			form_event_valid();
 			$nominative = 0;
 			if (isset($_GET['nominative'])) {
 				$nominative = 1;
 			}
 			$event = new Event();
-			$event->id = $id;
 			$event->title = $_GET['title'];
 			$event->happening_t = $_GET['happening_t'];
 			$event->confirmation_t = $_GET['confirmation_t'];
@@ -269,11 +267,12 @@
 			$event->store();
 			debug(sprint_r($event));
 
+			debug(sprint_r($_GET['labels']));
 			$i = 0;
 			foreach ($_GET['labels'] as $label) {
 				$rate = $_GET['rates'][$i];
 				$tax_rate = $_GET['tax_rates'][$i];
-				add_rate($label, $rate, $tax_rate, $id);
+				add_rate($label, $rate, $tax_rate, $event->id);
 				$i++;
 			}
 			$_GET["id"] = $event->id;
@@ -289,7 +288,7 @@
 		global $g_error_msg;
 
 		if (!is_null_or_empty($_GET["id"])) {
-			if (event_exists($_GET["id"])) {
+			if (Event::exists($_GET["id"])) {
 				$event = new Event();
 				$event->load($_GET["id"]);
 				if (!$event->is_published() && !user_can_administrate_event($event)) {
@@ -318,9 +317,9 @@
 			need_authentication();
 			debug("event_id=".$_GET["id"]);
 			if (!is_null_or_empty($_GET["id"])) {
-				if (event_exists($_GET["id"])) {
+				if (Event::exists($_GET["id"])) {
 					$_SESSION["state"] = "event_form";
-					action_event_valid(TRUE);
+					form_event_valid(TRUE);
 					$event = new Event();
 					$event->load($_GET["id"]);
 					$event->id = $_GET["id"];
@@ -377,18 +376,15 @@
 				if (is_null_or_empty($_GET['id'])) {
 					throw new Exception("No event given.");
 				}
-				if (!event_exists($_GET['id'])) {
+				if (!Event::exists($_GET['id'])) {
 					throw new Exception("Event does not exists.");
 				}
 				$event = new Event();
 				$event->load($_GET['id']);
 				//$user = get_user_by_login($_SESSION["login"]);
 				$event->check_owner();
-				if($_GET['confirm'] != "yes") {
-					//redirect_to("index.php");
-				} else {
+				if($_GET['confirm'] == "yes") {
 					$event->delete();
-					//redirect_to("index.php");
 				}
 			}
 			$_SESSION["state"] = "root";
@@ -419,51 +415,6 @@
 		}
 	}
 
-	function action_event_valid($update = FALSE) {
-		if (is_null_or_empty($_GET["title"])) {
-			throw new Exception("Event must have a title");
-		}
-		if (!$update && event_title_exists($_GET["title"])) {
-			throw new Exception("Event already exists");
-		}
-		if (!check_date($_GET["happening_t"])) {
-			throw new Exception("The given date is wrong");
-		}
-		if (!check_date($_GET["confirmation_t"])) {
-			throw new Exception("Please choose a date for your event");
-		}
-		if (!check_date($_GET["open_t"])) {
-			throw new Exception("The participation open date is wrong");
-		}
-
-		foreach ($_GET as $value) {
-			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields: " . sprint_r($_GET));
-			}
-		}
-
-		foreach ($_GET['rates'] as $rate) {
-			if (is_null_or_empty($rate)
-				|| (!is_null_or_empty($rate) && !is_number($rate))) {
-
-				throw new Exception("Please enter a number for the rates");
-			}
-		}
-
-		foreach ($_GET['tax_rates'] as $tax_rate) {
-			if (is_null_or_empty($tax_rate)
-				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
-
-				throw new Exception("Please enter a number for the tax rates");
-			}
-		}
-		foreach ($_GET['labels'] as $label) {
-			if (is_null_or_empty($label)) {
-				throw new Exception("Please enter a label for each rate");
-			}
-		}
-	}
-
 	function action_event_publish() {
 		global $g_error_msg;
 
@@ -476,8 +427,10 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		event_set_publish_flag($_GET['id'], EVENT_PUBLISH_FLAG_YES);
-		redirect_to("?action=supervision");
+		$event = new Event();
+		$event->load($_GET['id']);
+		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
+		action_supervision();
 	}
 
 	function action_event_unpublish() {
@@ -492,8 +445,10 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		event_set_publish_flag($_GET['id'], EVENT_PUBLISH_FLAG_NO);
-		redirect_to("?action=supervision");
+		$event = new Event();
+		$event->load($_GET['id']);
+		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
+		action_supervision();
 	}
 
 	function action_event_confirm() {
@@ -508,15 +463,17 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		event_set_status($_GET['id'], EVENT_STATUS_CONFIRMED);
+		$event = new Event();
+		$event->load($_GET['id']);
+		$event->set_status(EVENT_STATUS_CONFIRMED);
 		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CAPTURED);
 		mail_event_confirm($_GET['id']);
-		redirect_to("?action=supervision");
+		action_supervision();
 	}
 
 	function action_event_list() {
 		global $g_display;
-		$g_display["events"] = event_list();
+		$g_display["events"] = Event::list_all();
 		$_SESSION["state"] = "event_list";
 	}
 
@@ -532,9 +489,11 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		event_set_status($_GET['id'], EVENT_STATUS_CANCELLED);
+		$event = new Event();
+		$event->load($_GET['id']);
+		$event->set_status(EVENT_STATUS_CANCELLED);
 		mail_event_cancel($_GET['id']);
-		redirect_to("?action=supervision");
+		action_supervision();
 	}
 
 	function action_devis_retrieve() {
@@ -724,11 +683,11 @@
 		global $g_display;
 		need_authentication();
 		if (!is_admin()) {
-			$g_display["events"] = event_list(get_id_from_account());
+			$g_display["events"] = Event::list_all(get_id_from_account());
 			$_SESSION["state"] = "supervision";
 			return;
 		}
-		$g_display["events"] = event_list();
+		$g_display["events"] = Event::list_all();
 		$_SESSION["state"] = "supervision";
 	}
 ?>

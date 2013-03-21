@@ -14,7 +14,8 @@ EOF;
 		};
 
 		$devis_array = array();
-		while ($record = $q->fetch()) {
+		while (($record = $q->fetch()) != NULL) {
+			debug("record=".sprint_r($record));
 			$devis = new Devis();
 			$devis->load($record["id"]);
 			$devis_array[] = $devis;
