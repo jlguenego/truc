@@ -262,8 +262,8 @@
 			$event->funding_needed = $_GET['funding_needed'];
 			$event->location = $_GET['location'];
 			$event->link = $_GET['link'];
-			$event->description_short = $_GET['short_description'];
-			$event->description_long = $_GET['long_description'];
+			$event->short_description = $_GET['short_description'];
+			$event->long_description = $_GET['long_description'];
 			$event->nominative = $nominative;
 			$event->user_id = get_id_from_account();
 			$event->store();
@@ -276,10 +276,11 @@
 				add_rate($label, $rate, $tax_rate, $id);
 				$i++;
 			}
-			redirect_to("?action=retrieve&type=event&id=${id}");
+			$_GET["id"] = $event->id;
+			action_event_retrieve();
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
-			$_SESSION["state"] = "event_create";
+			action_event_get_form();
 		}
 	}
 
@@ -318,23 +319,20 @@
 			debug("event_id=".$_GET["id"]);
 			if (!is_null_or_empty($_GET["id"])) {
 				if (event_exists($_GET["id"])) {
-					$_SESSION["state"] = "event_update";
-					$g_display["rates"] = events_rates($_GET["id"]);
+					$_SESSION["state"] = "event_form";
 					action_event_valid(TRUE);
 					$event = new Event();
 					$event->load($_GET["id"]);
 					$event->id = $_GET["id"];
 					$event->title = $_GET['title'];
+					$event->happening_t = $_GET['happening_t'];
 					$event->confirmation_t = $_GET['confirmation_t'];
-					$event->date = $_GET['happening_t'];
+					$event->open_t = $_GET['open_t'];
 					$event->funding_needed = $_GET['funding_needed'];
 					$event->location = $_GET['location'];
 					$event->link = $_GET['link'];
-					$event->description_short = $_GET['short_description'];
-					$event->description_long = $_GET['long_description'];
-					//$event->nominative = $_GET['nominative'];
-
-					$g_display["event"] = $event;
+					$event->short_description = $_GET['short_description'];
+					$event->long_description = $_GET['long_description'];
 
 					$event->check_owner();
 
@@ -348,9 +346,9 @@
 						$i++;
 					}
 					delete_unuse_rates($_GET["id"], $_GET['labels']);
-					redirect_to("?action=retrieve&type=event&id=".$_GET["id"]);
+					action_event_retrieve();
 				} else {
-					redirect_to("?action=create&type=event");
+					action_event_create();
 				}
 			} else {
 				$_SESSION["state"] = "not_allowed";
@@ -358,7 +356,7 @@
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
-			$_SESSION["state"] = "event_update";
+			action_event_get_form();
 		}
 	}
 
@@ -405,13 +403,19 @@
 
 		need_authentication();
 		if (is_null_or_empty($_GET["id"])) {
-			$_SESSION["state"] = "event_create";
+			$event = new Event();
+			$event->load_default();
+			$g_display["event"] = $event;
+			$g_display["rates"] = NULL;
+			$g_display["form_action"] = "?action=create&amp;type=event";
+			$_SESSION["state"] = "event_form";
 		} else {
 			$event = new Event();
 			$event->load($_GET["id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["id"]);
-			$_SESSION["state"] = "event_update";
+			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
+			$_SESSION["state"] = "event_form";
 		}
 	}
 
@@ -429,12 +433,12 @@
 			throw new Exception("Please choose a date for your event");
 		}
 		if (!check_date($_GET["open_t"])) {
-			throw new Exception("The given date is wrong");
+			throw new Exception("The participation open date is wrong");
 		}
 
 		foreach ($_GET as $value) {
 			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields");
+				throw new Exception("Please fill all fields: " . sprint_r($_GET));
 			}
 		}
 

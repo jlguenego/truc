@@ -1,6 +1,6 @@
 ﻿<?php
 	class Event {
-		public $id;
+		public $id = -1;
 		public $title;
 		public $confirmation_t;
 		public $happening_t;
@@ -9,8 +9,8 @@
 		public $funding_authorized;
 		public $location;
 		public $link;
-		public $description_short;
-		public $description_long;
+		public $short_description;
+		public $long_description;
 		public $nominative;
 		public $status;
 		public $publish_flag;
@@ -27,15 +27,33 @@ EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute();
-			$event = $q->fetch();
+			$event = $q->fetch(PDO::FETCH_ASSOC);
 			if (!isset($event['id'])) {
 				return NULL;
 			}
 			$this->hydrate($event);
 		}
 
+		public function load_default() {
+			$this->title = "";
+			$this->confirmation_t = "";
+			$this->happening_t = "";
+			$this->open_t = "";
+			$this->funding_needed = "";
+			$this->funding_authorized = 0;
+			$this->location = "";
+			$this->link = "http://";
+			$this->short_description = "";
+			$this->long_description = "";
+			$this->nominative = 1;
+			$this->status = EVENT_STATUS_PLANNED;
+			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;
+			$this->user_id = get_id_from_account();;
+		}
+
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
+				debug($key."=>".$value);
 				$this->$key = $value;
 			}
 		}
@@ -43,8 +61,9 @@ EOF;
 		public function store() {
 			global $g_pdo;
 
+			$this->id = create_id();
 			$created_t = time();
-			$mod_t = date('Y-m-d H:i:s', time());
+			$mod_t = time();
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
 
@@ -58,8 +77,8 @@ SET
 	`title`="{$this->title}",
 	`location`="{$this->location}",
 	`link`="{$this->link}",
-	`short_description`="{$this->description_short}",
-	`long_description`="{$this->description_long}",
+	`short_description`="{$this->short_description}",
+	`long_description`="{$this->long_description}",
 	`happening_t`="{$this->happening_t}",
 	`confirmation_t`="{$this->confirmation_t}",
 	`open_t`="{$this->open_t}",
@@ -69,8 +88,8 @@ SET
 	`status`=${status},
 	`publish_flag`=${publish_flag}
 EOF;
+			debug($request);
 			if(!$g_pdo->exec($request)) {
-				debug($request);
 				throw new Exception("Get event participants mails: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			}
 		}
@@ -86,16 +105,18 @@ SET
 	`title`="{$this->title}",
 	`location`="{$this->location}",
 	`link`="{$this->link}",
-	`short_description`="{$this->description_short}",
-	`long_description`="{$this->description_long}",
+	`short_description`="{$this->short_description}",
+	`long_description`="{$this->long_description}",
 	`happening_t`="{$this->happening_t}",
-	`open_t`="{$this->open_t}",
 	`confirmation_t`="{$this->confirmation_t}",
+	`open_t`="{$this->open_t}",
 	`funding_needed`="{$this->funding_needed}"
-WHERE `id`="${id}"
+WHERE `id`="{$this->id}"
 EOF;
 			debug($request);
-			$g_pdo->exec($request);
+			if (!$g_pdo->exec($request)) {
+				throw new Exception("Event update: " . sprint_r($g_pdo->errorInfo()));
+			}
 		}
 
 		public function delete() {

@@ -81,32 +81,7 @@ EOF;
 		if (!preg_match("#^[\d]{4}-[0-1][\d]-[0-3][\d]$#", $date)) {
 			return FALSE;
 		}
-//		list($day, $month, $year) = explode("-", $date);
-//		if ($month > 12) {
-//			return FALSE;
-//		}
-//		if (($month == "01" || $month == "03" || $month == "05"|| $month == "07"
-//			|| $month == "08" || $month == "10" || $month == "12")
-//			&& $day > 31) {
-//			return FALSE;
-//		} elseif (($month == "04" || $month == "06"|| $month == "09"
-//			|| $month == "11") && $day > 30) {
-//			return FALSE;
-//		} elseif ((is_bisextil($year) && $day > 29)
-//			|| (!is_bisextil($year) && $day > 28)) {
-//			return FALSE;
-//		}
 		return TRUE;
-	}
-
-	function is_bisextil($year) {
-		if ($year == "00" && ($year % 400) == 0) {
-			return TRUE;
-		}
-		if (($year % 4) == 0) {
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 	function redirect_to($path) {

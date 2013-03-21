@@ -5,6 +5,10 @@ function setCounter(amount) {
 	counter = amount;
 }
 
+function getCounter() {
+	return counter;
+}
+
 function addRate(divName, label, amount){
 	label = label || "";
 	amount = amount || "";
