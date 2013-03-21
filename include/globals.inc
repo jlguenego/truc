@@ -24,6 +24,9 @@
 		"payment_cancel",
 		"payment_success",
 		"supervision",
+		"forgotten_password_form",
+		"forgotten_password_mail_sent",
+		"reset_password_form",
 	);
 
 	$g_event_states = array(

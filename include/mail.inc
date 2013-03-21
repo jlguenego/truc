@@ -3,6 +3,7 @@
 	require_once(BASE_DIR."/mail/event_confirm.php");
 	require_once(BASE_DIR."/mail/event_cancel.php");
 	require_once(BASE_DIR."/mail/payment.php");
+	require_once(BASE_DIR."/mail/forgotten_password.php");
 
 	function mail_payment($mail, $devis) {
 		$event = new Event();
@@ -54,6 +55,14 @@
 		$msg = mail_build($msg_html, $mail);
 		$subject = "Activate your account";
 		mail($mail, $subject, $msg["content"], $msg["header"]);
+  	}
+
+  	function mail_forgotten_password($user, $token) {
+		$msg_html = mail_html_forgotten_password($user, $token);
+
+		$msg = mail_build($msg_html, $user->email);
+		$subject = "Forgotten password";
+		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
   	function mail_build($msg_html, $mail = "") {

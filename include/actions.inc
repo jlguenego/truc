@@ -34,40 +34,10 @@
 				}
 				break;
 			case "participate":
-				need_authentication();
-				try {
-					if ($_SESSION["state"] == "nominative_participation"
-						|| $_SESSION["state"] == "participation_nominative_recapitulation") {
-						debug("nominative_participation");
-						action_participate_nominative();
-					} else {
-						debug("regular_participation");
-						action_participate();
-					}
-				} catch (Exception $e) {
-					$g_error_msg = $e->getMessage();
-					$g_display["user"] = get_user(get_id_from_account());
-					$event = new Event();
-					$event->load($_GET["event_id"]);
-					$g_display["event"] = $event;
-					$g_display["rates"] = events_rates($_GET["event_id"]);
-					if ($g_display["event"]["nominative"] == 1) {
-						$_SESSION["state"] = "nominative_participation";
-					} else {
-						$_SESSION["state"] = "regular_participation";
-					}
-				}
+				action_participate();
 				break;
 			case "activation":
-				try {
-					$user = user_activate($_GET["key"]);
-					$g_info_msg = "Account successfully activated";
-					$_GET["login"] = $user["login"];
-					$_SESSION["state"] = "sign_in";
-				} catch (Exception $e) {
-					$g_error_msg = $e->getMessage();
-					$_SESSION["state"] = "error";
-				}
+				action_activation();
 				break;
 			case "payment_cancel":
 				$_SESSION["state"] = "payment_cancel";
@@ -89,6 +59,12 @@
 				break;
 			case "cancel_event":
 				action_event_cancel();
+				break;
+			case "handle_forgotten_password":
+				action_handle_forgotten_password();
+				break;
+			case "handle_reset_password":
+				action_handle_reset_password();
 				break;
 			default:
 				break;
@@ -174,6 +150,12 @@
 				break;
 			case "participation":
 				action_participation_get_form();
+				break;
+			case "forgotten_password":
+				action_forgotten_password_get_form();
+				break;
+			case "reset_password":
+				action_reset_password_get_form();
 				break;
 		}
 	}
@@ -662,7 +644,7 @@
 	}
 
 	function action_payment_success() {
-		global $g_error_message;
+		global $g_error_msg;
 		try {
 			if ($_SESSION['state'] == "payment_success") {
 				return;
@@ -674,7 +656,7 @@
 			mail_payment($user["email"], $devis);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
-			$g_error_message = $e->getMessage();
+			$g_error_msg = $e->getMessage();
 			$_SESSION["state"] = "error";
 		}
 	}
@@ -689,5 +671,87 @@
 		}
 		$g_display["events"] = Event::list_all();
 		$_SESSION["state"] = "supervision";
+	}
+
+	function action_partipate() {
+		global $g_display;
+		global $g_error_msg;
+
+		need_authentication();
+		try {
+			if ($_SESSION["state"] == "nominative_participation"
+				|| $_SESSION["state"] == "participation_nominative_recapitulation") {
+				debug("nominative_participation");
+				action_participate_nominative();
+			} else {
+				debug("regular_participation");
+				action_participate();
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+			$g_display["user"] = get_user(get_id_from_account());
+			$event = new Event();
+			$event->load($_GET["event_id"]);
+			$g_display["event"] = $event;
+			$g_display["rates"] = events_rates($_GET["event_id"]);
+			if ($g_display["event"]["nominative"] == 1) {
+				$_SESSION["state"] = "nominative_participation";
+			} else {
+				$_SESSION["state"] = "regular_participation";
+			}
+		}
+	}
+
+	function action_actiate() {
+		try {
+			$user = user_activate($_GET["key"]);
+			$g_info_msg = "Account successfully activated";
+			$_GET["login"] = $user["login"];
+			$_SESSION["state"] = "sign_in";
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+			$_SESSION["state"] = "error";
+		}
+	}
+
+	function action_forgotten_password_get_form() {
+		$_SESSION["state"] = "forgotten_password_form";
+	}
+
+	function action_handle_forgotten_password() {
+		$_SESSION["state"] = "forgotten_password_mail_sent";
+		$user = User::get_from_email($_GET["email"]);
+		if ($user == NULL) {
+			return;
+		}
+		$token = $user->set_reset_passwd_token();
+		mail_forgotten_password($user, $token);
+	}
+
+	function action_handle_reset_password() {
+		global $g_error_msg;
+		global $g_info_msg;
+
+		if (is_null_or_empty($_GET["password1"]) || is_null_or_empty($_GET["password2"])) {
+			$g_error_msg = "Please fill all field.";
+			$_SESSION["state"] = "reset_password_form";
+			return;
+		}
+		if ($_GET["password1"] != $_GET["password2"]) {
+			$g_error_msg = "Passwords are different.";
+			$_SESSION["state"] = "reset_password_form";
+			return;
+		}
+		$user = User::get_from_login($_SESSION["login"]);
+		$user->set_passwd($_GET["password1"]);
+		$user->update();
+		$g_info_msg = "Your password has been updated.";
+		$_SESSION["state"] = "root";
+	}
+
+	function action_reset_password_get_form() {
+		$user = User::get_from_token($_GET["permission_token"]);
+		$_SESSION['login'] = $user->login;
+		$_SESSION["state"] = "reset_password_form";
 	}
 ?>

@@ -34,6 +34,7 @@ CREATE TABLE user(
         activation_status Int NOT NULL ,
         activation_key    Varchar(255),
         address           Varchar(255) NOT NULL ,
+        token             Varchar(255),
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 

@@ -12,7 +12,9 @@
 	function layout_message() {
 		global $g_info_msg;
 		if (!is_null_or_empty($g_info_msg)) {
-			echo $g_info_msg."<br/>";
+?>
+		<div id="info"><?php echo $g_info_msg; ?></div>
+<?php
 		}
 	}
 
