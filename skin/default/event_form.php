@@ -136,6 +136,7 @@
 	);
 <?php
 	$i = 0;
+	debug("rates=".sprint_r($rates));
 	if ($rates != NULL) {
 		foreach ($rates as $rate) {
 			$label = $rate["label"];

@@ -1,11 +1,14 @@
-﻿<?php
+<?php
+	require_once(BASE_DIR."/mail/inscription.php");
+	require_once(BASE_DIR."/mail/event_confirm.php");
+	require_once(BASE_DIR."/mail/event_cancel.php");
+	require_once(BASE_DIR."/mail/payment.php");
+
 	function mail_payment($mail, $devis) {
 		$event = new Event();
 		$event->load($devis->event_id);
-		$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=payment&'.
-				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event->title).
-				'&nominative='.$event->nominative);
+		$msg_html = mail_html_payment($devis, $event);
+
 		$msg = mail_build($msg_html, $mail);
 		$subject = "Payment authorization";
 		mail($mail, $subject, $msg["content"], $msg["header"]);
@@ -21,10 +24,7 @@
 			$event = new Event();
 			debug("event id=".$devis->event_id);
 			$event->load($devis->event_id);
-			$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=event_confirm&'.
-				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event->title).
-				'&nominative='.$event->nominative);
+			$msg_html = mail_html_event_confirm($devis, $event);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			debug("send mail to: ". $mail);
@@ -41,10 +41,7 @@
 
 			$event = new Event();
 			$event->load($devis->event_id);
-			$msg_html = file_get_contents(HOST.'/mail/mail.php?mail=event_cancel&'.
-				$devis->to_string().
-				'&event_name='.str_replace(" ", "%20", $event->title).
-				'&nominative='.$event->nominative);
+			$msg_html = mail_html_event_cancel($devis, $event);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);
@@ -52,12 +49,7 @@
   	}
 
   	function mail_inscription($mail, $login, $key) {
-		$msg_html = file_get_contents(
-				HOST.'/mail/mail.php?mail=inscription'.
-				'&host='.HOST.
-				'&key='.$key.
-				'&login='.$login
-		);
+		$msg_html = mail_html_inscription($key, $login);
 
 		$msg = mail_build($msg_html, $mail);
 		$subject = "Activate your account";

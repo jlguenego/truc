@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	function devis_get_all_for_event($event_id) {
 		global $g_pdo;
 

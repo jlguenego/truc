@@ -1,4 +1,3 @@
-﻿<a href="index.php">Go back to index<a/><br/><br/>
 <table>
 	<tr>
 		<th>Event name</th>

@@ -204,4 +204,11 @@ EOF;
 		$result = mktime($hour, $minute, $second, $month, $day, $year);
 		return $result;
 	}
+
+	function default_str($val1, $val2) {
+		if (is_null_or_empty($val1)) {
+			return $val2;
+		}
+		return $val1;
+	}
 ?>

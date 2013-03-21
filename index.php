@@ -6,13 +6,13 @@
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
 	require_once(BASE_DIR . "/include/user.inc");
-	require_once(BASE_DIR . "/include/event.inc");
 	require_once(BASE_DIR . "/include/rate.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
 	require_once(BASE_DIR . "/include/manage.inc");
 	require_once(BASE_DIR . "/include/payment.inc");
 	require_once(BASE_DIR . "/include/devis.inc");
 	require_once(BASE_DIR . "/include/mail.inc");
+	require_once(BASE_DIR . "/include/form.inc");
 
 	// If not installed, goto installation page
 	if (!is_installed()) {

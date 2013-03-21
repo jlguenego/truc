@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	$devis = $g_display['devis'];
 ?>
 

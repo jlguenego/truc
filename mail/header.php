@@ -1,2 +1,2 @@
-﻿Header of each mail.<br/>
+Header of each mail.<br/>
 <hr/>

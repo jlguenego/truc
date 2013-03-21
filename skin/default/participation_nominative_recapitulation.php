@@ -1,4 +1,4 @@
-﻿<a href="index.php">Go back to index</a><br/><br/>
+<a href="index.php">Go back to index</a><br/><br/>
 <?php
 	global $g_display;
 	$devis = $g_display["devis"];

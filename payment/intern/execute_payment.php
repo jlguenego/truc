@@ -1,4 +1,4 @@
-﻿<html>
+<html>
 	<head>
 		<title>Execute payment</title>
 	</head>

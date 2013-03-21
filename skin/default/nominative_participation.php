@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	global $g_display;
 	global $g_error_msg;
 	$event = $g_display["event"];

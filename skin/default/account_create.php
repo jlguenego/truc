@@ -33,7 +33,7 @@ Please enter your info:
 		</tr>
 		<tr>
 			<td>Full postal address: </td>
-			<td><input type="text" name="address" placeholder="<numero><rue><code postal><ville><pays>"></td>
+			<td><input type="text" name="address" placeholder="<numero><rue><code postal><ville><pays>" value="<?php echo_default_value("address"); ?>"></td>
 		</tr>
 		<tr>
 			<td colspan="2">

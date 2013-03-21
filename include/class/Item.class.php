@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class Item {
 		public $event_name;
 		public $event_rate_name;

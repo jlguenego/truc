@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	require_once(BASE_DIR . '/include/constants.inc');
 
 	function payment_button() {

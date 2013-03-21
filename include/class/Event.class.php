@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class Event {
 		public $id = -1;
 		public $title;

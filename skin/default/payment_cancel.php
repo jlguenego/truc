@@ -1,1 +1,1 @@
-﻿The payment/authorization has been cancelled.
+The payment/authorization has been cancelled.

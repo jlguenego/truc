@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class Devis {
 		public $id;
 		public $items = array();
@@ -42,7 +42,7 @@
 
 			$id = $this->id;
 			$created_t = time();
-			$total_ht = $this->total_ht;
+			$total_ht = curr($this->total_ht);
 			$total_tax = $this->total_tax;
 			$total_ttc = $this->total_ttc;
 			$label = $this->label;

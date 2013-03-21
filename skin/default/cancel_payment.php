@@ -1,1 +1,1 @@
-﻿Payment canceled.
+Payment canceled.

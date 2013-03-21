@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	$devis = $_SESSION["devis"];
 	$link = $devis->url();
 	debug(sprint_r($devis));
