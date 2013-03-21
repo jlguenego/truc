@@ -176,6 +176,9 @@ EOF;
 			if (s2t($this->open_t, "%Y-%m-%d") >= time()) {
 				return FALSE;
 			}
+			if (!$this->is_published()) {
+				return FALSE;
+			}
 			return TRUE;
 		}
 

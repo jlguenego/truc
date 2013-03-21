@@ -522,7 +522,7 @@
 		debug("END Action_Authenticate");
 	}
 
-	function action_participate() {
+	function action_participate_regular() {
 		global $g_display;
 
 		if (!isset($_GET['confirm'])) {
@@ -673,7 +673,7 @@
 		$_SESSION["state"] = "supervision";
 	}
 
-	function action_partipate() {
+	function action_participate() {
 		global $g_display;
 		global $g_error_msg;
 
@@ -685,7 +685,7 @@
 				action_participate_nominative();
 			} else {
 				debug("regular_participation");
-				action_participate();
+				action_participate_regular();
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
