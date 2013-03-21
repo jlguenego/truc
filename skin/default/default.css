@@ -1,3 +1,37 @@
+* {
+	margin: 2;
+	padding: 2;
+}
+
+.hr {
+  height: 0px;
+  margin: 0px;
+  border-bottom: 1px solid #FF0000;
+  font-size: 1px;
+}
+
+body {
+	background: #FFFFFF;
+	color: #000000;
+}
+
+#user_info {
+	border: 1px solid #000000;
+	margin: 0;
+	width: 300px;
+	background: #EEFFFF;
+}
+
+#user_info ul {
+	list-style: none;
+}
+
+#user_info li {
+	background-color: #FFEEFF;
+	border: 1px solid #000000;
+	display: inline;
+}
+
 #event_administration {
 	background-color: #00FFFF;
 }

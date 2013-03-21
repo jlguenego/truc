@@ -1,27 +1,28 @@
 <div id="header">
-	<a href="index.php">Go back to index</a><br/><br/>
+	<a href="index.php"><img src="<?php echo HOST . "/" . SKIN_DIR ?>/images/logo.png"/></a><br/>
+	<div id="user_info">
 <?php
 	if (is_logged()) {
-		$user = get_user_by_login($_SESSION['login']);
-		$login = $user["login"];
-		$lastname = strtoupper($user["lastname"]);
-		$firstname = ucfirst($user["firstname"]);
+		$user = User::get_from_login($_SESSION['login']);
+		$lastname = strtoupper($user->lastname);
+		$firstname = ucfirst($user->firstname);
+		$email = strtolower($user->email);
 ?>
-	<div id="user_info">
 
 
-		Welcome <?php echo $login ?><br/>
-		You are <?php echo "${firstname} ${lastname}" ?>
+
+		Logged: <?php echo $user->login ?> (<?php echo "${firstname} ${lastname}" ?> - (<?php echo "${email}" ?>)
 <?php
 		if (is_admin()) {
 ?>
-			, role Admin.
+			[Admin]
 <?php
 		}
 ?>
-	<br/>
-	<a href="?action=sign_out">Sign out<a/><br/>
-	</div>
+	<ul>
+		<li><a href="?action=sign_out">Sign out<a/></li>
+		<li><a href="?action=retrieve&amp;type=account">Account info<a/></li>
+	</ul>
 <?php
 	} else {
 ?>
@@ -29,5 +30,6 @@
 <?php
 	}
 ?>
-<hr/>
+	</div>
 </div>
+<div class="hr"></div>

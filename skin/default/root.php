@@ -2,8 +2,6 @@
 	// Verify if user is logged in to show differents menu.
 	if (!is_logged()) {
 ?>
-	<a href="?action=sign_in">Sign in</a><br/>
-	<a href="?action=get_form&amp;type=account">Create account</a><br/>
 	<a href="?action=retrieve&amp;type=events">See events</a>
 <?php
 	} else {

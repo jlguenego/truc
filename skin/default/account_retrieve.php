@@ -3,7 +3,6 @@
 	$lastname = $user['lastname'];
 	$firstname = $user['firstname'];
 ?>
-	<a href="index.php">Go back to index</a><br/><br/>
 	Account details:
 	<table border="2px">
 		<tr>

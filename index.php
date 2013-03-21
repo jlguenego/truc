@@ -54,6 +54,5 @@
 	$page = $_SESSION["state"];
 
 	debug("Session after: ".$_SESSION["state"]);
-	debug("<hr/>");
 	include_once(SKIN_DIR."/layout.php");
 ?>
