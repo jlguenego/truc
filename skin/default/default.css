@@ -1,34 +1,66 @@
 * {
 	margin: 2;
 	padding: 2;
+	border-radius: 5px ;
 }
 
-.hr {
-  height: 0px;
-  margin: 0px;
-  border-bottom: 1px solid #FF0000;
-  font-size: 1px;
+.evt_hr {
+	margin: 0px;
+	padding: 0px;
+	height: 0px;
+	border-bottom: 1px solid #000000;
+	font-size: 1px;
 }
 
 body {
 	background: #FFFFFF;
 	color: #000000;
+	min-width: 800px;
 }
 
-#user_info {
-	border: 1px solid #000000;
+#evt_header {
+	height: 110px;
+}
+
+#evt_logo {
 	margin: 0;
-	width: 300px;
-	background: #EEFFFF;
+	padding: 0;
+	float:left;
 }
 
-#user_info ul {
+#evt_user_info {
+	margin: 0;
+	padding: 10;
+	background: #DDDDFF;
+	float:right;
+}
+
+#evt_user_info ul {
 	list-style: none;
+	text-align: center;
 }
 
-#user_info li {
-	background-color: #FFEEFF;
-	border: 1px solid #000000;
+#evt_user_info li {
+	background-color: #FFFFFF;
+	display: inline;
+}
+
+#evt_main {
+	position: relative;
+
+}
+
+#evt_menu ul {
+	margin: 30;
+	padding: 30;
+	list-style: none;
+	text-align: center;
+}
+
+#evt_menu li {
+	margin: 30;
+	padding: 30;
+	background-color: #DDDDFF;
 	display: inline;
 }
 
