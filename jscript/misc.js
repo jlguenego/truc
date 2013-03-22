@@ -19,9 +19,9 @@ function addRate(divName, label, amount){
 		var id = new Date().getTime();
 		$("#" + divName).append("<div id=\"" + id + "\"></div>");
 		var content =
-				"<table>" +
+				"<table class=\"evt_rate\">" +
 					"<tr>" +
-						"<td>Rate<td>" +
+						"<td>Rate</td>" +
 						"<td>" +
 							"<table>" +
 								"<tr>" +

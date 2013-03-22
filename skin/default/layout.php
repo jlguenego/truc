@@ -18,10 +18,14 @@
 <?php
 	layout_header();
 	layout_message();
-
+?>
+<div id="evt_main">
+<?php
 	debug("including " . SKIN_DIR."/${page}.php");
 	include_once(SKIN_DIR."/${page}.php");
-
+?>
+</div>
+<?php
 	layout_footer();
 	layout_trace();
 ?>
