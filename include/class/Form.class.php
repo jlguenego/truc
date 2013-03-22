@@ -71,10 +71,38 @@
 			return $item;
 		}
 
+		public function add_checkbox($label, $name, $checked, $help) {
+			$item = new FormItem();
+			$item->label = $label;
+			$item->type = "checkbox";
+			$item->name = $name;
+			$item->html_spec = $checked;
+			$item->help = $help;
+			$this->elements[] = $item;
+			return $item;
+		}
+
 		public function add_submit($label = "Submit") {
 			$item = new FormItem();
 			$item->label = $label;
 			$item->type = "submit";
+			$this->elements[] = $item;
+			return $item;
+		}
+
+		public function add_hidden($name, $value) {
+			$item = new FormItem();
+			$item->type = "hidden";
+			$item->name = $name;
+			$item->default = $value;
+			$this->elements[] = $item;
+			return $item;
+		}
+
+		public function add_raw_html($html) {
+			$item = new FormItem();
+			$item->type = "raw_html";
+			$item->html_spec = $html;
 			$this->elements[] = $item;
 			return $item;
 		}
@@ -85,10 +113,18 @@
 EOF;
 			foreach ($this->elements as $item) {
 				switch ($item->type) {
+					case "raw_html":
+						$result .= $item->html_spec;
+						break;
+					case "hidden":
+						$result .= <<<EOF
+<input type="hidden" name="{$item->name}" value="{$item->default}"/>
+EOF;
+						break;
 					case "text":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="text" name="{$item->name}" default="{$item->default}"/>
+<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}"/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
@@ -107,21 +143,21 @@ EOF;
 EOF;
 						break;
 
-						case "password":
+					case "password":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
 <input type="password" name="{$item->name}"/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
-						case "textarea":
+					case "textarea":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
 <textarea name="{$item->name}" maxlength="{$item->maxlength}" title="Up to {$item->maxlength} characters">{$item->default}</textarea>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
-						case "select":
+					case "select":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
 <select name="{$item->name}">
@@ -130,7 +166,12 @@ EOF;
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
-
+					case "checkbox":
+						$result .= <<<EOF
+<input type="checkbox" name="{$item->name}" {$item->html_spec}/>{$item->label}<br/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+						break;
 
 					case "submit":
 						$result .= "<input type=\"submit\" name=\"".$item->label."\"/>";

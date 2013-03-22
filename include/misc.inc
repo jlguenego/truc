@@ -105,6 +105,14 @@ EOF;
 		}
 	}
 
+	function default_value($name, $default = "") {
+		if (!is_null_or_empty($_GET[$name])) {
+			return $_GET[$name];
+		} else {
+			return $default;
+		}
+	}
+
 	function sprint_r($var) {
 		ob_start();
 		print_r($var);

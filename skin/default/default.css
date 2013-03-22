@@ -86,9 +86,6 @@ body {
 	background-color: #00FFFF;
 }
 
-div.ui-datepicker{
-	font-size:10px;
-}
 .help {
 	font-size:12px;
 }
@@ -100,9 +97,12 @@ table, td, th {
 
 /* Forms */
 .form {
-	font:15px arial,sans-serif;
+	/*font:15px arial,sans-serif;*/
 }
 
+.form textarea {
+	width: 500px; height: 100; resize: yes;
+}
 
 .form_label {
 
@@ -113,3 +113,8 @@ table, td, th {
 	font-size: 10px;
 	margin-bottom: 15px;
 }
+
+.ui-datepicker * {
+	font-size: 10px;
+}
+
