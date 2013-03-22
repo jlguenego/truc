@@ -18,6 +18,7 @@
 	layout_header();
 	layout_message();
 
+	debug("including " . SKIN_DIR."/${page}.php");
 	include_once(SKIN_DIR."/${page}.php");
 
 	layout_footer();

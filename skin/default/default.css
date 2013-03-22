@@ -1,6 +1,7 @@
 * {
 	margin: 2;
 	padding: 2;
+	font:15px arial,sans-serif;
 }
 
 div, li {
@@ -95,4 +96,20 @@ div.ui-datepicker{
 table, td, th {
 	border-collapse: collapse;
 	border: 1px solid #000;
+}
+
+/* Forms */
+.form {
+	font:15px arial,sans-serif;
+}
+
+
+.form_label {
+
+}
+
+
+.form_help {
+	font-size: 10px;
+	margin-bottom: 15px;
 }

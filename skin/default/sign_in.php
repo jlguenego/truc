@@ -1,25 +1,16 @@
-<a href="index.php">Go back to index</a><br/><br/>
 <span style="color:red;">
 <?php
 	echo $g_error_msg;
 ?>
 </span><br/>
-<form name="input" action="?action=authenticate" method="POST">
-	<table>
-		<tr>
-			<td>Login: </td>
-			<td><input type="text" name="login" value="<?php echo_default_value("login"); ?>"></td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="password" value=""></td>
-		</tr>
-		<tr>
-			<td>
-				<a href="?action=get_form&type=account">Create an account</a>
-			</td>
-			<td><input type="submit" value="Sign in"></td>
-		</tr>
-	</table>
-</form>
+<?php
+	$f = new Form();
+	$f->action = "?action=authenticate";
+	$f->method = "POST";
+	$f->add_text("Login", "login", echo_default_value("login"), "Enter your identifier");
+	$f->add_password("Password", "password", "Enter your password");
+	$f->add_submit("Sign in");
+	echo $f->html();
+?>
+
 <a href="?action=get_form&type=forgotten_password">Forgot your password?</a>
