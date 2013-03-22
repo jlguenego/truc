@@ -1,6 +1,9 @@
 * {
 	margin: 2;
 	padding: 2;
+}
+
+div, li {
 	border-radius: 5px ;
 }
 
@@ -45,6 +48,12 @@ body {
 	display: inline;
 }
 
+#evt_index {
+	position: absolute;
+	top: 100px;
+	left: 0px;
+}
+
 #evt_main {
 	position: relative;
 
@@ -62,6 +71,14 @@ body {
 	padding: 30;
 	background-color: #DDDDFF;
 	display: inline;
+}
+
+#evt_footer {
+	text-align: center;
+}
+
+#evt_trace {
+	color: #DDDDDD;
 }
 
 #event_administration {

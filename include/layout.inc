@@ -22,10 +22,12 @@
 		global $g_debug;
 		global $g_debug_lines;
 		if ($g_debug) {
+			echo '<div id="evt_trace">';
 			echo "<h3>[TRACE]</h3>";
 			foreach ($g_debug_lines as $debug) {
 				echo $debug;
 			}
+			echo '</div>';
 		}
 	}
 ?>

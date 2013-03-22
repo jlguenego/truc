@@ -1,4 +1,5 @@
 <?php
+
 	function form_event_valid($update = FALSE) {
 		if (is_null_or_empty($_GET["title"])) {
 			throw new Exception("Event must have a title");

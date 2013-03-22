@@ -28,13 +28,15 @@
 <?php
 	} else {
 ?>
-		<a href="index.php?action=get_form&amp;type=account">Don't have an account ?</a>
 		<ul>
 			<li><a href="?action=sign_in">Sign in</a></li>
 		</ul>
+		<a class="help" href="index.php?action=get_form&amp;type=account">Don't have an account ?</a>
 <?php
 	}
 ?>
 	</div>
+	<div id="evt_index"><a href="index.php">Main page</a></div>
 </div>
+
 <div class="evt_hr"></div>
