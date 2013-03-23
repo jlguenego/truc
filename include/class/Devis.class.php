@@ -32,7 +32,6 @@
 			}
 
 			$this->user_id = get_id_from_account();
-			$this->id = create_id();
 		}
 
 		public function store() {
@@ -43,6 +42,7 @@
 			} else {
 				$this->label = "Quotation - no ".seq_next('quotation');
 			}
+			$this->id = create_id();
 			$created_t = time();
 
 			$request = <<<EOF
@@ -148,6 +148,13 @@ EOF;
 
 		public function url() {
 			return HOST . "/index.php?action=retrieve&type=devis&id=" . $this->id;
+		}
+
+		public function create_invoice() {
+			$invoice = clone $this;
+			$invoice->type = DEVIS_TYPE_INVOICE;
+			$invoice->store();
+			return $invoice;
 		}
 	}
 ?>

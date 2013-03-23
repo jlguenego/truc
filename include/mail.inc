@@ -36,7 +36,8 @@
 			$event = new Event();
 			debug("event id=".$devis->event_id);
 			$event->load($devis->event_id);
-			$msg_html = mail_html_event_confirm($devis, $event);
+			$invoice = $devis->create_invoice();
+			$msg_html = mail_html_event_confirm($devis->label, $invoice, $event, $user);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			debug("send mail to: ". $mail);
@@ -54,7 +55,7 @@
 
 			$event = new Event();
 			$event->load($devis->event_id);
-			$msg_html = mail_html_event_cancel($devis, $event);
+			$msg_html = mail_html_event_cancel($devis, $event, $user);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);
