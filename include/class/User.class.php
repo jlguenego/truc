@@ -68,8 +68,7 @@ EOF;
 				$error = $g_pdo->errorInfo();
 				throw new Exception("User creation: ".$error[2]);
 			}
-			$user = get_user($this->id);
-			if (!is_activated($user)) {
+			if (!$this->is_activated()) {
 				mail_inscription($this->email, $this->login, $this->activation_key);
 			}
 		}
@@ -97,17 +96,23 @@ EOF;
 			$g_pdo->exec($request);
 		}
 
-		public static function get_from_login($login) {
+		public static function get_from_login($login = "") {
 			global $g_pdo;
 
+			if ($login == "") {
+				$login = $_SESSION["login"];
+			}
 			$request = <<<EOF
 SELECT * FROM `user`
 WHERE `login`="${login}"
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
-			$q->execute();
-			$record = $q->fetch();
+			if (!$q->execute()) {
+				throw new Exception("User get from login: ".sprint_r($g_pdo->errorInfo()));
+			}
+			$record = $q->fetch(PDO::FETCH_ASSOC);
+			debug("record=".sprint_r($record));
 			if ($record == NULL) {
 				return NULL;
 			}
@@ -189,22 +194,29 @@ EOF;
 			if(!$q->execute()) {
 				throw new Exception("User Update: ".sprint_r($g_pdo->errorInfo()));
 			}
-			$user = $q->fetch();
-			if (!isset($user['id'])) {
+			$record = $q->fetch();
+			if (!isset($record['id'])) {
 				return NULL;
 			}
-			unset($user["password"]);
-			$user["lastname"] = strtoupper($user["lastname"]);
-			$user["firstname"] = ucfirst($user["firstname"]);
-			$this->hydrate($user);
+			unset($record["password"]);
+			$record["lastname"] = strtoupper($record["lastname"]);
+			$record["firstname"] = ucfirst($record["firstname"]);
+			$this->hydrate($record);
 		}
 
 		public function address() {
+			$state = "";
 			if ($this->state != "") {
-				$this->state = " " . $this->state;
+				$state = $this->state.",&nbsp;";
 			}
-			return $this->street." ".$this->zip." ".$this->city.
-				$this->state.", ".$this->country;
+			$address = $this->street."\n".
+				$state.$this->zip." ".$this->city." ".$this->country;
+			return $address;
+		}
+
+		public function is_activated() {
+			debug("activation_status=".$this->activation_status);
+			return $this->activation_status == ACTIVATION_STATUS_ACTIVATED;
 		}
 	}
 ?>

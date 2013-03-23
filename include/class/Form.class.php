@@ -108,9 +108,11 @@
 		}
 
 		public function html() {
+
 			$result = <<<EOF
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
+			$autofocus = "autofocus";
 			foreach ($this->elements as $item) {
 				switch ($item->type) {
 					case "raw_html":
@@ -124,7 +126,7 @@ EOF;
 					case "text":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}"/>
+<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}" $autofocus/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
@@ -178,6 +180,7 @@ EOF;
 						break;
 					default:
 				}
+				$autofocus = "";
 			}
 			$result .= "</form>";
 			return $result;

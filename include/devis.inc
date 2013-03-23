@@ -3,7 +3,7 @@
 		global $g_pdo;
 
 		$request = <<<EOF
-SELECT `id` FROM `devis`
+SELECT `id` FROM `bill`
 WHERE `id_event`=${event_id}
 EOF;
 		debug($request);
@@ -27,7 +27,7 @@ EOF;
 		global $g_pdo;
 
 		$request = <<<EOF
-SELECT * FROM `devis_item`
+SELECT * FROM `item`
 WHERE `id_devis`=${devis_id}
 EOF;
 		debug($request);
@@ -59,7 +59,7 @@ EOF;
 		global $g_pdo;
 
 		$request = <<<EOF
-SELECT COUNT(*) FROM `devis` WHERE `id`= :id
+SELECT COUNT(*) FROM `bill` WHERE `id`= :id
 EOF;
 		debug($request);
 		$q = $g_pdo->prepare($request);

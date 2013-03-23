@@ -57,7 +57,7 @@ CREATE TABLE sequence(
         PRIMARY KEY (name)
 )ENGINE=InnoDB;
 
-CREATE TABLE devis(
+CREATE TABLE bill(
         id        Int NOT NULL ,
         created_t Varchar(25) NOT NULL ,
         total_ht  Decimal (25,2) NOT NULL ,
@@ -67,12 +67,13 @@ CREATE TABLE devis(
         username  Varchar(255) NOT NULL ,
         address   Varchar(255) NOT NULL ,
         status    Int NOT NULL ,
+        type      Int NOT NULL ,
         id_user   Int NOT NULL ,
         id_event  Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
-CREATE TABLE devis_item(
+CREATE TABLE item(
         id                    Int NOT NULL ,
         event_name            Varchar(255) NOT NULL ,
         event_rate_name       Varchar(255) NOT NULL ,
@@ -85,12 +86,12 @@ CREATE TABLE devis_item(
         participant_firstname Varchar(255),
         participant_lastname  Varchar(255),
         participant_title     Varchar(25),
-        id_devis              Int NOT NULL ,
+        id_bill               Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
 ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE rate ADD CONSTRAINT FK_rate_id_event FOREIGN KEY (id_event) REFERENCES event(id);
-ALTER TABLE devis ADD CONSTRAINT FK_devis_id_user FOREIGN KEY (id_user) REFERENCES user(id);
-ALTER TABLE devis ADD CONSTRAINT FK_devis_id_event FOREIGN KEY (id_event) REFERENCES event(id);
-ALTER TABLE devis_item ADD CONSTRAINT FK_devis_item_id_devis FOREIGN KEY (id_devis) REFERENCES devis(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
+ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);

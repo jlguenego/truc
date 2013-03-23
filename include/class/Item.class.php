@@ -11,6 +11,7 @@
 		public $participant_firstname;
 		public $participant_lastname;
 		public $participant_title;
+		public $bill_id;
 
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
@@ -24,38 +25,28 @@
 			$this->total_ttc = $this->total_ht + $this->total_tax;
 		}
 
-		public function store($id_devis) {
+		public function store($id_bill) {
 			global $g_pdo;
 
-			$id = create_id();
-			$event_name = $this->event_name;
-			$event_rate_name = $this->event_rate_name;
-			$event_rate_amount = $this->event_rate_amount;
-			$event_rate_tax = $this->event_rate_tax;
-			$quantity = $this->quantity;
-			$total_ht = $this->total_ht;
-			$total_tax = $this->total_tax;
-			$total_ttc = $this->total_ttc;
-			$participant_firstname = $this->participant_firstname;
-			$participant_lastname = $this->participant_lastname;
-			$participant_title = $this->participant_title;
+			$this->id = create_id();
+			$this->bill_id = $id_bill;
 
 			$request = <<<EOF
-INSERT INTO `devis_item`
+INSERT INTO `item`
 SET
-	`id`=${id},
-	`event_name`="${event_name}",
-	`event_rate_name`="${event_rate_name}",
-	`event_rate_amount`=${event_rate_amount},
-	`event_rate_tax`=${event_rate_tax},
-	`quantity`=${quantity},
-	`total_ht`=${total_ht},
-	`total_tax`=${total_tax},
-	`total_ttc`=${total_ttc},
-	`id_devis`=${id_devis},
-	`participant_firstname`="${participant_firstname}",
-	`participant_lastname`="${participant_lastname}",
-	`participant_title`="${participant_title}";
+	`id`={$this->id},
+	`event_name`="{$this->event_name}",
+	`event_rate_name`="{$this->event_rate_name}",
+	`event_rate_amount`={$this->event_rate_amount},
+	`event_rate_tax`={$this->event_rate_tax},
+	`quantity`={$this->quantity},
+	`total_ht`={$this->total_ht},
+	`total_tax`={$this->total_tax},
+	`total_ttc`={$this->total_ttc},
+	`id_bill`={$this->bill_id},
+	`participant_firstname`="{$this->participant_firstname}",
+	`participant_lastname`="{$this->participant_lastname}",
+	`participant_title`="{$this->participant_title}";
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {

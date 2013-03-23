@@ -8,16 +8,19 @@
 
 	define('COMPANY_NAME', 'Eventual');
 
-	define('MAX_DEADLINE', '+29d'); // ex: '-3d +5w +6m +1y'
+	define('AUTHORIZATION_DELAY', '29'); // days
 
 	define('ROLE_USER', 0);
 	define('ROLE_ADMIN', 1);
 	define('ACTIVATION_STATUS_NOT_ACTIVATED', 0);
 	define('ACTIVATION_STATUS_ACTIVATED', 1);
 
-	define('DEVIS_STATUS_AUTHORIZED', 0);
-	define('DEVIS_STATUS_CAPTURED', 1);
-	define('DEVIS_STATUS_REFUSED', 2);
+	define('DEVIS_STATUS_PLANNED', 0);
+	define('DEVIS_STATUS_CONFIRMED', 1);
+	define('DEVIS_STATUS_CANCELLED', 2);
+
+	define("DEVIS_TYPE_QUOTATION", 0);
+	define("DEVIS_TYPE_INVOICE", 1);
 
 	define('EVENT_PUBLISH_FLAG_NO', 0);
 	define('EVENT_PUBLISH_FLAG_YES', 1);

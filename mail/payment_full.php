@@ -1,48 +1,49 @@
 <?php
-	function mail_html_event_confirm($devis, $event) {
+	function mail_html_payment_full($devis, $event, $user) {
 		ob_start();
 		include("header.php");
 ?>
 		<p>
-			Dear <?php echo $devis->username; ?>.<br/>
-			We send you this mail to inform you that the event
-			<?php echo $event->title; ?> has been confirmed.<br/>
-			The following authorization will be captured: <br/>
+			Dear <?php echo ucfirst(strtolower($user->firstname))." ".strtoupper($user->lastname); ?>,<br/>
+			You have made a payment for the following invoice.<br/>
 			<br/>
-			<?php echo $devis->label; ?>:
+			<?php echo $devis->label; ?>
+			<table border="1px">
+				<tr>
+					<th>Billing entity:</th>
+					<td><?php echo $devis->username; ?></td>
+				</tr>
+				<tr>
+					<th>Billing address: </th>
+					<td><?php echo $devis->address; ?></td>
+				</tr>
+			</table>
+			<br/>
 			<table border="1px">
 				<tr>
 					<th>Event name</th>
 					<th>Rate name</th>
 					<th>Amount HT</th>
 					<th>Rate tax</th>
-		<?php
-			if ($event->nominative == 0) {
-		?>
+		<?php if ($event->nominative == 0) { ?>
 					<th>Quantity</th>
 					<th>Total ticket HT</th>
-		<?php
-			}
-		?>
+		<?php } ?>
 					<th>Total ticket tax</th>
 					<th>Total ticket TTC</th>
-		<?php
-			if ($event->nominative == 1) {
-		?>
+		<?php if ($event->nominative == 1) { ?>
 					<th>Title</th>
 					<th>Firsname</th>
 					<th>Lastname</th>
-		<?php
-			}
-
+		<?php }
 			$i = 0;
 			foreach ($devis->items as $item) {
 		?>
 				<tr>
 					<td><?php echo $item->event_name; ?></td>
 					<td><?php echo $item->event_rate_name; ?></td>
-					<td><?php echo $item->event_rate_amount; ?>€</td>
-					<td><?php echo $item->event_rate_tax; ?>%</td>
+					<td><?php echo curr($item->event_rate_amount); ?>€</td>
+					<td><?php echo curr($item->event_rate_tax); ?>%</td>
 		<?php
 				if ($event->nominative == 0) {
 		?>
@@ -72,20 +73,19 @@
 			<table border="1px">
 				<tr>
 					<th>Total HT</th>
-					<td><?php echo $devis->total_ht; ?>€</td>
+					<td><?php echo curr($devis->total_ht); ?>€</td>
 				</tr>
 				<tr>
 					<th>Total tax</th>
-					<td><?php echo $devis->total_tax; ?>€</td>
+					<td><?php echo curr($devis->total_tax); ?>€</td>
 				</tr>
 				<tr>
 					<th>Total Due</th>
-					<td><b><?php echo $devis->total_ttc; ?>€</b></td>
+					<td><b><?php echo curr($devis->total_ttc); ?>€</b></td>
 				</tr>
 			</table>
 			<br/>
-			Please check if the amount of <b><?php echo $devis->total_ttc; ?>€</b> is avalable.<br/>
-			You can access to this devis via this permalink: <a href="<?php echo $devis->url(); ?>"><?php echo $devis->url(); ?></a>
+			You can access to this invoice via this permalink: <a href="<?php echo $devis->url(); ?>"><?php echo $devis->url(); ?></a>
 		</p>
 <?php
 		include("footer.php");

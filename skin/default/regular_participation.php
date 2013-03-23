@@ -4,13 +4,6 @@
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 	$user = $g_display["user"];
-
-
-	//if ($error_msg == "") {
-		//$user = get_user_by_login($_SESSION['login']);
-		//participate($user['id'], $event["id"], $_POST['person_amount']);
-		//redirect_to("event.php?id=".$event["id"]);
-	//}
 ?>
 	<a href="index.php">Back to index</a><br/><br/>
 <span style="color:red;">
@@ -91,12 +84,12 @@ How many ticket do you want?
 	<table>
 		<tr>
 			<td>Billing Entity name: </td>
-			<td><input type="text" name="username" value="<?php echo $user['firstname'].' '.$user['lastname']; ?>"/></td>
+			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
 			<td>Billing address: </td>
-			<td><textarea  rows=3 name="address"><?php echo $user['address']; ?></textarea></td>
+			<td><textarea  rows=3 name="address"><?php echo_default_value("address", $user->address()) ?></textarea></td>
 			<td class="help">numero - rue - code postal - ville - pays</td>
 		</tr>
 	</table>

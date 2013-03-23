@@ -4,9 +4,6 @@
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 	$user = $g_display["user"];
-	if ($user['state'] != "") {
-		$user['state'] = ", " . $user['state'];
-	}
 ?>
 <h1>NOMINATIVE</h1>
 <span style="color:red;">
@@ -97,12 +94,12 @@
 	<table>
 		<tr>
 			<td>Billing Entity name: </td>
-			<td><input type="text" name="username" value="<?php echo $user['firstname'].' '.$user['lastname']; ?>"/></td>
+			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
 			<td>Billing address: </td>
-			<td><textarea  rows=3 name="address"><?php echo $user['street']." ".$user['zip']." ".$user['city'].$user['state'].", ".$user['country'] ?></textarea></td>
+			<td><textarea  rows=3 name="address"><?php echo_default_value("address", $user->address()) ?></textarea></td>
 			<td class="help">numero - rue - code postal - ville - pays</td>
 		</tr>
 	</table>

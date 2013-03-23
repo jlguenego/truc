@@ -1,4 +1,3 @@
-<a href="index.php">Go back to index<a/><br/><br/>
 <ul>
 <?php
 		foreach ($g_display["events"] as $event) {

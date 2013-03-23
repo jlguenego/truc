@@ -2,16 +2,26 @@
 	require_once(BASE_DIR."/mail/inscription.php");
 	require_once(BASE_DIR."/mail/event_confirm.php");
 	require_once(BASE_DIR."/mail/event_cancel.php");
-	require_once(BASE_DIR."/mail/payment.php");
+	require_once(BASE_DIR."/mail/payment_full.php");
+	require_once(BASE_DIR."/mail/payment_authorization.php");
 	require_once(BASE_DIR."/mail/forgotten_password.php");
 
 	function mail_payment($mail, $devis) {
 		$event = new Event();
 		$event->load($devis->event_id);
-		$msg_html = mail_html_payment($devis, $event);
+		$user = new User();
+		$user->load($devis->user_id);
+		$subject = "Payment authorization";
+		if ($devis->status == DEVIS_STATUS_CONFIRMED) {
+			$msg_html = mail_html_payment_full($devis, $event, $user);
+			$subject = "Payment confirmation and invoice";
+		} else if ($devis->status == DEVIS_STATUS_PLANNED) {
+			$msg_html = mail_html_payment_authorization($devis, $event, $user);
+		} else {
+			throw new Exception("Unexpected devis status.");
+		}
 
 		$msg = mail_build($msg_html, $mail);
-		$subject = "Payment authorization";
 		mail($mail, $subject, $msg["content"], $msg["header"]);
   	}
 
@@ -19,8 +29,9 @@
 		$subject = "Event confirmation";
 		$devis_array = devis_get_all_for_event($event_id);
 		foreach ($devis_array as $devis) {
-			$user = get_user($devis->user_id);
-			$mail = $user["email"];
+			$user = new User();
+			$user->load($devis->user_id);
+			$mail = $user->email;
 
 			$event = new Event();
 			debug("event id=".$devis->event_id);
@@ -37,8 +48,9 @@
 		$subject = "Event cancellation";
 		$devis_array = devis_get_all_for_event($event_id);
 		foreach ($devis_array as $devis) {
-			$user = get_user($devis->user_id);
-			$mail = $user["email"];
+			$user = new User();
+			$user->load($devis->user_id);
+			$mail = $user->email;
 
 			$event = new Event();
 			$event->load($devis->event_id);

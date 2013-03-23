@@ -8,7 +8,8 @@
 		public $label;
 		public $username;
 		public $address;
-		public $status = DEVIS_STATUS_AUTHORIZED;
+		public $status = DEVIS_STATUS_PLANNED;
+		public $type = DEVIS_TYPE_QUOTATION;
 		public $event_id;
 		public $user_id;
 
@@ -30,9 +31,6 @@
 				$this->total_ttc += $item->total_ttc;
 			}
 
-			$this->label = COMPANY_NAME." - no ".seq_next('devis');
-			debug($this->label);
-
 			$this->user_id = get_id_from_account();
 			$this->id = create_id();
 		}
@@ -40,32 +38,28 @@
 		public function store() {
 			global $g_pdo;
 
-			$id = $this->id;
+			if ($this->type == DEVIS_TYPE_INVOICE) {
+				$this->label = "Invoice - no ".seq_next('invoice');
+			} else {
+				$this->label = "Quotation - no ".seq_next('quotation');
+			}
 			$created_t = time();
-			$total_ht = curr($this->total_ht);
-			$total_tax = $this->total_tax;
-			$total_ttc = $this->total_ttc;
-			$label = $this->label;
-			$username = $this->username;
-			$address = $this->address;
-			$status = $this->status;
-			$id_user = $this->user_id;
-			$id_event = $this->event_id;
 
 			$request = <<<EOF
-INSERT INTO `devis`
+INSERT INTO `bill`
 SET
-	`id`=${id},
+	`id`={$this->id},
 	`created_t`=${created_t},
-	`total_ht`="${total_ht}",
-	`total_tax`="${total_tax}",
-	`total_ttc`="${total_ttc}",
-	`label`="${label}",
-	`username`="${username}",
-	`address`="${address}",
-	`status`=${status},
-	`id_user`=${id_user},
-	`id_event`=${id_event};
+	`total_ht`="{$this->total_ht}",
+	`total_tax`="{$this->total_tax}",
+	`total_ttc`="{$this->total_ttc}",
+	`label`="{$this->label}",
+	`username`="{$this->username}",
+	`address`="{$this->address}",
+	`status`={$this->status},
+	`type`={$this->type},
+	`id_user`={$this->user_id},
+	`id_event`={$this->event_id};
 EOF;
 			$st = $g_pdo->prepare($request);
 			if ($st->execute() === FALSE) {
@@ -73,18 +67,18 @@ EOF;
 				throw new Exception("Devis insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
 			$event = new Event();
-			$event->load($id_event);
-			$event->add_funding_acquired($total_ttc);
+			$event->load($this->event_id);
+			$event->add_funding_acquired($this->total_ttc);
 
 			foreach ($this->items as $item) {
-				$item->store($id);
+				$item->store($this->id);
 			}
 		}
 
 		public function load($id) {
 			global $g_pdo;
 
-			$request = "SELECT * FROM `devis` WHERE `id`= ${id}";
+			$request = "SELECT * FROM `bill` WHERE `id`= ${id}";
 
 			debug($request);
 			$q = $g_pdo->prepare($request);
@@ -97,8 +91,8 @@ EOF;
 			$q->closeCursor();
 
 			$request = <<<EOF
-SELECT * FROM `devis_item`
-WHERE `id_devis`=${id}
+SELECT * FROM `item`
+WHERE `id_bill`=${id}
 ORDER BY event_rate_name
 EOF;
 			debug($request);
@@ -121,7 +115,7 @@ EOF;
 			$status = $this->status;
 
 			$request = <<<EOF
-UPDATE `devis`
+UPDATE `bill`
 SET `status`=${status}
 WHERE `label`="${label}";
 EOF;

@@ -28,7 +28,8 @@
 			$user->country = $_POST["country"];
 			$user->state = $_POST["state"];
 			$user->store();
-			seq_create('devis', 1000);
+			seq_create('quotation', 1000);
+			seq_create('invoice', 10000);
 			$install_done = <<<EOF
 <html>
 	<head>

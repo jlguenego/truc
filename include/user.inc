@@ -179,81 +179,6 @@ EOF;
 		return sha1(rand().time().RANDOM_SALT);
 	}
 
-	function add_user($firstname, $lastname, $login, $password, $mail, $address,
-		$role = ROLE_USER, $activation_status = ACTIVATION_STATUS_NOT_ACTIVATED) {
-		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
-		$id = create_id();
-		// With this method it is quite impossible to know who has the same
-		// password
-		$password = hash_pass($id, $login, $password);
-		$created_t = time();
-		$mod_t = $created_t;
-		$key = generate_activation_key();
-		$request = <<<EOF
-INSERT INTO `${dbname}`.`user`
-SET
-	`id`=${id},
-	`created_t`=${created_t},
-	`mod_t`=${mod_t},
-	`firstname`="${firstname}",
-	`lastname`="${lastname}",
-	`login`="${login}",
-	`password`="${password}",
-	`email`="${mail}",
-	`role`=${role},
-	`activation_status`=${activation_status},
-	`activation_key`="${key}",
-	`address`="${address}";
-EOF;
-		debug($request);
-		if ($g_pdo->exec($request) == 0) {
-			$error = $g_pdo->errorInfo();
-			throw new Exception($error[2]."<br/>");
-		}
-		$user = get_user($id);
-		if (!is_activated($user)) {
-			mail_inscription($mail, $login, $key);
-		}
-	}
-
-	function update_user($id, $password, $mail, $firstname, $lastname, $address) {
-		global $g_pdo;
-		$dbname = MYSQL_DBNAME;
-		// With this method it is quite impossible to know who has the same
-		// password
-		$mod_t = time();
-		$request = <<<EOF
-UPDATE `${dbname}`.`user`
-SET
-	`firstname`="${firstname}",
-	`lastname`="${lastname}",
-	`address`="${address}",
-	`email`="${mail}",
-	`mod_t`="${mod_t}"
-WHERE `id`=${id}
-EOF;
-		debug($request);
-		if ($g_pdo->exec($request) == 0) {
-			$error = $g_pdo->errorInfo();
-			throw new Exception($error[2]."<br/>");
-		}
-		if ($password == "") {
-			return;
-		}
-		$password = hash_pass($id, $_SESSION['login'], $password);
-		$request = <<<EOF
-UPDATE `${dbname}`.`user`
-SET `password`="${password}"
-WHERE `id`=${id}
-EOF;
-		debug($request);
-		if ($g_pdo->exec($request) == 0) {
-			$error = $g_pdo->errorInfo();
-			throw new Exception($error[2]."<br/>");
-		}
-	}
-
 	function user_activate($key) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -344,10 +269,7 @@ EOF;
 			&& $user->country != $_GET["country"]) {
 			$user->country = $_GET["country"];
 		}
-		if (!is_null_or_empty($_GET["state"])
-			&& $user->state != $_GET["state"]) {
-			$user->state = $_GET["state"];
-		}
+		$user->state = $_GET["state"];
 		if (!is_null_or_empty($_GET["email"])) {
 			if (!check_mail($_GET["email"])) {
 				throw new Exception(_t("Invalid mail."));

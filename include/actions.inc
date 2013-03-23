@@ -193,10 +193,11 @@
 		global $g_display;
 
 		need_authentication();
-		$_GET["id"] = get_id_from_account();
-		$g_display["user"] = get_user($_GET["id"]);
-		$g_display["events_organized"] = user_events($_GET["id"]);
-		$g_display["participations"] = user_participations($_GET["id"]);
+		$user = new User();
+		$user->load(get_id_from_account());
+		$g_display["user"] = $user;
+		$g_display["events_organized"] = user_events($user->id);
+		$g_display["participations"] = user_participations($user->id);
 		foreach ($g_display["participations"] as $participation) {
 			$event = new Event();
 			$event->load($participation["id_event"]);
@@ -240,9 +241,11 @@
 		global $g_display;
 
 		if (is_null_or_empty($_GET["id"])) {
-		$_SESSION["state"] = "account_create";
+			$_SESSION["state"] = "account_create";
 		} else {
-			$g_display["user"] = get_user($_GET["id"]);
+			$user = new User();
+			$user->load($_GET["id"]);
+			$g_display["user"] = $user;
 			$_SESSION["state"] = "account_update";
 		}
 	}
@@ -303,7 +306,9 @@
 				} else {
 					$_SESSION["state"] = "event_retrieve";
 					$g_display["event"] = $event;
-					$g_display["author"] = get_user($event->user_id);
+					$user = new User();
+					$user->load($event->user_id);
+					$g_display["author"] = $user;
 				}
 			} else {
 				$_SESSION["state"] = "not_allowed";
@@ -387,7 +392,6 @@
 				}
 				$event = new Event();
 				$event->load($_GET['id']);
-				//$user = get_user_by_login($_SESSION["login"]);
 				$event->check_owner();
 				if($_GET['confirm'] == "yes") {
 					$event->delete();
@@ -472,7 +476,7 @@
 		$event = new Event();
 		$event->load($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
-		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CAPTURED);
+		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CONFIRMED);
 		mail_event_confirm($_GET['id']);
 		action_supervision();
 	}
@@ -526,8 +530,9 @@
 		global $g_error_msg;
 		if (isset($_GET['login']) && isset($_GET['password'])) {
 			if (authenticate($_GET['login'], $_GET['password'])) {
-				$user = get_user_by_login($_GET['login']);
-				if (is_activated($user)) {
+				$user = User::get_from_login($_GET['login']);
+				debug("user=".sprint_r($user));
+				if ($user->is_activated()) {
 					$_SESSION['login'] = $_GET['login'];
 					if (is_null_or_empty($_SESSION["url"])) {
 						redirect_to("index.php");
@@ -596,14 +601,16 @@
 		}
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
-		$devis->address = $_GET['address'];
+		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = new Event();
 		$event->load($_GET["event_id"]);
 		if ($event->is_confirmed()) {
-			$devis->status = DEVIS_STATUS_CAPTURED;
+			$devis->status = DEVIS_STATUS_CONFIRMED;
+			$devis->type = DEVIS_TYPE_INVOICE;
 		} else {
-			$devis->status = DEVIS_STATUS_AUTHORIZED;
+			$devis->status = DEVIS_STATUS_PLANNED;
+			$devis->type = DEVIS_TYPE_QUOTATION;
 		}
 
 		$total_ttc = 0.00;
@@ -636,6 +643,7 @@
 
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
+		debug("devis=".sprint_r($devis));
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
@@ -653,7 +661,7 @@
 				$g_error_msg = "This event is not published yet.";
 				return;
 			}
-			$g_display["user"] = get_user(get_id_from_account());
+			$g_display["user"] = User::get_from_login();
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["event_id"]);
 			if ($g_display["event"]->nominative == 1) {
@@ -675,9 +683,9 @@
 			}
 			$devis = $_SESSION['devis'];
 			$devis->store();
-			$user = get_user(get_id_from_account());
-			debug($user["email"]);
-			mail_payment($user["email"], $devis);
+			$user = User::get_from_login();
+			debug($user->email);
+			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
@@ -713,12 +721,12 @@
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
-			$g_display["user"] = get_user(get_id_from_account());
+			$g_display["user"] = User::get_from_login();
 			$event = new Event();
 			$event->load($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["event_id"]);
-			if ($g_display["event"]["nominative"] == 1) {
+			if ($event->nominative == 1) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {
 				$_SESSION["state"] = "regular_participation";

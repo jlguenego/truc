@@ -18,8 +18,8 @@ Please enter your info:
 	$f->add_text("Street# and street name", "street", default_value("street"), "Number and street name");
 	$f->add_text("ZIP", "zip", default_value("zip"), "ZIP code of your city.");
 	$f->add_text("City", "city", default_value("city"), "Your city.");
+	$f->add_text("State (Optional)", "state", default_value("state"), "Your state if any");
 	$f->add_text("Country", "country", default_value("country"), "Your country");
-	$f->add_text("State (if necessary)", "state", default_value("state"), "Your state if any");
 	require_once(BASE_DIR . '/include/recaptcha.inc');
 	$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
 	$f->add_raw_html(recaptcha_get_html($publickey));

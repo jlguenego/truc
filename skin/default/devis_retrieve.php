@@ -2,9 +2,19 @@
 	$devis = $g_display["devis"];
 	$event = $g_display["event"];
 ?>
-<a href="index.php">Go back to index<a/><br/><br/>
 <p>
-	<?php echo $devis->label; ?>:
+	<?php echo $devis->label; ?>
+	<table border="1px">
+		<tr>
+			<th>Billing entity:</th>
+			<td><?php echo $devis->username; ?></td>
+		</tr>
+		<tr>
+			<th>Billing address: </th>
+			<td><?php echo $devis->address; ?></td>
+		</tr>
+	</table>
+	<br/>
 	<table border="1px">
 		<tr>
 			<th>Event</th>
@@ -51,9 +61,9 @@
 <?php
 		if ($event->nominative == 1) {
 ?>
+			<td><?php echo $item->participant_title; ?></td>
 			<td><?php echo $item->participant_firstname; ?></td>
 			<td><?php echo $item->participant_lastname; ?></td>
-			<td><?php echo $item->participant_title; ?></td>
 <?php
 		}
 ?>

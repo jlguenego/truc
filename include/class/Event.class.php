@@ -53,6 +53,9 @@ EOF;
 
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
+				if ($key == "id_user") {
+					$this->user_id = $value;
+				}
 				debug($key."=>".$value);
 				$this->$key = $value;
 			}
@@ -162,7 +165,7 @@ EOF;
 		public function check_linked_devis() {
 			global $g_pdo;
 
-			$request = "SELECT COUNT(*) FROM `devis` WHERE `id_event`=" . $this->id;
+			$request = "SELECT COUNT(*) FROM `bill` WHERE `id_event`=" . $this->id;
 			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute();

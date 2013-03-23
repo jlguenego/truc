@@ -1,39 +1,34 @@
 <?php
 	$user = $g_display["user"];
-	$lastname = $user['lastname'];
-	$firstname = $user['firstname'];
-	if ($user['state'] != "") {
-		$user['state'] = " " . $user['state'];
-	}
 ?>
 	Account details:
 	<table border="2px">
 		<tr>
 			<td>Username</td>
-			<td><?php echo $user['login'] ?></td>
+			<td><?php echo $user->login ?></td>
 		</tr>
 		<tr>
 			<td>Firstname</td>
-			<td><?php echo $firstname ?></td>
+			<td><?php echo $user->firstname ?></td>
 		</tr>
 		<tr>
 			<td>Lastname</td>
-			<td><?php echo $lastname ?></td>
+			<td><?php echo $user->lastname ?></td>
 		</tr>
 		<tr>
 			<td>Email</td>
-			<td><?php echo $user['email'] ?></td>
+			<td><?php echo $user->email ?></td>
 		</tr>
 		<tr>
 			<td>Postal address</td>
-			<td><?php echo $user['street']." ".$user['zip']." ".$user['city'].$user['state'].", ".$user['country'] ?></td>
+			<td><?php echo $user->address(); ?></td>
 		</tr>
 	</table>
 
 <?php
-	if ($user['login'] == $_SESSION['login']) { // If the user is the owner
+	if ($user->login == $_SESSION['login']) { // If the user is the owner
 ?>
-	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $_GET["id"] ?>">Edit your account</a><br/>
+	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a><br/>
 <?php
 	}
 ?>
