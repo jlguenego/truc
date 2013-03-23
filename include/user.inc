@@ -169,6 +169,7 @@ EOF;
 		if (!isset($user['id'])) {
 			return NULL;
 		}
+		unset($user["password"]);
 		$user["lastname"] = strtoupper($user["lastname"]);
 		$user["firstname"] = ucfirst($user["firstname"]);
 		return $user;
@@ -216,19 +217,34 @@ EOF;
 		}
 	}
 
-	function update_user($id, $password, $mail) {
+	function update_user($id, $password, $mail, $firstname, $lastname, $address) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
 		// With this method it is quite impossible to know who has the same
 		// password
-		$password = hash_pass($id, $_SESSION['login'], $password);
 		$mod_t = time();
 		$request = <<<EOF
 UPDATE `${dbname}`.`user`
 SET
-	`password`="${password}",
+	`firstname`="${firstname}",
+	`lastname`="${lastname}",
+	`address`="${address}",
 	`email`="${mail}",
 	`mod_t`="${mod_t}"
+WHERE `id`=${id}
+EOF;
+		debug($request);
+		if ($g_pdo->exec($request) == 0) {
+			$error = $g_pdo->errorInfo();
+			throw new Exception($error[2]."<br/>");
+		}
+		if ($password == "") {
+			return;
+		}
+		$password = hash_pass($id, $_SESSION['login'], $password);
+		$request = <<<EOF
+UPDATE `${dbname}`.`user`
+SET `password`="${password}"
 WHERE `id`=${id}
 EOF;
 		debug($request);
@@ -273,63 +289,71 @@ EOF;
 	}
 
 	function valid_user() {
-		if (isset($_GET['login'])) {
-			foreach ($_GET as $value) {
-				if ($value == "") {
-					throw new Exception("Please fill all fields");
-				}
+		foreach ($_GET as $value) {
+			if ($value == "") {
+				throw new Exception("Please fill all fields");
 			}
-			if (!check_mail($_GET["email"])) {
-				throw new Exception("Invalid mail");
-			}
-			if (used_mail($_GET["email"])) {
-				throw new Exception("This mail is already used");
-			}
-			if (user_login_exists($_GET['login'])) {
-				throw new Exception("User already exists");
-			}
-			if ($_GET['password'] != $_GET['password2']) {
-				throw new Exception("Passwords are different");
-			}
-			require_once(BASE_DIR . '/include/recaptcha.inc');
-		    $privatekey = CAPTCHA_PRIV_KEY;
-		    $resp = recaptcha_check_answer ($privatekey,
-										$_SERVER["REMOTE_ADDR"],
-										$_POST["recaptcha_challenge_field"],
-										$_POST["recaptcha_response_field"]);
+		}
+		if (user_login_exists($_GET['login'])) {
+			throw new Exception("User already exists");
+		}
+		if (!check_mail($_GET["email"])) {
+			throw new Exception("Invalid mail");
+		}
+		if (used_mail($_GET["email"])) {
+			throw new Exception("This mail is already used");
+		}
+		if ($_GET['password'] != $_GET['password2']) {
+			throw new Exception("Passwords are different");
+		}
+		require_once(BASE_DIR . '/include/recaptcha.inc');
+	    $privatekey = CAPTCHA_PRIV_KEY;
+	    $resp = recaptcha_check_answer ($privatekey,
+									$_SERVER["REMOTE_ADDR"],
+									$_POST["recaptcha_challenge_field"],
+									$_POST["recaptcha_response_field"]);
 
-			if (!$resp->is_valid) {
-				// What happens when the CAPTCHA was entered incorrectly
-				throw new Exception ("The reCAPTCHA wasn't entered correctly.");
-			}
+		if (!$resp->is_valid) {
+			// What happens when the CAPTCHA was entered incorrectly
+			throw new Exception ("The reCAPTCHA wasn't entered correctly.");
 		}
 	}
 
 	function valid_user_update() {
 		global $g_display;
-		if (isset($_GET['password'])) {
-			$user = $g_display["user"];
-			if ($user['password'] != hash_pass($user['id'], $_SESSION['login'], $_GET['password'])) {
-				throw new Exception(_t("Wrong password."));
-			}
-			if ($_GET["email"] != "") {
-				if (!check_mail($_GET["email"])) {
-					throw new Exception(_t("Invalid mail."));
-				}
-				if (used_mail($_GET["email"])) {
-					throw new Exception(_t("This mail is already used."));
-				}
-				$user['email'] = $_GET['email'];
-			}
-			if ($_GET['new_pass'] != "" || $_GET['new_pass2'] != "") {
-				if ($_GET['new_pass'] != $_GET['new_pass2']) {
-					throw new Exception(_t("New passwords are different."));
-				}
-				$user['password'] = $_GET['new_pass'];
-			} else {
-				$user['password'] = $_GET['password'];
-			}
+
+		$user = $g_display["user"];
+		if (!is_null_or_empty($_GET["firstname"])
+			&& $user['firstname'] != $_GET["firstname"]) {
+			$user['firstname'] = $_GET["firstname"];
 		}
+		if (!is_null_or_empty($_GET["lastname"])
+			&& $user['lastname'] != $_GET["lastname"]) {
+			$user['lastname'] = $_GET["lastname"];
+		}
+		if (!is_null_or_empty($_GET["address"])
+			&& $user['address'] != $_GET["address"]) {
+			$user['address'] = $_GET["address"];
+		}
+		if (!is_null_or_empty($_GET["email"])) {
+			if (!check_mail($_GET["email"])) {
+				throw new Exception(_t("Invalid mail."));
+			}
+			if (used_mail($_GET["email"])) {
+				throw new Exception(_t("This mail is already used."));
+			}
+			$user['email'] = $_GET['email'];
+		}
+		if (!is_null_or_empty($_GET['new_pass'])) {
+			if ($_GET['new_pass'] != $_GET['new_pass2']) {
+				throw new Exception(_t("New passwords are different."));
+			}
+			$user['password'] = $_GET['new_pass'];
+		} else {
+			$user["password"] = "";
+		}
+		debug("user=".  sprint_r($user));
+		return $user;
 	}
 
 	function user_can_administrate_event($event) {

@@ -6,27 +6,16 @@
 	<?php echo "$g_error_msg<br/>"; ?>
 </span>
 Please enter your info:
-<form name="input" action="?action=update&amp;type=account" method="POST">
-	<table>
-	<tr>
-		<td>New Password: </td>
-		<td><input type="password" name="new_pass"></td>
-	</tr>
-	<tr>
-		<td>Retype Password: </td>
-		<td><input type="password" name="new_pass2"></td>
-	</tr>
-	<tr>
-		<td>Mail: </td>
-		<td><input type="email" name="email" value="<?php echo $user['email']; ?>"></td>
-	</tr>
-	<tr></tr>
-	<tr>
-		<td>Password: </td>
-		<td><input type="password" name="password" value=""></td>
-	</tr>
-	<tr>
-		<td><input type="submit" value="Submit"></td>
-	<tr/>
-	</table>
-</form>
+<?php
+	$f = new Form();
+	$f->action = "?action=update&amp;type=account";
+	$f->method = "POST";
+	$f->add_text("Firstname", "firstname", default_value("firstname", $user["firstname"]), "Your Firstname.");
+	$f->add_text("Lastname", "lastname", default_value("lastname", $user["lastname"]), "Your Lastname.");
+	$f->add_email("E-Mail", "email", default_value("email", $user["email"]), "A valid E-Mail you want to associate to your account.");
+	$f->add_text("Full postal address", "address", default_value("address", $user["address"]), htmlentities("<numero><rue><code postal><ville><pays>", ENT_HTML5, "UTF-8"));
+	$f->add_password("New Password (optional)", "new_pass", "Leave empty if you do not want to change your password.");
+	$f->add_password("Retype new Password (optional)", "new_pass2", "Retype your new password.");
+	$f->add_submit("Submit");
+	echo $f->html();
+?>

@@ -192,6 +192,9 @@
 	}
 
 	function action_account_update() {
+		global $g_display;
+		global $g_error_msg;
+		global $g_info_msg;
 		try {
 			need_authentication();
 			if (is_null_or_empty($_GET["id"])) {
@@ -199,10 +202,17 @@
 			}
 			if (user_exists($_GET["id"])) {
 				$g_display["user"] = get_user($_GET["id"]);
-				valid_user_update();
+				$user = valid_user_update();
 				update_user($user['id'], $user['password'],
-					$user['email']);
-				redirect_to("?action=retrieve&type=account&id=".$_GET["id"]);
+					$user['email'], $user['firstname'], $user['lastname'],
+					$user['address']);
+				$g_info_msg = "Your personal informations has been changed.";
+				if (!is_null_or_empty($_GET["new_pass"])) {
+					$g_info_msg .= "Your password has changed. We just sent you a mail for information.";
+					debug("password changed => mail send");
+					//mail_password_changed($user["email"], $user["login"])
+				}
+				action_account_retrieve();
 			} else {
 				throw new Exception(_t("This user does not exists."));
 			}
