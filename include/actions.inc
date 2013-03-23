@@ -702,7 +702,7 @@
 		}
 	}
 
-	function action_actiate() {
+	function action_activation() {
 		try {
 			$user = user_activate($_GET["key"]);
 			$g_info_msg = "Account successfully activated";

@@ -131,7 +131,7 @@ EOF;
 					case "email":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="email" name="{$item->name}" default="{$item->default}"/>
+<input type="email" name="{$item->name}" value="{$item->default}"/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;

@@ -5,53 +5,24 @@
 ?>
 </span><br/>
 Please enter your info:
-<form name="input" action="?action=create&amp;type=account" method="POST">
-	<table>
-		<tr>
-			<td>Login: </td>
-			<td><input type="text" name="login" value="<?php echo_default_value("login"); ?>"></td>
-		</tr>
-		<tr>
-			<td>Firstname: </td>
-			<td><input type="text" name="firstname" value="<?php echo_default_value("firstname"); ?>"></td>
-		</tr>
-		<tr>
-			<td>Lastname: </td>
-			<td><input type="text" name="lastname" value="<?php echo_default_value("lastname"); ?>"></td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="password" value=""></td>
-		</tr>
-		<tr>
-			<td>Retype Password: </td>
-			<td><input type="password" name="password2" value=""></td>
-		</tr>
-		<tr>
-			<td>Mail: </td>
-			<td><input type="email" name="email" value="<?php echo_default_value("email"); ?>"></td>
-		</tr>
-		<tr>
-			<td>Full postal address: </td>
-			<td><input type="text" name="address" placeholder="<numero><rue><code postal><ville><pays>" value="<?php echo_default_value("address"); ?>"></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<?php
-					require_once(BASE_DIR . '/include/recaptcha.inc');
-					$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
-					echo recaptcha_get_html($publickey);
-				?>
-			</td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" name="confirm"/> I have read and understood the <a href="CGU.pdf" target="_blank">CGU</a> and accept them.<br/></td>
-		</tr>
-		<tr>
-			<td><input type="submit" value="Submit"></td>
-		</tr>
-	</table>
-</form>
+<?php
+	$f = new Form();
+	$f->action = "?action=create&amp;type=account";
+	$f->method = "POST";
+	$f->add_text("Login", "login", default_value("login"), "The login you will use to connect.");
+	$f->add_text("Firstname", "firstname", default_value("firstname"), "Your Firstname.");
+	$f->add_text("Lastname", "lastname", default_value("lastname"), "Your Lastname.");
+	$f->add_password("Password", "password", "", "The password you want to associate to your account.");
+	$f->add_password("Retype Password", "password2", "", "Retype your password.");
+	$f->add_email("E-Mail", "email", default_value("email"), "A valid E-Mail you want to associate to your account.");
+	$f->add_text("Full postal address", "address", default_value("address"), htmlentities("<numero><rue><code postal><ville><pays>", ENT_HTML5, "UTF-8"));
+	require_once(BASE_DIR . '/include/recaptcha.inc');
+	$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
+	$f->add_raw_html(recaptcha_get_html($publickey));
+	$f->add_checkbox("I have read and understood the <a href=\"CGU.pdf\" target=\"_blank\">CGU</a> and accept them.", "confirm", "", "");
+	$f->add_submit("Submit");
+	echo $f->html();
+?>
 <script>
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input[type=checkbox]').change(eb_sync_next_button);
