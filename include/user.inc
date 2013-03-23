@@ -319,21 +319,34 @@ EOF;
 		}
 	}
 
-	function valid_user_update() {
-		global $g_display;
-
-		$user = $g_display["user"];
+	function valid_user_update($user) {
 		if (!is_null_or_empty($_GET["firstname"])
-			&& $user['firstname'] != $_GET["firstname"]) {
-			$user['firstname'] = $_GET["firstname"];
+			&& $user->firstname != $_GET["firstname"]) {
+			$user->firstname = $_GET["firstname"];
 		}
 		if (!is_null_or_empty($_GET["lastname"])
-			&& $user['lastname'] != $_GET["lastname"]) {
-			$user['lastname'] = $_GET["lastname"];
+			&& $user->lastname != $_GET["lastname"]) {
+			$user->lastname = $_GET["lastname"];
 		}
-		if (!is_null_or_empty($_GET["address"])
-			&& $user['address'] != $_GET["address"]) {
-			$user['address'] = $_GET["address"];
+		if (!is_null_or_empty($_GET["street"])
+			&& $user->street != $_GET["street"]) {
+			$user->street = $_GET["street"];
+		}
+		if (!is_null_or_empty($_GET["zip"])
+			&& $user->zip != $_GET["zip"]) {
+			$user->zip = $_GET["zip"];
+		}
+		if (!is_null_or_empty($_GET["city"])
+			&& $user->city != $_GET["city"]) {
+			$user->city = $_GET["city"];
+		}
+		if (!is_null_or_empty($_GET["country"])
+			&& $user->country != $_GET["country"]) {
+			$user->country = $_GET["country"];
+		}
+		if (!is_null_or_empty($_GET["state"])
+			&& $user->state != $_GET["state"]) {
+			$user->state = $_GET["state"];
 		}
 		if (!is_null_or_empty($_GET["email"])) {
 			if (!check_mail($_GET["email"])) {
@@ -342,18 +355,17 @@ EOF;
 			if (used_mail($_GET["email"])) {
 				throw new Exception(_t("This mail is already used."));
 			}
-			$user['email'] = $_GET['email'];
+			$user->email = $_GET['email'];
 		}
 		if (!is_null_or_empty($_GET['new_pass'])) {
 			if ($_GET['new_pass'] != $_GET['new_pass2']) {
 				throw new Exception(_t("New passwords are different."));
 			}
-			$user['password'] = $_GET['new_pass'];
+			$user->password = $_GET['new_pass'];
 		} else {
-			$user["password"] = "";
+			$user->password = "";
 		}
 		debug("user=".  sprint_r($user));
-		return $user;
 	}
 
 	function user_can_administrate_event($event) {

@@ -15,7 +15,11 @@ Please enter your info:
 	$f->add_password("Password", "password", "The password you want to associate to your account.");
 	$f->add_password("Retype Password", "password2", "Retype your password.");
 	$f->add_email("E-Mail", "email", default_value("email"), "A valid E-Mail you want to associate to your account.");
-	$f->add_text("Full postal address", "address", default_value("address"), htmlentities("<numero><rue><code postal><ville><pays>", ENT_HTML5, "UTF-8"));
+	$f->add_text("Street# and street name", "street", default_value("street"), "Number and street name");
+	$f->add_text("ZIP", "zip", default_value("zip"), "ZIP code of your city.");
+	$f->add_text("City", "city", default_value("city"), "Your city.");
+	$f->add_text("Country", "country", default_value("country"), "Your country");
+	$f->add_text("State (if necessary)", "state", default_value("state"), "Your state if any");
 	require_once(BASE_DIR . '/include/recaptcha.inc');
 	$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
 	$f->add_raw_html(recaptcha_get_html($publickey));

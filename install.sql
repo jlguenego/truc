@@ -33,7 +33,11 @@ CREATE TABLE user(
         role              Int NOT NULL ,
         activation_status Int NOT NULL ,
         activation_key    Varchar(255),
-        address           Varchar(255) NOT NULL ,
+        street            Varchar(255) NOT NULL ,
+        zip               Varchar(255) NOT NULL ,
+        city              Varchar(255) NOT NULL ,
+        country           Varchar(255) NOT NULL ,
+        state             Varchar(255),
         token             Varchar(255),
         PRIMARY KEY (id)
 )ENGINE=InnoDB;

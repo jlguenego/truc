@@ -63,7 +63,7 @@ EOF;
 
 			$this->id = create_id();
 			$created_t = time();
-			$mod_t = time();
+			$mod_t = $created_t;
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
 

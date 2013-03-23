@@ -9,7 +9,11 @@
 		public $role;
 		public $activation_status;
 		public $activation_key;
-		public $address;
+		public $street;
+		public $zip;
+		public $city;
+		public $country;
+		public $state;
 
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
@@ -29,8 +33,45 @@ EOF;
 			$q->execute();
 		}
 
-		public function set_passwd($passwd) {
+		public function set_password($passwd) {
 			$this->password = sha1($this->id.$this->login.$passwd);
+		}
+
+		public function store() {
+			global $g_pdo;
+
+			$created_t = time();
+			$mod_t = $created_t;
+			$request = <<<EOF
+INSERT INTO `user`
+SET
+	`id`={$this->id},
+	`created_t`=${created_t},
+	`mod_t`=${mod_t},
+	`firstname`="{$this->firstname}",
+	`lastname`="{$this->lastname}",
+	`login`="{$this->login}",
+	`password`="{$this->password}",
+	`email`="{$this->email}",
+	`role`={$this->role},
+	`activation_status`={$this->activation_status},
+	`activation_key`="{$this->activation_key}",
+	`street`="{$this->street}",
+	`zip`="{$this->zip}",
+	`city`="{$this->city}",
+	`country`="{$this->country}",
+	`state`="{$this->state}";
+
+EOF;
+			debug($request);
+			if ($g_pdo->exec($request) == 0) {
+				$error = $g_pdo->errorInfo();
+				throw new Exception("User creation: ".$error[2]);
+			}
+			$user = get_user($this->id);
+			if (!is_activated($user)) {
+				mail_inscription($this->email, $this->login, $this->activation_key);
+			}
 		}
 
 		public function update() {
@@ -40,9 +81,16 @@ EOF;
 			$request = <<<EOF
 UPDATE `user`
 SET
+	`mod_t`=${mod_t},
+	`firstname`="{$this->firstname}",
+	`lastname`="{$this->lastname}",
 	`password`="{$this->password}",
 	`email`="{$this->email}",
-	`mod_t`="${mod_t}"
+	`street`="{$this->street}",
+	`zip`="{$this->zip}",
+	`city`="{$this->city}",
+	`country`="{$this->country}",
+	`state`="{$this->state}"
 WHERE `id`={$this->id}
 EOF;
 			debug($request);
@@ -87,7 +135,7 @@ EOF;
 			return $user;
 		}
 
-		public function set_reset_passwd_token() {
+		public function set_reset_password_token() {
 			global $g_pdo;
 
 			$exp_ts = time() + 86400;
@@ -127,6 +175,36 @@ EOF;
 				throw new Exception("This token is expired.");
 			}
 			return $user;
+		}
+
+		public function load($id) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT * FROM `user`
+WHERE `id`= ${id}
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			if(!$q->execute()) {
+				throw new Exception("User Update: ".sprint_r($g_pdo->errorInfo()));
+			}
+			$user = $q->fetch();
+			if (!isset($user['id'])) {
+				return NULL;
+			}
+			unset($user["password"]);
+			$user["lastname"] = strtoupper($user["lastname"]);
+			$user["firstname"] = ucfirst($user["firstname"]);
+			$this->hydrate($user);
+		}
+
+		public function address() {
+			if ($this->state != "") {
+				$this->state = " " . $this->state;
+			}
+			return $this->street." ".$this->zip." ".$this->city.
+				$this->state.", ".$this->country;
 		}
 	}
 ?>

@@ -166,8 +166,22 @@
 
 		try {
 			valid_user();
-			add_user($_GET['firstname'], $_GET['lastname'], $_GET['login'],
-				$_GET['password'], $_GET['email'], $_GET['address']);
+			$user = new User();
+			$user->id = create_id();
+			$user->login = $_GET["login"];
+			$user->set_password($_GET["password"]);
+			$user->email = $_GET["email"];
+			$user->lastname = ucfirst($_GET["lastname"]);
+			$user->firstname = strtoupper($_GET["password"]);
+			$user->role = ROLE_USER;
+			$user->activation_status = ACTIVATION_STATUS_NOT_ACTIVATED;
+			$user->activation_key = generate_activation_key();
+			$user->street = $_GET["street"];
+			$user->zip = $_GET["zip"];
+			$user->city = $_GET["city"];
+			$user->country = $_GET["country"];
+			$user->state = $_GET["state"];
+			$user->store();
 			$g_info_msg = "Account successfully created. Check your email for activation.";
 			$_SESSION["state"] = "root";
 		} catch (Exception $e) {
@@ -201,11 +215,11 @@
 				$_GET["id"] = get_id_from_account();
 			}
 			if (user_exists($_GET["id"])) {
-				$g_display["user"] = get_user($_GET["id"]);
-				$user = valid_user_update();
-				update_user($user['id'], $user['password'],
-					$user['email'], $user['firstname'], $user['lastname'],
-					$user['address']);
+				$user = new User();
+				$user->load($_GET["id"]);
+				valid_user_update($user);
+				$user->update();
+
 				$g_info_msg = "Your personal informations has been changed.";
 				if (!is_null_or_empty($_GET["new_pass"])) {
 					$g_info_msg .= "Your password has changed. We just sent you a mail for information.";
@@ -734,7 +748,7 @@
 		if ($user == NULL) {
 			return;
 		}
-		$token = $user->set_reset_passwd_token();
+		$token = $user->set_reset_password_token();
 		mail_forgotten_password($user, $token);
 	}
 
@@ -753,7 +767,7 @@
 			return;
 		}
 		$user = User::get_from_login($_SESSION["login"]);
-		$user->set_passwd($_GET["password1"]);
+		$user->set_password($_GET["password1"]);
 		$user->update();
 		$g_info_msg = "Your password has been updated.";
 		$_SESSION["state"] = "root";

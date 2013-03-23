@@ -2,6 +2,9 @@
 	$user = $g_display["user"];
 	$lastname = $user['lastname'];
 	$firstname = $user['firstname'];
+	if ($user['state'] != "") {
+		$user['state'] = " " . $user['state'];
+	}
 ?>
 	Account details:
 	<table border="2px">
@@ -23,7 +26,7 @@
 		</tr>
 		<tr>
 			<td>Postal address</td>
-			<td><?php echo $user['address'] ?></td>
+			<td><?php echo $user['street']." ".$user['zip']." ".$user['city'].$user['state'].", ".$user['country'] ?></td>
 		</tr>
 	</table>
 

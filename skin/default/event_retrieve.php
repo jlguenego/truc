@@ -1,9 +1,6 @@
 <?php
 	$event = $g_display["event"];
 	$author = $g_display["author"];
-?>
-<a href="index.php">Go back to index<a/><br/><br/>
-<?php
 	echo "<h1>".$event->title."</h1>";
 	if (user_can_administrate_event($event)) {
 ?>
