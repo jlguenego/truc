@@ -15,6 +15,12 @@
 		public $country;
 		public $state;
 
+		public static function get_from_id($id) {
+			$user = new User();
+			$user->load($id);
+			return $user;
+		}
+
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
 				$this->$key = $value;

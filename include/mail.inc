@@ -7,10 +7,8 @@
 	require_once(BASE_DIR."/mail/forgotten_password.php");
 
 	function mail_payment($mail, $devis) {
-		$event = new Event();
-		$event->load($devis->event_id);
-		$user = new User();
-		$user->load($devis->user_id);
+		$event = Event::get_from_id($devis->event_id);
+		$user = User::get_from_id($devis->user_id);
 		$subject = "Payment authorization";
 		if ($devis->status == DEVIS_STATUS_CONFIRMED) {
 			$msg_html = mail_html_payment_full($devis, $event, $user);
@@ -29,13 +27,11 @@
 		$subject = "Event confirmation";
 		$devis_array = devis_get_all_for_event($event_id);
 		foreach ($devis_array as $devis) {
-			$user = new User();
-			$user->load($devis->user_id);
+			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;
 
-			$event = new Event();
 			debug("event id=".$devis->event_id);
-			$event->load($devis->event_id);
+			$event = Event::get_from_id($devis->event_id);
 			$invoice = $devis->create_invoice();
 			$msg_html = mail_html_event_confirm($devis->label, $invoice, $event, $user);
 			debug("msg_html=".$msg_html);
@@ -49,12 +45,10 @@
 		$subject = "Event cancellation";
 		$devis_array = devis_get_all_for_event($event_id);
 		foreach ($devis_array as $devis) {
-			$user = new User();
-			$user->load($devis->user_id);
+			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;
 
-			$event = new Event();
-			$event->load($devis->event_id);
+			$event = Event::get_from_id($devis->event_id);
 			$msg_html = mail_html_event_cancel($devis, $event, $user);
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);

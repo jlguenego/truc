@@ -17,6 +17,12 @@
 		public $user_id;
 		public $rates = array();
 
+		public static function get_from_id($id) {
+			$event = new Event();
+			$event->load($id);
+			return $event;
+		}
+
 		public function load($id) {
 			global $g_pdo;
 
@@ -230,8 +236,7 @@ EOF;
 			$event_record = $q->fetch();
 			$events = array();
 			while (isset($event_record["id"])) {
-				$event = new Event();
-				$event->load($event_record["id"]);
+				$event = Event::get_from_id($event_record["id"]);
 				$events[] = $event;
 				$event_record = $q->fetch();
 			}

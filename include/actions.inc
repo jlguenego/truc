@@ -193,15 +193,12 @@
 		global $g_display;
 
 		need_authentication();
-		$user = new User();
-		$user->load(get_id_from_account());
+		$user = User::get_from_login();
 		$g_display["user"] = $user;
 		$g_display["events_organized"] = user_events($user->id);
 		$g_display["participations"] = user_participations($user->id);
 		foreach ($g_display["participations"] as $participation) {
-			$event = new Event();
-			$event->load($participation["id_event"]);
-			$g_display["participations"]["event"] = $event;
+			$g_display["participations"]["event"] = Event::get_from_id($participation["id_event"]);
 		}
 		$_SESSION["state"] = "account_retrieve";
 	}
@@ -216,8 +213,7 @@
 				$_GET["id"] = get_id_from_account();
 			}
 			if (user_exists($_GET["id"])) {
-				$user = new User();
-				$user->load($_GET["id"]);
+				$user = User::get_from_id($_GET["id"]);
 				valid_user_update($user);
 				$user->update();
 
@@ -243,8 +239,7 @@
 		if (is_null_or_empty($_GET["id"])) {
 			$_SESSION["state"] = "account_create";
 		} else {
-			$user = new User();
-			$user->load($_GET["id"]);
+			$user = User::get_from_id($_GET["id"]);
 			$g_display["user"] = $user;
 			$_SESSION["state"] = "account_update";
 		}
@@ -298,16 +293,14 @@
 
 		if (!is_null_or_empty($_GET["id"])) {
 			if (Event::exists($_GET["id"])) {
-				$event = new Event();
-				$event->load($_GET["id"]);
+				$event = Event::get_from_id($_GET["id"]);
 				if (!$event->is_published() && !user_can_administrate_event($event)) {
 					$_SESSION["state"] = "not_allowed";
 					$g_error_msg = "This event is not published yet.";
 				} else {
 					$_SESSION["state"] = "event_retrieve";
 					$g_display["event"] = $event;
-					$user = new User();
-					$user->load($event->user_id);
+					$user = User::get_from_id($event->user_id);
 					$g_display["author"] = $user;
 				}
 			} else {
@@ -331,9 +324,7 @@
 				if (Event::exists($_GET["id"])) {
 					$_SESSION["state"] = "event_form";
 					form_event_valid(TRUE);
-					$event = new Event();
-					$event->load($_GET["id"]);
-					$event->id = $_GET["id"];
+					$event = Event::get_from_id($_GET["id"]);
 					$event->title = $_GET['title'];
 					$event->happening_t = $_GET['happening_t'];
 					$event->confirmation_t = $_GET['confirmation_t'];
@@ -374,8 +365,7 @@
 		global $g_display;
 		global $g_error_msg;
 
-		$event = new Event();
-		$event->load($_GET["id"]);
+		$event = Event::get_from_id($_GET["id"]);
 		$g_display["event"] = $event;
 		if ($_SESSION["state"] != "event_delete") {
 			$_SESSION["state"] = "event_delete";
@@ -390,8 +380,7 @@
 				if (!Event::exists($_GET['id'])) {
 					throw new Exception("Event does not exists.");
 				}
-				$event = new Event();
-				$event->load($_GET['id']);
+				$event = Event::get_from_id($_GET['id']);
 				$event->check_owner();
 				if($_GET['confirm'] == "yes") {
 					$event->delete();
@@ -416,8 +405,7 @@
 			$g_display["form_action"] = "?action=create&amp;type=event";
 			$_SESSION["state"] = "event_form";
 		} else {
-			$event = new Event();
-			$event->load($_GET["id"]);
+			$event = Event::get_from_id($_GET["id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["id"]);
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
@@ -437,8 +425,7 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		$event = new Event();
-		$event->load($_GET['id']);
+		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
 		action_supervision();
 	}
@@ -455,8 +442,7 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		$event = new Event();
-		$event->load($_GET['id']);
+		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
 		action_supervision();
 	}
@@ -473,8 +459,7 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		$event = new Event();
-		$event->load($_GET['id']);
+		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
 		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CONFIRMED);
 		mail_event_confirm($_GET['id']);
@@ -499,8 +484,7 @@
 			$g_error_msg = "No event selected.";
 			return;
 		}
-		$event = new Event();
-		$event->load($_GET['id']);
+		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CANCELLED);
 		mail_event_cancel($_GET['id']);
 		action_supervision();
@@ -515,11 +499,8 @@
 		if (!devis_exists($_GET['id'])) {
 			throw new Exception("Devis does not exists.");
 		}
-		$devis = new Devis();
-		$devis->load($_GET['id']);
-
-		$event = new Event();
-		$event->load($devis->event_id);
+		$devis = Devis::get_from_id($_GET['id']);
+		$event = Event::get_from_id($devis->event_id);
 
 		$g_display["devis"] = $devis;
 		$g_display["event"] = $event;
@@ -563,8 +544,7 @@
 		$devis->address = $_GET['address'];
 		$devis->event_id = $_GET["event_id"];
 		$rates = events_rates($_GET["event_id"]);
-		$event = new Event();
-		$event->load($_GET["event_id"]);
+		$event = Event::get_from_id($_GET["event_id"]);
 		$total_ttc = 0.00;
 		$i = 0;
 		while (isset($_GET["ticket_${i}"])) {
@@ -603,8 +583,7 @@
 		$devis->username = $_GET['username'];
 		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
-		$event = new Event();
-		$event->load($_GET["event_id"]);
+		$event = Event::get_from_id($_GET["event_id"]);
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
 			$devis->type = DEVIS_TYPE_INVOICE;
@@ -654,8 +633,7 @@
 
 		need_authentication();
 		if (!is_null_or_empty($_GET["event_id"])) {
-			$event = new Event();
-			$event->load($_GET["event_id"]);
+			$event = Event::get_from_id($_GET["event_id"]);
 			if (!$event->is_published()) {
 				$_SESSION["state"] = "not_allowed";
 				$g_error_msg = "This event is not published yet.";
@@ -722,8 +700,7 @@
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
 			$g_display["user"] = User::get_from_login();
-			$event = new Event();
-			$event->load($_GET["event_id"]);
+			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["event_id"]);
 			if ($event->nominative == 1) {

@@ -13,10 +13,11 @@
 		public $participant_title;
 		public $bill_id;
 
-		private function hydrate($array) {
-			foreach ($array as $key => $value) {
+		public function hydrate($record) {
+			foreach ($record as $key => $value) {
 				$this->$key = $value;
 			}
+			$this->bill_id = $record["id_bill"];
 		}
 
 		public function compute() {
@@ -53,10 +54,6 @@ EOF;
 				echo($request.'<br/>');
 				throw new Exception("Devis item insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
-		}
-
-		public function load($item) {
-			$this->hydrate($item);
 		}
 
 		public function to_string() {

@@ -13,12 +13,18 @@
 		public $event_id;
 		public $user_id;
 
-		private function hydrate($array) {
-			foreach ($array as $key => $value) {
+		public static function get_from_id($id) {
+			$devis = new Devis();
+			$devis->load($id);
+			return $devis;
+		}
+
+		public function hydrate($record) {
+			foreach ($record as $key => $value) {
 				$this->$key = $value;
 			}
-			$this->event_id = $array["id_event"];
-			$this->user_id = $array["id_user"];
+			$this->event_id = $record["id_event"];
+			$this->user_id = $record["id_user"];
 		}
 
 		public function compute() {
@@ -66,8 +72,7 @@ EOF;
 				debug($request);
 				throw new Exception("Devis insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
-			$event = new Event();
-			$event->load($this->event_id);
+			$event = Event::get_from_id($this->event_id);
 			$event->add_funding_acquired($this->total_ttc);
 
 			foreach ($this->items as $item) {
@@ -98,11 +103,11 @@ EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
 			$q->execute();
-			$items = $q->fetchAll(PDO::FETCH_ASSOC);
+			$records = $q->fetchAll(PDO::FETCH_ASSOC);
 
-			foreach ($items as $record) {
+			foreach ($records as $record) {
 				$item = new Item();
-				$item->load($record);
+				$item->hydrate($record);
 				$this->items[] = $item;
 			}
 			debug(sprint_r($this));
