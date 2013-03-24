@@ -25,7 +25,8 @@
 
   	function mail_event_confirm($event_id) {
 		$subject = "Event confirmation";
-		$devis_array = devis_get_all_for_event($event_id);
+		$event = Event::get_from_id($event_id);
+		$devis_array = $event->get_devis();
 		foreach ($devis_array as $devis) {
 			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;
@@ -43,7 +44,8 @@
 
   	function mail_event_cancel($event_id) {
 		$subject = "Event cancellation";
-		$devis_array = devis_get_all_for_event($event_id);
+		$event = Event::get_from_id($event_id);
+		$devis_array = $event->get_devis();
 		foreach ($devis_array as $devis) {
 			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;

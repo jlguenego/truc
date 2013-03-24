@@ -267,5 +267,35 @@ EOF;
 			debug($request);
 			return $g_pdo->exec($request);
 		}
+
+		public function get_devis() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id` FROM `bill`
+WHERE `id_event`={$this->id}
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			if ($q->execute() === FALSE) {
+				debug($request);
+				throw new Exception("Get devis: ".sprint_r($g_pdo->errorInfo()));
+			};
+
+			$devis_array = array();
+			while (($record = $q->fetch()) != NULL) {
+				debug("record=".sprint_r($record));
+				$devis = Devis::get_from_id($record["id"]);
+				$devis_array[] = $devis;
+			}
+			return $devis_array;
+		}
+
+		public function set_devis_status($status) {
+			$devis_array = $this->get_devis();
+			foreach ($devis_array as $devis) {
+				$devis->set_status($status);
+			}
+		}
 	}
 ?>

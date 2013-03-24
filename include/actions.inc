@@ -461,7 +461,7 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
-		devis_all_set_status_for_event($_GET['id'], DEVIS_STATUS_CONFIRMED);
+		$event->set_devis_status(DEVIS_STATUS_CONFIRMED);
 		mail_event_confirm($_GET['id']);
 		action_supervision();
 	}
@@ -496,7 +496,7 @@
 		if (!isset($_GET['id'])) {
 			throw new Exception("No devis given.");
 		}
-		if (!devis_exists($_GET['id'])) {
+		if (!Devis::exists($_GET['id'])) {
 			throw new Exception("Devis does not exists.");
 		}
 		$devis = Devis::get_from_id($_GET['id']);

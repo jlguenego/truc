@@ -19,6 +19,19 @@
 			return $devis;
 		}
 
+		public static function exists($id) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM `bill` WHERE `id`= :id
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		}
+
 		public function hydrate($record) {
 			foreach ($record as $key => $value) {
 				$this->$key = $value;
@@ -131,6 +144,11 @@ EOF;
 			};
 		}
 
+		public function set_status($status) {
+			$this->status = $status;
+			$this->update();
+		}
+
 		public function to_string() {
 			$result = "total_ht=".curr($this->total_ht);
 			$result .= "&total_tax=".curr($this->total_tax);
@@ -160,6 +178,26 @@ EOF;
 			$invoice->type = DEVIS_TYPE_INVOICE;
 			$invoice->store();
 			return $invoice;
+		}
+
+		public function get_items() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT * FROM `item`
+WHERE `id_devis`={$this->id}
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			if ($q->execute() === FALSE) {
+				debug($request);
+				throw new Exception("Get devis_items: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
+			};
+			$items = array();
+			while ($item = $q->fetch()) {
+				$items[] = $item;
+			}
+			return $items;
 		}
 	}
 ?>
