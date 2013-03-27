@@ -38,6 +38,8 @@ EOF;
 				throw new Exception("Cannot load the event with id=" . $id);
 			}
 			$this->hydrate($event);
+			$this->short_description = html_entity_decode($this->short_description);
+			$this->long_description = html_entity_decode($this->long_description);
 		}
 
 		public function load_default() {
@@ -75,6 +77,10 @@ EOF;
 			$mod_t = $created_t;
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
+			$this->short_description = strip_tags(
+				htmlentities($this->short_description), ALLOWED_TAGS);
+			$this->long_description = strip_tags(
+				htmlentities($this->long_description), ALLOWED_TAGS);
 
 			$request = <<<EOF
 INSERT INTO `event`
@@ -107,6 +113,10 @@ EOF;
 			global $g_pdo;
 
 			$mod_t = time();
+			$this->short_description = strip_tags(
+				htmlentities($this->short_description), ALLOWED_TAGS);
+			$this->long_description = strip_tags(
+				htmlentities($this->long_description), ALLOWED_TAGS);
 			$request = <<<EOF
 UPDATE `event`
 SET

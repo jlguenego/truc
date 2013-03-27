@@ -3,6 +3,9 @@
 	$author = $g_display["author"];
 	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
 	echo $event->short_description;
+?>
+<br/><br/><br/>
+<?php
 	if (user_can_administrate_event($event)) {
 ?>
 <div id="evt_administration">

@@ -12,7 +12,7 @@ CREATE TABLE event(
         funding_acquired  Decimal (25,2) NOT NULL ,
         location          Varchar(255) NOT NULL ,
         link              Varchar(255),
-        short_description Varchar(255) NOT NULL ,
+        short_description TinyText NOT NULL ,
         long_description  Text,
         nominative        Bool NOT NULL ,
         status            Int NOT NULL ,

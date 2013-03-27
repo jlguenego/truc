@@ -34,9 +34,10 @@
 	$f->add_textarea("Short description", "short_description",
 		default_value("short_description", $event->short_description),
 		"Enter a short description of the event.");
-	$f->add_textarea("Long description", "long_description",
+	$item = $f->add_textarea("Long description", "long_description",
 		default_value("long_description", $event->long_description),
 		"Enter a long description of the event. You can use specific tag to format your text. See <a href=\"\">help</a>.");
+	$item->other_attr = "";
 	$f->add_checkbox("All tickets must be nominative", "nominative", "checked",
 		"All tickets of an nominative event must have a participant name indicated.");
 	$f->add_hidden("id", $event->id);
@@ -121,4 +122,37 @@ EOF
 		addRate('rates');
 	}
 	$("[name=title]").focus();
+
+	tinyMCE.init({
+	        // General options
+	        mode : "textareas",
+	        theme : "advanced",
+	        plugins : "lists,spellchecker,advhr,advimage",
+
+	        // Theme options
+	        theme_advanced_buttons1 : "bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,copy,cut,paste,",
+	        theme_advanced_toolbar_location : "top",
+	        theme_advanced_toolbar_align : "left",
+	        theme_advanced_statusbar_location : "bottom",
+	        theme_advanced_resizing : true,
+
+	        // Skin options
+	        skin : "o2k7",
+	        skin_variant : "silver",
+
+	        // Example content CSS (should be your site CSS)
+	        content_css : "css/example.css",
+
+	        // Drop lists for link/image/media/template dialogs
+	        template_external_list_url : "js/template_list.js",
+	        external_link_list_url : "js/link_list.js",
+	        external_image_list_url : "js/image_list.js",
+	        media_external_list_url : "js/media_list.js",
+
+	        // Replace values for the template plugin
+	        template_replace_values : {
+	                username : "Some User",
+	                staffid : "991234"
+	        }
+	});
 </script>
