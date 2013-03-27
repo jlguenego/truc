@@ -114,13 +114,47 @@ table, td, th {
 
 }
 
+.form_title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
 
 .form_help {
 	font-size: 10px;
 	margin-bottom: 15px;
 }
 
+#evt_error {
+	color: red;
+}
+
 .ui-datepicker * {
 	font-size: 10px;
+}
+
+.evt_title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Table */
+
+#evt_table {
+	margin: 20px;
+}
+
+#evt_table th {
+	font-weight: bold;
+	background-color: #FFEAEA;
+}
+
+#evt_table tr:nth-child(odd) {
+	background-color: #E6F2FF;
+}
+
+#evt_table td {
+	padding: 5px;
+	text-align: center;
 }
 

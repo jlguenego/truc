@@ -402,12 +402,14 @@
 			$event->load_default();
 			$g_display["event"] = $event;
 			$g_display["rates"] = NULL;
+			$g_display["scenario"] = "create";
 			$g_display["form_action"] = "?action=create&amp;type=event";
 			$_SESSION["state"] = "event_form";
 		} else {
 			$event = Event::get_from_id($_GET["id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["id"]);
+			$g_display["scenario"] = "update";
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
 			$_SESSION["state"] = "event_form";
 		}
@@ -515,12 +517,16 @@
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
 					$_SESSION['login'] = $_GET['login'];
-					if (is_null_or_empty($_SESSION["url"])) {
-						redirect_to("index.php");
+					if (isset($_GET["redirect"])) {
+						if (is_null_or_empty($_SESSION["url"])) {
+							redirect_to("index.php");
+						} else {
+							$url = $_SESSION["url"];
+							unset($_SESSION["url"]);
+							redirect_to($url);
+						}
 					} else {
-						$url = $_SESSION["url"];
-						unset($_SESSION["url"]);
-						redirect_to($url);
+						redirect_to("index.php");
 					}
 				} else {
 					$g_error_msg = _t("Your account is not activated");
@@ -754,6 +760,7 @@
 		$user = User::get_from_login($_SESSION["login"]);
 		$user->set_password($_GET["password1"]);
 		$user->update();
+		$user->reset_token();
 		$g_info_msg = "Your password has been updated.";
 		$_SESSION["state"] = "root";
 	}

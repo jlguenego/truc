@@ -1,12 +1,9 @@
-<form name="input" action="?action=handle_forgotten_password" method="POST">
-	<table>
-		<tr>
-			<td>E-mail: </td>
-			<td><input type="email" name="email" value="<?php echo_default_value("email"); ?>"></td>
-		</tr>
-		<tr>
-			<td>&nbsp;</td>
-			<td><input type="submit" value="Continue"></td>
-		</tr>
-	</table>
-</form>
+<?php
+	$f = new Form();
+	$f->title = "Forgotten password";
+	$f->action = "?action=handle_forgotten_password";
+	$f->method = "POST";
+	$f->add_email("E-Mail", "email", default_value("email"), "Please enter your account email.");
+	$f->add_submit("Continue");
+	echo $f->html();
+?>

@@ -15,7 +15,7 @@
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
 		<td><?php echo $event->happening_t; ?></td>
 		<td><?php echo $event->confirmation_t; ?></td>
-		<td><?php echo $status; ?></td>
+		<td><?php echo $event->display_status(); ?></td>
 		<td><?php echo $publish_flag; ?></td>
 <?php
 			$confirm_button_grey = "";

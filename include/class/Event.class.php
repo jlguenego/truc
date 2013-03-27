@@ -297,5 +297,19 @@ EOF;
 				$devis->set_status($status);
 			}
 		}
+
+		public function display_status() {
+			switch ($this->status) {
+				case EVENT_STATUS_PLANNED:
+					return "Planned";
+					break;
+				case EVENT_STATUS_CONFIRMED:
+					return "Confirmed";
+					break;
+				case EVENT_STATUS_CANCELLED:
+					return "Cancelled";
+					break;
+			}
+		}
 	}
 ?>

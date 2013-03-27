@@ -1,14 +1,8 @@
 <?php
-	global $g_display;
-	global $g_error_msg;
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 	$user = $g_display["user"];
 ?>
-<h1>NOMINATIVE</h1>
-<span style="color:red;">
-	<?php echo "$g_error_msg<br/>"; ?>
-</span>
 <table>
 	<tr>
 		<th>Event name</th>

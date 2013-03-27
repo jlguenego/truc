@@ -47,10 +47,13 @@
 
 	if (!in_array($_SESSION["state"], $g_states)) {
 		$g_error_msg = "Undeclared state: ".$_SESSION["state"].".";
-		$_SESSION["state"] = "not_allowed";
-
+		$_SESSION["state"] = "error";
 	}
-	$page = $_SESSION["state"];
+	if ($_SESSION["state"] == "not_allowed") {
+		$page = "error";
+	} else {
+		$page = $_SESSION["state"];
+	}
 
 	debug("Session after: ".$_SESSION["state"]);
 	include_once(SKIN_DIR."/layout.php");

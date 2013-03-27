@@ -1,14 +1,8 @@
 <?php
-	global $g_display;
-	global $g_error_msg;
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
 	$user = $g_display["user"];
 ?>
-	<a href="index.php">Back to index</a><br/><br/>
-<span style="color:red;">
-	<?php echo "$g_error_msg<br/>"; ?>
-</span>
 How many ticket do you want?
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table>

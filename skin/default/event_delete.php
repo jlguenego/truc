@@ -1,9 +1,6 @@
 <?php
 	$event = $g_display["event"];
 ?>
-<span style="color:red;">
-	<?php echo $g_error_msg."<br/>" ?>
-</span>
 Are you sure you want to delete this event?
 <form name="input" action="?action=delete&amp;type=event" method="POST">
 	<input type="hidden" name="confirm" value="yes"/>

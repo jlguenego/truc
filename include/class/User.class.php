@@ -224,5 +224,20 @@ EOF;
 			debug("activation_status=".$this->activation_status);
 			return $this->activation_status == ACTIVATION_STATUS_ACTIVATED;
 		}
+
+		public function reset_token() {
+			global $g_pdo;
+
+			$mod_t = time();
+			$request = <<<EOF
+UPDATE `user`
+SET
+	`mod_t`=${mod_t},
+	`token`=NULL
+WHERE `id`={$this->id}
+EOF;
+			debug($request);
+			$g_pdo->exec($request);
+		}
 	}
 ?>

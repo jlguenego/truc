@@ -5,6 +5,7 @@
 		public $method = "POST";
 		public $elements = array();
 		public $css = "form";
+		public $title = "";
 
 		public function add_text($label, $name, $default, $help) {
 			$item = new FormItem();
@@ -110,6 +111,7 @@
 		public function html() {
 
 			$result = <<<EOF
+<span class="{$this->css}_title">{$this->title}</span>
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
 			$autofocus = "autofocus";
@@ -126,7 +128,7 @@ EOF;
 					case "text":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}" $autofocus/>
+<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}" {$item->other_attr} $autofocus/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
@@ -176,7 +178,7 @@ EOF;
 						break;
 
 					case "submit":
-						$result .= "<input type=\"submit\" name=\"".$item->label."\"/>";
+						$result .= "<input type=\"submit\" value=\"".$item->label."\"/>";
 						break;
 					default:
 				}
@@ -195,5 +197,6 @@ EOF;
 		public $maxlength;
 		public $default;
 		public $html_spec;
+		public $other_attr;
 	}
 ?>

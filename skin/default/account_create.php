@@ -1,12 +1,7 @@
-<a href="index.php">Back to index</a><br/><br/>
-<span style="color:red;">
-<?php
-	echo $g_error_msg;
-?>
-</span><br/>
 Please enter your info:
 <?php
 	$f = new Form();
+	$f->title = "Account creation";
 	$f->action = "?action=create&amp;type=account";
 	$f->method = "POST";
 	$f->add_text("Login", "login", default_value("login"), "The login you will use to connect.");
