@@ -8,6 +8,8 @@
 
 	define('COMPANY_NAME', 'Eventual');
 
+	define('ALLOWED_TAGS', '<a><b><i>');
+
 	define('AUTHORIZATION_DELAY', '29'); // days
 
 	define('ROLE_USER', 0);

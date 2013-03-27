@@ -8,7 +8,7 @@
 	</head>
 
 <script type="text/javascript" src="jscript/misc.js"></script>
-<link href="<?php echo HOST . "/" . SKIN_DIR; ?>/default.css" rel="stylesheet">
+<link href="<?php echo SKIN_DIR; ?>/default.css" rel="stylesheet">
 
 <link href="ext/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
 <script src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>

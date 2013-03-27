@@ -1,4 +1,4 @@
-<table>
+<table class="evt_table">
 	<tr>
 		<th>Event name</th>
 		<th>Event date</th>

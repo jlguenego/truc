@@ -29,7 +29,7 @@
 	$f->add_text("Event place", "location",
 		default_value("location", $event->location),
 		"Name of the place where will occur the event.");
-	$f->add_text("Link", "link", default_value("link", $event->link),
+	$f->add_text("Web site", "link", default_value("link", $event->link),
 		"Official event web site (if any).");
 	$f->add_textarea("Short description", "short_description",
 		default_value("short_description", $event->short_description),
@@ -46,7 +46,7 @@
 <a href="JavaScript:addRate('rates');">Add another rate</a><br/><br/>
 EOF
 );
-	$f->add_submit("Sign in");
+	$f->add_submit("Submit");
 	echo $f->html();
 ?>
 <script>

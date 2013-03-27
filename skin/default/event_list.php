@@ -1,5 +1,5 @@
 <span class="evt_title">Event List</span>
-<table id="evt_table">
+<table class="evt_table">
 	<tr>
 		<th>Name</th>
 		<th>Date</th>
@@ -14,7 +14,7 @@
 ?>
 	<tr>
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
-		<td><?php echo $event->happening_t; ?></td>
+		<td><?php echo format_date($event->happening_t); ?></td>
 		<td>
 			<?php
 				echo $event->display_status();

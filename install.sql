@@ -10,7 +10,7 @@ CREATE TABLE event(
         happening_t       Varchar(25) NOT NULL ,
         funding_needed    Decimal (25,2) NOT NULL ,
         funding_acquired  Decimal (25,2) NOT NULL ,
-        location          Varchar(25) NOT NULL ,
+        location          Varchar(255) NOT NULL ,
         link              Varchar(255),
         short_description Varchar(255) NOT NULL ,
         long_description  Text,
@@ -44,7 +44,7 @@ CREATE TABLE user(
 
 CREATE TABLE rate(
         id       Int NOT NULL ,
-        label    Varchar(25) NOT NULL ,
+        label    Varchar(255) NOT NULL ,
         amount   Decimal (25,2) NOT NULL ,
         tax_rate Decimal (25,2) NOT NULL ,
         id_event Int NOT NULL ,

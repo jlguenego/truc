@@ -1,5 +1,4 @@
 var counter = 0;
-var limit = 5;
 
 function setCounter(amount) {
 	counter = amount;
@@ -12,45 +11,41 @@ function getCounter() {
 function addRate(divName, label, amount){
 	label = label || "";
 	amount = amount || "";
-	if (counter == limit)  {
-        alert("You have reached the limit of adding " + counter + " rates");
-    } else {
-		counter++;
-		var id = new Date().getTime();
-		$("#" + divName).append("<div id=\"" + id + "\"></div>");
-		var content =
-				"<table class=\"evt_rate\">" +
-					"<tr>" +
-						"<td>Rate</td>" +
-						"<td>" +
-							"<table>" +
-								"<tr>" +
-									"<td>Label</td>" +
-									"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\"></td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>Amount (Tax excluded)</td>" +
-									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>Taxe</td>" +
-									"<td>" +
-										"<select name=\"tax_rates[]\" \">";
-		for (var i = 0; i < taxes.length; i++) {
-			content += 				"<option value=\"" + taxes[i][1] + "\">" + taxes[i][0] + "</option>";
-		}
-		content +=				"</select>" +
-									"</td>" +
-								"</tr>" +
-							"</table>" +
-						"</td>" +
-						"<td id=\"remove_" + id + "\"></td>" +
-					"</tr>" +
-				"</table>";
-		$("#" + id).html(content);
-		$("#" + id).find("[name*=labels]").focus();
-		sync_remove_button(divName);
+	counter++;
+	var id = new Date().getTime();
+	$("#" + divName).append("<div id=\"" + id + "\"></div>");
+	var content =
+			"<table class=\"evt_rate\">" +
+				"<tr>" +
+					"<td>Rate</td>" +
+					"<td>" +
+						"<table>" +
+							"<tr>" +
+								"<td>Label</td>" +
+								"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\"></td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td>Amount (Tax excluded)</td>" +
+								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
+							"</tr>" +
+							"<tr>" +
+								"<td>Taxe</td>" +
+								"<td>" +
+									"<select name=\"tax_rates[]\" \">";
+	for (var i = 0; i < taxes.length; i++) {
+		content += 				"<option value=\"" + taxes[i][1] + "\">" + taxes[i][0] + "</option>";
 	}
+	content +=				"</select>" +
+								"</td>" +
+							"</tr>" +
+						"</table>" +
+					"</td>" +
+					"<td id=\"remove_" + id + "\"></td>" +
+				"</tr>" +
+			"</table>";
+	$("#" + id).html(content);
+	$("#" + id).find("[name*=labels]").focus();
+	sync_remove_button(divName);
 }
 
 function sync_remove_button(divName) {

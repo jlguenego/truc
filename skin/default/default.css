@@ -4,10 +4,6 @@
 	font:15px arial,sans-serif;
 }
 
-div, li {
-	border-radius: 5px ;
-}
-
 .evt_hr {
 	margin: 0px;
 	padding: 0px;
@@ -35,8 +31,12 @@ body {
 #evt_user_info {
 	margin: 0;
 	padding: 10;
-	background: #DDDDFF;
+	background: #E6F2FF;
 	float:right;
+}
+
+#evt_user_info {
+	border-radius: 5px;
 }
 
 #evt_user_info ul {
@@ -45,6 +45,7 @@ body {
 }
 
 #evt_user_info li {
+	border-radius: 5px;
 	background-color: #FFFFFF;
 	display: inline;
 }
@@ -69,9 +70,10 @@ body {
 }
 
 #evt_menu li {
+	border-radius: 5px;
 	margin: 30;
 	padding: 30;
-	background-color: #DDDDFF;
+	background-color: #E6F2FF;
 	display: inline;
 }
 
@@ -83,8 +85,35 @@ body {
 	color: #999999;
 }
 
-#event_administration {
-	background-color: #00FFFF;
+#evt_administration {
+	padding: 0px;
+	border: 1px outset red;
+}
+
+.evt_administration_title {
+	color: #FFFFFF;
+	font-weight: bold;
+	background-color: #BF0000;
+	margin: 0px;
+}
+
+.evt_administration_body {
+	margin: 0px;
+}
+
+#evt_general_info {
+	padding: 0px;
+	border: 1px solid #E6F2FF;
+}
+
+.evt_general_info_title {
+	font-weight: bold;
+	background-color: #E6F2FF;
+	margin: 0px;
+}
+
+.evt_general_info_body {
+	margin: 0px;
 }
 
 .evt_rate {
@@ -134,27 +163,56 @@ table, td, th {
 }
 
 .evt_title {
+	display: block;
+	height: 30px;
 	font-size: 20px;
 	font-weight: bold;
 }
 
 /* Table */
 
-#evt_table {
+.evt_table {
 	margin: 20px;
 }
 
-#evt_table th {
+.evt_table th {
 	font-weight: bold;
 	background-color: #FFEAEA;
 }
 
-#evt_table tr:nth-child(odd) {
+.evt_table tr:nth-child(odd) {
 	background-color: #E6F2FF;
 }
 
-#evt_table td {
+.evt_table td {
 	padding: 5px;
-	text-align: center;
 }
 
+/* Event Retrieve */
+
+.evt_rate_title {
+	font-weight: bold;
+}
+
+.evt_category {
+	text-align: left;
+}
+
+.evt_curr {
+	text-align: right;
+}
+
+.evt_participate {
+	width: 300px;
+	text-align: center;
+	background-color: #FFFFFF
+}
+
+.evt_participate button {
+	padding: 10px;
+	font-size: 20px;
+}
+
+b {
+	font-weight: bold;
+}

@@ -4,7 +4,7 @@
 ?>
 <p>
 	<?php echo $devis->label; ?>
-	<table border="1px">
+	<table class="evt_table">
 		<tr>
 			<th>Billing entity:</th>
 			<td><?php echo $devis->username; ?></td>
@@ -15,7 +15,7 @@
 		</tr>
 	</table>
 	<br/>
-	<table border="1px">
+	<table class="evt_table">
 		<tr>
 			<th>Event</th>
 			<th>Rate name</th>
@@ -44,7 +44,7 @@
 	foreach ($devis->items as $item) {
 ?>
 		<tr>
-			<td><?php echo $item->event_name; ?></td>
+			<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $item->event_name; ?></a></td>
 			<td><?php echo $item->event_rate_name; ?></td>
 			<td><?php echo $item->event_rate_amount; ?>€</td>
 			<td><?php echo $item->event_rate_tax; ?>%</td>
@@ -74,7 +74,7 @@
 ?>
 	</table>
 	<br/>
-	<table border="1px">
+	<table class="evt_table">
 		<tr>
 			<th>Total HT</th>
 			<td><?php echo $devis->total_ht; ?>€</td>

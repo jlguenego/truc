@@ -1,92 +1,112 @@
 <?php
 	$event = $g_display["event"];
 	$author = $g_display["author"];
-	echo "<h1>".$event->title."</h1>";
+	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
+	echo $event->short_description;
 	if (user_can_administrate_event($event)) {
 ?>
-<div id="event_administration">
+<div id="evt_administration">
+	<div class="evt_administration_title">
+		Administration
+	</div>
+	<div class="evt_administration_body"
+		<ul>
 <?php
 		if ($event->is_published()) {
 ?>
-			This event is published.<br/>
+			<li>This event is published.</li>
 <?php
 		} else {
 ?>
-			This event is not published.<br/>
+			<li>This event is not published.</li>
 <?php
 		}
+		echo "<li>".$event->funding_acquired."€/".$event->funding_needed."€ funding acquired.</li>";
 ?>
-		<a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a><br/>
-		<a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a><br/>
-<?php
-		echo $event->funding_acquired."€/".$event->funding_needed."€ funding acquired.<br/>";
-?>
+		<li><a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a></li>
+		<li><a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a></li>
+		</ul>
+	</div>
 </div>
 <?php
-	} else {
-?>
-		By <?php echo $author["lastname"]." ".$author["firstname"] ?><br/>
-<?php
 	}
-	if (time() >= s2t($event->happening_t, "%Y-%m-%d")) {
+	$rates = events_rates($event->id);
 ?>
-		This event has already happened.<br/>
-<?php
-	} else if ($event->is_confirmed()) {
-?>
-		Will append. Enough persons have registered.<br/>
-<?php
-	} else if ($event->is_cancelled()) {
-?>
-		This event is cancelled.<br/>
-<?php
-	} else {
-?>
-		This event needs to be confirmed to happen. More people needed.<br/>
-<?php
-	}
-	debug("event->happening_t=".$event->happening_t);
-	echo "Location: ".$event->location."<br/>";
-	echo "Happening date: ".$event->happening_t."<br/>";
-	echo "Confirmation date: ".$event->confirmation_t."<br/>";
-	echo "Participation opening date: ".$event->open_t."<br/>";
 
-	if ($event->can_participate()) {
+<table class="evt_table">
+	<tr>
+		<td class="evt_rate_title" colspan="4">Rates</td>
+<?php
+		if ($event->can_participate()) {
 ?>
-	<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">Participate</a><br/>
+		<td class="evt_participate"rowspan="<?php echo (count($rates)+2); ?>">
+			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
+				<button>Participate</button>
+			</a>
+		</td>
 <?php
 	}
 ?>
-	<h3>In short</h3>
-<?php
-	echo "Event website: <a href=\"".$event->link."\">".$event->link."</a><br/>";
-	echo $event->short_description."<br/><br/><br/>";
-?>
-	<h3>Rates for this events</h3>
-	<table border="1px">
+	</tr>
 		<tr>
 			<th>Categories</th>
-			<th>Rates</th>
+			<th>Unit price</th>
 			<th>Taxes</th>
-			<th>Rate TTC</th>
+			<th>Total due</th>
 		</tr>
 <?php
-	foreach (events_rates($event->id) as $rate) {
+	foreach ($rates as $rate) {
 		$tax = $rate['tax_rate'];
 		$label = $rate['label'];
 		$amount_ht = curr($rate['amount']);
 		$amount_ttc = curr($amount_ht * (($tax/100) + 1));
 ?>
 		<tr>
-			<td><?php echo $label ?></td>
-			<td><?php echo $amount_ht ?></td>
-			<td><?php echo $tax ?>%</td>
-			<td><?php echo $amount_ttc ?></td>
+			<td class="evt_category"><?php echo $label ?></td>
+			<td class="evt_curr"><?php echo curr($amount_ht) ?>€</td>
+			<td class="evt_curr"><?php echo curr($tax) ?>%</td>
+			<td class="evt_curr"><?php echo curr($amount_ttc) ?>€</td>
 		</tr>
 <?php
 	}
 ?>
-	</table>
+</table>
+
+
+<div id="evt_general_info">
+	<div class="evt_general_info_title">
+		General informations
+	</div>
+	<div class="evt_general_info_body"
+		<ul>
 <?php
-	echo $event->long_description."<br/>";
+	if (time() >= s2t($event->happening_t, "%Y-%m-%d")) {
+?>
+			<li>This event has already happened.</li>
+<?php
+	} else if ($event->is_confirmed()) {
+?>
+			<li>Will append. Enough persons have registered.</li>
+<?php
+	} else if ($event->is_cancelled()) {
+?>
+			<li>This event is cancelled.</li>
+<?php
+	} else {
+?>
+			<li>This event needs to be confirmed to happen. More people needed.</li>
+<?php
+	}
+	debug("event->happening_t=".$event->happening_t);
+?>
+			<li><b>Location:</b> <?php echo $event->location; ?></li>
+			<li><b>Happening date:</b> <?php echo format_date($event->happening_t); ?></li>
+			<li><b>Confirmation date:</b> <?php echo format_date($event->confirmation_t); ?></li>
+			<li><b>Participation opening date:</b> <?php echo format_date($event->open_t); ?></li>
+			<li><b>Event website:</b> <a href="<?php echo $event->link; ?>"><?php echo $event->link; ?></a></li>
+		</ul>
+	</div>
+</div>
+<?php
+	echo $event->long_description;
 ?>
