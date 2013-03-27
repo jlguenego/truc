@@ -48,6 +48,7 @@ function addRate(divName, label, amount){
 					"</tr>" +
 				"</table>";
 		$("#" + id).html(content);
+		$("#" + id).find("[name*=labels]").focus();
 		sync_remove_button(divName);
 	}
 }
