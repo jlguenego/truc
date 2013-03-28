@@ -6,9 +6,9 @@
 <?php
 	if (is_logged()) {
 		$user = User::get_from_login($_SESSION['login']);
-		$lastname = strtoupper($user->lastname);
+		$lastname = mb_strtoupper($user->lastname, "UTF-8");
 		$firstname = ucfirst($user->firstname);
-		$email = strtolower($user->email);
+		$email = mb_strtolower($user->email, "UTF-8");
 ?>
 
 

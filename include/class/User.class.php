@@ -40,7 +40,11 @@ EOF;
 		}
 
 		public function set_password($passwd) {
-			$this->password = sha1($this->id.$this->login.$passwd);
+			$this->password = $this->make_password($passwd);
+		}
+
+		public function make_password($passwd) {
+			return sha1($this->login.$passwd);
 		}
 
 		public function store() {
@@ -82,6 +86,14 @@ EOF;
 		public function update() {
 			global $g_pdo;
 
+			if ($this->password == "") {
+				$set_password = "";
+			} else {
+				$set_password = <<<EOF
+	`password`="{$this->password}",
+EOF;
+			}
+
 			$mod_t = time();
 			$request = <<<EOF
 UPDATE `user`
@@ -89,7 +101,7 @@ SET
 	`mod_t`=${mod_t},
 	`firstname`="{$this->firstname}",
 	`lastname`="{$this->lastname}",
-	`password`="{$this->password}",
+	${set_password}
 	`email`="{$this->email}",
 	`street`="{$this->street}",
 	`zip`="{$this->zip}",
@@ -125,6 +137,10 @@ EOF;
 			$user = new User();
 			$user->hydrate($record);
 			return $user;
+		}
+
+		public function generate_activation_key() {
+			$this->activation_key = sha1(rand().time().RANDOM_SALT);
 		}
 
 		public static function get_from_email($email) {
@@ -205,7 +221,7 @@ EOF;
 				return NULL;
 			}
 			unset($record["password"]);
-			$record["lastname"] = strtoupper($record["lastname"]);
+			$record["lastname"] = mb_strtoupper($record["lastname"], "UTF-8");
 			$record["firstname"] = ucfirst($record["firstname"]);
 			$this->hydrate($record);
 		}
@@ -214,8 +230,8 @@ EOF;
 			$this->login = $_GET["login"];
 			$this->set_password($_GET["password"]);
 			$this->email = $_GET["email"];
-			$this->lastname = ucfirst($_GET["lastname"]);
-			$this->firstname = strtoupper($_GET["firstname"]);
+			$this->lastname = mb_strtoupper($_GET["lastname"], "UTF-8");
+			$this->firstname = ucfirst($_GET["firstname"]);
 			$this->street = $_GET["street"];
 			$this->zip = $_GET["zip"];
 			$this->city = $_GET["city"];

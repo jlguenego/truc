@@ -4,7 +4,8 @@
 		include("header.php");
 ?>
 		<p>
-			Dear <?php echo ucfirst(strtolower($user->firstname))." ".strtoupper($user->lastname); ?>,<br/>
+			Dear <?php echo ucfirst(mb_strtolower($user->firstname), "UTF_8").
+				" ".mb_strtoupper($user->lastname, "UTF-8"); ?>,<br/>
 			You have made a payment for the following invoice.<br/>
 			<br/>
 			<?php echo $devis->label; ?>

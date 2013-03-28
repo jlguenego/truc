@@ -18,10 +18,10 @@
 			$user->set_password($_POST["password"]);
 			$user->email = $_POST["email"];
 			$user->lastname = ucfirst($_POST["lastname"]);
-			$user->firstname = strtoupper($_POST["password"]);
+			$user->firstname = mb_strtoupper($_POST["password"], "UTF-8");
 			$user->role = ROLE_ADMIN;
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
-			$user->activation_key = generate_activation_key();
+			$user->generate_activation_key();
 			$user->street = $_POST["street"];
 			$user->zip = $_POST["zip"];
 			$user->city = $_POST["city"];

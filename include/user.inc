@@ -53,10 +53,6 @@ EOF;
 		return $user['role'] == ROLE_ADMIN;
 	}
 
-	function hash_pass($id, $login, $password) {
-		return sha1($id.$login.$password);
-	}
-
 	function user_exists($id) {
 		global $g_pdo;
 		$dbname = MYSQL_DBNAME;
@@ -116,9 +112,9 @@ SELECT COUNT(*) FROM `${dbname}`.`user`
 WHERE `login`= :login AND `password`= :password
 EOF;
 		$q = $g_pdo->prepare($request);
-		$user = get_user_by_login($login);
+		$user = User::get_from_login($login);
 		$q->execute(array(":login" => $login,
-			":password" => hash_pass($user['id'], $login, $password)));
+			":password" => $user->make_password($password)));
 		$count = $q->fetch();
 		return $count[0] > 0;
 	}
@@ -170,13 +166,9 @@ EOF;
 			return NULL;
 		}
 		unset($user["password"]);
-		$user["lastname"] = strtoupper($user["lastname"]);
+		$user["lastname"] = mb_strtoupper($user["lastname"], "UTF-8");
 		$user["firstname"] = ucfirst($user["firstname"]);
 		return $user;
-	}
-
-	function generate_activation_key() {
-		return sha1(rand().time().RANDOM_SALT);
 	}
 
 	function user_activate($key) {
@@ -296,7 +288,7 @@ EOF;
 			if ($_GET['new_pass'] != $_GET['new_pass2']) {
 				throw new Exception(_t("New passwords are different."));
 			}
-			$user->password = $_GET['new_pass'];
+			$user->set_password($_GET['new_pass']);
 		} else {
 			$user->password = "";
 		}

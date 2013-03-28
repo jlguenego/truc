@@ -181,14 +181,16 @@
 		global $g_info_msg;
 		global $g_error_msg;
 
+		debug(sprint_r($_GET));
+
 		try {
 			valid_user();
 			$user = new User();
-			$user->hydrate_from_form();
 			$user->id = create_id();
+			$user->hydrate_from_form();
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_NOT_ACTIVATED;
-			$user->activation_key = generate_activation_key();
+			$user->generate_activation_key();
 			$user->store();
 			$g_info_msg = "Account successfully created. Check your email for activation.";
 			$_SESSION["state"] = "root";
