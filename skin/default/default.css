@@ -154,6 +154,10 @@ table, td, th {
 	margin-bottom: 15px;
 }
 
+.form_cancel * {
+	font-size: 12px;
+}
+
 #evt_error {
 	color: red;
 }

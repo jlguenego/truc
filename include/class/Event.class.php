@@ -2,6 +2,7 @@
 	class Event {
 		public $id = -1;
 		public $title;
+		public $organizer_name;
 		public $confirmation_t;
 		public $happening_t;
 		public $open_t;
@@ -87,6 +88,7 @@ SET
 	`mod_t`='${mod_t}',
 	`id_user`="{$this->user_id}",
 	`title`="{$this->title}",
+	`organizer_name`="{$this->organizer_name}",
 	`location`="{$this->location}",
 	`link`="{$this->link}",
 	`short_description`="{$this->short_description}",
@@ -116,6 +118,7 @@ UPDATE `event`
 SET
 	`mod_t`="${mod_t}",
 	`title`="{$this->title}",
+	`organizer_name`="{$this->organizer_name}",
 	`location`="{$this->location}",
 	`link`="{$this->link}",
 	`short_description`='{$this->short_description}',

@@ -17,7 +17,7 @@ function addRate(divName, label, amount){
 	var content =
 			"<table class=\"evt_rate\">" +
 				"<tr>" +
-					"<td>Rate</td>" +
+					"<td>Ticket rate</td>" +
 					"<td>" +
 						"<table>" +
 							"<tr>" +
@@ -39,9 +39,11 @@ function addRate(divName, label, amount){
 								"</td>" +
 							"</tr>" +
 						"</table>" +
-					"</td>" +
-					"<td id=\"remove_" + id + "\"></td>" +
-				"</tr>" +
+					"</td>";
+	if (counter > 1) {
+					content += "<td id=\"remove_" + id + "\"></td>";
+	}
+				content += "</tr>" +
 			"</table>";
 	$("#" + id).html(content);
 	$("#" + id).find("[name*=labels]").focus();

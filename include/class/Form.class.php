@@ -6,6 +6,7 @@
 		public $elements = array();
 		public $css = "form";
 		public $title = "";
+		public $cancel = false;
 
 		public function add_text($label, $name, $default, $help) {
 			$item = new FormItem();
@@ -112,6 +113,13 @@
 
 			$result = <<<EOF
 <span class="{$this->css}_title">{$this->title}</span>
+EOF;
+			if ($this->cancel) {
+				$result .= <<<EOF
+<span class="{$this->css}_cancel"><a href="JavaScript:window.history.back()">Cancel</a></span>
+EOF;
+			}
+				$result .= <<<EOF
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
 			$autofocus = "autofocus";

@@ -4,15 +4,22 @@
 	$rates = $g_display["rates"];
 
 	$f = new Form();
+	$button_text = "";
+	$f->cancel = true;
 	if ($scenario == "create") {
-		$f->title = "Event creation";
+		$button_text = "Create";
+		$f->title = "Event creation ";
 	} else {
-		$f->title = "Event edition";
+		$button_text = "Update";
+		$f->title = "Event edition ";
 	}
 	$f->action = $g_display["form_action"];
 	$f->method = "POST";
 	$item = $f->add_text("Title", "title", default_value("title", $event->title),
 		"Conference, or meeting name.");
+	$item->other_attr = 'size="60" maxlength="255"';
+	$item = $f->add_text("Organizer name", "orfanizer", default_value("orfanizer", $event->title),
+		"The entity that is responsible for organizing the event.");
 	$item->other_attr = 'size="60" maxlength="255"';
 	$f->add_number("Required funding", "funding_needed",
 		default_value("funding_needed", $event->funding_needed),
@@ -26,28 +33,30 @@
 	$f->add_text("Ticket Sale opening start date", "open_t",
 		default_value("open_t", $event->open_t),
 		"Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD).");
-	$f->add_text("Event place", "location",
+	$item = $f->add_text("Event place", "location",
 		default_value("location", $event->location),
-		"Name of the place where will occur the event.");
-	$f->add_text("Web site", "link", default_value("link", $event->link),
+		"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)");
+	$item->other_attr = 'size="60" maxlength="255"';
+	$item = $f->add_text("Web site", "link", default_value("link", $event->link),
 		"Official event web site (if any).");
+	$item->other_attr = 'size="60" maxlength="255"';
 	$f->add_textarea("Short description", "short_description",
 		default_value("short_description", $event->short_description),
-		"Enter a short description of the event.");
+		"Enter a short description of the event. (HTML editor)");
 	$item = $f->add_textarea("Long description", "long_description",
 		default_value("long_description", $event->long_description),
-		"Enter a long description of the event. You can use specific tag to format your text. See <a href=\"\">help</a>.");
-	$item->other_attr = "";
+		"Enter a long description of the event. (HTML editor)");
+	$item->other_attr = 'width="200px"';
 	$f->add_checkbox("All tickets must be nominative", "nominative", "checked",
 		"All tickets of an nominative event must have a participant name indicated.");
 	$f->add_hidden("id", $event->id);
 	$f->add_raw_html(<<<EOF
 <div id="rates">
 </div>
-<a href="JavaScript:addRate('rates');">Add another rate</a><br/><br/>
+<a href="JavaScript:addRate('rates');">Add another ticket rate</a><br/><br/>
 EOF
 );
-	$f->add_submit("Submit");
+	$f->add_submit($button_text);
 	echo $f->html();
 ?>
 <script>
@@ -127,10 +136,10 @@ EOF
 	        // General options
 	        mode : "textareas",
 	        theme : "advanced",
-	        plugins : "lists,spellchecker,advhr,advimage",
+	        plugins : "lists,spellchecker,advhr,preview",
 
 	        // Theme options
-	        theme_advanced_buttons1 : "bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,|,copy,cut,paste,",
+	        theme_advanced_buttons1 : "fontsizeselect,|,bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,copy,cut,paste,|,code,|,preview,",
 	        theme_advanced_toolbar_location : "top",
 	        theme_advanced_toolbar_align : "left",
 	        theme_advanced_statusbar_location : "bottom",

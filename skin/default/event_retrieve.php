@@ -81,6 +81,7 @@
 	</div>
 	<div class="evt_general_info_body"
 		<ul>
+			<li><?php echo $event->organizer_name; ?></li>
 <?php
 	if (time() >= s2t($event->happening_t, "%Y-%m-%d")) {
 ?>
