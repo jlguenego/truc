@@ -66,7 +66,24 @@
 			case "handle_reset_password":
 				action_handle_reset_password();
 				break;
+			case "list":
+				action_list();
+				break;
 			default:
+				break;
+		}
+	}
+
+	function action_list() {
+		switch ($_GET["type"]) {
+			case "event":
+				action_event_list();
+				break;
+			case "participation":
+				action_participation_list();
+				break;
+			default:
+				$_SESSION["state"] = "not_allowed";
 				break;
 		}
 	}
@@ -167,20 +184,11 @@
 		try {
 			valid_user();
 			$user = new User();
+			$user->hydrate_from_form();
 			$user->id = create_id();
-			$user->login = $_GET["login"];
-			$user->set_password($_GET["password"]);
-			$user->email = $_GET["email"];
-			$user->lastname = ucfirst($_GET["lastname"]);
-			$user->firstname = strtoupper($_GET["password"]);
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_NOT_ACTIVATED;
 			$user->activation_key = generate_activation_key();
-			$user->street = $_GET["street"];
-			$user->zip = $_GET["zip"];
-			$user->city = $_GET["city"];
-			$user->country = $_GET["country"];
-			$user->state = $_GET["state"];
 			$user->store();
 			$g_info_msg = "Account successfully created. Check your email for activation.";
 			$_SESSION["state"] = "root";
@@ -773,5 +781,21 @@
 		$user = User::get_from_token($_GET["permission_token"]);
 		$_SESSION['login'] = $user->login;
 		$_SESSION["state"] = "reset_password_form";
+	}
+
+	function action_participation_list() {
+		global $g_display;
+
+		if (is_null_or_empty($_GET["id"])) {
+			throw new Exception("No event selected");
+		}
+		$event = new Event();
+		$event->load($_GET["id"]);
+		if ($event->nominative == 1) {
+			$_SESSION["state"] = "participation_list_nominative";
+		} else {
+			$_SESSION["state"] = "participation_list_regular";
+		}
+		$g_display["items"] = $event->get_items();
 	}
 ?>

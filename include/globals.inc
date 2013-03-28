@@ -27,6 +27,8 @@
 		"forgotten_password_form",
 		"forgotten_password_mail_sent",
 		"reset_password_form",
+		"participation_list_regular",
+		"participation_list_nominative",
 	);
 
 	$g_event_states = array(

@@ -185,7 +185,7 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `item`
-WHERE `id_devis`={$this->id}
+WHERE `id_bill`={$this->id}
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
@@ -194,7 +194,9 @@ EOF;
 				throw new Exception("Get devis_items: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
 			};
 			$items = array();
-			while ($item = $q->fetch()) {
+			while ($record = $q->fetch()) {
+				$item = new Item();
+				$item->hydrate($record);
 				$items[] = $item;
 			}
 			return $items;

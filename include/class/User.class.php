@@ -210,6 +210,19 @@ EOF;
 			$this->hydrate($record);
 		}
 
+		public function hydrate_from_form() {
+			$this->login = $_GET["login"];
+			$this->set_password($_GET["password"]);
+			$this->email = $_GET["email"];
+			$this->lastname = ucfirst($_GET["lastname"]);
+			$this->firstname = strtoupper($_GET["firstname"]);
+			$this->street = $_GET["street"];
+			$this->zip = $_GET["zip"];
+			$this->city = $_GET["city"];
+			$this->country = $_GET["country"];
+			$this->state = $_GET["state"];
+		}
+
 		public function address() {
 			$state = "";
 			if ($this->state != "") {

@@ -3,6 +3,10 @@
 		debug("About to validate form");
 
 		foreach ($_GET as $key => $value) {
+			if (is_null_or_empty($_SESSION["form"])) {
+				throw new Exception("Please fill all fields");
+			}
+			$f = $_SESSION["form"];
 			if (!$f->has_item($key)) {
 				continue;
 			}
@@ -10,10 +14,6 @@
 				continue;
 			}
 			if (is_null_or_empty($value)) {
-				if (is_null_or_empty($_SESSION["form"])) {
-					throw new Exception("Please fill all fields");
-				}
-				$f = $_SESSION["form"];
 				throw new Exception("Please fill all fields: " . $f->get_label($key));
 			}
 		}

@@ -323,5 +323,16 @@ EOF;
 			$this->short_description = handle_html($this->short_description);
 			$this->long_description = handle_html($this->long_description);
 		}
+
+		public function get_items() {
+			$devis_array = $this->get_devis();
+			$items = array();
+			foreach ($devis_array as $devis) {
+				foreach ($devis->get_items() as $item) {
+					$items[] = $item;
+				}
+			}
+			return $items;
+		}
 	}
 ?>
