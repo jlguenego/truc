@@ -2,14 +2,14 @@
 	global $g_display;
 	$devis = $g_display["devis"];
 ?>
-<table>
+<table class="evt_table">
 	<tr>
 		<th>Event</th>
 		<th>Rate name</th>
-		<th>Unit price</th>
-		<th>Tax rate</th>
-		<th>Tax amount</th>
-		<th>Total</th>
+		<th>Unit price (€)</th>
+		<th>Tax rate (%)</th>
+		<th>Tax amount (€)</th>
+		<th>Total (€)</th>
 		<th>Title</th>
 		<th>Lastname</th>
 		<th>Firstname</th>
@@ -30,10 +30,10 @@
 	<tr>
 		<td><?php echo $event_name; ?></td>
 		<td><?php echo $event_rate_name; ?></td>
-		<td><?php echo $event_rate_amount; ?></td>
-		<td><?php echo $event_rate_tax; ?></td>
-		<td><?php echo $total_tax; ?></td>
-		<td><?php echo $total_ttc; ?></td>
+		<td class="evt_curr"><?php echo $event_rate_amount; ?></td>
+		<td class="evt_curr"><?php echo $event_rate_tax; ?></td>
+		<td class="evt_curr"><?php echo $total_tax; ?></td>
+		<td class="evt_curr"><?php echo $total_ttc; ?></td>
 		<td><?php echo $participant_title; ?></td>
 		<td><?php echo $participant_lastname; ?></td>
 		<td><?php echo $participant_firstname; ?></td>
@@ -42,31 +42,31 @@
 	}
 ?>
 	<tr>
-		<th colspan="4">TOTAL HT</th>
-		<th><?php echo curr($devis->total_ht); ?></th>
+		<th colspan="4">TOTAL HT (€)</th>
+		<th class="evt_curr"><?php echo curr($devis->total_ht); ?></th>
 	</tr>
 </table>
 <br/>
 
-<table>
+<table class="evt_table">
 	<tr>
-		<td>TOTAL TAX</td>
-		<td><?php echo $devis->total_tax; ?></td>
+		<th>TOTAL TAX (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_tax); ?></td>
 	</tr>
 	<tr>
-		<th>TOTAL DUE</th>
-		<th><?php echo $devis->total_ttc; ?></th>
+		<th>TOTAL DUE (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
 </table>
 <br/>
 
-<table>
+<table class="evt_table">
 	<tr>
-		<td>Billing Entity name: </td>
+		<th>Billing Entity name: </th>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>
-		<td>Billing address: </td>
+		<th>Billing address: </th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
 </table>

@@ -3,7 +3,7 @@
 	$rates = $g_display["rates"];
 	$user = $g_display["user"];
 ?>
-<table>
+<table class="evt_table">
 	<tr>
 		<th>Event name</th>
 		<th>Categories</th>
@@ -41,7 +41,7 @@
 </table>
 <br/>
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
-	<table id="tickets" style="display:none;">
+	<table id="tickets" style="display:none;" class="evt_table">
 		<tr>
 			<th colspan="6">Event details</th>
 			<th colspan="3">Participant details</th>
@@ -60,13 +60,13 @@
 	</table>
 	<br/>
 
-	<table id="total" style="display:none;">
+	<table id="total" style="display:none;" class="evt_table">
 		<?php
 			foreach ($tax_array as $tax_rate) {
 				$tax_rate_id = str_replace(".", "_", $tax_rate);
 		?>
 		<tr id="row_total_<?php echo $tax_rate_id; ?>">
-			<td>Tax(<?php echo $tax_rate; ?>)</td>
+			<th>Tax(<?php echo $tax_rate; ?>)</th>
 			<td id="total_ht_<?php echo $tax_rate_id; ?>">0.00</td>
 			<td id="total_tax_<?php echo $tax_rate_id; ?>">0.00</td>
 			<td id="total_ttc_<?php echo $tax_rate_id; ?>">0.00</td>
@@ -75,24 +75,24 @@
 			}
 		?>
 		<tr>
-			<td colspan="2">Total taxes</td>
+			<th colspan="2">Total taxes</th>
 			<td id="total_tax">0.00</td>
 		</tr>
 		<tr>
-			<td colspan="3"><b>Total due</b></td>
+			<th colspan="3"><b>Total due</b></th>
 			<td id="total_due"><b>0.00</b></td>
 		</tr>
 	</table>
 	<br/>
 
-	<table>
+	<table class="evt_table">
 		<tr>
-			<td>Billing Entity name: </td>
+			<th>Billing Entity name: </th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
-			<td>Billing address: </td>
+			<th>Billing address: </th>
 			<td><textarea  rows=3 name="address"><?php echo_default_value("address", $user->address()) ?></textarea></td>
 			<td class="help">numero - rue - code postal - ville - pays</td>
 		</tr>
