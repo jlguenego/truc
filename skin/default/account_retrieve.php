@@ -1,26 +1,26 @@
 <?php
 	$user = $g_display["user"];
 ?>
-	Account details:
-	<table border="2px">
+<span class="evt_title">Account Infos</span>
+	<table class="evt_table">
 		<tr>
-			<td>Username</td>
+			<th>Username</th>
 			<td><?php echo $user->login ?></td>
 		</tr>
 		<tr>
-			<td>Firstname</td>
+			<th>Firstname</th>
 			<td><?php echo $user->firstname ?></td>
 		</tr>
 		<tr>
-			<td>Lastname</td>
+			<th>Lastname</th>
 			<td><?php echo $user->lastname ?></td>
 		</tr>
 		<tr>
-			<td>Email</td>
+			<th>Email</th>
 			<td><?php echo $user->email ?></td>
 		</tr>
 		<tr>
-			<td>Postal address</td>
+			<th>Postal address</th>
 			<td><?php echo $user->address(); ?></td>
 		</tr>
 	</table>
@@ -41,26 +41,6 @@
 ?>
 		<li>
 			<?php echo $event["happening_t"] ?>:
-			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
-				<?php echo $title ?>
-			</a>
-		</li>
-<?php
-	}
-?>
-	</ul>
-
-	<h3>Participations:</h3>
-	<ul>
-<?php
-	foreach ($g_display["participations"] as $participation) {
-		$event = $participation["event"];
-		$id = $event->id;
-		$title = $event->title;
-		$quantity = $participation["quantity"];
-?>
-		<li>
-			<?php echo date("d M Y", $event->happening_t) ?>:
 			<a href="?action=retrieve&amp;type=event&amp;id=<?php echo $id ?>">
 				<?php echo $title ?>
 			</a>
