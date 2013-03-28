@@ -229,6 +229,7 @@ EOF;
 
 		public static function list_all($user_id = NULL) {
 			global $g_pdo;
+			$events = array();
 			$where_clause = "";
 			if ($user_id != NULL) {
 				$where_clause = " WHERE `id_user`=" . $user_id;
@@ -241,7 +242,6 @@ EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();
 			$event_record = $q->fetch();
-			$events = array();
 			while (isset($event_record["id"])) {
 				$event = Event::get_from_id($event_record["id"]);
 				$events[] = $event;
