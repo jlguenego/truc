@@ -223,4 +223,23 @@ EOF;
 	function format_date($date, $format = "%Y-%m-%d") {
 		return date("l, jS F Y", s2t($date, $format));
 	}
+
+	function purify_html($str) {
+		libxml_use_internal_errors(true);
+		$doc = new DOMdocument();
+		$doc->loadHTML($str);
+		libxml_use_internal_errors(false);
+		return $doc->saveHTML();
+	}
+
+	function handle_html($str) {
+		global $g_mysqli;
+		debug(sprint_r($g_mysqli));
+		$str = purify_html($str);
+		$str = strip_tags($str, ALLOWED_TAGS);
+		$str = purify_html($str);
+		$str = mysqli_real_escape_string($g_mysqli, $str);
+		debug("String=".$str);
+		return $str;
+	}
 ?>

@@ -4,7 +4,7 @@
 	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
 	echo $event->short_description;
 ?>
-<br/><br/><br/>
+<br/>
 <?php
 	if (user_can_administrate_event($event)) {
 ?>
@@ -36,7 +36,7 @@
 	$rates = events_rates($event->id);
 ?>
 
-<table class="evt_table">
+<table class="evt_rate_table">
 	<tr>
 		<td class="evt_rate_title" colspan="4">Rates</td>
 <?php
@@ -75,7 +75,6 @@
 ?>
 </table>
 
-
 <div id="evt_general_info">
 	<div class="evt_general_info_title">
 		General informations
@@ -110,6 +109,7 @@
 		</ul>
 	</div>
 </div>
+<br/>
 <?php
 	echo $event->long_description;
 ?>

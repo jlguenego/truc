@@ -77,10 +77,7 @@ EOF;
 			$mod_t = $created_t;
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
-			$this->short_description = strip_tags(
-				htmlentities($this->short_description), ALLOWED_TAGS);
-			$this->long_description = strip_tags(
-				htmlentities($this->long_description), ALLOWED_TAGS);
+			$this->prepare_for_db();
 
 			$request = <<<EOF
 INSERT INTO `event`
@@ -113,10 +110,7 @@ EOF;
 			global $g_pdo;
 
 			$mod_t = time();
-			$this->short_description = strip_tags(
-				htmlentities($this->short_description), ALLOWED_TAGS);
-			$this->long_description = strip_tags(
-				htmlentities($this->long_description), ALLOWED_TAGS);
+			$this->prepare_for_db();
 			$request = <<<EOF
 UPDATE `event`
 SET
@@ -124,8 +118,8 @@ SET
 	`title`="{$this->title}",
 	`location`="{$this->location}",
 	`link`="{$this->link}",
-	`short_description`="{$this->short_description}",
-	`long_description`="{$this->long_description}",
+	`short_description`='{$this->short_description}',
+	`long_description`='{$this->long_description}',
 	`happening_t`="{$this->happening_t}",
 	`confirmation_t`="{$this->confirmation_t}",
 	`open_t`="{$this->open_t}",
@@ -320,6 +314,11 @@ EOF;
 					return "Cancelled";
 					break;
 			}
+		}
+
+		private function prepare_for_db() {
+			$this->short_description = handle_html($this->short_description);
+			$this->long_description = handle_html($this->long_description);
 		}
 	}
 ?>

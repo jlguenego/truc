@@ -188,6 +188,23 @@ table, td, th {
 	padding: 5px;
 }
 
+.evt_rate_table {
+	margin: 20px;
+}
+
+.evt_rate_table th {
+	font-weight: bold;
+	background-color: #FFEAEA;
+}
+
+.evt_rate_table tr:nth-child(even), .evt_rate_title {
+	background-color: #E6F2FF;
+}
+
+.evt_rate_table td {
+	padding: 5px;
+}
+
 /* Event Retrieve */
 
 .evt_rate_title {
