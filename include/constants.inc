@@ -21,6 +21,7 @@
 	define('DEVIS_STATUS_CONFIRMED', 1);
 	define('DEVIS_STATUS_CANCELLED', 2);
 
+	define("DEVIS_TYPE_AUTODETECT", -1);
 	define("DEVIS_TYPE_QUOTATION", 0);
 	define("DEVIS_TYPE_INVOICE", 1);
 

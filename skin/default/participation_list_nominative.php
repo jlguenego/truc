@@ -1,7 +1,9 @@
 <span class="evt_title">Participant list</span>
-<?php echo $g_display["items"][0]->event_name; ?>:
+Event name: <?php echo $g_display["event"]->title; ?><br/>
+Organizer: <?php echo $g_display["event"]->organizer_name; ?>
 <table class="evt_table">
 	<tr>
+		<th>Label</th>
 		<th>Ticket name</th>
 		<th>Ticket amount</th>
 		<th>Tax</th>
@@ -11,9 +13,11 @@
 		<th>Lastname</th>
 	</tr>
 <?php
-	foreach ($g_display["items"] as $item) {
+	foreach ($g_display["participations"] as $participation) {
+		list($item, $devis) = $participation;
 ?>
 	<tr>
+		<td><?php echo $devis->label; ?></td>
 		<td><?php echo $item->event_rate_name; ?></td>
 		<td><?php echo $item->total_ht; ?></td>
 		<td><?php echo $item->total_tax; ?></td>

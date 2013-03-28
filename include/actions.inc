@@ -796,6 +796,7 @@
 		} else {
 			$_SESSION["state"] = "participation_list_regular";
 		}
-		$g_display["items"] = $event->get_items();
+		$g_display["event"] = $event;
+		$g_display["participations"] = $event->get_participations();
 	}
 ?>

@@ -275,12 +275,17 @@ EOF;
 			return $g_pdo->exec($request);
 		}
 
-		public function get_devis() {
+		public function get_devis($type = DEVIS_TYPE_AUTODETECT) {
 			global $g_pdo;
-
+			if ($type == DEVIS_TYPE_AUTODETECT) {
+				$type = DEVIS_TYPE_QUOTATION;
+				if ($this->is_confirmed()) {
+					$type = DEVIS_TYPE_INVOICE;
+				}
+			}
 			$request = <<<EOF
 SELECT `id` FROM `bill`
-WHERE `id_event`={$this->id}
+WHERE `id_event`={$this->id} AND `type`="${type}"
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
@@ -299,7 +304,7 @@ EOF;
 		}
 
 		public function set_devis_status($status) {
-			$devis_array = $this->get_devis();
+			$devis_array = $this->get_devis(DEVIS_TYPE_QUOTATION);
 			foreach ($devis_array as $devis) {
 				$devis->set_status($status);
 			}
@@ -324,15 +329,15 @@ EOF;
 			$this->long_description = handle_html($this->long_description);
 		}
 
-		public function get_items() {
+		public function get_participations() {
 			$devis_array = $this->get_devis();
-			$items = array();
+			$participations = array();
 			foreach ($devis_array as $devis) {
 				foreach ($devis->get_items() as $item) {
-					$items[] = $item;
+					$participations[] = array($item, $devis);
 				}
 			}
-			return $items;
+			return $participations;
 		}
 	}
 ?>
