@@ -1,5 +1,6 @@
 <?php
 	require_once(BASE_DIR . "/include/constants.inc");
+	debug(sprint_r($_SERVER));
 
 	function my_autoloader($class) {
 		require_once(BASE_DIR . '/include/class/'.$class.'.class.php');

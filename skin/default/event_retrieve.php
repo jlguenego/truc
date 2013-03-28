@@ -12,7 +12,7 @@
 	<div class="evt_administration_title">
 		Administration
 	</div>
-	<div class="evt_administration_body"
+	<div class="evt_administration_body">
 		<ul>
 <?php
 		if ($event->is_published()) {
@@ -74,34 +74,35 @@
 	}
 ?>
 </table>
-
-<div id="evt_general_info">
-	<div class="evt_general_info_title">
-		General informations
-	</div>
-	<div class="evt_general_info_body"
-		<ul>
-			<li><?php echo $event->organizer_name; ?></li>
-<?php
-	if (time() >= s2t($event->happening_t, "%Y-%m-%d")) {
+<div id="evt_status">
+			<?php
+	if ((time() + 86400) >= s2t($event->happening_t, "%Y-%m-%d")) {
 ?>
-			<li>This event has already happened.</li>
+			This event has already happened.
 <?php
 	} else if ($event->is_confirmed()) {
 ?>
-			<li>Will append. Enough persons have registered.</li>
+			Will append. Enough persons have registered.
 <?php
 	} else if ($event->is_cancelled()) {
 ?>
-			<li>This event is cancelled.</li>
+			This event is cancelled.
 <?php
 	} else {
 ?>
-			<li>This event needs to be confirmed to happen. More people needed.</li>
+			This event needs to be confirmed to happen. More people needed.
 <?php
 	}
 	debug("event->happening_t=".$event->happening_t);
 ?>
+</div>
+<div id="evt_general_info">
+	<div class="evt_general_info_title">
+		General informations
+	</div>
+	<div class="evt_general_info_body">
+		<ul>
+			<li><b>Organizer: </b><?php echo $event->organizer_name; ?></li>
 			<li><b>Location:</b> <?php echo $event->location; ?></li>
 			<li><b>Happening date:</b> <?php echo format_date($event->happening_t); ?></li>
 			<li><b>Confirmation date:</b> <?php echo format_date($event->confirmation_t); ?></li>

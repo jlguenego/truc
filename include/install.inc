@@ -28,7 +28,7 @@ EOF;
 
 			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
 			$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
-
+			$test_mode = (isset($_POST["test_mode"])) ? "true" : "false";
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -40,6 +40,7 @@ EOF;
 
 	define('HOST', "$base_url");
 
+	define('TEST_MODE', $test_mode);
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

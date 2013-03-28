@@ -193,7 +193,35 @@ EOF;
 				$autofocus = "";
 			}
 			$result .= "</form>";
+			$_SESSION["form"] = $this;
 			return $result;
+		}
+
+		public function get_label($name) {
+			foreach ($this->elements as $item) {
+				if ($item->name == $name) {
+					return $item->label;
+				}
+			}
+			throw new Exception("Item not found: ".$name);
+		}
+
+		public function is_optional($name) {
+			foreach ($this->elements as $item) {
+				if ($item->name == $name) {
+					return $item->is_optional;
+				}
+			}
+			throw new Exception("Item not found: ".$name);
+		}
+
+		public function has_item($name) {
+			foreach ($this->elements as $item) {
+				if ($item->name == $name) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
@@ -204,6 +232,7 @@ EOF;
 		public $help;
 		public $maxlength;
 		public $default;
+		public $is_optional = false;
 		public $html_spec;
 		public $other_attr;
 	}

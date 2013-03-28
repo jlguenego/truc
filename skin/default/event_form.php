@@ -18,12 +18,12 @@
 	$item = $f->add_text("Title", "title", default_value("title", $event->title),
 		"Conference, or meeting name.");
 	$item->other_attr = 'size="60" maxlength="255"';
-	$item = $f->add_text("Organizer name", "orfanizer", default_value("orfanizer", $event->title),
+	$item = $f->add_text("Organizer name", "organizer_name", default_value("organizer_name", $event->organizer_name),
 		"The entity that is responsible for organizing the event.");
 	$item->other_attr = 'size="60" maxlength="255"';
-	$f->add_number("Required funding", "funding_needed",
+	$item = $f->add_number("Required funding", "funding_needed",
 		default_value("funding_needed", $event->funding_needed),
-		"Minimum amount of fund needed to organize the event.");
+		"Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement.");
 	$f->add_text("Event starting date", "happening_t",
 		default_value("happening_t", $event->happening_t),
 		"Date at which starts the event (Format: YYYY-MM-DD).");

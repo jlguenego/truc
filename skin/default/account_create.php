@@ -1,11 +1,14 @@
-Please enter your info:
 <?php
+	require_once(BASE_DIR . '/include/recaptcha.inc');
+
 	$f = new Form();
 	$f->title = "Account creation";
 	$f->action = "?action=create&amp;type=account";
 	$f->method = "POST";
-	$f->add_text("Login", "login", default_value("login"), "The login you will use to connect.");
-	$f->add_text("Firstname", "firstname", default_value("firstname"), "Your Firstname.");
+	$f->add_text("Login", "login", default_value("login"),
+		"The login you will use to connect.");
+	$f->add_text("Firstname", "firstname", default_value("firstname"),
+		"Your Firstname.");
 	$f->add_text("Lastname", "lastname", default_value("lastname"), "Your Lastname.");
 	$f->add_password("Password", "password", "The password you want to associate to your account.");
 	$f->add_password("Retype Password", "password2", "Retype your password.");
@@ -13,11 +16,13 @@ Please enter your info:
 	$f->add_text("Street# and street name", "street", default_value("street"), "Number and street name");
 	$f->add_text("ZIP", "zip", default_value("zip"), "ZIP code of your city.");
 	$f->add_text("City", "city", default_value("city"), "Your city.");
-	$f->add_text("State (Optional)", "state", default_value("state"), "Your state if any");
+	$item = $f->add_text("State (Optional)", "state", default_value("state"), "Your state if any");
+	$item->is_optional = true;
 	$f->add_text("Country", "country", default_value("country"), "Your country");
-	require_once(BASE_DIR . '/include/recaptcha.inc');
-	$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
-	$f->add_raw_html(recaptcha_get_html($publickey));
+	if($g_use_recaptcha) {
+		$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
+		$f->add_raw_html(recaptcha_get_html($publickey));
+	}
 	$f->add_checkbox("I have read and understood the <a href=\"CGU.pdf\" target=\"_blank\">CGU</a> and accept them.", "confirm", "", "");
 	$f->add_submit("Submit");
 	echo $f->html();

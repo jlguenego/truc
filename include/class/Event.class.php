@@ -48,7 +48,7 @@ EOF;
 			$this->confirmation_t = "";
 			$this->happening_t = "";
 			$this->open_t = "";
-			$this->funding_needed = "";
+			$this->funding_needed = 0.00;
 			$this->funding_authorized = 0;
 			$this->location = "";
 			$this->link = "http://";

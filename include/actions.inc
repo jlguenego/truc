@@ -258,6 +258,7 @@
 			}
 			$event = new Event();
 			$event->title = $_GET['title'];
+			$event->organizer_name = $_GET['organizer_name'];
 			$event->happening_t = $_GET['happening_t'];
 			$event->confirmation_t = $_GET['confirmation_t'];
 			$event->open_t = $_GET['open_t'];
@@ -280,6 +281,7 @@
 				$i++;
 			}
 			$_GET["id"] = $event->id;
+			//action_event_retrieve();
 			redirect_to("?action=retrieve&type=event&id=".$event->id);
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
@@ -326,6 +328,7 @@
 					form_event_valid(TRUE);
 					$event = Event::get_from_id($_GET["id"]);
 					$event->title = $_GET['title'];
+					$event->organizer_name = $_GET['organizer_name'];
 					$event->happening_t = $_GET['happening_t'];
 					$event->confirmation_t = $_GET['confirmation_t'];
 					$event->open_t = $_GET['open_t'];
@@ -347,7 +350,8 @@
 						$i++;
 					}
 					delete_unuse_rates($_GET["id"], $_GET['labels']);
-					action_event_retrieve();
+					//action_event_retrieve();
+					redirect_to("?action=retrieve&type=event&id=".$event->id);
 				} else {
 					action_event_create();
 				}
@@ -397,7 +401,7 @@
 		global $g_display;
 
 		need_authentication();
-		if (is_null_or_empty($_GET["id"])) {
+		if (is_null_or_empty($_GET["id"]) || $_GET["id"] == "-1") {
 			$event = new Event();
 			$event->load_default();
 			$g_display["event"] = $event;

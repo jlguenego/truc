@@ -1,9 +1,23 @@
 <?php
-
 	function form_event_valid($update = FALSE) {
-		if (is_null_or_empty($_GET["title"])) {
-			throw new Exception("Event must have a title");
+		debug("About to validate form");
+
+		foreach ($_GET as $key => $value) {
+			if (!$f->has_item($key)) {
+				continue;
+			}
+			if ($f->is_optional($key)) {
+				continue;
+			}
+			if (is_null_or_empty($value)) {
+				if (is_null_or_empty($_SESSION["form"])) {
+					throw new Exception("Please fill all fields");
+				}
+				$f = $_SESSION["form"];
+				throw new Exception("Please fill all fields: " . $f->get_label($key));
+			}
 		}
+
 		if (!check_date($_GET["happening_t"])) {
 			throw new Exception("The given date is wrong");
 		}
@@ -12,12 +26,6 @@
 		}
 		if (!check_date($_GET["open_t"])) {
 			throw new Exception("The participation open date is wrong");
-		}
-
-		foreach ($_GET as $value) {
-			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields: " . sprint_r($_GET));
-			}
 		}
 
 		foreach ($_GET['rates'] as $rate) {
@@ -40,5 +48,6 @@
 				throw new Exception("Please enter a label for each rate");
 			}
 		}
+		unset($_SESSION["form"]);
 	}
 ?>

@@ -214,9 +214,20 @@ EOF;
 	}
 
 	function valid_user() {
-		foreach ($_GET as $value) {
-			if ($value == "") {
-				throw new Exception("Please fill all fields");
+		global $g_use_recaptcha;
+		if (is_null_or_empty($_SESSION["form"])) {
+			throw new Exception("SESSION not well set.");
+		}
+		$f = $_SESSION["form"];
+		foreach ($_GET as $key => $value) {
+			if (!$f->has_item($key)) {
+				continue;
+			}
+			if ($f->is_optional($key)) {
+				continue;
+			}
+			if (is_null_or_empty($value)) {
+				throw new Exception("Please fill all fields: " . $f->get_label($key));
 			}
 		}
 		if (user_login_exists($_GET['login'])) {
@@ -231,16 +242,18 @@ EOF;
 		if ($_GET['password'] != $_GET['password2']) {
 			throw new Exception("Passwords are different");
 		}
-		require_once(BASE_DIR . '/include/recaptcha.inc');
-	    $privatekey = CAPTCHA_PRIV_KEY;
-	    $resp = recaptcha_check_answer ($privatekey,
-									$_SERVER["REMOTE_ADDR"],
-									$_POST["recaptcha_challenge_field"],
-									$_POST["recaptcha_response_field"]);
+		if ($g_use_recaptcha) {
+			require_once(BASE_DIR . '/include/recaptcha.inc');
+		    $privatekey = CAPTCHA_PRIV_KEY;
+		    $resp = recaptcha_check_answer ($privatekey,
+										$_SERVER["REMOTE_ADDR"],
+										$_POST["recaptcha_challenge_field"],
+										$_POST["recaptcha_response_field"]);
 
-		if (!$resp->is_valid) {
-			// What happens when the CAPTCHA was entered incorrectly
-			throw new Exception ("The reCAPTCHA wasn't entered correctly.");
+			if (!$resp->is_valid) {
+				// What happens when the CAPTCHA was entered incorrectly
+				throw new Exception ("The reCAPTCHA wasn't entered correctly.");
+			}
 		}
 	}
 

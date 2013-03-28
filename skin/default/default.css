@@ -98,6 +98,7 @@ body {
 }
 
 .evt_administration_body {
+	padding-left: 20px;
 	margin: 0px;
 }
 
@@ -113,7 +114,17 @@ body {
 }
 
 .evt_general_info_body {
+	padding-left: 20px;
 	margin: 0px;
+}
+
+
+#evt_status {
+	padding: 3px;
+	margin: 20px 2px 20px 2px;
+	background-color: #FFFFB3;
+	font-weight: bold;
+	border: 1px solid #000000;
 }
 
 .evt_rate {
@@ -193,7 +204,7 @@ table, td, th {
 }
 
 .evt_rate_table {
-	margin: 20px;
+	margin: 20px 2px 20px 2px;
 }
 
 .evt_rate_table th {

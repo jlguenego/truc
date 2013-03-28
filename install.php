@@ -53,8 +53,11 @@ EOF;
 			<td><input type="email" name="contact_email" value="contact@jlg-utilities.com"></td>
 		</tr>
 		<tr>
+			<td><input type="checkbox" name="test_mode" value="true" checked/>Test Mode</td>
+		</tr>
+		<tr>
 			<td><input type="submit" value="Submit"></td>
-		<tr/>
+		</tr>
 		</table>
 	</form>
 </html>

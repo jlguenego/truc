@@ -54,8 +54,10 @@
 	// Allows to have only one entity of PDO
 	$g_pdo = null;
 	$g_mysali = null;
+	$g_use_recaptcha = true;
 	if (file_exists(BASE_DIR . "/" . SETTINGS_INI)) {
 		require_once(BASE_DIR . "/" . SETTINGS_INI);
+		$g_use_recaptcha = (!TEST_MODE) || ($_SERVER["HTTP_HOST"] == "localhost");
 		try {
 			$g_pdo = new PDO('mysql:host='.MYSQL_HOST.';dbname='.MYSQL_DBNAME.';charset=UTF-8', MYSQL_USER, MYSQL_PASSWORD);
 			$g_mysqli = $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DBNAME);
