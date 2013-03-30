@@ -20,6 +20,7 @@
 		"account_create",
 		"account_retrieve",
 		"account_update",
+		"account_delete_confirm",
 		"devis_retrieve",
 		"payment_cancel",
 		"payment_success",

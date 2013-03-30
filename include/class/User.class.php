@@ -21,6 +21,49 @@
 			return $user;
 		}
 
+		public function check_owner() {
+			debug("login=".$this->login." | session_login=".$_SESSION["login"]);
+			return ($this->login == $_SESSION["login"]) || is_admin();
+		}
+
+		public function delete_try() {
+			global $g_pdo;
+
+			foreach ($this->list_event() as $event) {
+				$event->delete_try();
+			}
+
+			if ($this->has_accountancy_activity() ) {
+				debug("Account has accountancy");
+				$this->activation_status = ACTIVATION_STATUS_INACTIVATED;
+				$this->password = "inactivated";
+				$this->email .= " (inactivated)";
+				$this->update();
+				return;
+			}
+
+			$request = <<<EOF
+DELETE FROM `user`
+WHERE `id`={$this->id}
+EOF;
+			debug($request);
+			if(!$g_pdo->exec($request)) {
+				throw new Exception("User delete: " . sprint_r($g_pdo->errorInfo()));
+			}
+		}
+
+		public static function exists($id) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM `user` WHERE `id`= :id
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":id" => $id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		}
+
 		private function hydrate($array) {
 			foreach ($array as $key => $value) {
 				$this->$key = $value;
@@ -252,6 +295,34 @@ EOF;
 		public function is_activated() {
 			debug("activation_status=".$this->activation_status);
 			return $this->activation_status == ACTIVATION_STATUS_ACTIVATED;
+		}
+
+		public function has_accountancy_activity() {
+			foreach ($this->list_event() as $event) {
+				if ($event->has_accountancy_activity()) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public function list_event() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT * FROM `event`
+WHERE `id_user`={$this->id}
+ORDER BY `happening_t`
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$events = array();
+			while ($record = $q->fetch()) {
+				$event = new Event();
+				$event->hydrate($record);
+				$events[] = $event;
+			}
+			return $events;
 		}
 
 		public function reset_token() {

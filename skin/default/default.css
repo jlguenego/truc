@@ -248,3 +248,9 @@ table, td, th {
 b {
 	font-weight: bold;
 }
+
+.account_delete {
+	display: block;
+	margin-top: 20px;
+	font-size: 12px;
+}

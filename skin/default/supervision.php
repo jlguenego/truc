@@ -20,16 +20,20 @@
 <?php
 			$confirm_button_grey = "";
 			$cancel_button_grey = "";
+			$publish_button_grey = "";
 			if ($event->status != EVENT_STATUS_PLANNED) {
 				$confirm_button_grey = "disabled";
 				$cancel_button_grey = "disabled";
+			}
+			if ($event->status == EVENT_STATUS_INACTIVATED) {
+				$publish_button_grey = "disabled";
 			}
 			if (is_admin()) {
 				if (!$event->is_published()) {
 ?>
 		<td>
 			<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="Publish event"/>
+				<input type="submit" value="Publish event" <?php echo $publish_button_grey ?>/>
 			</form>
 		</td>
 <?php
@@ -37,7 +41,7 @@
 ?>
 		<td>
 			<form action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="Unpublish event"/>
+				<input type="submit" value="Unpublish event" <?php echo $publish_button_grey ?>/>
 			</form>
 		</td>
 <?php

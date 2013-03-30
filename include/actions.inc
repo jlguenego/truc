@@ -142,6 +142,9 @@
 			case "event":
 				action_event_delete();
 				break;
+			case "account":
+				action_account_delete();
+				break;
 			default:
 				$_SESSION["state"] = "not_allowed";
 				break;
@@ -189,7 +192,7 @@
 			$user->id = create_id();
 			$user->hydrate_from_form();
 			$user->role = ROLE_USER;
-			$user->activation_status = ACTIVATION_STATUS_NOT_ACTIVATED;
+			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
 			$user->store();
 			$g_info_msg = "Account successfully created. Check your email for activation.";
@@ -240,6 +243,41 @@
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
 			$_SESSION["state"] = "account_update";
+		}
+	}
+
+	function action_account_delete() {
+		global $g_display;
+		global $g_error_msg;
+
+		$user = User::get_from_id($_GET["id"]);
+		$g_display["user"] = $user;
+		if ($_SESSION["state"] != "account_delete_confirm") {
+			$_SESSION["state"] = "account_delete_confirm";
+			return;
+		}
+		try {
+			need_authentication();
+			if (isset($_GET['confirm'])) {
+				if (is_null_or_empty($_GET['id'])) {
+					throw new Exception("No account given.");
+				}
+				if (!User::exists($_GET['id'])) {
+					throw new Exception("Account does not exists.");
+				}
+				$user = User::get_from_id($_GET['id']);
+				if (!$user->check_owner()) {
+					debug(sprint_r($_SESSION));
+					throw new Exception("This account is not yours.");
+				}
+				if($_GET['confirm'] == "yes") {
+					$user->delete_try();
+				}
+			}
+			action_signout();
+		} catch (Exception $e) {
+			$_SESSION["state"] = "error";
+			$g_error_msg = $e->getMessage();
 		}
 	}
 
@@ -384,7 +422,7 @@
 				$event = Event::get_from_id($_GET['id']);
 				$event->check_owner();
 				if($_GET['confirm'] == "yes") {
-					$event->delete();
+					$event->delete_try();
 				}
 			}
 			$_SESSION["state"] = "root";

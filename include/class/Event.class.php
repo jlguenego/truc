@@ -60,7 +60,7 @@ EOF;
 			$this->user_id = get_id_from_account();;
 		}
 
-		private function hydrate($array) {
+		public function hydrate($array) {
 			foreach ($array as $key => $value) {
 				if ($key == "id_user") {
 					$this->user_id = $value;
@@ -135,10 +135,11 @@ EOF;
 			}
 		}
 
-		public function delete() {
+		public function delete_try() {
 			global $g_pdo;
 
-			if ($this->check_linked_devis() ) {
+			if ($this->has_accountancy_activity() ) {
+				$this->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
 				$this->set_status(EVENT_STATUS_INACTIVATED);
 				return;
 			}
@@ -182,7 +183,7 @@ EOF;
 			}
 		}
 
-		public function check_linked_devis() {
+		public function has_accountancy_activity() {
 			global $g_pdo;
 
 			$request = "SELECT COUNT(*) FROM `bill` WHERE `id_event`=" . $this->id;
@@ -380,12 +381,6 @@ EOF;
 				}
 			}
 			return $participations;
-		}
-
-		public function has_accountancy_activity() {
-			$bill_array = $this->get_bill();
-
-			return count($bill_array) > 0;
 		}
 
 		public function hydrate_from_form() {

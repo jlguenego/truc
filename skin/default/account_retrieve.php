@@ -29,9 +29,11 @@
 	if ($user->login == $_SESSION['login']) { // If the user is the owner
 ?>
 	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a><br/>
+	<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>" class="account_delete">Delete your account</a>
 <?php
 	}
 ?>
+	<br/>
 	<h3>Events organized:</h3>
 	<ul>
 <?php
