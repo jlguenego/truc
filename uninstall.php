@@ -1,10 +1,18 @@
 <?php
+	session_start();
 	define("BASE_DIR", ".");
 
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/" . SETTINGS_INI);
+	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . '/include/install.inc');
+	require_once(BASE_DIR . '/include/user.inc');
 	$error_msg = '';
+
+	if (!is_admin()) {
+		redirect_to("index.php");
+	}
+
 	if (isset($_POST['confirm'])) {
 		try {
 			uninstall();

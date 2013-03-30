@@ -2,6 +2,12 @@
 	define("BASE_DIR", ".");
 
 	require_once(BASE_DIR . '/include/install.inc');
+	require_once(BASE_DIR . '/include/misc.inc');
+
+	if (is_installed()) {
+		redirect_to("index.php");
+	}
+
 	$error_msg = '';
 	if (isset($_POST['login'])) {
 		try {

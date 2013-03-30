@@ -2,6 +2,9 @@
 	$devis = $_SESSION["devis"];
 	$link = $devis->url();
 	debug(sprint_r($devis));
+	debug(sprint_r($_GET));
+	debug(sprint_r($_POST));
+	debug(sprint_r($_SESSION));
 	$payment_html = "payment";
 	if ($devis->status == DEVIS_STATUS_PLANNED) {
 		$payment_html = "payment authorization";

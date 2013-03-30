@@ -42,5 +42,7 @@
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 
 	define('PAYMENT_PROVIDER', 'intern');
+	//define('PAYMENT_PROVIDER', 'paypal');
+	//define('PAYMENT_PROVIDER', 'paypal_sandbox');
 	require_once(BASE_DIR . '/payment/'.PAYMENT_PROVIDER.'/constants.inc');
 ?>

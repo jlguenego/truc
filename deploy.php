@@ -6,6 +6,14 @@
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/user.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
+	require_once(BASE_DIR . '/include/misc.inc');
+
+	if (!is_installed()) {
+		redirect_to("install.php");
+	}
+	if (admin_exists()) {
+		redirect_to("index.php");
+	}
 
 	if (isset($_POST['login'])) {
 		try {
