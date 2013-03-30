@@ -138,7 +138,10 @@ EOF;
 		public function delete() {
 			global $g_pdo;
 
-			$this->check_linked_devis();
+			if ($this->check_linked_devis() ) {
+				$this->set_status(EVENT_STATUS_INACTIVATED);
+				return;
+			}
 
 			$request = <<<EOF
 DELETE FROM `rate`
@@ -153,7 +156,7 @@ WHERE `id`={$this->id}
 EOF;
 			debug($request);
 			if(!$g_pdo->exec($request)) {
-				throw new Exception("Event delete:".sprint_r($g_pdo->errorInfo()));
+				throw new Exception("Event delete: " . sprint_r($g_pdo->errorInfo()));
 			}
 		}
 
@@ -167,6 +170,10 @@ EOF;
 
 		public function is_cancelled() {
 			return $this->status == EVENT_STATUS_CANCELLED;
+		}
+
+		public function is_inactivated() {
+			return $this->status == EVENT_STATUS_INACTIVATED;
 		}
 
 		public function check_owner() {
@@ -183,9 +190,7 @@ EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();
 			$count = $q->fetch();
-			if($count[0] > 0) {
-				throw new Exception("This event can not be deleted for accountancy reasons.");
-			}
+			return $count[0] > 0;
 		}
 
 		public function can_participate() {
@@ -196,6 +201,9 @@ EOF;
 				return FALSE;
 			}
 			if ($this->is_cancelled()) {
+				return FALSE;
+			}
+			if ($this->is_inactivated()) {
 				return FALSE;
 			}
 			return TRUE;
@@ -233,6 +241,14 @@ EOF;
 			$where_clause = "";
 			if ($user_id != NULL) {
 				$where_clause = " WHERE `id_user`=" . $user_id;
+			}
+
+			if (!is_admin()) {
+				if ($where_clause == "") {
+					$where_clause = " WHERE `status`!=" . EVENT_STATUS_INACTIVATED;
+				} else {
+					$where_clause .= " AND `status`!=" . EVENT_STATUS_INACTIVATED;
+				}
 			}
 
 			$request = <<<EOF
@@ -343,6 +359,9 @@ EOF;
 					break;
 				case EVENT_STATUS_CANCELLED:
 					return "Cancelled";
+					break;
+				case EVENT_STATUS_INACTIVATED:
+					return "Inactivated";
 					break;
 			}
 		}

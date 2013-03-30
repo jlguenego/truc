@@ -35,6 +35,7 @@
 		EVENT_STATUS_PLANNED => "Planned",
 		EVENT_STATUS_CONFIRMED => "Confirmed",
 		EVENT_STATUS_CANCELLED => "Cancelled",
+		EVENT_STATUS_INACTIVATED => "Inactivated",
 	);
 
 	$g_event_publish_flag = array(
