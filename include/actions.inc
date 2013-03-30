@@ -69,7 +69,10 @@
 			case "list":
 				action_list();
 				break;
+			case "none":
+				break;
 			default:
+				throw new Exception("This action does not exists.");
 				break;
 		}
 	}

@@ -13,6 +13,9 @@
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
 
+	debug("GET=".sprint_r($_GET));
+	debug("POST=".sprint_r($_POST));
+
 	// If not installed, goto installation page
 	if (!is_installed()) {
 		redirect_to("install.php");
