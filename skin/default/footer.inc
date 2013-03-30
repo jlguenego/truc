@@ -1,5 +1,7 @@
 <div class="evt_hr"></div>
 <div id="evt_footer">
 	JLG Consulting -  ©2013<br/>
-	<a href="CGU.pdf">CGU</a>|<a href="CGV.pdf">CGV</a>
+	<a href="etc/TC.pdf">Terms and Conditions</a>|
+	<a href="etc/sales_policy.pdf">Sales policies</a>|
+	<a href="etc/privacy.pdf">Privacy policies</a>
 </div>

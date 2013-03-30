@@ -83,7 +83,7 @@
 
 		$msg_html = str_replace("<br/>", "<br/>".$passage_ligne, $msg_html);
 
-  		$msg_txt = htmlspecialchars($msg_html);
+  		$msg_txt = html_entity_decode(strip_tags($msg_html));
 		$boundary = '----='.md5(rand());
 		$boundary_alt = "-----=".md5(rand());
 
@@ -111,6 +111,7 @@
 
 		/*FORMATION DU HEADER*/
 		$header = 'From: "'.CONTACT_MAIL.'" <'.CONTACT_MAIL.'>'.$passage_ligne;
+		$header.= 'Bcc: "'.CONTACT_MAIL.'" <'.CONTACT_MAIL.'>'.$passage_ligne;
 		$header.= 'MIME-Version: 1.0'.$passage_ligne;
 		$header.= 'Content-Type: multipart/mixed;'.$passage_ligne.' boundary="'.$boundary.'"'.$passage_ligne;
 
