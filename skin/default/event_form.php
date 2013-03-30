@@ -47,8 +47,27 @@
 		default_value("long_description", $event->long_description),
 		"Enter a long description of the event. (HTML editor)");
 	$item->other_attr = 'width="200px"';
-	$f->add_checkbox("All tickets must be nominative", "nominative", "checked",
-		"All tickets of an nominative event must have a participant name indicated.");
+
+	if (!$event->has_accountancy_activity()) {
+		$selected = "";
+		if ($event->type == EVENT_TYPE_ANONYMOUS) {
+			$selected = " selected";
+		}
+		$options = "<option value=\"".EVENT_TYPE_ANONYMOUS."\"${selected}>Anonymous</option>";
+		$selected = "";
+		if ($event->type == EVENT_TYPE_NOMINATIVE) {
+			$selected = " selected";
+		}
+		$options .= "<option value=\"".EVENT_TYPE_NOMINATIVE."\"${selected}>Nominative</option>";
+		$selected = "";
+		if ($event->type == EVENT_TYPE_FREE_NOMINATIVE) {
+			$selected = " selected";
+		}
+		//$options .= "<option value=\"".EVENT_TYPE_FREE_NOMINATIVE."\"${selected}>Free</option>";
+
+		$f->add_select("Select your event type", "event_type", $options,
+			"For a nominative event, the participant name will be indicated on ticket.");
+	}
 	$f->add_hidden("id", $event->id);
 	$f->add_raw_html(<<<EOF
 <div id="rates">
@@ -56,6 +75,10 @@
 <a href="JavaScript:addRate('rates');">Add another ticket rate</a><br/><br/>
 EOF
 );
+	if ($scenario == "create") {
+		$f->add_checkbox("I have read and agree to the <a href=\"\">Terms and Conditions</a>", "confirm",
+			"", "You have to check this to continue.");
+	}
 	$f->add_submit($button_text);
 	echo $f->html();
 ?>

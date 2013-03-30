@@ -229,7 +229,6 @@ EOF;
 		libxml_use_internal_errors(true);
 		$doc = new DOMdocument();
 		$doc->loadHTML($str);
-		libxml_use_internal_errors(false);
 		return $doc->saveHTML();
 	}
 

@@ -26,13 +26,13 @@
 					<th>Rate name</th>
 					<th>Amount HT</th>
 					<th>Rate tax</th>
-		<?php if ($event->nominative == 0) { ?>
+		<?php if ($event->type == EVENT_TYPE_ANONYMOUS) { ?>
 					<th>Quantity</th>
 					<th>Total ticket HT</th>
 		<?php } ?>
 					<th>Total ticket tax</th>
 					<th>Total ticket TTC</th>
-		<?php if ($event->nominative == 1) { ?>
+		<?php if ($event->type == EVENT_TYPE_NOMINATIVE) { ?>
 					<th>Title</th>
 					<th>Firsname</th>
 					<th>Lastname</th>
@@ -46,7 +46,7 @@
 					<td><?php echo curr($item->event_rate_amount); ?>€</td>
 					<td><?php echo curr($item->event_rate_tax); ?>%</td>
 		<?php
-				if ($event->nominative == 0) {
+				if ($event->type == EVENT_TYPE_ANONYMOUS) {
 		?>
 					<td><?php echo $item->quantity; ?></td>
 					<td><?php echo curr($item->total_ht); ?>€</td>
@@ -56,7 +56,7 @@
 					<td><?php echo curr($item->total_tax); ?>€</td>
 					<td><?php echo curr($item->total_ttc); ?>€</td>
 		<?php
-				if ($event->nominative == 1) {
+				if ($event->type == EVENT_TYPE_NOMINATIVE) {
 		?>
 					<td><?php echo default_str($item->participant_title, "&nbsp;"); ?></td>
 					<td><?php echo $item->participant_firstname; ?></td>

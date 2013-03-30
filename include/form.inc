@@ -48,6 +48,10 @@
 				throw new Exception("Please enter a label for each rate");
 			}
 		}
+
+		if (!$update && !isset($_GET["confirm"])) {
+			throw new Exception("You have to read and agree with the CGU");
+		}
 		unset($_SESSION["form"]);
 	}
 ?>

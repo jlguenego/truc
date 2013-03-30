@@ -262,22 +262,9 @@
 		try {
 			debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
 			form_event_valid();
-			$nominative = 0;
-			if (isset($_GET['nominative'])) {
-				$nominative = 1;
-			}
+
 			$event = new Event();
-			$event->title = $_GET['title'];
-			$event->organizer_name = $_GET['organizer_name'];
-			$event->happening_t = $_GET['happening_t'];
-			$event->confirmation_t = $_GET['confirmation_t'];
-			$event->open_t = $_GET['open_t'];
-			$event->funding_needed = $_GET['funding_needed'];
-			$event->location = $_GET['location'];
-			$event->link = $_GET['link'];
-			$event->short_description = $_GET['short_description'];
-			$event->long_description = $_GET['long_description'];
-			$event->nominative = $nominative;
+			$event->hydrate_from_form();
 			$event->user_id = get_id_from_account();
 			$event->store();
 			debug(sprint_r($event));
@@ -662,7 +649,7 @@
 			$g_display["user"] = User::get_from_login();
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["event_id"]);
-			if ($g_display["event"]->nominative == 1) {
+			if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {
 				$_SESSION["state"] = "regular_participation";
@@ -723,7 +710,7 @@
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = events_rates($_GET["event_id"]);
-			if ($event->nominative == 1) {
+			if ($event->type == EVENT_TYPE_NOMINATIVE) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {
 				$_SESSION["state"] = "regular_participation";
@@ -793,7 +780,7 @@
 		}
 		$event = new Event();
 		$event->load($_GET["id"]);
-		if ($event->nominative == 1) {
+		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$_SESSION["state"] = "participation_list_nominative";
 		} else {
 			$_SESSION["state"] = "participation_list_regular";

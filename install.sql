@@ -15,7 +15,7 @@ CREATE TABLE event(
         link              Varchar(255),
         short_description Text NOT NULL ,
         long_description  Text,
-        nominative        Bool NOT NULL ,
+        type              Int NOT NULL ,
         status            Int NOT NULL ,
         publish_flag      Int NOT NULL ,
         id_user           Int NOT NULL ,

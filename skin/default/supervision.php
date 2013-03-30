@@ -24,7 +24,8 @@
 				$confirm_button_grey = "disabled";
 				$cancel_button_grey = "disabled";
 			}
-			if (!$event->is_published()) {
+			if (is_admin()) {
+				if (!$event->is_published()) {
 ?>
 		<td>
 			<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
@@ -32,7 +33,7 @@
 			</form>
 		</td>
 <?php
-			} else {
+				} else {
 ?>
 		<td>
 			<form action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
@@ -40,6 +41,7 @@
 			</form>
 		</td>
 <?php
+				}
 			}
 ?>
 		<td>

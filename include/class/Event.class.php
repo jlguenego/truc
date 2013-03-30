@@ -12,7 +12,7 @@
 		public $link;
 		public $short_description;
 		public $long_description;
-		public $nominative;
+		public $type;
 		public $status;
 		public $publish_flag;
 		public $user_id;
@@ -54,7 +54,7 @@ EOF;
 			$this->link = "http://";
 			$this->short_description = "";
 			$this->long_description = "";
-			$this->nominative = 1;
+			$this->type = EVENT_TYPE_NOMINATIVE;
 			$this->status = EVENT_STATUS_PLANNED;
 			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;
 			$this->user_id = get_id_from_account();;
@@ -98,7 +98,7 @@ SET
 	`open_t`="{$this->open_t}",
 	`funding_needed`="{$this->funding_needed}",
 	`funding_acquired`=0,
-	`nominative`={$this->nominative},
+	`type`={$this->type},
 	`status`=${status},
 	`publish_flag`=${publish_flag}
 EOF;
@@ -275,6 +275,29 @@ EOF;
 			return $g_pdo->exec($request);
 		}
 
+		public function get_bill() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id` FROM `bill`
+WHERE `id_event`={$this->id}
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			if ($q->execute() === FALSE) {
+				debug($request);
+				throw new Exception("Get devis: ".sprint_r($g_pdo->errorInfo()));
+			};
+
+			$devis_array = array();
+			while (($record = $q->fetch()) != NULL) {
+				debug("record=".sprint_r($record));
+				$devis = Devis::get_from_id($record["id"]);
+				$devis_array[] = $devis;
+			}
+			return $devis_array;
+		}
+
 		public function get_devis($type = DEVIS_TYPE_AUTODETECT) {
 			global $g_pdo;
 			if ($type == DEVIS_TYPE_AUTODETECT) {
@@ -338,6 +361,26 @@ EOF;
 				}
 			}
 			return $participations;
+		}
+
+		public function has_accountancy_activity() {
+			$bill_array = $this->get_bill();
+
+			return count($bill_array) > 0;
+		}
+
+		public function hydrate_from_form() {
+			$this->title = $_GET['title'];
+			$this->organizer_name = $_GET['organizer_name'];
+			$this->happening_t = $_GET['happening_t'];
+			$this->confirmation_t = $_GET['confirmation_t'];
+			$this->open_t = $_GET['open_t'];
+			$this->funding_needed = $_GET['funding_needed'];
+			$this->location = $_GET['location'];
+			$this->link = $_GET['link'];
+			$this->short_description = $_GET['short_description'];
+			$this->long_description = $_GET['long_description'];
+			$this->type = $_GET['event_type'];
 		}
 	}
 ?>
