@@ -13,6 +13,7 @@
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
 
+	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
 	debug("POST=".sprint_r($_POST));
 

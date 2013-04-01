@@ -13,9 +13,10 @@
 	<input type="hidden" name="button_subtype" value="services">
 	<input type="hidden" name="no_note" value="0">
 	<input type="hidden" name="paymentaction" value="authorization">
+	<input type="hidden" name="notify_url" value="<?php echo HOST."/payment/paypal/ipn.php"; ?>">
 	<input type="hidden" name="return" value="<?php echo HOST."/index.php?action=payment_success"; ?>">
-	<input type="hidden" name="cancel_return" value="<?php echo HOST."/index.php?action=payment_cancelxxx"; ?>">
-	<input type="hidden" name="invoice" value="Coucou">
+	<input type="hidden" name="cancel_return" value="<?php echo HOST."/index.php?action=payment_cancel"; ?>">
+	<input type="hidden" name="invoice" value="<?php echo $devis->label; ?>">
 	<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 	<input type="image" src="https://www.paypalobjects.com/fr_XC/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
 	<img alt="" border="0" src="https://www.paypalobjects.com/fr_XC/i/scr/pixel.gif" width="1" height="1">

@@ -1,5 +1,4 @@
 <?php
-	require_once(BASE_DIR . "/include/user.inc");
 
 	function layout_header() {
 		require_once(BASE_DIR . "/" . SKIN_DIR."/header.inc");
