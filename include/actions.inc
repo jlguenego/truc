@@ -319,8 +319,11 @@
 				$i++;
 			}
 			$_GET["id"] = $event->id;
-			//action_event_retrieve();
-			redirect_to("?action=retrieve&type=event&id=".$event->id);
+			if (TEST_MODE) {
+				action_event_retrieve();
+			} else {
+				redirect_to("?action=retrieve&type=event&id=".$event->id);
+			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
 			action_event_get_form();

@@ -5,7 +5,7 @@
 	<body>
 		<p><?php print_r($_GET); ?></p>
 		<p>Do you want to proceed?</p>
-		<a href="../../payment/success.html">Yes</a>
-		<a href="../../payment/cancel.html">No</a>
+		<a href="../../index.php?action=payment_success">Yes</a>
+		<a href="../../index.php?action=payment_cancel">No</a>
 	</body>
 </html>

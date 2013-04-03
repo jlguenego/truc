@@ -78,7 +78,6 @@ EOF;
 			$mod_t = $created_t;
 			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
-			$this->prepare_for_db();
 
 			$request = <<<EOF
 INSERT INTO `event`
@@ -112,7 +111,6 @@ EOF;
 			global $g_pdo;
 
 			$mod_t = time();
-			$this->prepare_for_db();
 			$request = <<<EOF
 UPDATE `event`
 SET
@@ -365,11 +363,6 @@ EOF;
 					return "Inactivated";
 					break;
 			}
-		}
-
-		private function prepare_for_db() {
-			$this->short_description = handle_html($this->short_description);
-			$this->long_description = handle_html($this->long_description);
 		}
 
 		public function get_participations() {

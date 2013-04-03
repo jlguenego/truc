@@ -59,6 +59,16 @@ EOF;
 			<td><input type="email" name="contact_email" value="contact@jlg-utilities.com"></td>
 		</tr>
 		<tr>
+			<td>Payment type:</td>
+			<td>
+				<select name="payment_type">
+					<option value="paypal">Paypal</option>
+					<option value="paypal_sandbox">Paypal Sandbox</option>
+					<option value="intern">Intern</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
 			<td><input type="checkbox" name="test_mode" value="true" checked/>Test Mode</td>
 		</tr>
 		<tr>

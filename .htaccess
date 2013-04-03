@@ -3,3 +3,11 @@ DirectoryIndex index.php index.html index.htm
 
 # Set PHP5 as default
 SetEnv PHP_VER 5
+
+
+#Security Access
+
+<FilesMatch "\.(sql|inc|class\.php)$">
+	Order Allow,Deny
+	Deny from all
+</FilesMatch>

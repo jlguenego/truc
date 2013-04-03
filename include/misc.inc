@@ -230,15 +230,4 @@ EOF;
 		$doc->loadHTML($str);
 		return $doc->saveHTML();
 	}
-
-	function handle_html($str) {
-		global $g_mysqli;
-		debug(sprint_r($g_mysqli));
-		$str = purify_html($str);
-		$str = strip_tags($str, ALLOWED_TAGS);
-		$str = purify_html($str);
-		$str = mysqli_real_escape_string($g_mysqli, $str);
-		debug("String=".$str);
-		return $str;
-	}
 ?>

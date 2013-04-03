@@ -12,6 +12,7 @@
 	require_once(BASE_DIR . "/include/payment.inc");
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
+	require_once(BASE_DIR . "/include/security.inc");
 
 	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
@@ -32,6 +33,9 @@
 	session_start();
 
 	$_GET = array_merge($_GET, $_POST);
+	security_html_injection();
+	debug("GET=".sprint_r($_GET));
+
 	if (is_null_or_empty($_SESSION["state"])) {
 		$_SESSION["state"] = "root";
 	}
