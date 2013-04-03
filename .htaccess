@@ -7,7 +7,7 @@ SetEnv PHP_VER 5
 
 #Security Access
 
-<FilesMatch "\.(sql|inc|class\.php)$">
+<FilesMatch "\.(sql|inc|class\.php|ini)$">
 	Order Allow,Deny
 	Deny from all
 </FilesMatch>
