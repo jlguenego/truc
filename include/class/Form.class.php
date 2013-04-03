@@ -150,7 +150,7 @@ EOF;
 					case "number":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="number" name="{$item->name}" value="{$item->default}"/>
+<input type="number" name="{$item->name}" value="{$item->default}" {$item->other_attr}/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;

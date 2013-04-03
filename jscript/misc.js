@@ -30,7 +30,7 @@ function addRate(divName, label, amount, selected_tax){
 							"</tr>" +
 							"<tr>" +
 								"<td>Amount (Tax excluded)</td>" +
-								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\"></td>" +
+								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\"></td>" +
 							"</tr>" +
 							"<tr>" +
 								"<td>Taxe</td>" +
