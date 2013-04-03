@@ -190,7 +190,7 @@
 		debug(sprint_r($_GET));
 
 		try {
-			valid_user();
+			form_valid_user();
 			$user = new User();
 			$user->id = create_id();
 			$user->hydrate_from_form();
@@ -211,7 +211,7 @@
 		need_authentication();
 		$user = User::get_from_login();
 		$g_display["user"] = $user;
-		$g_display["events_organized"] = user_events($user->id);
+		$g_display["events_organized"] = $user->get_organized_events();
 		$_SESSION["state"] = "account_retrieve";
 	}
 
@@ -222,11 +222,11 @@
 		try {
 			need_authentication();
 			if (is_null_or_empty($_GET["id"])) {
-				$_GET["id"] = get_id_from_account();
+				throw new Exception("No id given.");
 			}
-			if (user_exists($_GET["id"])) {
+			if (User::exists($_GET["id"])) {
 				$user = User::get_from_id($_GET["id"]);
-				valid_user_update($user);
+				form_valid_user_update($user);
 				$user->update();
 
 				$g_info_msg = "Your personal informations has been changed.";
@@ -241,6 +241,7 @@
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
+			$g_display["user"] = $user;
 			$_SESSION["state"] = "account_update";
 		}
 	}
@@ -302,7 +303,8 @@
 
 			$event = new Event();
 			$event->hydrate_from_form();
-			$event->user_id = get_id_from_account();
+
+			$event->user_id = User::get_id_from_account();
 			$event->store();
 			debug(sprint_r($event));
 
@@ -333,7 +335,7 @@
 		if (!is_null_or_empty($_GET["id"])) {
 			if (Event::exists($_GET["id"])) {
 				$event = Event::get_from_id($_GET["id"]);
-				if (!$event->is_published() && !user_can_administrate_event($event)) {
+				if (!$event->is_published() && !$event->can_be_administrated()) {
 					$_SESSION["state"] = "not_allowed";
 					$g_error_msg = "This event is not published yet.";
 				} else {
@@ -460,7 +462,7 @@
 		global $g_error_msg;
 
 		need_authentication();
-		if (!is_admin()) {
+		if (!is_admin_logged()) {
 			$g_error_msg = "You are not admin.";
 			return;
 		}
@@ -477,7 +479,7 @@
 		global $g_error_msg;
 
 		need_authentication();
-		if (!is_admin()) {
+		if (!is_admin_logged()) {
 			$g_error_msg = "You are not admin.";
 			return;
 		}
@@ -547,7 +549,7 @@
 	function action_authenticate() {
 		global $g_error_msg;
 		if (isset($_GET['login']) && isset($_GET['password'])) {
-			if (authenticate($_GET['login'], $_GET['password'])) {
+			if (User::authenticate($_GET['login'], $_GET['password'])) {
 				$user = User::get_from_login($_GET['login']);
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
@@ -715,8 +717,8 @@
 	function action_supervision() {
 		global $g_display;
 		need_authentication();
-		if (!is_admin()) {
-			$g_display["events"] = Event::list_all(get_id_from_account());
+		if (!is_admin_logged()) {
+			$g_display["events"] = Event::list_all(User::get_id_from_account());
 			$_SESSION["state"] = "supervision";
 			return;
 		}
@@ -756,9 +758,9 @@
 		global $g_info_msg;
 		global $g_error_msg;
 		try {
-			$user = user_activate($_GET["key"]);
+			$user = User::activate($_GET["key"]);
 			$g_info_msg = "Account successfully activated";
-			$_GET["login"] = $user["login"];
+			$_GET["login"] = $user->login;
 			$_SESSION["state"] = "sign_in";
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();

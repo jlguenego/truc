@@ -54,4 +54,94 @@
 		}
 		unset($_SESSION["form"]);
 	}
+
+	function form_valid_user() {
+		global $g_use_recaptcha;
+		if (is_null_or_empty($_SESSION["form"])) {
+			throw new Exception("SESSION not well set.");
+		}
+		$f = $_SESSION["form"];
+		foreach ($_GET as $key => $value) {
+			if (!$f->has_item($key)) {
+				continue;
+			}
+			if ($f->is_optional($key)) {
+				continue;
+			}
+			if (is_null_or_empty($value)) {
+				throw new Exception("Please fill all fields: " . $f->get_label($key));
+			}
+		}
+		if (User::get_from_login($_GET['login']) != null) {
+			throw new Exception("User already exists");
+		}
+		if (!check_mail($_GET["email"])) {
+			throw new Exception("Invalid mail");
+		}
+		if (User::used_mail($_GET["email"])) {
+			throw new Exception("This mail is already used");
+		}
+		if ($_GET['password'] != $_GET['password2']) {
+			throw new Exception("Passwords are different");
+		}
+		if ($g_use_recaptcha) {
+			require_once(BASE_DIR . '/include/recaptcha.inc');
+		    $privatekey = CAPTCHA_PRIV_KEY;
+		    $resp = recaptcha_check_answer ($privatekey,
+										$_SERVER["REMOTE_ADDR"],
+										$_POST["recaptcha_challenge_field"],
+										$_POST["recaptcha_response_field"]);
+
+			if (!$resp->is_valid) {
+				// What happens when the CAPTCHA was entered incorrectly
+				throw new Exception ("The reCAPTCHA wasn't entered correctly.");
+			}
+		}
+	}
+
+	function form_valid_user_update($user) {
+		if (!is_null_or_empty($_GET["firstname"])
+			&& $user->firstname != $_GET["firstname"]) {
+			$user->firstname = $_GET["firstname"];
+		}
+		if (!is_null_or_empty($_GET["lastname"])
+			&& $user->lastname != $_GET["lastname"]) {
+			$user->lastname = $_GET["lastname"];
+		}
+		if (!is_null_or_empty($_GET["street"])
+			&& $user->street != $_GET["street"]) {
+			$user->street = $_GET["street"];
+		}
+		if (!is_null_or_empty($_GET["zip"])
+			&& $user->zip != $_GET["zip"]) {
+			$user->zip = $_GET["zip"];
+		}
+		if (!is_null_or_empty($_GET["city"])
+			&& $user->city != $_GET["city"]) {
+			$user->city = $_GET["city"];
+		}
+		if (!is_null_or_empty($_GET["country"])
+			&& $user->country != $_GET["country"]) {
+			$user->country = $_GET["country"];
+		}
+		$user->state = $_GET["state"];
+		if (!is_null_or_empty($_GET["email"])) {
+			if (!check_mail($_GET["email"])) {
+				throw new Exception(_t("Invalid mail."));
+			}
+			if (User::used_mail($_GET["email"])) {
+				throw new Exception(_t("This mail is already used."));
+			}
+			$user->email = $_GET['email'];
+		}
+		if (!is_null_or_empty($_GET['new_pass'])) {
+			if ($_GET['new_pass'] != $_GET['new_pass2']) {
+				throw new Exception(_t("New passwords are different."));
+			}
+			$user->set_password($_GET['new_pass']);
+		} else {
+			$user->password = "";
+		}
+		debug("user=".  sprint_r($user));
+	}
 ?>

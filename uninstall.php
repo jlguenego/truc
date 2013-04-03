@@ -6,10 +6,10 @@
 	require_once(BASE_DIR . "/" . SETTINGS_INI);
 	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . '/include/install.inc');
-	require_once(BASE_DIR . '/include/user.inc');
+	require_once(BASE_DIR . '/include/authentication.inc');
 	$error_msg = '';
 
-	if (!is_admin()) {
+	if (!is_admin_logged()) {
 		redirect_to("index.php");
 	}
 

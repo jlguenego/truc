@@ -25,6 +25,7 @@
 		"Leave empty if you do not want to change your password.");
 	$f->add_password("Retype new Password (optional)", "new_pass2",
 		"Retype your new password.");
+	$f->add_hidden("id", $user->id);
 	$f->add_submit("Submit");
 	echo $f->html();
 ?>

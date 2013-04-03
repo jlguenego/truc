@@ -28,7 +28,7 @@
 			if ($event->status == EVENT_STATUS_INACTIVATED) {
 				$publish_button_grey = "disabled";
 			}
-			if (is_admin()) {
+			if (is_admin_logged()) {
 				if (!$event->is_published()) {
 ?>
 		<td>

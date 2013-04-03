@@ -57,7 +57,7 @@ EOF;
 			$this->type = EVENT_TYPE_NOMINATIVE;
 			$this->status = EVENT_STATUS_PLANNED;
 			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;
-			$this->user_id = get_id_from_account();;
+			$this->user_id = User::get_id_from_account();;
 		}
 
 		public function hydrate($array) {
@@ -207,7 +207,7 @@ EOF;
 		}
 
 		public function check_owner() {
-			if ($this->user_id != get_id_from_account() && !is_admin()) {
+			if ($this->user_id != User::get_id_from_account() && !is_admin_logged()) {
 				throw new Exception("You are not the creator of this event");
 			}
 		}
@@ -279,7 +279,7 @@ EOF;
 				$where_clause = "WHERE `id_user`= :id";
 			}
 
-			if (!is_admin()) {
+			if (!is_admin_logged()) {
 				if ($where_clause == "") {
 					$where_clause = "WHERE `status`!=" . EVENT_STATUS_INACTIVATED;
 				} else {
@@ -556,5 +556,14 @@ EOF;
 			}
 			return $rates;
 		}
+
+		public function can_be_administrated() {
+		if (is_admin_logged() || $this->id_user == User::get_id_from_account()) {
+			debug("Can administrate.");
+			return TRUE;
+		}
+		debug("Cannot administrate.");
+		return FALSE;
+	}
 	}
 ?>

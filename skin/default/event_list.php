@@ -8,7 +8,7 @@
 	</tr>
 <?php
 		foreach ($g_display["events"] as $event) {
-			if (!$event->is_published() && !user_can_administrate_event($event)) {
+			if (!$event->is_published() && !$event->can_be_administrated()) {
 				debug("Event not displayed.");
 			} else {
 ?>

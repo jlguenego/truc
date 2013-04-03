@@ -15,7 +15,7 @@
 
 		<?php echo $user->login ?> - <?php echo "${firstname} ${lastname}" ?> - <?php echo "${email}" ?>
 <?php
-		if (is_admin()) {
+		if (is_admin_logged()) {
 ?>
 			[Admin]
 <?php

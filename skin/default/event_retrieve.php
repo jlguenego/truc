@@ -6,7 +6,7 @@
 ?>
 <br/>
 <?php
-	if (user_can_administrate_event($event)) {
+	if ($event->can_be_administrated()) {
 ?>
 <div id="evt_administration">
 	<div class="evt_administration_title">

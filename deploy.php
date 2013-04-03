@@ -4,7 +4,7 @@
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . "/include/misc.inc");
-	require_once(BASE_DIR . "/include/user.inc");
+	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
 	require_once(BASE_DIR . '/include/misc.inc');
 
@@ -25,8 +25,8 @@
 			$user->login = $_POST["login"];
 			$user->set_password($_POST["password"]);
 			$user->email = $_POST["email"];
-			$user->lastname = ucfirst($_POST["lastname"]);
-			$user->firstname = mb_strtoupper($_POST["password"], "UTF-8");
+			$user->lastname = mb_strtoupper($_POST["lastname"], "UTF-8");
+			$user->firstname = ucfirst(mb_strtolower($_POST["firstname"], "UTF-8"));
 			$user->role = ROLE_ADMIN;
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
 			$user->generate_activation_key();
@@ -69,8 +69,8 @@ EOF;
 			<td><input type="text" name="login" value="admin"></td>
 		</tr>
 		<tr>
-			<td>Name: </td>
-			<td><input type="text" name="name" value="yannis"></td>
+			<td>Firstame: </td>
+			<td><input type="text" name="firstname" value="yannis"></td>
 		</tr>
 		<tr>
 			<td>Lastname: </td>

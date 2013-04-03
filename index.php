@@ -5,8 +5,7 @@
 	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
-	require_once(BASE_DIR . "/include/user.inc");
-	require_once(BASE_DIR . "/include/rate.inc");
+	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
 	require_once(BASE_DIR . "/include/payment.inc");
 	require_once(BASE_DIR . "/include/mail.inc");

@@ -23,7 +23,7 @@
 
 		public function check_owner() {
 			debug("login=".$this->login." | session_login=".$_SESSION["login"]);
-			return ($this->login == $_SESSION["login"]) || is_admin();
+			return ($this->login == $_SESSION["login"]) || is_admin_logged();
 		}
 
 		public function delete_try() {
@@ -380,6 +380,124 @@ EOF;
 				":id" => $this->id,
 			);
 			$pst->execute($array);
+		}
+
+		// Check if the user has entered correct login and password
+		public static function authenticate($login, $password) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM `user`
+WHERE `login`= :login AND `password`= :password
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$user = User::get_from_login($login);
+			if ($user == null) {
+				return false;
+			}
+			$pst->execute(array(
+				":login" => $login,
+				":password" => $user->make_password($password)
+			));
+			$count = $pst->fetch();
+			return $count[0] > 0;
+		}
+
+		public static function get_id_from_account() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id` FROM `user`
+WHERE `login`= :login
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(":login" => $_SESSION["login"]));
+			$user = $q->fetch();
+			if (!isset($user['id'])) {
+				return NULL;
+			}
+			return $user["id"];
+		}
+
+		public static function activate($key) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM `user`
+WHERE `activation_key`= :key
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":key" => $key));
+			$count = $pst->fetch();
+			if ($count[0] == 0) {
+				throw new Exception("This account does not exist or is already activated");
+			}
+			$mod_t = time();
+			$status = ACTIVATION_STATUS_ACTIVATED;
+			$request = <<<EOF
+UPDATE `user`
+SET
+	`activation_status`= :status,
+	`mod_t`= :mod_t
+WHERE `activation_key`= :key
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				":status" => $status,
+				":mod_t" => $mod_t,
+				":key" => $key,
+			));
+			$request = <<<EOF
+SELECT `id` FROM `user`
+WHERE `activation_key`= :key
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":key" => $key));
+			$record = $pst->fetch();
+			$user = User::get_from_id($record["id"]);
+			return $user;
+		}
+
+		public function get_organized_events() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id`, `title`, `happening_t` FROM `event`
+WHERE `id_user`= :id
+ORDER BY `happening_t`
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+			$event = $pst->fetch();
+			$events = array();
+			while (isset($event["id"])) {
+				$events[] = $event;
+				$event = $pst->fetch();
+			}
+			return $events;
+		}
+
+		public static function used_mail($mail) {
+			global $g_pdo;
+
+			$request = "";
+			if (isset($_SESSION['login'])) {
+				$user = User::get_from_login();
+				$request = <<<EOF
+SELECT COUNT(*) FROM `user` WHERE `email`= :mail AND `id`!= :id
+EOF;
+				$q = $g_pdo->prepare($request);
+				$q->execute(array(":mail" => $mail, ":id" => $user->id));
+			} else {
+				$request = <<<EOF
+SELECT COUNT(*) FROM `user` WHERE `email`= :mail
+EOF;
+				$q = $g_pdo->prepare($request);
+				$q->execute(array(":mail" => $mail));
+			}
+			$count = $q->fetch();
+				return $count[0] > 0;
 		}
 	}
 ?>

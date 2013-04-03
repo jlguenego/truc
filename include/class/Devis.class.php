@@ -50,7 +50,7 @@ EOF;
 				$this->total_ttc += $item->total_ttc;
 			}
 
-			$this->user_id = get_id_from_account();
+			$this->user_id = User::get_id_from_account();
 		}
 
 		public function store() {
