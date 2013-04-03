@@ -62,6 +62,11 @@ body {
 
 }
 
+#evt_info {
+	border: 1px solid;
+	background-color: #FFFFC4;
+}
+
 #evt_menu ul {
 	margin: 30;
 	padding: 30;

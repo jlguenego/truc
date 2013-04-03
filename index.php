@@ -8,7 +8,6 @@
 	require_once(BASE_DIR . "/include/user.inc");
 	require_once(BASE_DIR . "/include/rate.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
-	require_once(BASE_DIR . "/include/manage.inc");
 	require_once(BASE_DIR . "/include/payment.inc");
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");

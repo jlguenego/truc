@@ -17,11 +17,8 @@
 	}
 
 	function security_handle_html_injection($str, $allowed_tag = "") {
-		global $g_mysqli;
-		debug(sprint_r($g_mysqli));
 		$str = strip_tags($str, $allowed_tag);
 		$str = purify_html($str);
-		$str = mysqli_real_escape_string($g_mysqli, $str);
 		debug("String=".$str);
 		return $str;
 	}

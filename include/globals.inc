@@ -64,7 +64,8 @@
 		$g_use_recaptcha = (!TEST_MODE) || ($_SERVER["HTTP_HOST"] == "localhost");
 		try {
 			$g_pdo = new PDO('mysql:host='.MYSQL_HOST.';dbname='.MYSQL_DBNAME.';charset=UTF-8', MYSQL_USER, MYSQL_PASSWORD);
-			$g_mysqli = $mysqli = new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DBNAME);
+			$g_pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+			$g_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (Exception $e) {
 		}
 	}

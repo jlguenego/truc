@@ -44,12 +44,11 @@
 
 			$request = <<<EOF
 DELETE FROM `user`
-WHERE `id`={$this->id}
+WHERE `id`= :id
 EOF;
 			debug($request);
-			if(!$g_pdo->exec($request)) {
-				throw new Exception("User delete: " . sprint_r($g_pdo->errorInfo()));
-			}
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
 		}
 
 		public static function exists($id) {
@@ -74,12 +73,16 @@ EOF;
 			global $g_pdo;
 			$request = <<<EOF
 UPDATE * FROM `user`
-SET `token`="${token}"
-WHERE `id`={$this->id}
+SET `token`= :token
+WHERE `id`= :id
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":token" => $token,
+				":id" => $this->id,
+			);
+			$pst->execute($array);
 		}
 
 		public function set_password($passwd) {
@@ -98,29 +101,44 @@ EOF;
 			$request = <<<EOF
 INSERT INTO `user`
 SET
-	`id`={$this->id},
-	`created_t`=${created_t},
-	`mod_t`=${mod_t},
-	`firstname`="{$this->firstname}",
-	`lastname`="{$this->lastname}",
-	`login`="{$this->login}",
-	`password`="{$this->password}",
-	`email`="{$this->email}",
-	`role`={$this->role},
-	`activation_status`={$this->activation_status},
-	`activation_key`="{$this->activation_key}",
-	`street`="{$this->street}",
-	`zip`="{$this->zip}",
-	`city`="{$this->city}",
-	`country`="{$this->country}",
-	`state`="{$this->state}";
-
+	`id`= :id,
+	`created_t`= :created_t,
+	`mod_t`= :mod_t,
+	`firstname`= :firstname,
+	`lastname`= :lastname,
+	`login`= :login,
+	`password`= :password,
+	`email`= :email,
+	`role`= :role,
+	`activation_status`= :activation_status,
+	`activation_key`= :activation_key,
+	`street`= :street,
+	`zip`= :zip,
+	`city`= :city,
+	`country`= :country,
+	`state`= :state;
 EOF;
 			debug($request);
-			if ($g_pdo->exec($request) == 0) {
-				$error = $g_pdo->errorInfo();
-				throw new Exception("User creation: ".$error[2]);
-			}
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id" => $this->id,
+				":created_t" => $created_t,
+				":mod_t" => $mod_t,
+				":firstname" => $this->firstname,
+				":lastname" => $this->lastname,
+				":login" => $this->login,
+				":password" => $this->password,
+				":email" => $this->email,
+				":role" => $this->role,
+				":activation_status" => $this->activation_status,
+				":activation_key" => $this->activation_key,
+				":street" => $this->street,
+				":zip" => $this->zip,
+				":city" => $this->city,
+				":country" => $this->country,
+				":state" => $this->state,
+			);
+			$pst->execute($array);
 			if (!$this->is_activated()) {
 				mail_inscription($this->email, $this->login, $this->activation_key);
 			}
@@ -129,32 +147,51 @@ EOF;
 		public function update() {
 			global $g_pdo;
 
-			if ($this->password == "") {
-				$set_password = "";
-			} else {
-				$set_password = <<<EOF
-	`password`="{$this->password}",
-EOF;
-			}
-
 			$mod_t = time();
 			$request = <<<EOF
 UPDATE `user`
 SET
-	`mod_t`=${mod_t},
-	`firstname`="{$this->firstname}",
-	`lastname`="{$this->lastname}",
-	${set_password}
-	`email`="{$this->email}",
-	`street`="{$this->street}",
-	`zip`="{$this->zip}",
-	`city`="{$this->city}",
-	`country`="{$this->country}",
-	`state`="{$this->state}"
-WHERE `id`={$this->id}
+	`mod_t`= :mod_t,
+	`firstname`= :firstname,
+	`lastname`= :lastname,
+	`email`= :email,
+	`street`= :street,
+	`zip`= :zip,
+	`city`= :city,
+	`country`= :country,
+	`state`= :state
+WHERE `id`= :id
 EOF;
 			debug($request);
-			$g_pdo->exec($request);
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":mod_t" => $mod_t,
+				":firstname" => $this->firstname,
+				":lastname" => $this->lastname,
+				":email" => $this->email,
+				":street" => $this->street,
+				":zip" => $this->zip,
+				":city" => $this->city,
+				":country" => $this->country,
+				":state" => $this->state,
+				":id" => $this->id,
+			);
+			$pst->execute($array);
+			$pst->closeCursor();
+
+			if ($this->password != "") {
+				$request = <<<EOF
+UPDATE `user`
+SET `password`= :password
+WHERE `id`= :id
+EOF;
+				$pst = $g_pdo->prepare($request);
+				$array = array(
+					":password" => $this->password,
+					":id" => $this->id,
+				);
+				$pst->execute($array);
+			}
 		}
 
 		public static function get_from_login($login = "") {
@@ -165,14 +202,12 @@ EOF;
 			}
 			$request = <<<EOF
 SELECT * FROM `user`
-WHERE `login`="${login}"
+WHERE `login`= :login
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			if (!$q->execute()) {
-				throw new Exception("User get from login: ".sprint_r($g_pdo->errorInfo()));
-			}
-			$record = $q->fetch(PDO::FETCH_ASSOC);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":login" => $login));
+			$record = $pst->fetch(PDO::FETCH_ASSOC);
 			debug("record=".sprint_r($record));
 			if ($record == NULL) {
 				return NULL;
@@ -191,12 +226,12 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `user`
-WHERE `email`="${email}"
+WHERE `email`= :email
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
-			$record = $q->fetch();
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":email" => $email));
+			$record = $pst->fetch();
 			if ($record == NULL) {
 				return NULL;
 			}
@@ -212,12 +247,16 @@ EOF;
 			$token = $exp_ts . "_" .  rand (0, 1000000);
 			$request = <<<EOF
 UPDATE `user`
-SET `token`="${token}"
-WHERE `id`={$this->id}
+SET `token`= :token
+WHERE `id`= :id
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":token" => $token,
+				":id" => $this->id,
+			);
+			$pst->execute($array);
 			return $token;
 		}
 
@@ -226,12 +265,12 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `user`
-WHERE `token`="${token}"
+WHERE `token`= :token
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
-			$record = $q->fetch();
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":token" => $token));
+			$record = $pst->fetch();
 			if ($record == NULL) {
 				throw new Exception("No user found with this token.");
 			}
@@ -252,14 +291,12 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `user`
-WHERE `id`= ${id}
+WHERE `id`= :id
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			if(!$q->execute()) {
-				throw new Exception("User Update: ".sprint_r($g_pdo->errorInfo()));
-			}
-			$record = $q->fetch();
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $id));
+			$record = $pst->fetch();
 			if (!isset($record['id'])) {
 				return NULL;
 			}
@@ -311,13 +348,13 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `event`
-WHERE `id_user`={$this->id}
+WHERE `id_user`= :id
 ORDER BY `happening_t`
 EOF;
-			$q = $g_pdo->prepare($request);
-			$q->execute();
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
 			$events = array();
-			while ($record = $q->fetch()) {
+			while ($record = $pst->fetch()) {
 				$event = new Event();
 				$event->hydrate($record);
 				$events[] = $event;
@@ -332,12 +369,17 @@ EOF;
 			$request = <<<EOF
 UPDATE `user`
 SET
-	`mod_t`=${mod_t},
+	`mod_t`= :mod_t,
 	`token`=NULL
-WHERE `id`={$this->id}
+WHERE `id`= :id
 EOF;
 			debug($request);
-			$g_pdo->exec($request);
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":mod_t" => $mod_t,
+				":id" => $this->id,
+			);
+			$pst->execute($array);
 		}
 	}
 ?>

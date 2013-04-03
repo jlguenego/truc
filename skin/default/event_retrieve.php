@@ -34,7 +34,7 @@
 </div>
 <?php
 	}
-	$rates = events_rates($event->id);
+	$rates = $event->get_rates();
 ?>
 
 <table class="evt_rate_table">

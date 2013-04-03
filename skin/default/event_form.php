@@ -145,7 +145,8 @@ EOF
 		foreach ($rates as $rate) {
 			$label = $rate["label"];
 			$amount = $rate["amount"];
-			echo "addRate('rates', '$label', '$amount');";
+			$tax_rate = $rate["tax_rate"];
+			echo "addRate('rates', '$label', '$amount', $tax_rate);";
 			$i++;
 		}
 	}
@@ -175,7 +176,7 @@ EOF
 	        skin_variant : "silver",
 
 	        // Example content CSS (should be your site CSS)
-	        content_css : "css/example.css",
+	        //content_css : "css/example.css",
 
 	        // Drop lists for link/image/media/template dialogs
 	        template_external_list_url : "js/template_list.js",

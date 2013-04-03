@@ -35,41 +35,37 @@
 			$request = <<<EOF
 INSERT INTO `item`
 SET
-	`id`={$this->id},
-	`event_name`="{$this->event_name}",
-	`event_rate_name`="{$this->event_rate_name}",
-	`event_rate_amount`={$this->event_rate_amount},
-	`event_rate_tax`={$this->event_rate_tax},
-	`quantity`={$this->quantity},
-	`total_ht`={$this->total_ht},
-	`total_tax`={$this->total_tax},
-	`total_ttc`={$this->total_ttc},
-	`id_bill`={$this->bill_id},
-	`participant_firstname`="{$this->participant_firstname}",
-	`participant_lastname`="{$this->participant_lastname}",
-	`participant_title`="{$this->participant_title}";
+	`id`= :id,
+	`event_name`= :event_name,
+	`event_rate_name`= :event_rate_name,
+	`event_rate_amount`= :event_rate_amount,
+	`event_rate_tax`= :event_rate_tax,
+	`quantity`= :quantity,
+	`total_ht`= :total_ht,
+	`total_tax`= :total_tax,
+	`total_ttc`= :total_ttc,
+	`id_bill`= :id_bill,
+	`participant_firstname`= :participant_firstname,
+	`participant_lastname`= :participant_lastname,
+	`participant_title`= :participant_title;
 EOF;
-			$st = $g_pdo->prepare($request);
-			if ($st->execute() === FALSE) {
-				echo($request.'<br/>');
-				throw new Exception("Devis item insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
-			};
-		}
-
-		public function to_string() {
-			$result = "|event_name=".$this->event_name;
-			$result .= "|event_rate_name=".$this->event_rate_name;
-			$result .= "|event_rate_amount=".curr($this->event_rate_amount);
-			$result .= "|event_rate_tax=".curr($this->event_rate_tax);
-			$result .= "|quantity=".$this->quantity;
-			$result .= "|total_ht=".curr($this->total_ht);
-			$result .= "|total_tax=".curr($this->total_tax);
-			$result .= "|total_ttc=".curr($this->total_ttc);
-			$result .= "|participant_firstname=".$this->participant_firstname;
-			$result .= "|participant_lastname=".$this->participant_lastname;
-			$result .= "|participant_title=".$this->participant_title;
-
-			return $result;
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id" => $this->id,
+				":event_name" => $this->event_name,
+				":event_rate_name" => $this->event_rate_name,
+				":event_rate_amount" => $this->event_rate_amount,
+				":event_rate_tax" => $this->event_rate_tax,
+				":quantity" => $this->quantity,
+				":total_ht" => $this->total_ht,
+				":total_tax" => $this->total_tax,
+				":total_ttc" => $this->total_ttc,
+				":id_bill" => $this->bill_id,
+				":participant_firstname" => $this->participant_firstname,
+				":participant_lastname" => $this->participant_lastname,
+				":participant_title" => $this->participant_title,
+			);
+			$pst->execute($array);
 		}
 	}
 ?>

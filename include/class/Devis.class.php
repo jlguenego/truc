@@ -67,24 +67,36 @@ EOF;
 			$request = <<<EOF
 INSERT INTO `bill`
 SET
-	`id`={$this->id},
-	`created_t`=${created_t},
-	`total_ht`="{$this->total_ht}",
-	`total_tax`="{$this->total_tax}",
-	`total_ttc`="{$this->total_ttc}",
-	`label`="{$this->label}",
-	`username`="{$this->username}",
-	`address`="{$this->address}",
-	`status`={$this->status},
-	`type`={$this->type},
-	`id_user`={$this->user_id},
-	`id_event`={$this->event_id};
+	`id`= :id,
+	`created_t`= :created_t,
+	`total_ht`= :total_ht,
+	`total_tax`= :total_tax,
+	`total_ttc`= :total_ttc,
+	`label`= :label,
+	`username`= :username,
+	`address`= :address,
+	`status`= :status,
+	`type`= :type,
+	`id_user`= :id_user,
+	`id_event`= :id_event;
 EOF;
-			$st = $g_pdo->prepare($request);
-			if ($st->execute() === FALSE) {
-				debug($request);
-				throw new Exception("Devis insertion: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
-			};
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id" => $this->id,
+				":created_t" => $created_t,
+				":total_ht" => $this->total_ht,
+				":total_tax" => $this->total_tax,
+				":total_ttc" => $this->total_ttc,
+				":label" => $this->label,
+				":username" => $this->username,
+				":address" => $this->address,
+				":status" => $this->status,
+				":type" => $this->type,
+				":id_user" => $this->user_id,
+				":id_event" => $this->event_id,
+			);
+
+			$pst->execute($array);
 			$event = Event::get_from_id($this->event_id);
 			$event->add_funding_acquired($this->total_ttc);
 
@@ -96,27 +108,31 @@ EOF;
 		public function load($id) {
 			global $g_pdo;
 
-			$request = "SELECT * FROM `bill` WHERE `id`= ${id}";
+			$request = "SELECT * FROM `bill` WHERE `id`= :id";
 
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
-			$devis = $q->fetch(PDO::FETCH_ASSOC);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				":id" => $id,
+			));
+			$devis = $pst->fetch(PDO::FETCH_ASSOC);
 			if (!isset($devis['id'])) {
 				return NULL;
 			}
 			$this->hydrate($devis);
-			$q->closeCursor();
+			$pst->closeCursor();
 
 			$request = <<<EOF
 SELECT * FROM `item`
-WHERE `id_bill`=${id}
+WHERE `id_bill`= :id
 ORDER BY event_rate_name
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			$q->execute();
-			$records = $q->fetchAll(PDO::FETCH_ASSOC);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				":id" => $id,
+			));
+			$records = $pst->fetchAll(PDO::FETCH_ASSOC);
 
 			foreach ($records as $record) {
 				$item = new Item();
@@ -129,44 +145,21 @@ EOF;
 		public function update() {
 			global $g_pdo;
 
-			$label = $this->label;
-			$status = $this->status;
-
 			$request = <<<EOF
 UPDATE `bill`
-SET `status`=${status}
-WHERE `label`="${label}";
+SET `status`= :status
+WHERE `label`= :label;
 EOF;
-			$st = $g_pdo->prepare($request);
-			if ($st->execute() === FALSE) {
-				debug($request);
-				throw new Exception("Devis update: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
-			};
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				":status" => $this->status,
+				":label" => $this->label,
+			));
 		}
 
 		public function set_status($status) {
 			$this->status = $status;
 			$this->update();
-		}
-
-		public function to_string() {
-			$result = "total_ht=".curr($this->total_ht);
-			$result .= "&total_tax=".curr($this->total_tax);
-			$result .= "&total_ttc=".curr($this->total_ttc);
-			$result .= "&label=".str_replace(" ", "%20", $this->label);
-			$result .= "&username=".str_replace(" ", "%20", $this->username);
-			$result .= "&address=".str_replace(" ", "%20", $this->address);
-			$result .= "&status=".$this->status;
-			$result .= "&event_id=".$this->event_id;
-			$result .= "&user_id=".$this->user_id;
-
-			$i = 0;
-			foreach ($this->items as $item) {
-				$result .= "&item_".$i."=".str_replace(" ", "%20", $item->to_string());
-				$i++;
-			}
-
-			return $result;
 		}
 
 		public function url() {
@@ -185,16 +178,13 @@ EOF;
 
 			$request = <<<EOF
 SELECT * FROM `item`
-WHERE `id_bill`={$this->id}
+WHERE `id_bill`= :id
 EOF;
 			debug($request);
-			$q = $g_pdo->prepare($request);
-			if ($q->execute() === FALSE) {
-				debug($request);
-				throw new Exception("Get devis_items: ".sprint_r($g_pdo->errorInfo())." InnoDB?");
-			};
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
 			$items = array();
-			while ($record = $q->fetch()) {
+			while ($record = $pst->fetch()) {
 				$item = new Item();
 				$item->hydrate($record);
 				$items[] = $item;

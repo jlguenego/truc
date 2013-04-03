@@ -8,9 +8,13 @@ function getCounter() {
 	return counter;
 }
 
-function addRate(divName, label, amount){
+function addRate(divName, label, amount, selected_tax){
 	label = label || "";
 	amount = amount || "";
+	console.log(selected_tax);
+	if (selected_tax == undefined) {
+		selected_tax = taxes[0][1];
+	}
 	counter++;
 	var id = new Date().getTime();
 	$("#" + divName).append("<div id=\"" + id + "\"></div>");
@@ -33,16 +37,20 @@ function addRate(divName, label, amount){
 								"<td>" +
 									"<select name=\"tax_rates[]\" \">";
 	for (var i = 0; i < taxes.length; i++) {
-		content += 				"<option value=\"" + taxes[i][1] + "\">" + taxes[i][0] + "</option>";
+		var selected = "";
+		console.log("selected_tax=" + selected_tax);
+		console.log("taxes[i][1]=" + taxes[i][1]);
+		if (taxes[i][1] == selected_tax) {
+			selected = "selected";
+		}
+		content += 				"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
 	}
 	content +=				"</select>" +
 								"</td>" +
 							"</tr>" +
 						"</table>" +
 					"</td>";
-	if (counter > 1) {
 					content += "<td id=\"remove_" + id + "\"></td>";
-	}
 				content += "</tr>" +
 			"</table>";
 	$("#" + id).html(content);

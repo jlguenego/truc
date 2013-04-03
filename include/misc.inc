@@ -35,10 +35,10 @@
 	function admin_exists() {
 		try {
 			global $g_pdo;
-			$dbname = MYSQL_DBNAME;
+
 			$admin = ROLE_ADMIN;
 			$request = <<<EOF
-SELECT COUNT(*) FROM `${dbname}`.`user` WHERE `role`=${admin}
+SELECT COUNT(*) FROM `user` WHERE `role`=${admin}
 EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();

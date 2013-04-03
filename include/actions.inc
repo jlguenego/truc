@@ -212,10 +212,6 @@
 		$user = User::get_from_login();
 		$g_display["user"] = $user;
 		$g_display["events_organized"] = user_events($user->id);
-		$g_display["participations"] = user_participations($user->id);
-		foreach ($g_display["participations"] as $participation) {
-			$g_display["participations"]["event"] = Event::get_from_id($participation["id_event"]);
-		}
 		$_SESSION["state"] = "account_retrieve";
 	}
 
@@ -315,7 +311,7 @@
 			foreach ($_GET['labels'] as $label) {
 				$rate = $_GET['rates'][$i];
 				$tax_rate = $_GET['tax_rates'][$i];
-				add_rate($label, $rate, $tax_rate, $event->id);
+				$event->add_rate($label, $rate, $tax_rate);
 				$i++;
 			}
 			$_GET["id"] = $event->id;
@@ -387,10 +383,10 @@
 					foreach ($_GET['labels'] as $label) {
 						$rate = $_GET['rates'][$i];
 						$tax_rate = $_GET['tax_rates'][$i];
-						update_rate($_GET["id"], $label, $tax_rate, $rate);
+						$event->update_rate($label, $tax_rate, $rate);
 						$i++;
 					}
-					delete_unuse_rates($_GET["id"], $_GET['labels']);
+					$event->delete_unused_rates($_GET['labels']);
 					//action_event_retrieve();
 					redirect_to("?action=retrieve&type=event&id=".$event->id);
 				} else {
@@ -453,7 +449,7 @@
 		} else {
 			$event = Event::get_from_id($_GET["id"]);
 			$g_display["event"] = $event;
-			$g_display["rates"] = events_rates($_GET["id"]);
+			$g_display["rates"] = $event->get_rates();
 			$g_display["scenario"] = "update";
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
 			$_SESSION["state"] = "event_form";
@@ -498,12 +494,9 @@
 		global $g_error_msg;
 
 		need_authentication();
-		if (!is_admin()) {
-			$g_error_msg = "You are not admin.";
-			return;
-		}
 		if (!isset($_GET['id'])) {
 			$g_error_msg = "No event selected.";
+			action_supervision();
 			return;
 		}
 		$event = Event::get_from_id($_GET['id']);
@@ -523,12 +516,9 @@
 		global $g_error_msg;
 
 		need_authentication();
-		if (!is_admin()) {
-			$g_error_msg = "You are not admin.";
-			return;
-		}
 		if (!isset($_GET['id'])) {
 			$g_error_msg = "No event selected.";
+			action_supervision();
 			return;
 		}
 		$event = Event::get_from_id($_GET['id']);
@@ -594,8 +584,8 @@
 		$devis->username = $_GET['username'];
 		$devis->address = $_GET['address'];
 		$devis->event_id = $_GET["event_id"];
-		$rates = events_rates($_GET["event_id"]);
 		$event = Event::get_from_id($_GET["event_id"]);
+		$rates = $event->get_rates();
 		$total_ttc = 0.00;
 		$i = 0;
 		while (isset($_GET["ticket_${i}"])) {
@@ -692,7 +682,7 @@
 			}
 			$g_display["user"] = User::get_from_login();
 			$g_display["event"] = $event;
-			$g_display["rates"] = events_rates($_GET["event_id"]);
+			$g_display["rates"] = $event->get_rates();
 			if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {
@@ -753,7 +743,7 @@
 			$g_display["user"] = User::get_from_login();
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
-			$g_display["rates"] = events_rates($_GET["event_id"]);
+			$g_display["rates"] = $event->get_rates();
 			if ($event->type == EVENT_TYPE_NOMINATIVE) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {
@@ -763,6 +753,8 @@
 	}
 
 	function action_activation() {
+		global $g_info_msg;
+		global $g_error_msg;
 		try {
 			$user = user_activate($_GET["key"]);
 			$g_info_msg = "Account successfully activated";
