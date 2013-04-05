@@ -2,11 +2,11 @@
 	require_once(BASE_DIR . '/include/misc.inc');
 
 	function is_logged() {
-		if (!is_null_or_empty($_SESSION['login'])) {
-			if (User::get_from_login($_SESSION['login']) != null) {
+		if (!is_null_or_empty($_SESSION['email'])) {
+			if (User::get_from_email() != null) {
 				return TRUE;
 			} else {
-				unset($_SESSION['login']);
+				unset($_SESSION['email']);
 				return FALSE;
 			}
 		} else {
@@ -26,7 +26,7 @@
 		if (!is_logged()) {
 			return FALSE;
 		}
-		$user = User::get_from_login($_SESSION['login']);
+		$user = User::get_from_email();
 		return $user->role == ROLE_ADMIN;
 	}
 ?>

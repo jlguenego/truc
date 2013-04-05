@@ -12,7 +12,6 @@
 	$f = new Form();
 	$f->action = "form.php";
 	$f->method = "GET";
-	$f->add_text("Login", "login", "", "Enter your identifier");
 	$f->add_password("Password", "password", "Enter your password");
 	$f->add_email("Email", "email", "", "Enter your email");
 	$f->add_number("Birth year", "year", "", "Enter your birth year");
@@ -23,7 +22,7 @@
 <option value="F" selected>Female</option>
 EOF;
 	$f->add_select("Gender", "gender", $options, "Enter your gender...");
-	$f->add_submit("Login");
+	$f->add_submit("email");
 	echo $f->html();
 
 ?>

@@ -4,8 +4,8 @@
 <span class="evt_title">Account Infos</span>
 	<table class="evt_table">
 		<tr>
-			<th>Username</th>
-			<td><?php echo $user->login ?></td>
+			<th>Email</th>
+			<td><?php echo $user->email ?></td>
 		</tr>
 		<tr>
 			<th>Firstname</th>
@@ -16,17 +16,13 @@
 			<td><?php echo $user->lastname ?></td>
 		</tr>
 		<tr>
-			<th>Email</th>
-			<td><?php echo $user->email ?></td>
-		</tr>
-		<tr>
 			<th>Postal address</th>
 			<td><?php echo $user->address(); ?></td>
 		</tr>
 	</table>
 
 <?php
-	if ($user->login == $_SESSION['login']) { // If the user is the owner
+	if ($user->email == $_SESSION['email']) { // If the user is the owner
 ?>
 	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a><br/>
 	<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>" class="account_delete">Delete your account</a>

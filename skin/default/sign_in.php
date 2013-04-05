@@ -6,7 +6,7 @@
 		$f->action .= "&amp;redirect=yes";
 	}
 	$f->method = "POST";
-	$f->add_text("Login", "login", default_value("login"), "Enter your identifier");
+	$f->add_text("Email", "email", default_value("email"), "Enter your email");
 	$f->add_password("Password", "password", "Enter your password");
 	$f->add_submit("Sign in");
 	echo $f->html();

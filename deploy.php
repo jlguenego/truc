@@ -15,16 +15,15 @@
 		redirect_to("index.php");
 	}
 
-	if (isset($_POST['login'])) {
+	if (isset($_POST['email'])) {
 		try {
 			if (!check_mail($_POST["email"])) {
 				throw new Exception("Invalid mail");
 			}
 			$user = new User();
 			$user->id = create_id();
-			$user->login = $_POST["login"];
-			$user->set_password($_POST["password"]);
 			$user->email = $_POST["email"];
+			$user->set_password($_POST["password"]);
 			$user->lastname = mb_strtoupper($_POST["lastname"], "UTF-8");
 			$user->firstname = ucfirst(mb_strtolower($_POST["firstname"], "UTF-8"));
 			$user->role = ROLE_ADMIN;
@@ -65,8 +64,8 @@ EOF;
 	<form name="input" action="deploy.php" method="POST">
 		<table>
 		<tr>
-			<td>Login: </td>
-			<td><input type="text" name="login" value="admin"></td>
+			<td>Mail: </td>
+			<td><input type="email" name="email" value="admin@toto.fr"></td>
 		</tr>
 		<tr>
 			<td>Firstame: </td>
@@ -83,10 +82,6 @@ EOF;
 		<tr>
 			<td>Retype Password: </td>
 			<td><input type="password" name="password2" value="toto"></td>
-		</tr>
-		<tr>
-			<td>Mail: </td>
-			<td><input type="email" name="email" value="toto@toto.fr"></td>
 		</tr>
 		<tr>
 			<td>Street: </td>

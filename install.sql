@@ -26,7 +26,6 @@ CREATE TABLE user(
         id                Int NOT NULL ,
         created_t         Varchar(25) NOT NULL ,
         mod_t             Varchar(25) NOT NULL ,
-        login             Varchar(25) NOT NULL ,
         password          Varchar(120) NOT NULL ,
         email             Varchar(25) NOT NULL ,
         lastname          Varchar(25) NOT NULL ,
@@ -39,6 +38,7 @@ CREATE TABLE user(
         city              Varchar(255) NOT NULL ,
         country           Varchar(255) NOT NULL ,
         state             Varchar(255),
+        locale            Varchar(25),
         token             Varchar(255),
         PRIMARY KEY (id)
 )ENGINE=InnoDB;

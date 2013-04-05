@@ -1,7 +1,6 @@
 <?php
 	class User {
 		public $id;
-		public $login;
 		public $password;
 		public $email;
 		public $lastname;
@@ -22,8 +21,8 @@
 		}
 
 		public function check_owner() {
-			debug("login=".$this->login." | session_login=".$_SESSION["login"]);
-			return ($this->login == $_SESSION["login"]) || is_admin_logged();
+			debug("email=".$this->email." | session_email=".$_SESSION["email"]);
+			return ($this->email == $_SESSION["email"]) || is_admin_logged();
 		}
 
 		public function delete_try() {
@@ -90,7 +89,8 @@ EOF;
 		}
 
 		public function make_password($passwd) {
-			return sha1($this->login.$passwd);
+			debug("email=".$this->email);
+			return sha1($this->email.$passwd);
 		}
 
 		public function store() {
@@ -106,7 +106,6 @@ SET
 	`mod_t`= :mod_t,
 	`firstname`= :firstname,
 	`lastname`= :lastname,
-	`login`= :login,
 	`password`= :password,
 	`email`= :email,
 	`role`= :role,
@@ -126,7 +125,6 @@ EOF;
 				":mod_t" => $mod_t,
 				":firstname" => $this->firstname,
 				":lastname" => $this->lastname,
-				":login" => $this->login,
 				":password" => $this->password,
 				":email" => $this->email,
 				":role" => $this->role,
@@ -140,7 +138,7 @@ EOF;
 			);
 			$pst->execute($array);
 			if (!$this->is_activated()) {
-				mail_inscription($this->email, $this->login, $this->activation_key);
+				mail_inscription($this);
 			}
 		}
 
@@ -154,7 +152,6 @@ SET
 	`mod_t`= :mod_t,
 	`firstname`= :firstname,
 	`lastname`= :lastname,
-	`email`= :email,
 	`street`= :street,
 	`zip`= :zip,
 	`city`= :city,
@@ -168,7 +165,6 @@ EOF;
 				":mod_t" => $mod_t,
 				":firstname" => $this->firstname,
 				":lastname" => $this->lastname,
-				":email" => $this->email,
 				":street" => $this->street,
 				":zip" => $this->zip,
 				":city" => $this->city,
@@ -194,47 +190,31 @@ EOF;
 			}
 		}
 
-		public static function get_from_login($login = "") {
-			global $g_pdo;
-
-			if ($login == "") {
-				$login = $_SESSION["login"];
-			}
-			$request = <<<EOF
-SELECT * FROM `user`
-WHERE `login`= :login
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(":login" => $login));
-			$record = $pst->fetch(PDO::FETCH_ASSOC);
-			debug("record=".sprint_r($record));
-			if ($record == NULL) {
-				return NULL;
-			}
-			$user = new User();
-			$user->hydrate($record);
-			return $user;
-		}
-
 		public function generate_activation_key() {
 			$this->activation_key = sha1(rand().time().RANDOM_SALT);
 		}
 
-		public static function get_from_email($email) {
+		public static function get_from_email($email = null) {
 			global $g_pdo;
+
+			if ($email == null) {
+				$email = $_SESSION["email"];
+			}
 
 			$request = <<<EOF
 SELECT * FROM `user`
 WHERE `email`= :email
 EOF;
 			debug($request);
+			$array = array(":email" => $email);
+			debug(sprint_r($array));
 			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(":email" => $email));
+			$pst->execute($array);
 			$record = $pst->fetch();
 			if ($record == NULL) {
 				return NULL;
 			}
+			debug("User found.");
 			$user = new User();
 			$user->hydrate($record);
 			return $user;
@@ -307,7 +287,6 @@ EOF;
 		}
 
 		public function hydrate_from_form() {
-			$this->login = $_GET["login"];
 			$this->set_password($_GET["password"]);
 			$this->email = $_GET["email"];
 			$this->lastname = mb_strtoupper($_GET["lastname"], "UTF-8");
@@ -382,21 +361,21 @@ EOF;
 			$pst->execute($array);
 		}
 
-		// Check if the user has entered correct login and password
-		public static function authenticate($login, $password) {
+		// Check if the user has entered correct email and password
+		public static function authenticate($email, $password) {
 			global $g_pdo;
 
 			$request = <<<EOF
 SELECT COUNT(*) FROM `user`
-WHERE `login`= :login AND `password`= :password
+WHERE `email`= :email AND `password`= :password
 EOF;
 			$pst = $g_pdo->prepare($request);
-			$user = User::get_from_login($login);
+			$user = User::get_from_email($email);
 			if ($user == null) {
 				return false;
 			}
 			$pst->execute(array(
-				":login" => $login,
+				":email" => $email,
 				":password" => $user->make_password($password)
 			));
 			$count = $pst->fetch();
@@ -408,10 +387,10 @@ EOF;
 
 			$request = <<<EOF
 SELECT `id` FROM `user`
-WHERE `login`= :login
+WHERE `email`= :email
 EOF;
 			$q = $g_pdo->prepare($request);
-			$q->execute(array(":login" => $_SESSION["login"]));
+			$q->execute(array(":email" => $_SESSION["email"]));
 			$user = $q->fetch();
 			if (!isset($user['id'])) {
 				return NULL;
@@ -478,26 +457,31 @@ EOF;
 			return $events;
 		}
 
-		public static function used_mail($mail) {
+		public static function used_mail($email) {
 			global $g_pdo;
 
 			$request = "";
-			if (isset($_SESSION['login'])) {
-				$user = User::get_from_login();
+			if (isset($_SESSION['email'])) {
+				$user = User::get_from_email();
 				$request = <<<EOF
-SELECT COUNT(*) FROM `user` WHERE `email`= :mail AND `id`!= :id
+SELECT COUNT(*) FROM `user` WHERE `email`= :email AND `id`!= :id
 EOF;
 				$q = $g_pdo->prepare($request);
-				$q->execute(array(":mail" => $mail, ":id" => $user->id));
+				$q->execute(array(":email" => $email, ":id" => $user->id));
 			} else {
 				$request = <<<EOF
-SELECT COUNT(*) FROM `user` WHERE `email`= :mail
+SELECT COUNT(*) FROM `user` WHERE `email`= :email
 EOF;
 				$q = $g_pdo->prepare($request);
-				$q->execute(array(":mail" => $mail));
+				$q->execute(array(":email" => $email));
 			}
 			$count = $q->fetch();
 				return $count[0] > 0;
+		}
+
+		public function get_name() {
+			return ucfirst(mb_strtolower($this->firstname, "UTF-8"))." ".
+				mb_strtoupper($this->lastname, "UTF-8");
 		}
 	}
 ?>

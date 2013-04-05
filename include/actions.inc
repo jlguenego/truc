@@ -159,7 +159,7 @@
 	}
 
 	function action_signout() {
-		unset($_SESSION["login"]);
+		unset($_SESSION["email"]);
 		$_SESSION["state"] = "root";
 	}
 
@@ -209,7 +209,7 @@
 		global $g_display;
 
 		need_authentication();
-		$user = User::get_from_login();
+		$user = User::get_from_email();
 		$g_display["user"] = $user;
 		$g_display["events_organized"] = $user->get_organized_events();
 		$_SESSION["state"] = "account_retrieve";
@@ -233,7 +233,7 @@
 				if (!is_null_or_empty($_GET["new_pass"])) {
 					$g_info_msg .= "Your password has changed. We just sent you a mail for information.";
 					debug("password changed => mail send");
-					//mail_password_changed($user["email"], $user["login"])
+					//mail_password_changed($user["email"])
 				}
 				action_account_retrieve();
 			} else {
@@ -548,12 +548,12 @@
 
 	function action_authenticate() {
 		global $g_error_msg;
-		if (isset($_GET['login']) && isset($_GET['password'])) {
-			if (User::authenticate($_GET['login'], $_GET['password'])) {
-				$user = User::get_from_login($_GET['login']);
+		if (isset($_GET['email']) && isset($_GET['password'])) {
+			if (User::authenticate($_GET['email'], $_GET['password'])) {
+				$user = User::get_from_email($_GET['email']);
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
-					$_SESSION['login'] = $_GET['login'];
+					$_SESSION['email'] = $_GET['email'];
 					if (isset($_GET["redirect"])) {
 						if (is_null_or_empty($_SESSION["url"])) {
 							redirect_to("index.php");
@@ -569,7 +569,7 @@
 					$g_error_msg = _t("Your account is not activated");
 				}
 			} else {
-				$g_error_msg = _t("Wrong login or password");
+				$g_error_msg = _t("Wrong email or password");
 			}
 		}
 		debug("END Action_Authenticate");
@@ -682,7 +682,7 @@
 				$g_error_msg = "This event is not published yet.";
 				return;
 			}
-			$g_display["user"] = User::get_from_login();
+			$g_display["user"] = User::get_from_email();
 			$g_display["event"] = $event;
 			$g_display["rates"] = $event->get_rates();
 			if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
@@ -704,7 +704,7 @@
 			}
 			$devis = $_SESSION['devis'];
 			$devis->store();
-			$user = User::get_from_login();
+			$user = User::get_from_email();
 			debug($user->email);
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
@@ -742,7 +742,7 @@
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
-			$g_display["user"] = User::get_from_login();
+			$g_display["user"] = User::get_from_email();
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = $event->get_rates();
@@ -760,7 +760,7 @@
 		try {
 			$user = User::activate($_GET["key"]);
 			$g_info_msg = "Account successfully activated";
-			$_GET["login"] = $user->login;
+			$_GET["email"] = $user->email;
 			$_SESSION["state"] = "sign_in";
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
@@ -796,7 +796,7 @@
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
-		$user = User::get_from_login($_SESSION["login"]);
+		$user = User::get_from_email();
 		$user->set_password($_GET["password1"]);
 		$user->update();
 		$user->reset_token();
@@ -806,7 +806,7 @@
 
 	function action_reset_password_get_form() {
 		$user = User::get_from_token($_GET["permission_token"]);
-		$_SESSION['login'] = $user->login;
+		$_SESSION['email'] = $user->email;
 		$_SESSION["state"] = "reset_password_form";
 	}
 

@@ -58,12 +58,12 @@
 		}
   	}
 
-  	function mail_inscription($mail, $login, $key) {
-		$msg_html = mail_html_inscription($key, $login);
+  	function mail_inscription($user) {
+		$msg_html = mail_html_inscription($user);
 
-		$msg = mail_build($msg_html, $mail);
+		$msg = mail_build($msg_html, $user->email);
 		$subject = "Activate your account";
-		mail($mail, $subject, $msg["content"], $msg["header"]);
+		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
   	function mail_forgotten_password($user, $token) {

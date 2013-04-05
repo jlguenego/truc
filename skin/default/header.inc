@@ -5,15 +5,13 @@
 	<div id="evt_user_info">
 <?php
 	if (is_logged()) {
-		$user = User::get_from_login($_SESSION['login']);
-		$lastname = mb_strtoupper($user->lastname, "UTF-8");
-		$firstname = ucfirst($user->firstname);
+		$user = User::get_from_email($_SESSION['email']);
 		$email = mb_strtolower($user->email, "UTF-8");
 ?>
 
 
 
-		<?php echo $user->login ?> - <?php echo "${firstname} ${lastname}" ?> - <?php echo "${email}" ?>
+		<?php echo $user->get_name() ?> - <?php echo "${email}" ?>
 <?php
 		if (is_admin_logged()) {
 ?>

@@ -72,9 +72,6 @@
 				throw new Exception("Please fill all fields: " . $f->get_label($key));
 			}
 		}
-		if (User::get_from_login($_GET['login']) != null) {
-			throw new Exception("User already exists");
-		}
 		if (!check_mail($_GET["email"])) {
 			throw new Exception("Invalid mail");
 		}
