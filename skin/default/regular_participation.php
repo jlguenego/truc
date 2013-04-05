@@ -83,8 +83,39 @@ How many ticket do you want?
 		</tr>
 		<tr>
 			<td>Billing address: </td>
-			<td><textarea  rows=3 name="address"><?php echo_default_value("address", $user->address()) ?></textarea></td>
-			<td class="help">numero - rue - code postal - ville - pays</td>
+			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
+			<td class="help">The person or organisation name to be charged.</td>
+		</tr>
+		<tr>
+			<th rowspan="5">Billing address: </th>
+			<td>
+				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="street# and street name"/>
+			</td>
+			<td class="help">Street# and street name</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="City"/>
+			</td>
+			<td class="help">City</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="ZIP code"/>
+			</td>
+			<td class="help">Zip code</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
+			</td>
+			<td class="help">State (optional)</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_country" value="<?php echo $user->country; ?>" placeholder="Country"/>
+			</td>
+			<td class="help">Country</td>
 		</tr>
 	</table>
 	<input type="checkbox" name="confirm"/> I have read the <a href="CGV.pdf">CGV</a> and accept them.<br/>
@@ -120,8 +151,31 @@ How many ticket do you want?
 
 
 
+	function eb_sync_address() {
+		var state = $("input[name='state']").val();
+		if (!state) {
+			state = "";
+		} else {
+			state += " ";
+		}
+		$("input[name='address']").val(
+			$("input[name='address_street']").val() + "\n" +
+			state + $("input[name='address_zip']").val() + " " +
+			$("input[name='address_city']").val() + " " +
+			$("input[name='address_country']").val()
+		);
+	}
+
 	function eb_sync_next_button() {
-		if ($('input[type=checkbox]').is(':checked')) {
+		eb_sync_address();
+		var test = $('input[type=checkbox]').is(':checked');
+
+		$("input[name*='address_']").each(function(){
+			if ($(this).val() == "") {
+				test = false;
+			}
+		});
+		if (test) {
 			$('input[value=Next]').removeAttr('disabled');
 		} else {
 			$('input[value=Next]').attr('disabled', 'disabled');

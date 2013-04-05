@@ -287,18 +287,25 @@ EOF;
 		}
 
 		public function hydrate_from_form() {
+			$this->hydrate($_GET);
 			$this->set_password($_GET["password"]);
 			$this->email = $_GET["email"];
 			$this->lastname = mb_strtoupper($_GET["lastname"], "UTF-8");
 			$this->firstname = ucfirst($_GET["firstname"]);
-			$this->street = $_GET["street"];
-			$this->zip = $_GET["zip"];
-			$this->city = $_GET["city"];
-			$this->country = $_GET["country"];
-			$this->state = $_GET["state"];
+			$this->clean_format();
+		}
+
+		public function clean_format() {
+			$this->lastname = mb_strtoupper($this->lastname, "UTF-8");
+			$this->firstname = ucfirst(mb_strtolower($this->firstname, "UTF-8"));
+			$this->country = mb_strtoupper($this->country, "UTF-8");
+			$this->city = mb_strtoupper($this->city, "UTF-8");
 		}
 
 		public function address() {
+			if ($this->has_no_address()) {
+				return "Not defined";
+			}
 			$state = "";
 			if ($this->state != "") {
 				$state = $this->state.",&nbsp;";
@@ -306,6 +313,22 @@ EOF;
 			$address = $this->street."\n".
 				$state.$this->zip." ".$this->city." ".$this->country;
 			return $address;
+		}
+
+		public function has_no_address() {
+			return is_null_or_empty($this->street)
+				|| is_null_or_empty($this->zip)
+				|| is_null_or_empty($this->city)
+				|| is_null_or_empty($this->country);
+		}
+
+		public function fill_address_from_participation() {
+			$this->street = $_GET["address_street"];
+			$this->zip = $_GET["address_zip"];
+			$this->city = $_GET["address_city"];
+			$this->state = $_GET["state"];
+			$this->country = $_GET["address_country"];
+			$this->update();
 		}
 
 		public function is_activated() {

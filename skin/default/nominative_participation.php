@@ -85,18 +85,45 @@
 	</table>
 	<br/>
 
-	<table class="evt_table">
+	<table class="evt_table_billing">
 		<tr>
 			<th>Billing Entity name: </th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
-			<th>Billing address: </th>
-			<td><textarea  rows=3 name="address"><?php echo_default_value("address", $user->address()) ?></textarea></td>
-			<td class="help">numero - rue - code postal - ville - pays</td>
+			<th rowspan="5">Billing address: </th>
+			<td>
+				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="street# and street name"/>
+			</td>
+			<td class="help">Street# and street name</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="City"/>
+			</td>
+			<td class="help">City</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="ZIP code"/>
+			</td>
+			<td class="help">Zip code</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
+			</td>
+			<td class="help">State (optional)</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_country" value="<?php echo $user->country; ?>" placeholder="Country"/>
+			</td>
+			<td class="help">Country</td>
 		</tr>
 	</table>
+	<input type="hidden" name="address" value=""/>
 	<input type="checkbox" name="confirm"/> I have read the <a href="CGV.pdf">CGV</a> and accept them.<br/>
 	<input type="submit" value="Next" disabled/>
 </form>
@@ -121,7 +148,7 @@
 	);
 
 	$('input[type=checkbox]').ready(eb_sync_next_button);
-	$('input[type=checkbox]').change(eb_sync_next_button);
+	$('input').change(eb_sync_next_button);
 
 	var ticket_counter = 0;
 
@@ -215,9 +242,23 @@
 		});
 	}
 
-
+	function eb_sync_address() {
+		var state = $("input[name='state']").val();
+		if (!state) {
+			state = "";
+		} else {
+			state += " ";
+		}
+		$("input[name='address']").val(
+			$("input[name='address_street']").val() + "\n" +
+			state + $("input[name='address_zip']").val() + " " +
+			$("input[name='address_city']").val() + " " +
+			$("input[name='address_country']").val()
+		);
+	}
 
 	function eb_sync_next_button() {
+		eb_sync_address();
 		var test = $('input[type=checkbox]').is(':checked');
 		var c = $("input[name='lastnames[]']").length;
 
@@ -228,6 +269,11 @@
 			}
 		});
 		$("input[name='lastnames[]']").each(function(){
+			if ($(this).val() == "") {
+				test = false;
+			}
+		});
+		$("input[name*='address_']").each(function(){
 			if ($(this).val() == "") {
 				test = false;
 			}

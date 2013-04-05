@@ -732,6 +732,10 @@
 
 		need_authentication();
 		try {
+			$user = User::get_from_email();
+			if ($user->has_no_address()) {
+				$user->fill_address_from_participation();
+			}
 			if ($_SESSION["state"] == "nominative_participation"
 				|| $_SESSION["state"] == "participation_nominative_recapitulation") {
 				debug("nominative_participation");

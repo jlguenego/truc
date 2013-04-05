@@ -191,20 +191,20 @@ table, td, th {
 
 /* Table */
 
-.evt_table {
+.evt_table, .evt_table_billing {
 	margin: 20px;
 }
 
-.evt_table th {
+.evt_table th, .evt_table_billing th {
 	font-weight: bold;
 	background-color: #FFEAEA;
 }
 
-.evt_table tr:nth-child(odd) {
+.evt_table tr:nth-child(odd), .evt_table_billing tr:first-child td {
 	background-color: #E6F2FF;
 }
 
-.evt_table td {
+.evt_table td, .evt_table_billing td {
 	padding: 5px;
 }
 

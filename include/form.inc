@@ -139,6 +139,7 @@
 		} else {
 			$user->password = "";
 		}
+		$user->clean_format();
 		debug("user=".  sprint_r($user));
 	}
 ?>
