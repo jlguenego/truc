@@ -29,53 +29,95 @@ EOF;
 	} else {
 ?>
 <html>
-<head>
-	<title>Installer</title>
-</head>
-	<?php
-		echo $error_msg;
-	?>
-	Please enter the database connection parameters:
-	<form name="input" action="install.php" method="POST">
-		<table>
-		<tr>
-			<td>Username: </td>
-			<td><input type="text" name="login" value="root"></td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="password"></td>
-		</tr>
-		<tr>
-			<td>Database Name: </td>
-			<td><input type="text" name="dbname" value="jlgutilidb1"></td>
-		</tr>
-		<tr>
-			<td>Hostname: </td>
-			<td><input type="text" name="host" value="localhost"></td>
-		</tr>
-		<tr>
-			<td>Contact mail: </td>
-			<td><input type="email" name="contact_email" value="contact@jlg-utilities.com"></td>
-		</tr>
-		<tr>
-			<td>Payment type:</td>
-			<td>
-				<select name="payment_type">
-					<option value="paypal">Paypal</option>
-					<option value="paypal_sandbox">Paypal Sandbox</option>
-					<option value="intern">Intern</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td><input type="checkbox" name="test_mode" value="true" checked/>Test Mode</td>
-		</tr>
-		<tr>
-			<td><input type="submit" value="Submit"></td>
-		</tr>
-		</table>
-	</form>
+	<head>
+		<title>Installer</title>
+		<link href="ext/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
+		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.js"></script>
+	</head>
+	<body>
+		<?php
+			echo $error_msg;
+		?>
+		<form action="" method="POST">
+			<select name="profile">
+			</select>
+		</form>
+
+		Please enter the database connection parameters:
+		<form name="input" action="install.php" method="POST">
+			<table>
+				<tr>
+					<td>Username: </td>
+					<td><input type="text" name="login"></td>
+				</tr>
+				<tr>
+					<td>Password: </td>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
+					<td>Database Name: </td>
+					<td><input type="text" name="dbname"></td>
+				</tr>
+				<tr>
+					<td>Hostname: </td>
+					<td><input type="text" name="host"></td>
+				</tr>
+				<tr>
+					<td>Contact mail: </td>
+					<td><input type="email" name="contact_email"></td>
+				</tr>
+				<tr>
+					<td>Payment type:</td>
+					<td>
+						<select name="payment_type">
+							<option value="paypal">Paypal</option>
+							<option value="paypal_sandbox">Paypal Sandbox</option>
+							<option value="intern">Intern</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" name="test_mode" value="true"/>Test Mode</td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit"></td>
+				</tr>
+			</table>
+		</form>
+		<script>
+			var profile_array = <?php require_once("profile.json") ?>;
+			console.log(profile_array);
+			var combo = "";
+			$(document).ready(function() {
+				for (i in profile_array) {
+					combo += '<option value="' + i + '">' + profile_array[i].name + '</option>';
+				}
+				$("select[name=profile]").html(combo);
+			});
+			$("select[name=profile]").change(update_profile);
+			$("select[name=profile]").ready(update_profile);
+
+			function update_profile() {
+				var i = $(this).val();
+				if (!i) {
+					i = 0;
+				}
+				console.log(i);
+				$("input[name=login]").val(profile_array[i].MYSQL_USER);
+				$("input[name=password]").val(profile_array[i].MYSQL_PASSWORD);
+				$("input[name=dbname]").val(profile_array[i].MYSQL_HOST);
+				$("input[name=host]").val(profile_array[i].MYSQL_DBNAME);
+				$("input[name=contact_email]").val(profile_array[i].CONTACT_MAIL);
+				$("select[name=payment_type]").val(profile_array[i].PAYMENT_PROVIDER);
+				if (profile_array[i].TEST_MODE) {
+					$("input[name=test_mode]").attr("checked", "checked");
+				} else {
+					$("input[name=test_mode]").removeAttr("checked");
+				}
+			}
+		</script>
+	</body>
 </html>
 <?php
 	}
