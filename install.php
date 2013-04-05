@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <?php
 	define("BASE_DIR", ".");
 
@@ -31,9 +32,8 @@ EOF;
 <html>
 	<head>
 		<title>Installer</title>
-		<link href="ext/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
-		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
-		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.js"></script>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 	</head>
 	<body>
 		<?php
@@ -106,8 +106,8 @@ EOF;
 				console.log(i);
 				$("input[name=login]").val(profile_array[i].MYSQL_USER);
 				$("input[name=password]").val(profile_array[i].MYSQL_PASSWORD);
-				$("input[name=dbname]").val(profile_array[i].MYSQL_HOST);
-				$("input[name=host]").val(profile_array[i].MYSQL_DBNAME);
+				$("input[name=host]").val(profile_array[i].MYSQL_HOST);
+				$("input[name=dbname]").val(profile_array[i].MYSQL_DBNAME);
 				$("input[name=contact_email]").val(profile_array[i].CONTACT_MAIL);
 				$("select[name=payment_type]").val(profile_array[i].PAYMENT_PROVIDER);
 				if (profile_array[i].TEST_MODE) {

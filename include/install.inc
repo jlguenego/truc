@@ -13,6 +13,7 @@
 				throw new Exception("Invalid contact mail");
 			}
 			$contact_email = $_POST["contact_email"];
+			echo("mysql:host=${host};charset=UTF-8");
 
 			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
 

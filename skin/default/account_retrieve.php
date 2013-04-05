@@ -24,15 +24,18 @@
 <?php
 	if ($user->email == $_SESSION['email']) { // If the user is the owner
 ?>
-	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a><br/>
-	<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>" class="account_delete">Delete your account</a>
+	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a>&nbsp;|&nbsp;<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>" class="account_delete">Delete your account</a>
 <?php
 	}
 ?>
 	<br/>
+	<br/>
 	<h3>Events organized:</h3>
 	<ul>
 <?php
+	if (count($g_display["events_organized"]) == 0) {
+		echo "None";
+	}
 	foreach ($g_display["events_organized"] as $event) {
 		$id = $event["id"];
 		$title = $event["title"];

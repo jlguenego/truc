@@ -1,4 +1,3 @@
-
 	<div id="evt_menu">
 		<ul>
 			<li><a href="?action=get_form&amp;type=event">Create an event</a></li>

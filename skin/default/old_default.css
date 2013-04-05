@@ -1,0 +1,259 @@
+* {
+	margin: 0;
+	padding: 0;
+	font:15px arial,sans-serif;
+}
+
+a img {
+	border: none;
+}
+
+.evt_hr {
+	margin: 0px;
+	padding: 0px;
+	height: 0px;
+	border-bottom: 1px solid #000000;
+	font-size: 1px;
+}
+
+body {
+	background: #FFFFFF;
+	color: #000000;
+	width: 800px;
+}
+
+#evt_header {
+	height: 110px;
+}
+
+#evt_logo {
+	margin: 0;
+	padding: 0;
+	float:left;
+}
+
+#evt_user_info {
+	margin: 0;
+	padding: 10;
+	background: #E6F2FF;
+	float:right;
+}
+
+#evt_user_info ul {
+	list-style: none;
+	text-align: center;
+}
+
+#evt_user_info li {
+	background-color: #FFFFFF;
+	display: inline;
+}
+
+#evt_index {
+	position: absolute;
+	top: 100px;
+	left: 0px;
+}
+
+#evt_main {
+	position: relative;
+	min-height: 400px;
+
+}
+
+#evt_info {
+	border: 1px solid;
+	background-color: #FFFFC4;
+}
+
+#evt_menu ul {
+	margin: 30;
+	padding: 30;
+	list-style: none;
+	text-align: center;
+}
+
+#evt_menu li {
+	margin: 30;
+	padding: 30;
+	background-color: #E6F2FF;
+	display: inline;
+}
+
+#evt_footer {
+	text-align: center;
+}
+
+#evt_trace {
+	color: #999999;
+}
+
+#evt_administration {
+	padding: 0px;
+	border: 1px outset red;
+}
+
+.evt_administration_title {
+	color: #FFFFFF;
+	font-weight: bold;
+	background-color: #BF0000;
+	margin: 0px;
+}
+
+.evt_administration_body {
+	padding-left: 20px;
+	margin: 0px;
+}
+
+#evt_general_info {
+	padding: 0px;
+	border: 1px solid #E6F2FF;
+}
+
+.evt_general_info_title {
+	font-weight: bold;
+	background-color: #E6F2FF;
+	margin: 0px;
+}
+
+.evt_general_info_body {
+	padding-left: 20px;
+	margin: 0px;
+}
+
+
+#evt_status {
+	padding: 3px;
+	margin: 20px 2px 20px 2px;
+	background-color: #FFFFB3;
+	font-weight: bold;
+	border: 1px solid #000000;
+}
+
+.evt_rate {
+	border: none;
+	background-color: #EEEEEE;
+}
+
+.help {
+	font-size:12px;
+}
+
+table, td, th {
+	border-collapse: collapse;
+	border: 1px solid #000;
+}
+
+/* Forms */
+.form {
+	/*font:15px arial,sans-serif;*/
+}
+
+.form textarea {
+	width: 500px; height: 100; resize: yes;
+}
+
+.form_label {
+
+}
+
+.form_title {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+
+.form_help {
+	font-size: 10px;
+	margin-bottom: 15px;
+}
+
+.form_cancel * {
+	font-size: 12px;
+}
+
+#evt_error {
+	color: red;
+}
+
+.ui-datepicker * {
+	font-size: 10px;
+}
+
+.evt_title {
+	display: block;
+	height: 30px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Table */
+
+.evt_table, .evt_table_billing {
+	margin: 20px;
+}
+
+.evt_table th, .evt_table_billing th {
+	font-weight: bold;
+	background-color: #FFEAEA;
+}
+
+.evt_table tr:nth-child(odd), .evt_table_billing tr:first-child td {
+	background-color: #E6F2FF;
+}
+
+.evt_table td, .evt_table_billing td {
+	padding: 5px;
+}
+
+.evt_rate_table {
+	margin: 20px 2px 20px 2px;
+}
+
+.evt_rate_table th {
+	font-weight: bold;
+	background-color: #FFEAEA;
+}
+
+.evt_rate_table tr:nth-child(even), .evt_rate_title {
+	background-color: #E6F2FF;
+}
+
+.evt_rate_table td {
+	padding: 5px;
+}
+
+/* Event Retrieve */
+
+.evt_rate_title {
+	font-weight: bold;
+}
+
+.evt_category {
+	text-align: left;
+}
+
+.evt_curr {
+	text-align: right;
+}
+
+.evt_participate {
+	width: 300px;
+	text-align: center;
+	background-color: #FFFFFF
+}
+
+.evt_participate button {
+	padding: 10px;
+	font-size: 20px;
+}
+
+b {
+	font-weight: bold;
+}
+
+.account_delete {
+	display: block;
+	margin-top: 20px;
+	font-size: 12px;
+}

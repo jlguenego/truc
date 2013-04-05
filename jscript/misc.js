@@ -8,10 +8,14 @@ function getCounter() {
 	return counter;
 }
 
+function log(msg) {
+	if (window.console) console.log(msg);
+}
+
 function addRate(divName, label, amount, selected_tax){
 	label = label || "";
 	amount = amount || "";
-	console.log(selected_tax);
+	log(selected_tax);
 	if (selected_tax == undefined) {
 		selected_tax = taxes[0][1];
 	}
@@ -38,8 +42,8 @@ function addRate(divName, label, amount, selected_tax){
 									"<select name=\"tax_rates[]\" \">";
 	for (var i = 0; i < taxes.length; i++) {
 		var selected = "";
-		console.log("selected_tax=" + selected_tax);
-		console.log("taxes[i][1]=" + taxes[i][1]);
+		log("selected_tax=" + selected_tax);
+		log("taxes[i][1]=" + taxes[i][1]);
 		if (taxes[i][1] == selected_tax) {
 			selected = "selected";
 		}

@@ -50,7 +50,7 @@
 		"Without tax" => 0
 	);
 
-	$g_debug = true;
+	$g_debug = false;
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";

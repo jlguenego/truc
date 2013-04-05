@@ -87,8 +87,8 @@ EOF
 ?>
 <script>
 	function update_form() {
-		console.log("update_form");
-		console.log("date=" + $("#happening_t").val());
+		log("update_form");
+		log("date=" + $("#happening_t").val());
 
 		if ($("#happening_t").val() == "") {
 			$("#confirmation_t").val("");
@@ -154,7 +154,7 @@ EOF
 ?>
 	setCounter(<?php echo $i; ?>);
 	if (getCounter() < 1) {
-		console.log("No rate.");
+		log("No rate.");
 		addRate('rates');
 	}
 	$("[name=title]").focus();
