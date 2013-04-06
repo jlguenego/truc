@@ -159,6 +159,7 @@ EOF;
 UPDATE `user`
 SET
 	`mod_t`= :mod_t,
+	`email`= :email,
 	`firstname`= :firstname,
 	`lastname`= :lastname,
 	`street`= :street,
@@ -172,6 +173,7 @@ EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
 				":mod_t" => $mod_t,
+				":email" => $this->email,
 				":firstname" => $this->firstname,
 				":lastname" => $this->lastname,
 				":street" => $this->street,
