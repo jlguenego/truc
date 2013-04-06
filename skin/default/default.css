@@ -100,7 +100,6 @@ html, body {
 	bottom: 0px;
 	width: 100%;
 	height: 50px;
-	overflow: hidden;
 
 	border-top: 1px solid #D4D4D4;
 	margin-top: 30px;
@@ -224,6 +223,8 @@ html, body {
 }
 
 #evt_trace {
+	background-color: white;
+	text-align: left;
 	color: #999999;
 }
 

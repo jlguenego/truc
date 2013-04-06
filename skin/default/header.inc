@@ -6,7 +6,7 @@
 	<div id="evt_user_info">
 <?php
 	if (is_logged()) {
-		$user = User::get_from_email($_SESSION['email']);
+		$user = User::get_from_id();
 		$email = mb_strtolower($user->email, "UTF-8");
 ?>
 

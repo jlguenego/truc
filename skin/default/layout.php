@@ -29,7 +29,6 @@
 </div>
 <?php
 	layout_footer();
-	layout_trace();
 ?>
 		</div>
 	</body>

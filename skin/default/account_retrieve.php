@@ -22,7 +22,7 @@
 	</table>
 
 <?php
-	if ($user->email == $_SESSION['email']) { // If the user is the owner
+	if ($user->id == $_SESSION['user_id']) { // If the user is the owner
 ?>
 	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a>&nbsp;|&nbsp;<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>">Delete your account</a>
 <?php

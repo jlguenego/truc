@@ -2,11 +2,11 @@
 	require_once(BASE_DIR . '/include/misc.inc');
 
 	function is_logged() {
-		if (!is_null_or_empty($_SESSION['email'])) {
-			if (User::get_from_email() != null) {
+		if (!is_null_or_empty($_SESSION['user_id'])) {
+			if (User::get_from_id() != null) {
 				return TRUE;
 			} else {
-				unset($_SESSION['email']);
+				unset($_SESSION['user_id']);
 				return FALSE;
 			}
 		} else {
@@ -19,6 +19,8 @@
 			debug("\$_SERVER[\"REQUEST_URI\"]=".$_SERVER["REQUEST_URI"]);
 			$_SESSION["url"] = $_SERVER["REQUEST_URI"];
 			redirect_to("?action=sign_in&redirect=yes");
+		} else {
+			return User::get_from_session();
 		}
 	}
 
@@ -26,7 +28,7 @@
 		if (!is_logged()) {
 			return FALSE;
 		}
-		$user = User::get_from_email();
+		$user = need_authentication();
 		return $user->role == ROLE_ADMIN;
 	}
 ?>

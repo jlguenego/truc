@@ -159,7 +159,7 @@
 	}
 
 	function action_signout() {
-		unset($_SESSION["email"]);
+		unset($_SESSION["user_id"]);
 		$_SESSION["state"] = "root";
 	}
 
@@ -208,8 +208,7 @@
 	function action_account_retrieve() {
 		global $g_display;
 
-		need_authentication();
-		$user = User::get_from_email();
+		$user = need_authentication();
 		$g_display["user"] = $user;
 		$g_display["events_organized"] = $user->get_organized_events();
 		$_SESSION["state"] = "account_retrieve";
@@ -553,7 +552,7 @@
 				$user = User::get_from_email($_GET['email']);
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
-					$_SESSION['email'] = $_GET['email'];
+					$_SESSION['user_id'] = $user->id;
 					if (isset($_GET["redirect"])) {
 						if (is_null_or_empty($_SESSION["url"])) {
 							redirect_to("index.php");
@@ -674,7 +673,7 @@
 		global $g_display;
 		global $g_error_msg;
 
-		need_authentication();
+		$user = need_authentication();
 		if (!is_null_or_empty($_GET["event_id"])) {
 			$event = Event::get_from_id($_GET["event_id"]);
 			if (!$event->is_published()) {
@@ -682,7 +681,7 @@
 				$g_error_msg = "This event is not published yet.";
 				return;
 			}
-			$g_display["user"] = User::get_from_email();
+			$g_display["user"] = $user;
 			$g_display["event"] = $event;
 			$g_display["rates"] = $event->get_rates();
 			if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
@@ -698,14 +697,14 @@
 
 	function action_payment_success() {
 		global $g_error_msg;
+		$user = need_authentication();
+		debug($user->email);
 		try {
 			if ($_SESSION['state'] == "payment_success") {
 				return;
 			}
 			$devis = $_SESSION['devis'];
 			$devis->store();
-			$user = User::get_from_email();
-			debug($user->email);
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
@@ -730,9 +729,8 @@
 		global $g_display;
 		global $g_error_msg;
 
-		need_authentication();
+		$user = need_authentication();
 		try {
-			$user = User::get_from_email();
 			if ($user->has_no_address()) {
 				$user->fill_address_from_participation();
 			}
@@ -746,7 +744,7 @@
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
-			$g_display["user"] = User::get_from_email();
+			$g_display["user"] = $user;
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["rates"] = $event->get_rates();
@@ -800,7 +798,7 @@
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
-		$user = User::get_from_email();
+		$user = need_authentication();
 		$user->set_password($_GET["password1"]);
 		$user->update();
 		$user->reset_token();
@@ -810,7 +808,7 @@
 
 	function action_reset_password_get_form() {
 		$user = User::get_from_token($_GET["permission_token"]);
-		$_SESSION['email'] = $user->email;
+		$_SESSION['user_id'] = $user->id;
 		$_SESSION["state"] = "reset_password_form";
 	}
 

@@ -14,15 +14,24 @@
 		public $country;
 		public $state;
 
-		public static function get_from_id($id) {
+		public static function get_from_id($id = null) {
 			$user = new User();
+			if ($id == null) {
+				$id = $_SESSION["user_id"];
+			}
 			$user->load($id);
 			return $user;
 		}
 
+		public static function get_from_session() {
+			$user = new User();
+			$user->load($_SESSION["user_id"]);
+			return $user;
+		}
+
 		public function check_owner() {
-			debug("email=".$this->email." | session_email=".$_SESSION["email"]);
-			return ($this->email == $_SESSION["email"]) || is_admin_logged();
+			debug("user_id=".$this->id." | session_user_id=".$_SESSION["user_id"]);
+			return ($this->id == $_SESSION["user_id"]) || is_admin_logged();
 		}
 
 		public function delete_try() {
@@ -71,7 +80,7 @@ EOF;
 		public function set_token($token) {
 			global $g_pdo;
 			$request = <<<EOF
-UPDATE * FROM `user`
+UPDATE `user`
 SET `token`= :token
 WHERE `id`= :id
 EOF;
@@ -194,13 +203,8 @@ EOF;
 			$this->activation_key = sha1(rand().time().RANDOM_SALT);
 		}
 
-		public static function get_from_email($email = null) {
+		public static function get_from_email($email) {
 			global $g_pdo;
-
-			if ($email == null) {
-				$email = $_SESSION["email"];
-			}
-
 			$request = <<<EOF
 SELECT * FROM `user`
 WHERE `email`= :email
@@ -406,19 +410,7 @@ EOF;
 		}
 
 		public static function get_id_from_account() {
-			global $g_pdo;
-
-			$request = <<<EOF
-SELECT `id` FROM `user`
-WHERE `email`= :email
-EOF;
-			$q = $g_pdo->prepare($request);
-			$q->execute(array(":email" => $_SESSION["email"]));
-			$user = $q->fetch();
-			if (!isset($user['id'])) {
-				return NULL;
-			}
-			return $user["id"];
+			return $_SESSION["user_id"];
 		}
 
 		public static function activate($key) {
@@ -484,8 +476,8 @@ EOF;
 			global $g_pdo;
 
 			$request = "";
-			if (isset($_SESSION['email'])) {
-				$user = User::get_from_email();
+			if (isset($_SESSION['user_id'])) {
+				$user = User::get_from_id();
 				$request = <<<EOF
 SELECT COUNT(*) FROM `user` WHERE `email`= :email AND `id`!= :id
 EOF;
