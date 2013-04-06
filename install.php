@@ -1,7 +1,5 @@
-<!DOCTYPE html>
 <?php
 	define("BASE_DIR", ".");
-
 	require_once(BASE_DIR . '/include/install.inc');
 	require_once(BASE_DIR . '/include/misc.inc');
 	session_start();
@@ -31,6 +29,7 @@ EOF;
 		}
 	} else {
 ?>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Installer</title>

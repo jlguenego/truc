@@ -13,7 +13,6 @@
 				throw new Exception("Invalid contact mail");
 			}
 			$contact_email = $_POST["contact_email"];
-			echo("mysql:host=${host};charset=UTF-8");
 
 			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
 
@@ -61,12 +60,14 @@ EOF;
 				throw new Exception("Table creation: ".sprint_r($db->errorInfo())." InnoDB?");
 			};
 
-			if (!$test_mode) {
+			if ($test_mode == "false") {
 				$content = <<<EOF
 Order Deny,Allow
 Deny from all
 EOF;
-				file_put_contents("test/.htaccess", $content);
+				if (file_put_contents("test/.htaccess", $content) === FALSE) {
+					throw new Exception("Cannot create test/.htaccess");
+				}
 			}
 			redirect_to("index.php");
 		} catch (Exception $e) {
@@ -90,6 +91,7 @@ EOF;
 			if (!TEST_MODE) {
 				unlink("test/.htaccess");
 			}
+			session_destroy();
 		} catch (Exception $e) {
 			println($e->getMessage());
 			throw $e;
