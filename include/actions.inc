@@ -230,9 +230,9 @@
 
 				$g_info_msg = "Your personal informations has been changed.";
 				if (!is_null_or_empty($_GET["new_pass"])) {
-					$g_info_msg .= "Your password has changed. We just sent you a mail for information.";
+					$g_info_msg .= " Your password has changed. We just sent you a mail for information.";
 					debug("password changed => mail send");
-					//mail_password_changed($user["email"])
+					mail_password_changed($user);
 				}
 				action_account_retrieve();
 			} else {

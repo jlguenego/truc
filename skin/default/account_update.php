@@ -12,8 +12,9 @@
 	$f->add_email("E-Mail", "email",
 		default_value("email", $user->email),
 		"A valid E-Mail you want to associate to your account.");
-	$f->add_text("Street# and street name", "street",
+	$item = $f->add_text("Street# and street name", "street",
 		default_value("street", $user->street), "Number and street name");
+	$item->other_attr = "size=\"70\"";
 	$f->add_text("ZIP", "zip", default_value("zip", $user->zip),
 		"ZIP code of your city.");
 	$f->add_text("City", "city", default_value("city", $user->city), "Your city.");

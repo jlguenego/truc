@@ -1,2 +1,2 @@
-Header of each mail.<br/>
+Event-Biller.com
 <hr/>

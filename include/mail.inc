@@ -5,6 +5,7 @@
 	require_once(BASE_DIR."/mail/payment_full.php");
 	require_once(BASE_DIR."/mail/payment_authorization.php");
 	require_once(BASE_DIR."/mail/forgotten_password.php");
+	require_once(BASE_DIR."/mail/password_changed.php");
 
 	function mail_payment($mail, $devis) {
 		$event = Event::get_from_id($devis->event_id);
@@ -71,6 +72,14 @@
 
 		$msg = mail_build($msg_html, $user->email);
 		$subject = "Forgotten password";
+		mail($user->email, $subject, $msg["content"], $msg["header"]);
+  	}
+
+  	function mail_password_changed($user) {
+  		$msg_html = mail_html_password_changed($user);
+
+		$msg = mail_build($msg_html, $user->email);
+		$subject = "Password changed";
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 

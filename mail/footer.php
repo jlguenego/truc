@@ -1,2 +1,2 @@
 <hr/>
-Footer of each mail.
+http://www.event-biller.com - a service provided by JLG-Consulting (France)
