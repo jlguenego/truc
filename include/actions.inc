@@ -159,7 +159,8 @@
 	}
 
 	function action_signout() {
-		unset($_SESSION["user_id"]);
+		$_SESSION["user_id"] = null;
+		debug("SESSION=".sprint_r($_SESSION));
 		$_SESSION["state"] = "root";
 	}
 
