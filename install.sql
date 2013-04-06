@@ -18,6 +18,7 @@ CREATE TABLE event(
         type              Int NOT NULL ,
         status            Int NOT NULL ,
         publish_flag      Int NOT NULL ,
+        flags             Int,
         id_user           Int NOT NULL ,
         PRIMARY KEY (id)
 )ENGINE=InnoDB;

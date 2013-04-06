@@ -1,7 +1,27 @@
 <?php
 	$event = $g_display["event"];
 	$author = $g_display["author"];
+
+	if (!$event->is_published()) {
 ?>
+<div id="evt_retrieve_publish">
+	Your event is not published.
+<?php
+		if (!$event->is_ready_for_publication()) {
+?>
+	<br/>Please click <a href="?action=request_for_publication&amp;id=<?php echo $event->id; ?>">here</a> to request its publication to our support.
+<?php
+		} else {
+?>
+	<br/>A request for publication has been done. Our support team is going to process it very soon.
+<?php
+		}
+?>
+</div>
+<?php
+	}
+?>
+
 <div id="evt_administration">
 	<div class="evt_administration_title">
 		Administration

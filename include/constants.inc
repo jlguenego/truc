@@ -39,5 +39,7 @@
 	define('EVENT_STATUS_CANCELLED', 2);
 	define('EVENT_STATUS_INACTIVATED', 3);
 
+	define('EVENT_FLAG_READY_FOR_PUBLICATION', 1);
+
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 ?>

@@ -222,6 +222,13 @@ html, body {
 	background-color: #FFFFC4;
 }
 
+#evt_retrieve_publish {
+	border: 1px solid;
+	background-color: #FFFFC4;
+	margin-bottom: 10px;
+	padding: 2px;
+}
+
 #evt_trace {
 	background-color: white;
 	text-align: left;

@@ -14,6 +14,7 @@
 		public $long_description;
 		public $type;
 		public $status;
+		public $flags;
 		public $publish_flag;
 		public $user_id;
 		public $rates = array();
@@ -55,6 +56,7 @@ EOF;
 			$this->type = EVENT_TYPE_NOMINATIVE;
 			$this->status = EVENT_STATUS_PLANNED;
 			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;
+			$this->flags = 0;
 			$this->user_id = User::get_id_from_account();;
 		}
 
@@ -100,7 +102,8 @@ SET
 	`funding_acquired`=0,
 	`type`= :type,
 	`status`= :status,
-	`publish_flag`= :publish_flag
+	`publish_flag`= :publish_flag,
+	`flags`= :flags
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -122,6 +125,7 @@ EOF;
 				":type" => $this->type,
 				":status" => $status,
 				":publish_flag" => $publish_flag,
+				":flags" => $this->flags,
 			);
 			$pst->execute($array);
 		}
@@ -143,7 +147,8 @@ SET
 	`happening_t`= :happening_t,
 	`confirmation_t`= :confirmation_t,
 	`open_t`= :open_t,
-	`funding_needed`= :funding_needed
+	`funding_needed`= :funding_needed,
+	`flags`= :flags
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -161,6 +166,7 @@ EOF;
 				":open_t" => $this->open_t,
 				":funding_needed" => $this->funding_needed,
 				":id" => $this->id,
+				":flags" => $this->flags,
 			);
 			$pst->execute($array);
 		}
@@ -205,6 +211,19 @@ EOF;
 
 		public function is_inactivated() {
 			return $this->status == EVENT_STATUS_INACTIVATED;
+		}
+
+		public function is_ready_for_publication() {
+			return ($this->flags & EVENT_FLAG_READY_FOR_PUBLICATION) != 0;
+		}
+
+		public function set_ready_for_publication($bool) {
+			if ($bool) {
+				$this->flags |= EVENT_FLAG_READY_FOR_PUBLICATION;
+			} else {
+				$this->flags &= ~EVENT_FLAG_READY_FOR_PUBLICATION;
+			}
+			$this->update();
 		}
 
 		public function check_owner() {

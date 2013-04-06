@@ -6,7 +6,7 @@
 ?>
 		<p>
 			Dear <?php echo $user->get_name(); ?>,<br/>
-			Thanks for subscribe. Your are almost ready to create or participate to events.<br/>
+			Your are almost ready to create or participate to events.<br/>
 			Please click the link below to activate your account:<br/>
 			<a href="<?php echo $lien; ?>"><?php echo $lien; ?></a>
 		</p>

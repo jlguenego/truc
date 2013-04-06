@@ -25,7 +25,8 @@
 				$confirm_button_grey = "disabled";
 				$cancel_button_grey = "disabled";
 			}
-			if ($event->status == EVENT_STATUS_INACTIVATED) {
+			if ($event->status == EVENT_STATUS_INACTIVATED
+				|| (!$event->is_ready_for_publication())) {
 				$publish_button_grey = "disabled";
 			}
 			if (is_admin_logged()) {

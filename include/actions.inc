@@ -1,6 +1,9 @@
 <?php
 	function action() {
 		switch ($_GET["action"]) {
+			case "request_for_publication":
+				action_request_for_publication();
+				break;
 			case "sign_out":
 				action_signout();
 				break;
@@ -828,5 +831,14 @@
 		}
 		$g_display["event"] = $event;
 		$g_display["participations"] = $event->get_participations();
+	}
+
+	function action_request_for_publication() {
+		if (is_null_or_empty($_GET["id"])) {
+			throw new Exception("No event selected");
+		}
+		$event = Event::get_from_id($_GET["id"]);
+		$event->set_ready_for_publication(true);
+		action_event_retrieve();
 	}
 ?>
