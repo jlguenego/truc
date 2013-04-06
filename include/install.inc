@@ -30,6 +30,7 @@ EOF;
 			$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
 			$test_mode = (isset($_POST["test_mode"])) ? "true" : "false";
 			$payment_type = $_POST["payment_type"];
+			$escape_quote = (isset($_POST["escape_quote"])) ? "true" : "false";
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -45,6 +46,8 @@ EOF;
 
 	define('PAYMENT_PROVIDER', "$payment_type");
 	require_once('payment/'.PAYMENT_PROVIDER.'/constants.inc');
+
+	define('ESCAPE_QUOTE', $escape_quote);
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

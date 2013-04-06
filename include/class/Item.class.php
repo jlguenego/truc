@@ -15,6 +15,9 @@
 
 		public function hydrate($record) {
 			foreach ($record as $key => $value) {
+				if (ESCAPE_QUOTE) {
+					$value = str_replace("\\'", "'", $value);
+				}
 				$this->$key = $value;
 			}
 			$this->bill_id = $record["id_bill"];

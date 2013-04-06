@@ -59,6 +59,7 @@ EOF;
 <html>
 	<head>
 		<title>Installer</title>
+		<meta charset="utf-8"/>
 		<script type="text/javascript" src="jscript/misc.js"></script>
 		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 	</head>

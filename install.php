@@ -33,6 +33,7 @@ EOF;
 <html>
 	<head>
 		<title>Installer</title>
+		<meta charset="utf-8"/>
 		<script type="text/javascript" src="jscript/misc.js"></script>
 		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 	</head>
@@ -82,6 +83,9 @@ EOF;
 					<td><input type="checkbox" name="test_mode" value="true"/>Test Mode</td>
 				</tr>
 				<tr>
+					<td><input type="checkbox" name="escape_quote" value="true"/>Escape Quote</td>
+				</tr>
+				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>
 				<input type="hidden" name="profile"/>
@@ -89,7 +93,7 @@ EOF;
 		</form>
 		<script>
 			var profile_array = <?php require_once("profile.json") ?>;
-			console.log(profile_array);
+			log(profile_array);
 			var combo = "";
 			$(document).ready(function() {
 				for (i in profile_array) {
@@ -105,7 +109,7 @@ EOF;
 				if (!i) {
 					i = 0;
 				}
-				console.log(i);
+				log(i);
 				$("input[name=login]").val(profile_array[i].MYSQL_USER);
 				$("input[name=password]").val(profile_array[i].MYSQL_PASSWORD);
 				$("input[name=host]").val(profile_array[i].MYSQL_HOST);
@@ -113,9 +117,16 @@ EOF;
 				$("input[name=contact_email]").val(profile_array[i].CONTACT_MAIL);
 				$("select[name=payment_type]").val(profile_array[i].PAYMENT_PROVIDER);
 				if (profile_array[i].TEST_MODE) {
-					$("input[name=test_mode]").attr("checked", "checked");
+					log("Test Mode ON");
+					$("input[name=test_mode]").prop('checked', true);
 				} else {
-					$("input[name=test_mode]").removeAttr("checked");
+					log("Test Mode OFF");
+					$("input[name=test_mode]").prop('checked', false);
+				}
+				if (profile_array[i].ESCAPE_QUOTE) {
+					$("input[name=escape_quote]").prop('checked', true);
+				} else {
+					$("input[name=escape_quote]").prop('checked', false);
 				}
 				$("input[name=profile]").val(i);
 			}
