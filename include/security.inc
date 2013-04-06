@@ -19,6 +19,7 @@
 	function security_handle_html_injection($str, $allowed_tag = "") {
 		$str = strip_tags($str, $allowed_tag);
 		$str = purify_html($str);
+		$str = strip_tags($str, $allowed_tag);
 		debug("String=".$str);
 		return $str;
 	}

@@ -1,12 +1,6 @@
 <?php
 	$event = $g_display["event"];
 	$author = $g_display["author"];
-	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
-	echo $event->short_description;
-?>
-<br/>
-<?php
-	if ($event->can_be_administrated()) {
 ?>
 <div id="evt_administration">
 	<div class="evt_administration_title">
@@ -32,6 +26,14 @@
 		</ul>
 	</div>
 </div>
+<?php
+	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
+	echo $event->short_description;
+?>
+<br/>
+<?php
+	if ($event->can_be_administrated()) {
+?>
 <?php
 	}
 	$rates = $event->get_rates();
