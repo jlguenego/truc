@@ -4,6 +4,7 @@
 
 	require_once(BASE_DIR . '/include/install.inc');
 	require_once(BASE_DIR . '/include/misc.inc');
+	session_start();
 
 	if (is_installed()) {
 		redirect_to("index.php");
@@ -12,6 +13,7 @@
 	$error_msg = '';
 	if (isset($_POST['login'])) {
 		try {
+			$_SESSION["profile"] = $_POST["profile"];
 			install();
 			$install_done = <<<EOF
 <html>
@@ -32,7 +34,7 @@ EOF;
 <html>
 	<head>
 		<title>Installer</title>
-		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+		<script type="text/javascript" src="jscript/misc.js"></script>
 		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 	</head>
 	<body>
@@ -83,6 +85,7 @@ EOF;
 				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>
+				<input type="hidden" name="profile"/>
 			</table>
 		</form>
 		<script>
@@ -115,6 +118,7 @@ EOF;
 				} else {
 					$("input[name=test_mode]").removeAttr("checked");
 				}
+				$("input[name=profile]").val(i);
 			}
 		</script>
 	</body>

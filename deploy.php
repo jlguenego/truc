@@ -1,12 +1,15 @@
 <?php
 	define("BASE_DIR", ".");
 
+
+
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
 	require_once(BASE_DIR . '/include/misc.inc');
+	session_start();
 
 	if (!is_installed()) {
 		redirect_to("install.php");
@@ -54,60 +57,88 @@ EOF;
 	} else {
 ?>
 <html>
-<head>
-	<title>Installer</title>
-</head>
-	<?php
-		echo $g_error_msg;
-	?>
-	Please enter the admin user info:
-	<form name="input" action="deploy.php" method="POST">
-		<table>
-		<tr>
-			<td>Mail: </td>
-			<td><input type="email" name="email" value="admin@toto.fr"></td>
-		</tr>
-		<tr>
-			<td>Firstame: </td>
-			<td><input type="text" name="firstname" value="yannis"></td>
-		</tr>
-		<tr>
-			<td>Lastname: </td>
-			<td><input type="text" name="lastname" value="thomias"></td>
-		</tr>
-		<tr>
-			<td>Password: </td>
-			<td><input type="password" name="password" value="toto"></td>
-		</tr>
-		<tr>
-			<td>Retype Password: </td>
-			<td><input type="password" name="password2" value="toto"></td>
-		</tr>
-		<tr>
-			<td>Street: </td>
-			<td><input type="text" name="street" value="16 rue de Juilly"></td>
-		</tr>
-		<tr>
-			<td>Zip: </td>
-			<td><input type="text" name="zip" value="77020"></td>
-		</tr>
-		<tr>
-			<td>City: </td>
-			<td><input type="text" name="city" value="Torcy"></td>
-		</tr>
-		<tr>
-			<td>Country: </td>
-			<td><input type="text" name="country" value="France"></td>
-		</tr>
-		<tr>
-			<td>State: </td>
-			<td><input type="text" name="state" value=""></td>
-		</tr>
-		<tr>
-			<td><input type="submit" value="Submit"></td>
-		</tr>
-		</table>
-	</form>
+	<head>
+		<title>Installer</title>
+		<script type="text/javascript" src="jscript/misc.js"></script>
+		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
+	</head>
+	<body>
+		<?php
+			echo $g_error_msg;
+		?>
+		Please enter the admin user info:<br/>
+		Profile: <span id="profile"></span>
+		<script>
+			var profile_array = <?php require_once("profile.json") ?>;
+			var i = <?php echo $_SESSION["profile"]; ?>;
+			$("#profile").html(profile_array[i].name);
+		</script>
+		<form name="input" action="deploy.php" method="POST">
+			<table>
+				<tr>
+					<td>Mail: </td>
+					<td><input type="email" name="email"/></td>
+				</tr>
+				<tr>
+					<td>Firstame: </td>
+					<td><input type="text" name="firstname"></td>
+				</tr>
+				<tr>
+					<td>Lastname: </td>
+					<td><input type="text" name="lastname"></td>
+				</tr>
+				<tr>
+					<td>Password: </td>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
+					<td>Retype Password: </td>
+					<td><input type="password" name="password2"></td>
+				</tr>
+				<tr>
+					<td>Street: </td>
+					<td><input type="text" name="street"></td>
+				</tr>
+				<tr>
+					<td>Zip: </td>
+					<td><input type="text" name="zip"></td>
+				</tr>
+				<tr>
+					<td>City: </td>
+					<td><input type="text" name="city"></td>
+				</tr>
+				<tr>
+					<td>Country: </td>
+					<td><input type="text" name="country"></td>
+				</tr>
+				<tr>
+					<td>State: </td>
+					<td><input type="text" name="state"></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Submit"></td>
+				</tr>
+			</table>
+		</form>
+		<script>
+			log(profile_array);
+			$(document).ready(update_profile);
+
+			function update_profile() {
+				log(i);
+				$("input[name=email]").val(profile_array[i].admin_email);
+				$("input[name=firstname]").val(profile_array[i].admin_firstname);
+				$("input[name=lastname]").val(profile_array[i].admin_lastname);
+				$("input[name=password]").val(profile_array[i].admin_password);
+				$("input[name=password2]").val(profile_array[i].admin_password);
+				$("input[name=street]").val(profile_array[i].admin_street);
+				$("input[name=city]").val(profile_array[i].admin_city);
+				$("input[name=zip]").val(profile_array[i].admin_zip);
+				$("input[name=country]").val(profile_array[i].admin_country);
+				$("input[name=state]").val(profile_array[i].admin_state);
+			}
+		</script>
+	</body>
 </html>
 <?php
 	}

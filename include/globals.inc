@@ -50,7 +50,6 @@
 		"Without tax" => 0
 	);
 
-	$g_debug = false;
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";
@@ -59,8 +58,10 @@
 	$g_pdo = null;
 	$g_mysali = null;
 	$g_use_recaptcha = true;
+	$g_debug = true;
 	if (file_exists(BASE_DIR . "/" . SETTINGS_INI)) {
 		require_once(BASE_DIR . "/" . SETTINGS_INI);
+		$g_debug = TEST_MODE;
 		$g_use_recaptcha = (!TEST_MODE) || ($_SERVER["HTTP_HOST"] == "localhost");
 		try {
 			$g_pdo = new PDO('mysql:host='.MYSQL_HOST.';dbname='.MYSQL_DBNAME.';charset=UTF-8', MYSQL_USER, MYSQL_PASSWORD);

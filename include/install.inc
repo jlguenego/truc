@@ -68,7 +68,6 @@ Deny from all
 EOF;
 				file_put_contents("test/.htaccess", $content);
 			}
-
 			redirect_to("index.php");
 		} catch (Exception $e) {
 			throw $e;
