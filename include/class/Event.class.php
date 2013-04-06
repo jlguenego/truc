@@ -39,8 +39,6 @@ EOF;
 				throw new Exception("Cannot load the event with id=" . $id);
 			}
 			$this->hydrate($record);
-			$this->short_description = html_entity_decode($this->short_description);
-			$this->long_description = html_entity_decode($this->long_description);
 		}
 
 		public function load_default() {
