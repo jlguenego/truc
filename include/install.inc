@@ -13,6 +13,9 @@
 				throw new Exception("Invalid contact mail");
 			}
 			$contact_email = $_POST["contact_email"];
+			
+			$captcha_pub_key = $_POST["captcha_pub_key"];
+			$captcha_priv_key = $_POST["captcha_priv_key"];
 
 			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
 
@@ -48,6 +51,9 @@ EOF;
 	require_once('payment/'.PAYMENT_PROVIDER.'/constants.inc');
 
 	define('ESCAPE_QUOTE', $escape_quote);
+	
+	define('CAPTCHA_PUB_KEY', '$captcha_pub_key');
+	define('CAPTCHA_PRIV_KEY', '$captcha_priv_key');
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

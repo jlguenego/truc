@@ -3,9 +3,6 @@
 	define('SETTINGS_INI', "settings.ini");
 	define('SKIN_DIR', "skin/default");
 
-	define('CAPTCHA_PUB_KEY', '6LcxnN0SAAAAAJY7qJPcZl0eQHeEUo_N-8uOSEyo');
-	define('CAPTCHA_PRIV_KEY', '6LcxnN0SAAAAANaQNIfxoIEErqdhkCTPDB7Dv746');
-
 	define('COMPANY_NAME', 'Eventual');
 
 	define('ALLOWED_TAGS', "<br><div><p><img><ul><ol><li><span><a><b><i><strong>");

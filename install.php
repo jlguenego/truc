@@ -70,6 +70,14 @@ EOF;
 					<td><input type="email" name="contact_email"></td>
 				</tr>
 				<tr>
+					<td>Recaptcha public key: </td>
+					<td><input type="text" name="captcha_pub_key"></td>
+				</tr>
+				<tr>
+					<td>Recaptcha private key: </td>
+					<td><input type="text" name="captcha_priv_key"></td>
+				</tr>
+				<tr>
 					<td>Payment type:</td>
 					<td>
 						<select name="payment_type">
@@ -116,6 +124,8 @@ EOF;
 				$("input[name=dbname]").val(profile_array[i].MYSQL_DBNAME);
 				$("input[name=contact_email]").val(profile_array[i].CONTACT_MAIL);
 				$("select[name=payment_type]").val(profile_array[i].PAYMENT_PROVIDER);
+				$("input[name=captcha_pub_key]").val(profile_array[i].captcha_pub_key);
+				$("input[name=captcha_priv_key]").val(profile_array[i].captcha_priv_key);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);
