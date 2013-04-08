@@ -1,7 +1,7 @@
 <div id="evt_header">
 	<div id="evt_logo">
 		<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
-		<!--<div id="evt_index"><a href="index.php">Main page</a></div>-->
+		<div id="evt_index">Organize your event. Control financial risks.</div>
 	</div>
 	<div id="evt_user_info">
 <?php
