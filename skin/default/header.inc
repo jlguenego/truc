@@ -1,7 +1,7 @@
 <div id="evt_header">
 	<div id="evt_logo">
 		<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
-		<div id="evt_index"><a href="index.php">Main page</a></div>
+		<!--<div id="evt_index"><a href="index.php">Main page</a></div>-->
 	</div>
 	<div id="evt_user_info">
 <?php
@@ -25,11 +25,18 @@
 <?php
 	} else {
 ?>
-		<a href="?action=sign_in">Sign in</a> | <a class="help" href="index.php?action=get_form&amp;type=account">Create account</a>
+		<a href="?action=sign_in">Sign in</a> | <a href="index.php?action=get_form&amp;type=account">Create account</a>
 <?php
 	}
 ?>
 	</div>
 </div>
-
+<div id="evt_header_menu">
+	<ul>
+		<li><a href="index.php">Home</a></li>
+		<li><a href="index.php?action=display&amp;page=about_us">About us</a></li>
+		<li><a href="index.php?action=display&amp;page=what_we_do">What we do</a></li>
+		<li><a href="index.php?action=display&amp;page=contact">Contact</a></li>
+	</ul>
+</div>
 <div class="evt_hr"></div>

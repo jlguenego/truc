@@ -57,8 +57,10 @@
 	}
 	if ($_SESSION["state"] == "not_allowed") {
 		$page = "error";
+	} else if (!is_null_or_empty($g_page)) {
+		$page = SKIN_DIR."/".$g_page;
 	} else {
-		$page = $_SESSION["state"];
+		$page = SKIN_DIR."/".$_SESSION["state"];
 	}
 
 	debug("Session after: ".$_SESSION["state"]);

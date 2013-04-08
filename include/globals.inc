@@ -53,6 +53,8 @@
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";
+	
+	$g_page = null;
 
 	// Allows to have only one entity of PDO
 	$g_pdo = null;

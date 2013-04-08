@@ -72,12 +72,20 @@
 			case "list":
 				action_list();
 				break;
+			case "display":
+				action_display();
+				break;			
 			case "none":
 				break;
 			default:
 				throw new Exception("This action does not exists.");
 				break;
 		}
+	}
+	
+	function action_display() {
+		global $g_page;
+		$g_page = $_GET["page"];
 	}
 
 	function action_list() {

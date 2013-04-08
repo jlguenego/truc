@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>EventIf</title>
+		<title>Event Biller</title>
 		<meta charset="utf-8"/>
 
 		<script type="text/javascript" src="jscript/misc.js"></script>
@@ -23,8 +23,8 @@
 ?>
 <div id="evt_main">
 <?php
-	debug("including " . SKIN_DIR."/${page}.php");
-	include_once(SKIN_DIR."/${page}.php");
+	debug("including ${page}.php");
+	include_once("${page}.php");
 ?>
 </div>
 <?php
