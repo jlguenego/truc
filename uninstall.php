@@ -10,7 +10,9 @@
 	$error_msg = '';
 
 	if (!is_admin_logged()) {
-		redirect_to("index.php");
+		if (!TEST_MODE) {
+			redirect_to("index.php");
+		}
 	}
 
 	if (isset($_POST['confirm'])) {

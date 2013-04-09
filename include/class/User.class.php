@@ -101,8 +101,7 @@ EOF;
 		}
 
 		public function make_password($passwd) {
-			debug("email=".$this->email);
-			return sha1($this->email.$passwd);
+			return sha1("a little bit of salt...".$passwd);
 		}
 
 		public function store() {
