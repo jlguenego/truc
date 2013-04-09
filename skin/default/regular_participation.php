@@ -14,7 +14,7 @@ How many ticket do you want?
 			<th>Total tax excluded</th>
 			<th>Taxe rate</th>
 			<th>Taxe amount</th>
-			<th>TTC</th>
+			<th>Total due</th>
 		</tr>
 		<?php
 			$i = 0;
@@ -44,7 +44,7 @@ How many ticket do you want?
 			debug(sprint_r($tax_array));
 		?>
 		<tr>
-			<th colspan="4">TOTAL HT</th>
+			<th colspan="4">Total</th>
 			<td id="sub_total">0.00</td>
 		</tr>
 	</table>

@@ -25,12 +25,12 @@
 	if ($event->type == EVENT_TYPE_ANONYMOUS) {
 ?>
 			<th>Quantity</th>
-			<th>Total ticket HT</th>
+			<th>Total</th>
 <?php
 	}
 ?>
-			<th>Total ticket tax</th>
-			<th>Total ticket TTC</th>
+			<th>Total taxes</th>
+			<th>Total due</th>
 <?php
 	if ($event->type == EVENT_TYPE_NOMINATIVE) {
 ?>
@@ -76,15 +76,15 @@
 	<br/>
 	<table class="evt_table">
 		<tr>
-			<th>Total HT</th>
+			<th>Total</th>
 			<td><?php echo $devis->total_ht; ?>€</td>
 		</tr>
 		<tr>
-			<th>Total tax</th>
+			<th>Total taxes</th>
 			<td><?php echo $devis->total_tax; ?>€</td>
 		</tr>
 		<tr>
-			<th>Total Due</th>
+			<th>Total due</th>
 			<td><b><?php echo $devis->total_ttc; ?>€</b></td>
 		</tr>
 	</table>

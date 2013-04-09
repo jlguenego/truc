@@ -29,14 +29,14 @@
 				<tr>
 					<th>Event name</th>
 					<th>Rate name</th>
-					<th>Amount HT</th>
-					<th>Rate tax</th>
+					<th>Amount</th>
+					<th>tax</th>
 		<?php if ($event->type == EVENT_TYPE_ANONYMOUS) { ?>
 					<th>Quantity</th>
-					<th>Total ticket HT</th>
+					<th>Total ticket</th>
 		<?php } ?>
-					<th>Total ticket tax</th>
-					<th>Total ticket TTC</th>
+					<th>Total taxes</th>
+					<th>Total due</th>
 		<?php if ($event->type == EVENT_TYPE_NOMINATIVE) { ?>
 					<th>Title</th>
 					<th>Firsname</th>
@@ -78,15 +78,15 @@
 			<br/>
 			<table border="1px">
 				<tr>
-					<th>Total HT</th>
+					<th>Total</th>
 					<td><?php echo curr($invoice->total_ht); ?>€</td>
 				</tr>
 				<tr>
-					<th>Total tax</th>
+					<th>Total taxes</th>
 					<td><?php echo curr($invoice->total_tax); ?>€</td>
 				</tr>
 				<tr>
-					<th>Total Due</th>
+					<th>Total due</th>
 					<td><b><?php echo curr($invoice->total_ttc); ?>€</b></td>
 				</tr>
 			</table>

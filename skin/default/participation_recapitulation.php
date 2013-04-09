@@ -38,7 +38,7 @@
 	}
 ?>
 	<tr>
-		<th colspan="4">TOTAL HT</th>
+		<th colspan="4">Total</th>
 		<th><?php echo curr($devis->total_ht); ?></th>
 	</tr>
 </table>
@@ -46,11 +46,11 @@
 
 <table>
 	<tr>
-		<td>TOTAL TAX</td>
+		<td>Total taxes</td>
 		<td><?php echo $devis->total_tax; ?></td>
 	</tr>
 	<tr>
-		<th>TOTAL DUE</th>
+		<th>Total due</th>
 		<th><?php echo $devis->total_ttc; ?></th>
 	</tr>
 </table>
