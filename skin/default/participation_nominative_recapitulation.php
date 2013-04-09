@@ -38,25 +38,24 @@
 		<td><?php echo $participant_firstname; ?></td>
 		<td><?php echo $participant_lastname; ?></td>
 	</tr>
+</table>
 <?php
 	}
 ?>
-	<tr>
-		<th colspan="4">TOTAL HT (€)</th>
-		<th class="evt_curr"><?php echo curr($devis->total_ht); ?></th>
-	</tr>
-</table>
-<br/>
-
 <table class="evt_table">
 	<tr>
-		<th>TOTAL TAX (€)</th>
+		<th >TOTAL HT (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_ht); ?></td>
+	</tr>
+	<tr>
+		<th >TOTAL TAX (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_tax); ?></td>
 	</tr>
 	<tr>
-		<th>TOTAL DUE (€)</th>
+		<th >TOTAL DUE (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
+
 </table>
 <br/>
 
