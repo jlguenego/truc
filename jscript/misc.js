@@ -29,15 +29,15 @@ function addRate(divName, label, amount, selected_tax){
 					"<td>" +
 						"<table>" +
 							"<tr>" +
-								"<td>Label</td>" +
-								"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\"></td>" +
+								"<td>Ticket rate name</td>" +
+								"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\" placeholder=\"Ex: Normal, Student, Member, etc.\" size=\"40\"></td>" +
 							"</tr>" +
 							"<tr>" +
 								"<td>Amount (Tax excluded)</td>" +
-								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\"></td>" +
+								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
 							"</tr>" +
 							"<tr>" +
-								"<td>Taxe</td>" +
+								"<td>Tax</td>" +
 								"<td>" +
 									"<select name=\"tax_rates[]\" \">";
 	for (var i = 0; i < taxes.length; i++) {

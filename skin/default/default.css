@@ -139,6 +139,10 @@ html, body {
 	margin-bottom: 20px;
 }
 
+.form_h1 {
+	font-weight: bold;
+}
+
 .form_label {
 	margin-bottom: 8px;
 }

@@ -22,7 +22,7 @@
 		"The entity that is responsible for organizing the event.");
 	$item->other_attr = ' size="60" maxlength="255"';
 	if (!$event->has_accountancy_activity()) {
-		$item = $f->add_number("Required funding", "funding_needed",
+		$item = $f->add_number("Required funding (Euros)", "funding_needed",
 			default_value("funding_needed", $event->funding_needed),
 			"Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement.");
 		$item->other_attr = ' step="0.01" min="0"';
@@ -73,6 +73,7 @@
 	}
 	$f->add_hidden("id", $event->id);
 	$f->add_raw_html(<<<EOF
+	<span class="form_h1">Create tickets and define their price</span>
 <div id="rates">
 </div>
 <a href="JavaScript:addRate('rates');">Add another ticket rate</a><br/><br/>
@@ -171,6 +172,7 @@ EOF
 	        theme_advanced_toolbar_align : "left",
 	        theme_advanced_statusbar_location : "bottom",
 	        theme_advanced_resizing : true,
+	        theme_advanced_path : false,
 
 	        // Skin options
 	        skin : "o2k7",
