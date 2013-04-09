@@ -54,8 +54,8 @@
 			<th>Tax amount</th>
 			<th>TTC</th>
 			<th>Title</th>
-			<th>Lastname</th>
 			<th>Firstname</th>
+			<th>Lastname</th>
 		</tr>
 	</table>
 	<br/>
@@ -176,8 +176,8 @@
 							"<td type=\"tax_amount\">" + eb_curr(tax_amount) + "</td>" +
 							"<td>" + eb_curr(amount_ttc) + "</td>" +
 							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\"/></td>" +
-							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\"/></td>" +
 							"<td><input type=\"text\" name=\"firstnames[]\" placeholder=\"mandatory\"/></td>" +
+							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\"/></td>" +
 							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "')\"/></td>" +
 						"</tr>";
 		$("#tickets").append(content);

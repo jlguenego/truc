@@ -11,8 +11,8 @@
 		<th>Tax amount (€)</th>
 		<th>Total (€)</th>
 		<th>Title</th>
-		<th>Lastname</th>
 		<th>Firstname</th>
+		<th>Lastname</th>
 	</tr>
 <?php
 	foreach ($devis->items as $item) {
@@ -35,8 +35,8 @@
 		<td class="evt_curr"><?php echo $total_tax; ?></td>
 		<td class="evt_curr"><?php echo $total_ttc; ?></td>
 		<td><?php echo $participant_title; ?></td>
-		<td><?php echo $participant_lastname; ?></td>
 		<td><?php echo $participant_firstname; ?></td>
+		<td><?php echo $participant_lastname; ?></td>
 	</tr>
 <?php
 	}
