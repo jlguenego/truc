@@ -11,6 +11,7 @@
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
 	require_once(BASE_DIR . "/include/security.inc");
+	require_once(BASE_DIR . "/include/format.inc");
 
 	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));

@@ -290,8 +290,6 @@ EOF;
 				return NULL;
 			}
 			unset($record["password"]);
-			$record["lastname"] = mb_strtoupper($record["lastname"], "UTF-8");
-			$record["firstname"] = ucfirst($record["firstname"]);
 			$this->hydrate($record);
 		}
 
@@ -300,13 +298,13 @@ EOF;
 			$this->set_password($_GET["password"]);
 			$this->email = $_GET["email"];
 			$this->lastname = mb_strtoupper($_GET["lastname"], "UTF-8");
-			$this->firstname = ucfirst($_GET["firstname"]);
+			$this->firstname = format_firstname($_GET["firstname"]);
 			$this->clean_format();
 		}
 
 		public function clean_format() {
-			$this->lastname = mb_strtoupper($this->lastname, "UTF-8");
-			$this->firstname = ucfirst(mb_strtolower($this->firstname, "UTF-8"));
+			$this->lastname = format_lastname($this->lastname);
+			$this->firstname = format_firstname($this->firstname);
 			$this->country = mb_strtoupper($this->country, "UTF-8");
 			$this->city = mb_strtoupper($this->city, "UTF-8");
 		}
@@ -500,8 +498,7 @@ EOF;
 		}
 
 		public function get_name() {
-			return ucfirst(mb_strtolower($this->firstname, "UTF-8"))." ".
-				mb_strtoupper($this->lastname, "UTF-8");
+			return format_firstname($this->firstname)." ".format_lastname($this->lastname);
 		}
 	}
 ?>

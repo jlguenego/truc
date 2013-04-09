@@ -4,8 +4,7 @@
 		include("header.php");
 ?>
 		<p>
-			Dear <?php echo ucfirst(mb_strtolower($user->firstname, "UTF-8"))." ".
-				mb_strtoupper($user->lastname, "UTF-8"); ?>,<br/>
+			Dear <?php echo $user->get_name(); ?>,<br/>
 			You have made a payment authorization for the following quotation.<br/>
 			If the event is confirmed, you will receive an invoice and your payment
 			will be captured. <br/>

@@ -9,6 +9,7 @@
 	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
 	require_once(BASE_DIR . '/include/misc.inc');
+	require_once(BASE_DIR . '/include/format.inc');
 	session_start();
 
 	if (!is_installed()) {
@@ -27,8 +28,8 @@
 			$user->id = create_id();
 			$user->email = $_POST["email"];
 			$user->set_password($_POST["password"]);
-			$user->lastname = mb_strtoupper($_POST["lastname"], "UTF-8");
-			$user->firstname = ucfirst(mb_strtolower($_POST["firstname"], "UTF-8"));
+			$user->lastname = format_lastname($_POST["lastname"]);
+			$user->firstname = format_firstname($_POST["firstname"]);
 			$user->role = ROLE_ADMIN;
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
 			$user->generate_activation_key();
