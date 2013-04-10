@@ -78,6 +78,10 @@ EOF;
 					<td><input type="text" name="captcha_priv_key"></td>
 				</tr>
 				<tr>
+					<td>Merchant id (email): </td>
+					<td><input type="text" name="merchant_id"></td>
+				</tr>
+				<tr>
 					<td>Payment type:</td>
 					<td>
 						<select name="payment_type">
@@ -126,6 +130,7 @@ EOF;
 				$("select[name=payment_type]").val(profile_array[i].PAYMENT_PROVIDER);
 				$("input[name=captcha_pub_key]").val(profile_array[i].captcha_pub_key);
 				$("input[name=captcha_priv_key]").val(profile_array[i].captcha_priv_key);
+				$("input[name=merchant_id]").val(profile_array[i].merchant_id);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);

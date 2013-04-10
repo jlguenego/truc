@@ -1,12 +1,13 @@
 <?php
 	$devis = $g_display['devis'];
+	$event = $g_display['event'];
 ?>
 
 <form action="<?php echo PAYPAL_URL; ?>" method="post">
 	<input type="hidden" name="cmd" value="_xclick">
 	<input type="hidden" name="business" value="<?php echo PAYPAL_SELLER; ?>">
 	<input type="hidden" name="lc" value="US">
-	<input type="hidden" name="item_name" value="<?php echo $devis->label; ?>">
+	<input type="hidden" name="item_name" value="<?php echo $devis->label.": ".$event->title; ?>">
 	<input type="hidden" name="amount" value="<?php echo $devis->total_ttc; ?>">
 	<input type="hidden" name="currency_code" value="EUR">
 	<input type="hidden" name="button_subtype" value="services">

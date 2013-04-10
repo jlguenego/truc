@@ -16,7 +16,7 @@ In both case of confirmation or cancellation, you will be noticed by email.<br/>
 	<input type="hidden" name="cmd" value="_xclick">
 	<input type="hidden" name="business" value="<?php echo PAYPAL_SELLER; ?>">
 	<input type="hidden" name="lc" value="US">
-	<input type="hidden" name="item_name" value="<?php echo $event->title; ?>">
+	<input type="hidden" name="item_name" value="<?php echo $devis->label.": ".$event->title; ?>">
 	<input type="hidden" name="amount" value="<?php echo $devis->total_ttc; ?>">
 	<input type="hidden" name="currency_code" value="EUR">
 	<input type="hidden" name="button_subtype" value="services">
@@ -25,7 +25,6 @@ In both case of confirmation or cancellation, you will be noticed by email.<br/>
 	<input type="hidden" name="notify_url" value="<?php echo HOST."/payment/paypal/ipn.php"; ?>">
 	<input type="hidden" name="return" value="<?php echo HOST."/index.php?action=payment_success"; ?>">
 	<input type="hidden" name="cancel_return" value="<?php echo HOST."/index.php?action=payment_cancel"; ?>">
-	<input type="hidden" name="invoice" value="<?php echo $devis->label; ?>">
 	<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 	<input type="image" src="<?php echo HOST . "/payment/paypal/authorize.png"; ?>" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
 	<img alt="" border="0" src="https://www.paypalobjects.com/fr_XC/i/scr/pixel.gif" width="1" height="1">

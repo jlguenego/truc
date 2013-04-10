@@ -715,7 +715,7 @@
 				return;
 			}
 			$devis = $_SESSION['devis'];
-			$devis->transaction_number = $_SERVER["QUERY_STRING"];
+			$devis->payment_info = $_SERVER["QUERY_STRING"];
 			$devis->store();
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";

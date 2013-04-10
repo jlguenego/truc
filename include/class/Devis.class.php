@@ -10,7 +10,7 @@
 		public $address;
 		public $status = DEVIS_STATUS_PLANNED;
 		public $type = DEVIS_TYPE_QUOTATION;
-		public $transaction_number;
+		public $payment_info;
 		public $event_id;
 		public $user_id;
 
@@ -80,7 +80,7 @@ SET
 	`type`= :type,
 	`id_user`= :id_user,
 	`id_event`= :id_event,
-	`transaction_number`= :transaction_number
+	`payment_info`= :payment_info
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
@@ -96,7 +96,7 @@ EOF;
 				":type" => $this->type,
 				":id_user" => $this->user_id,
 				":id_event" => $this->event_id,
-				":transaction_number" => $this->transaction_number,
+				":payment_info" => $this->payment_info,
 			);
 
 			$pst->execute($array);

@@ -13,7 +13,7 @@
 				throw new Exception("Invalid contact mail");
 			}
 			$contact_email = $_POST["contact_email"];
-			
+
 			$captcha_pub_key = $_POST["captcha_pub_key"];
 			$captcha_priv_key = $_POST["captcha_priv_key"];
 
@@ -34,6 +34,7 @@ EOF;
 			$test_mode = (isset($_POST["test_mode"])) ? "true" : "false";
 			$payment_type = $_POST["payment_type"];
 			$escape_quote = (isset($_POST["escape_quote"])) ? "true" : "false";
+			$merchant_id = $_POST["merchant_id"];
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -47,11 +48,12 @@ EOF;
 
 	define('TEST_MODE', $test_mode);
 
+	define('MERCHANT_ID', '$merchant_id');
 	define('PAYMENT_PROVIDER', "$payment_type");
 	require_once('payment/'.PAYMENT_PROVIDER.'/constants.inc');
 
 	define('ESCAPE_QUOTE', $escape_quote);
-	
+
 	define('CAPTCHA_PUB_KEY', '$captcha_pub_key');
 	define('CAPTCHA_PRIV_KEY', '$captcha_priv_key');
 ?>
