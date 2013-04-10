@@ -124,7 +124,9 @@
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="address_country" value="<?php echo $user->country; ?>" placeholder="Country"/>
+				<select name="address_country">
+					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
+				</select>
 			</td>
 			<td class="help">Country</td>
 		</tr>

@@ -142,4 +142,10 @@
 		$user->clean_format();
 		debug("user=".  sprint_r($user));
 	}
+
+	function form_get_country_options($country = "") {
+		$result = file_get_contents("etc/countries.html");
+		$result = str_replace("<option value=\"$country\">", "<option value=\"$country\" selected=\"selected\">", $result);
+		return $result;
+	}
 ?>
