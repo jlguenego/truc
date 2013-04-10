@@ -632,7 +632,7 @@
 		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
-		$label = "EB-";
+		$label = "EventBiller-";
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
 			$devis->type = DEVIS_TYPE_INVOICE;
@@ -676,6 +676,7 @@
 		$_SESSION["devis"] = $devis;
 		debug("devis=".sprint_r($devis));
 		$g_display["event_confirmed"] = $event->is_confirmed();
+		$g_display["event"] = $event;
 		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
 
@@ -714,6 +715,7 @@
 				return;
 			}
 			$devis = $_SESSION['devis'];
+			$devis->transaction_number = $_SERVER["QUERY_STRING"];
 			$devis->store();
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
