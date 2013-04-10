@@ -9,9 +9,10 @@
 	$f->add_text("Firstname", "firstname", default_value("firstname"),
 		"Your Firstname.");
 	$f->add_text("Lastname", "lastname", default_value("lastname"), "Your Lastname.");
-	$f->add_password("Password", "password", "The password you want to associate to your account.");
-	$f->add_password("Retype Password", "password2", "Retype your password.");
-
+	$f->add_password("Password", "clear_password", "The password you want to associate to your account.");
+	$f->add_password("Retype Password", "clear_password2", "Retype your password.");
+	$f->add_hidden("password", "");
+	$f->add_hidden("password2", "");
 	//$f->add_text("Street# and street name", "street", default_value("street"), "Number and street name");
 	//$f->add_text("ZIP", "zip", default_value("zip"), "ZIP code of your city.");
 	//$f->add_text("City", "city", default_value("city"), "Your city.");
@@ -27,6 +28,16 @@
 	echo $f->html();
 ?>
 <script>
+	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	$(document).ready(function() {
+		eb_sync_hash('clear_password', 'password');
+		eb_sync_hash('clear_password2', 'password2');
+	});
+	$("form").submit(function() {
+		$('input[name*=clear_]').val("");
+	});
+
+
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input[type=checkbox]').change(eb_sync_next_button);
 

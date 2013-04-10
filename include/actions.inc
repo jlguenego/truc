@@ -74,7 +74,7 @@
 				break;
 			case "display":
 				action_display();
-				break;			
+				break;
 			case "none":
 				break;
 			default:
@@ -82,7 +82,7 @@
 				break;
 		}
 	}
-	
+
 	function action_display() {
 		global $g_page;
 		$g_page = $_GET["page"];
@@ -800,6 +800,10 @@
 		global $g_error_msg;
 		global $g_info_msg;
 
+		if (!is_null_or_empty($_GET["clear_password1"])) {
+			throw new Exception("Clear password send.");
+		}
+
 		if (is_null_or_empty($_GET["password1"]) || is_null_or_empty($_GET["password2"])) {
 			$g_error_msg = "Please fill all field.";
 			$_SESSION["state"] = "reset_password_form";
@@ -811,7 +815,7 @@
 			return;
 		}
 		$user = need_authentication();
-		$user->set_password($_GET["password1"]);
+		$user->password = $_GET["password1"];
 		$user->update();
 		$user->reset_token();
 		$g_info_msg = "Your password has been updated.";

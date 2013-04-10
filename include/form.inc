@@ -135,7 +135,7 @@
 			if ($_GET['new_pass'] != $_GET['new_pass2']) {
 				throw new Exception(_t("New passwords are different."));
 			}
-			$user->set_password($_GET['new_pass']);
+			$user->password = $_GET['new_pass'];
 		} else {
 			$user->password = "";
 		}

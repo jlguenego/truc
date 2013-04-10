@@ -181,7 +181,7 @@
 							"</td>" +
 							"<td type=\"tax_amount\">" + eb_curr(tax_amount) + "</td>" +
 							"<td>" + eb_curr(amount_ttc) + "</td>" +
-							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\"/></td>" +
+							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\" size=\"15\"/></td>" +
 							"<td><input type=\"text\" name=\"firstnames[]\" placeholder=\"mandatory\"/></td>" +
 							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\"/></td>" +
 							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "')\"/></td>" +

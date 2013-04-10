@@ -149,3 +149,15 @@ function update_total(tax_rate) {
 function eb_curr(m) {
 	return parseFloat(m).toFixed(2);
 }
+
+function eb_sync_hash(txt_field_name, hidden_field_name) {
+	eb_handle_sync_hash(txt_field_name, hidden_field_name);
+	$('input[name='+txt_field_name+']').keyup(function() {
+		eb_handle_sync_hash(txt_field_name, hidden_field_name);
+	});
+}
+
+function eb_handle_sync_hash(txt_field_name, hidden_field_name) {
+	var hash = CryptoJS.SHA1($('input[name='+txt_field_name+']').val() + hash_salt);
+	$('input[name='+hidden_field_name+']').val(""+hash);
+}

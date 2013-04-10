@@ -294,7 +294,7 @@ EOF;
 
 		public function hydrate_from_form() {
 			$this->hydrate($_GET);
-			$this->set_password($_GET["password"]);
+			$this->password = $_GET["password"];
 			$this->email = $_GET["email"];
 			$this->lastname = mb_strtoupper($_GET["lastname"], "UTF-8");
 			$this->firstname = format_firstname($_GET["firstname"]);
@@ -405,7 +405,7 @@ EOF;
 			}
 			$pst->execute(array(
 				":email" => $email,
-				":password" => $user->make_password($password)
+				":password" => $password,
 			));
 			$count = $pst->fetch();
 			return $count[0] > 0;

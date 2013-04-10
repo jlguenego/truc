@@ -14,6 +14,7 @@
 		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
 		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.js"></script>
 		<script src="ext/tiny_mce/tiny_mce.js"></script>
+		<script src="ext/sha1.js"></script>
 	</head>
 	<body>
 		<div id="body">

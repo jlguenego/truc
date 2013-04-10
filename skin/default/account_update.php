@@ -22,11 +22,23 @@
 		"Your country");
 	$f->add_text("State (optional)", "state", default_value("state", $user->state),
 		"Your state if any");
-	$f->add_password("New Password (optional)", "new_pass",
+	$f->add_password("New Password (optional)", "clear_new_pass",
 		"Leave empty if you do not want to change your password.");
-	$f->add_password("Retype new Password (optional)", "new_pass2",
+	$f->add_password("Retype new Password (optional)", "clear_new_pass2",
 		"Retype your new password.");
+	$f->add_hidden("new_pass", "");
+	$f->add_hidden("new_pass2", "");
 	$f->add_hidden("id", $user->id);
 	$f->add_submit("Submit");
 	echo $f->html();
 ?>
+<script>
+	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	$(document).ready(function() {
+		eb_sync_hash('clear_new_pass', 'new_pass');
+		eb_sync_hash('clear_new_pass2', 'new_pass2');
+	});
+	$("form").submit(function() {
+		$('input[name*=clear_]').val("");
+	});
+</script>

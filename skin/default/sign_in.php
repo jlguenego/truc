@@ -7,7 +7,8 @@
 	}
 	$f->method = "POST";
 	$f->add_text("Email", "email", default_value("email"), "Enter your email");
-	$f->add_password("Password", "password", "Enter your password");
+	$f->add_password("Password", "clear_password", "Enter your password");
+	$f->add_hidden("password", "");
 	$f->add_submit("Sign in");
 	echo $f->html();
 ?>
@@ -16,3 +17,12 @@
 <a href="?action=get_form&type=forgotten_password">Forgot your password?</a><br/>
 <br/>
 <a href="index.php?action=get_form&amp;type=account">Don't have an account ?</a>
+<script>
+	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	$(document).ready(function() {
+		eb_sync_hash('clear_password', 'password');
+	});
+	$("form").submit(function() {
+		$('input[name*=clear_]').val("");
+	});
+</script>

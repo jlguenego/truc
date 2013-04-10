@@ -27,7 +27,7 @@
 			$user = new User();
 			$user->id = create_id();
 			$user->email = $_POST["email"];
-			$user->set_password($_POST["password"]);
+			$user->password = $_POST["password"];
 			$user->lastname = format_lastname($_POST["lastname"]);
 			$user->firstname = format_firstname($_POST["firstname"]);
 			$user->role = ROLE_ADMIN;
@@ -63,6 +63,7 @@ EOF;
 		<meta charset="utf-8"/>
 		<script type="text/javascript" src="jscript/misc.js"></script>
 		<script type="text/javascript" src="ext/jquery-ui-1.10.1.custom/js/jquery-1.9.1.js"></script>
+		<script src="ext/sha1.js"></script>
 	</head>
 	<body>
 		<?php
@@ -91,11 +92,11 @@ EOF;
 				</tr>
 				<tr>
 					<td>Password: </td>
-					<td><input type="password" name="password"></td>
+					<td><input type="password" name="clear_password"></td>
 				</tr>
 				<tr>
 					<td>Retype Password: </td>
-					<td><input type="password" name="password2"></td>
+					<td><input type="password" name="clear_password2"></td>
 				</tr>
 				<tr>
 					<td>Street: </td>
@@ -121,18 +122,28 @@ EOF;
 					<td><input type="submit" value="Submit"></td>
 				</tr>
 			</table>
+			<input type="hidden" name="password" value=""/>
+			<input type="hidden" name="password2" value=""/>
 		</form>
 		<script>
 			log(profile_array);
-			$(document).ready(update_profile);
+			var hash_salt = "<?php echo RANDOM_SALT ?>";
+			$(document).ready(function() {
+				update_profile();
+				eb_sync_hash('clear_password', 'password');
+				eb_sync_hash('clear_password2', 'password2');
+			});
+			$("form").submit(function() {
+				$('input[name*=clear_]').val("");
+			});
 
 			function update_profile() {
 				log(i);
 				$("input[name=email]").val(profile_array[i].admin_email);
 				$("input[name=firstname]").val(profile_array[i].admin_firstname);
 				$("input[name=lastname]").val(profile_array[i].admin_lastname);
-				$("input[name=password]").val(profile_array[i].admin_password);
-				$("input[name=password2]").val(profile_array[i].admin_password);
+				$("input[name=clear_password]").val(profile_array[i].admin_password);
+				$("input[name=clear_password2]").val(profile_array[i].admin_password);
 				$("input[name=street]").val(profile_array[i].admin_street);
 				$("input[name=city]").val(profile_array[i].admin_city);
 				$("input[name=zip]").val(profile_array[i].admin_zip);
