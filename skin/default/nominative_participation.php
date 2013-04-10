@@ -118,17 +118,17 @@
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
-			</td>
-			<td class="help">State (if applicable)</td>
-		</tr>
-		<tr>
-			<td>
 				<select name="address_country">
 					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
 				</select>
 			</td>
 			<td class="help">Country</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
+			</td>
+			<td class="help">State (if applicable)</td>
 		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>

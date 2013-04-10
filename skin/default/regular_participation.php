@@ -107,17 +107,17 @@ How many ticket do you want?
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
-			</td>
-			<td class="help">State (optional)</td>
-		</tr>
-		<tr>
-			<td>
 				<select name="address_country">
 					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
 				</select>
 			</td>
 			<td class="help">Country</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
+			</td>
+			<td class="help">State (optional)</td>
 		</tr>
 	</table>
 	<input type="checkbox" name="confirm"/> I have read the <a href="CGV.pdf">CGV</a> and accept them.<br/>
