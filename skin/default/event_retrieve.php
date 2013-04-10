@@ -39,6 +39,15 @@
 <?php
 		}
 		echo "<li>".$event->funding_acquired."€/".$event->funding_needed."€ funding acquired.</li>";
+		if ($event->type == EVENT_TYPE_NOMINATIVE) {
+?>
+			<li>Tickets indicate attendee name.</li>
+<?php
+		} else {
+?>
+			<li>Tickets do not indicate attendee name.</li>
+<?php
+		}
 ?>
 		<li><a href="?action=list&amp;type=participation&amp;id=<?php echo $event->id ?>">View registrations</a></li>
 		<li><a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a></li>

@@ -377,16 +377,7 @@
 					$_SESSION["state"] = "event_form";
 					form_event_valid(TRUE);
 					$event = Event::get_from_id($_GET["id"]);
-					$event->title = $_GET['title'];
-					$event->organizer_name = $_GET['organizer_name'];
-					$event->happening_t = $_GET['happening_t'];
-					$event->confirmation_t = $_GET['confirmation_t'];
-					$event->open_t = $_GET['open_t'];
-					$event->funding_needed = $_GET['funding_needed'];
-					$event->location = $_GET['location'];
-					$event->link = $_GET['link'];
-					$event->short_description = $_GET['short_description'];
-					$event->long_description = $_GET['long_description'];
+					$event->hydrate_from_form();
 
 					$event->check_owner();
 
@@ -400,8 +391,11 @@
 						$i++;
 					}
 					$event->delete_unused_rates($_GET['labels']);
-					//action_event_retrieve();
-					redirect_to("?action=retrieve&type=event&id=".$event->id);
+					if (TEST_MODE) {
+						action_event_retrieve();
+					} else {
+						redirect_to("?action=retrieve&type=event&id=".$event->id);
+					}
 				} else {
 					action_event_create();
 				}

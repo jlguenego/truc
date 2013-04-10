@@ -50,30 +50,20 @@
 		default_value("long_description", $event->long_description),
 		"Enter a long description of the event. (HTML editor)");
 	$item->other_attr = 'width="200px"';
-
-	if (!$event->has_accountancy_activity()) {
-		$selected = "";
-		if ($event->type == EVENT_TYPE_ANONYMOUS) {
-			$selected = " selected";
-		}
-		$options = "<option value=\"".EVENT_TYPE_ANONYMOUS."\"${selected}>Anonymous</option>";
-		$selected = "";
-		if ($event->type == EVENT_TYPE_NOMINATIVE) {
-			$selected = " selected";
-		}
-		$options .= "<option value=\"".EVENT_TYPE_NOMINATIVE."\"${selected}>Nominative</option>";
-		$selected = "";
-		if ($event->type == EVENT_TYPE_FREE_NOMINATIVE) {
-			$selected = " selected";
-		}
-		//$options .= "<option value=\"".EVENT_TYPE_FREE_NOMINATIVE."\"${selected}>Free</option>";
-
-		$f->add_select("Select your event type", "event_type", $options,
-			"For a nominative event, the participant name will be indicated on ticket.");
-	}
 	$f->add_hidden("id", $event->id);
+	$f->add_hidden("event_type", $event->type);
 	$f->add_raw_html(<<<EOF
-	<span class="form_h1">Create tickets and define their price</span>
+	<span class="form_h1">Create tickets and define their price</span><br/>
+EOF
+);
+	if (!$event->has_accountancy_activity()) {
+		$checked = "";
+		if ($event->type == EVENT_TYPE_NOMINATIVE) {
+			$checked = " checked";
+		}
+		$f->add_checkbox("I want to know the name of my attendees", "event_type_checkbox", $checked, "");
+	}
+	$f->add_raw_html(<<<EOF
 <div id="rates">
 </div>
 <a href="JavaScript:addRate('rates');">Add another ticket rate</a><br/><br/>
@@ -192,5 +182,13 @@ EOF
 	                username : "Some User",
 	                staffid : "991234"
 	        }
+	});
+
+	$('form').submit(function() {
+		if ($("input[name=event_type_checkbox]:checked").length > 0) {
+			$("input[name=event_type]").attr("value", <?php echo EVENT_TYPE_NOMINATIVE; ?>);
+		} else {
+			$("input[name=event_type]").attr("value", <?php echo EVENT_TYPE_ANONYMOUS; ?>);
+		}
 	});
 </script>

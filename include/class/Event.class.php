@@ -148,7 +148,8 @@ SET
 	`confirmation_t`= :confirmation_t,
 	`open_t`= :open_t,
 	`funding_needed`= :funding_needed,
-	`flags`= :flags
+	`flags`= :flags,
+	`type`= :type
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -167,6 +168,7 @@ EOF;
 				":funding_needed" => $this->funding_needed,
 				":id" => $this->id,
 				":flags" => $this->flags,
+				":type" => $this->type,
 			);
 			$pst->execute($array);
 		}
@@ -457,6 +459,7 @@ EOF;
 			$this->short_description = $_GET['short_description'];
 			$this->long_description = $_GET['long_description'];
 			$this->type = $_GET['event_type'];
+			debug("hydrate_from_form=".sprint_r($this));
 		}
 
 		public function has_rate($label) {

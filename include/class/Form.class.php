@@ -185,6 +185,12 @@ EOF;
 EOF;
 						break;
 
+					case "radio":
+						$result .= <<<EOF
+<input type="radio" name="{$item->name}" value="{$item->default}" {$item->html_spec} />{$item->label}<br/>
+EOF;
+						break;
+
 					case "submit":
 						$result .= "<input type=\"submit\" value=\"".$item->label."\"/>";
 						break;
