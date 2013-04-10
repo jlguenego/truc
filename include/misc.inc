@@ -63,7 +63,7 @@ EOF;
 	}
 
 	function create_id() {
-		return abs((rand(0, 999) * time()) % 100000000);
+		return seq_next('object');
 	}
 
 	function check($var) {

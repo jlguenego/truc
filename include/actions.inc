@@ -632,13 +632,17 @@
 		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
+		$label = "EB-";
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
 			$devis->type = DEVIS_TYPE_INVOICE;
+			$label .= "I-";
 		} else {
 			$devis->status = DEVIS_STATUS_PLANNED;
 			$devis->type = DEVIS_TYPE_QUOTATION;
+			$label .= "Q-";
 		}
+		$devis->label = $label."EVT-".sprintf("%06d", $event->id);
 
 		$total_ttc = 0.00;
 

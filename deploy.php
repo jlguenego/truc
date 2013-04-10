@@ -24,6 +24,9 @@
 			if (!check_mail($_POST["email"])) {
 				throw new Exception("Invalid mail");
 			}
+			seq_create('quotation', 1000);
+			seq_create('invoice', 10000);
+			seq_create('object', 100000);
 			$user = new User();
 			$user->id = create_id();
 			$user->email = $_POST["email"];
@@ -39,8 +42,6 @@
 			$user->country = $_POST["country"];
 			$user->state = $_POST["state"];
 			$user->store();
-			seq_create('quotation', 1000);
-			seq_create('invoice', 10000);
 			$install_done = <<<EOF
 <html>
 	<head>

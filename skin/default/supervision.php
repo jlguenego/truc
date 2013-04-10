@@ -1,5 +1,6 @@
 <table class="evt_table">
 	<tr>
+		<th>Event ID</th>
 		<th>Event name</th>
 		<th>Event date</th>
 		<th>Confirmation date</th>
@@ -12,6 +13,7 @@
 			$publish_flag = $g_event_publish_flag[$event->publish_flag];
 ?>
 	<tr>
+		<td><?php echo $event->id; ?></td>
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
 		<td><?php echo $event->happening_t; ?></td>
 		<td><?php echo $event->confirmation_t; ?></td>

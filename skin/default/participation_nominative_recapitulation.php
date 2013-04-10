@@ -1,6 +1,8 @@
 <?php
 	global $g_display;
 	$devis = $g_display["devis"];
+
+	echo "Label: ".$devis->label;
 ?>
 <table class="evt_table">
 	<tr>

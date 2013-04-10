@@ -57,9 +57,9 @@ EOF;
 			global $g_pdo;
 
 			if ($this->type == DEVIS_TYPE_INVOICE) {
-				$this->label = "Invoice - no ".seq_next('invoice');
+				$this->label .= "#".seq_next('invoice');
 			} else {
-				$this->label = "Quotation - no ".seq_next('quotation');
+				$this->label .= "#".seq_next('quotation');
 			}
 			$this->id = create_id();
 			$created_t = time();
