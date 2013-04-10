@@ -152,12 +152,17 @@ function eb_curr(m) {
 
 function eb_sync_hash(txt_field_name, hidden_field_name) {
 	eb_handle_sync_hash(txt_field_name, hidden_field_name);
+
 	$('input[name='+txt_field_name+']').keyup(function() {
 		eb_handle_sync_hash(txt_field_name, hidden_field_name);
 	});
 }
 
 function eb_handle_sync_hash(txt_field_name, hidden_field_name) {
-	var hash = CryptoJS.SHA1($('input[name='+txt_field_name+']').val() + hash_salt);
-	$('input[name='+hidden_field_name+']').val(""+hash);
+	if ($('input[name='+txt_field_name+']').val().length > 0) {
+		var hash = CryptoJS.SHA1($('input[name='+txt_field_name+']').val() + hash_salt);
+		$('input[name='+hidden_field_name+']').val(""+hash);
+	} else {
+		$('input[name='+hidden_field_name+']').val(null);
+	}
 }

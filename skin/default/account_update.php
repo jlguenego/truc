@@ -18,7 +18,7 @@
 	$f->add_text("ZIP", "zip", default_value("zip", $user->zip),
 		"ZIP code of your city.");
 	$f->add_text("City", "city", default_value("city", $user->city), "Your city.");
-	$f->add_text("Country", "country", default_value("country", $user->country),
+	$f->add_select("Country", "country", file_get_contents("etc/countries.html"),
 		"Your country");
 	$f->add_text("State (optional)", "state", default_value("state", $user->state),
 		"Your state if any");
@@ -34,9 +34,12 @@
 ?>
 <script>
 	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	var user_country = '<?php echo_default_value("country", $user->country); ?>';
 	$(document).ready(function() {
 		eb_sync_hash('clear_new_pass', 'new_pass');
 		eb_sync_hash('clear_new_pass2', 'new_pass2');
+
+		$("select[name=country]").val(user_country);
 	});
 	$("form").submit(function() {
 		$('input[name*=clear_]').val("");
