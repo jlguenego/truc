@@ -61,6 +61,12 @@
 	<br/>
 
 	<table id="total" style="display:none;" class="evt_table">
+		<tr>
+			<th>&nbsp;</th>
+			<th>Amount (€)</th>
+			<th>Taxes (€)</th>
+			<th>Due (€)</th>
+		</tr>
 		<?php
 			foreach ($tax_array as $tax_rate) {
 				$tax_rate_id = str_replace(".", "_", $tax_rate);
@@ -114,7 +120,7 @@
 			<td>
 				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
 			</td>
-			<td class="help">State (optional)</td>
+			<td class="help">State (if applicable)</td>
 		</tr>
 		<tr>
 			<td>

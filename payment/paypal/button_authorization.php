@@ -1,5 +1,6 @@
 <?php
-	$devis = $g_display['devis'];
+	global $g_display;
+	$devis = $g_display["devis"];
 	// TODO: image authorization only
 ?>
 
