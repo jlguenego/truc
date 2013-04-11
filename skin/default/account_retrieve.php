@@ -4,20 +4,24 @@
 <span class="evt_title">Account Infos</span>
 	<table class="evt_table">
 		<tr>
-			<th>Email</th>
+			<th class="th_left">Email</th>
 			<td><?php echo $user->email ?></td>
 		</tr>
 		<tr>
-			<th>Firstname</th>
+			<th class="th_left">Firstname</th>
 			<td><?php echo $user->firstname ?></td>
 		</tr>
 		<tr>
-			<th>Lastname</th>
+			<th class="th_left">Lastname</th>
 			<td><?php echo $user->lastname ?></td>
 		</tr>
 		<tr>
-			<th>Postal address</th>
+			<th class="th_left">Postal address</th>
 			<td><?php echo $user->address(); ?></td>
+		</tr>
+		<tr>
+			<th class="th_left">Phone number</th>
+			<td><?php echo $user->phone; ?></td>
 		</tr>
 	</table>
 

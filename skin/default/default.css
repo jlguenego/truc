@@ -235,6 +235,10 @@ html, body {
 	border: 1px solid black;
 }
 
+.th_left {
+	text-align: left;
+}
+
 /* REST */
 
 
@@ -386,6 +390,6 @@ b, strong {
 
 .legal_title {
 	font-size: 20px;
-	font-weight: bold;	
+	font-weight: bold;
 	text-align: center;
 }

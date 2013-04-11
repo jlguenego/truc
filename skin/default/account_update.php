@@ -12,6 +12,9 @@
 	$f->add_email("E-Mail", "email",
 		default_value("email", $user->email),
 		"A valid E-Mail you want to associate to your account.");
+	$item = $f->add_text("Phone number (optional)", "phone",
+		default_value("phone", $user->phone), "Used only when processing order if we need to contact you quickly.");
+	$item->is_optional = true;
 	$item = $f->add_text("Street# and street name", "street",
 		default_value("street", $user->street), "Number and street name");
 	$item->other_attr = "size=\"70\"";

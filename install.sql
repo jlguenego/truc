@@ -45,6 +45,7 @@ CREATE TABLE user(
         state             Varchar (255) ,
         locale            Varchar (25) ,
         token             Varchar (255) ,
+        phone             Varchar (25) ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 

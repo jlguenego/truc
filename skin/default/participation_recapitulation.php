@@ -48,15 +48,15 @@
 
 <table class="evt_table">
 	<tr>
-		<th style="text-align: left;">Total (€)</th>
+		<th class="th_left">Total (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ht); ?></td>
 	</tr>
 	<tr>
-		<th style="text-align: left;">Total taxes (€)</th>
+		<th class="th_left">Total taxes (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_tax); ?></td>
 	</tr>
 	<tr>
-		<th style="text-align: left;">Total due (€)</th>
+		<th class="th_left">Total due (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
 </table>
@@ -64,11 +64,11 @@
 
 <table class="evt_table">
 	<tr>
-		<th style="text-align: left;">Billing Entity name: </th>
+		<th class="th_left">Billing Entity name: </th>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>
-		<th style="text-align: left;">Billing address: </th>
+		<th class="th_left">Billing address: </th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
 </table>

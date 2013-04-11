@@ -13,6 +13,7 @@
 		public $city;
 		public $country;
 		public $state;
+		public $phone;
 
 		public static function get_from_id($id = null) {
 			$user = new User();
@@ -168,7 +169,8 @@ SET
 	`zip`= :zip,
 	`city`= :city,
 	`country`= :country,
-	`state`= :state
+	`state`= :state,
+	`phone`= :phone
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -184,6 +186,7 @@ EOF;
 				":country" => $this->country,
 				":state" => $this->state,
 				":id" => $this->id,
+				":phone" => $this->phone,
 			);
 			$pst->execute($array);
 			$pst->closeCursor();

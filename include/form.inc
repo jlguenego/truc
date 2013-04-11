@@ -105,6 +105,10 @@
 			&& $user->lastname != $_GET["lastname"]) {
 			$user->lastname = $_GET["lastname"];
 		}
+		if (!is_null_or_empty($_GET["phone"])
+			&& $user->phone != $_GET["phone"]) {
+			$user->phone = $_GET["phone"];
+		}
 		if (!is_null_or_empty($_GET["street"])
 			&& $user->street != $_GET["street"]) {
 			$user->street = $_GET["street"];
