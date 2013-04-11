@@ -16,6 +16,7 @@ CREATE TABLE event(
         funding_acquired  Decimal (25,2) NOT NULL  ,
         location          Varchar (255) NOT NULL  ,
         link              Varchar (255) ,
+        phone             Varchar (25) ,
         short_description Text NOT NULL  ,
         long_description  Text ,
         type              Int NOT NULL  ,

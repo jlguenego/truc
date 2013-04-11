@@ -10,6 +10,7 @@
 		public $funding_authorized;
 		public $location;
 		public $link;
+		public $phone;
 		public $short_description;
 		public $long_description;
 		public $type;
@@ -103,7 +104,8 @@ SET
 	`type`= :type,
 	`status`= :status,
 	`publish_flag`= :publish_flag,
-	`flags`= :flags
+	`flags`= :flags,
+	`phone`= :phone
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -126,6 +128,7 @@ EOF;
 				":status" => $status,
 				":publish_flag" => $publish_flag,
 				":flags" => $this->flags,
+				":phone" => $this->phone,
 			);
 			$pst->execute($array);
 		}
@@ -149,7 +152,8 @@ SET
 	`open_t`= :open_t,
 	`funding_needed`= :funding_needed,
 	`flags`= :flags,
-	`type`= :type
+	`type`= :type,
+	`phone`= :phone
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -169,6 +173,7 @@ EOF;
 				":id" => $this->id,
 				":flags" => $this->flags,
 				":type" => $this->type,
+				":phone" => $this->phone,
 			);
 			$pst->execute($array);
 		}
@@ -459,6 +464,7 @@ EOF;
 			$this->short_description = $_GET['short_description'];
 			$this->long_description = $_GET['long_description'];
 			$this->type = $_GET['event_type'];
+			$this->phone = $_GET['phone'];
 			debug("hydrate_from_form=".sprint_r($this));
 		}
 

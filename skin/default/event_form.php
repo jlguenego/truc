@@ -21,6 +21,9 @@
 	$item = $f->add_text("Organizer name", "organizer_name", default_value("organizer_name", $event->organizer_name),
 		"The entity that is responsible for organizing the event.");
 	$item->other_attr = ' size="60" maxlength="255"';
+	$item = $f->add_text("Organizer phone (optional but recommended)", "phone", default_value("phone", $event->phone),
+		"Contact phone not published. Used only for support purpose.");
+	$item->is_optional = true;
 	if (!$event->has_accountancy_activity()) {
 		$item = $f->add_number("Required funding (Euros)", "funding_needed",
 			default_value("funding_needed", $event->funding_needed),
