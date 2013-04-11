@@ -25,9 +25,9 @@
 		$total_ht = curr($item->total_ht);
 		$total_tax = curr($item->total_tax);
 		$total_ttc = curr($item->total_ttc);
-		$participant_firstname = $item->participant_firstname;
-		$participant_lastname = $item->participant_lastname;
-		$participant_title = $item->participant_title;
+		$attendee_firstname = $item->attendee_firstname;
+		$attendee_lastname = $item->attendee_lastname;
+		$attendee_title = $item->attendee_title;
 ?>
 	<tr>
 		<td><?php echo $event_name; ?></td>
@@ -36,9 +36,9 @@
 		<td class="evt_curr"><?php echo $event_rate_tax; ?></td>
 		<td class="evt_curr"><?php echo $total_tax; ?></td>
 		<td class="evt_curr"><?php echo $total_ttc; ?></td>
-		<td><?php echo $participant_title; ?></td>
-		<td><?php echo $participant_firstname; ?></td>
-		<td><?php echo $participant_lastname; ?></td>
+		<td><?php echo $attendee_title; ?></td>
+		<td><?php echo $attendee_firstname; ?></td>
+		<td><?php echo $attendee_lastname; ?></td>
 	</tr>
 </table>
 <?php
@@ -57,7 +57,6 @@
 		<th style="text-align: left;">Total due (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
-
 </table>
 <br/>
 

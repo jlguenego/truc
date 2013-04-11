@@ -8,9 +8,9 @@
 		public $total_ht;
 		public $total_tax;
 		public $total_ttc;
-		public $participant_firstname;
-		public $participant_lastname;
-		public $participant_title;
+		public $attendee_firstname;
+		public $attendee_lastname;
+		public $attendee_title;
 		public $bill_id;
 
 		public function hydrate($record) {
@@ -48,9 +48,9 @@ SET
 	`total_tax`= :total_tax,
 	`total_ttc`= :total_ttc,
 	`id_bill`= :id_bill,
-	`participant_firstname`= :participant_firstname,
-	`participant_lastname`= :participant_lastname,
-	`participant_title`= :participant_title;
+	`attendee_firstname`= :attendee_firstname,
+	`attendee_lastname`= :attendee_lastname,
+	`attendee_title`= :attendee_title;
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
@@ -64,9 +64,9 @@ EOF;
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
 				":id_bill" => $this->bill_id,
-				":participant_firstname" => $this->participant_firstname,
-				":participant_lastname" => $this->participant_lastname,
-				":participant_title" => $this->participant_title,
+				":attendee_firstname" => $this->attendee_firstname,
+				":attendee_lastname" => $this->attendee_lastname,
+				":attendee_title" => $this->attendee_title,
 			);
 			$pst->execute($array);
 		}

@@ -85,19 +85,19 @@ CREATE TABLE bill(
 
 
 CREATE TABLE item(
-        id                    Int NOT NULL  ,
-        event_name            Varchar (255) NOT NULL  ,
-        event_rate_name       Varchar (255) NOT NULL  ,
-        event_rate_amount     Decimal (25,2) NOT NULL  ,
-        event_rate_tax        Decimal (25,2) NOT NULL  ,
-        quantity              Int NOT NULL  ,
-        total_ht              Decimal (25,2) NOT NULL  ,
-        total_tax             Decimal (25,2) NOT NULL  ,
-        total_ttc             Decimal (25,2) NOT NULL  ,
-        participant_firstname Varchar (255) ,
-        participant_lastname  Varchar (255) ,
-        participant_title     Varchar (25) ,
-        id_bill               Int NOT NULL  ,
+        id                 Int NOT NULL  ,
+        event_name         Varchar (255) NOT NULL  ,
+        event_rate_name    Varchar (255) NOT NULL  ,
+        event_rate_amount  Decimal (25,2) NOT NULL  ,
+        event_rate_tax     Decimal (25,2) NOT NULL  ,
+        quantity           Int NOT NULL  ,
+        total_ht           Decimal (25,2) NOT NULL  ,
+        total_tax          Decimal (25,2) NOT NULL  ,
+        total_ttc          Decimal (25,2) NOT NULL  ,
+        attendee_firstname Varchar (255) ,
+        attendee_lastname  Varchar (255) ,
+        attendee_title     Varchar (25) ,
+        id_bill            Int NOT NULL  ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 

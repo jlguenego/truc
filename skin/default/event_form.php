@@ -26,6 +26,8 @@
 			default_value("funding_needed", $event->funding_needed),
 			"Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement.");
 		$item->other_attr = ' step="0.01" min="0"';
+	} else {
+		$f->add_hidden("funding_needed", $event->funding_needed);
 	}
 	$f->add_text("Event starting date", "happening_t",
 		default_value("happening_t", $event->happening_t),

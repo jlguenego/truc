@@ -4,16 +4,16 @@
 
 	echo "Label: ".$devis->label;
 ?>
-<table>
+<table class="evt_table">
 	<tr>
 		<th>Event</th>
 		<th>Rate name</th>
-		<th>Unit price</th>
+		<th>Unit price (€)</th>
 		<th>Quantity</th>
-		<th>Total tax excluded</th>
-		<th>Tax rate</th>
-		<th>Tax amount</th>
-		<th>Total</th>
+		<th>Total tax excluded (€)</th>
+		<th>Tax rate (%)</th>
+		<th>Tax amount (€)</th>
+		<th>Total (€)</th>
 	</tr>
 <?php
 	foreach ($devis->items as $item) {
@@ -29,42 +29,46 @@
 	<tr>
 		<td><?php echo $event_name; ?></td>
 		<td><?php echo $event_rate_name; ?></td>
-		<td><?php echo $event_rate_amount; ?></td>
-		<td><?php echo $quantity; ?></td>
-		<td><?php echo $total_ht; ?></td>
-		<td><?php echo $event_rate_tax; ?></td>
-		<td><?php echo $total_tax; ?></td>
-		<td><?php echo $total_ttc; ?></td>
+		<td class="evt_curr"><?php echo $event_rate_amount; ?></td>
+		<td class="evt_curr"><?php echo $quantity; ?></td>
+		<td class="evt_curr"><?php echo $total_ht; ?></td>
+		<td class="evt_curr"><?php echo $event_rate_tax; ?></td>
+		<td class="evt_curr"><?php echo $total_tax; ?></td>
+		<td class="evt_curr"><?php echo $total_ttc; ?></td>
 	</tr>
 <?php
 	}
 ?>
 	<tr>
 		<th colspan="4">Total</th>
-		<th><?php echo curr($devis->total_ht); ?></th>
+		<th class="evt_curr"><?php echo curr($devis->total_ht); ?></th>
 	</tr>
 </table>
 <br/>
 
-<table>
+<table class="evt_table">
 	<tr>
-		<td>Total taxes</td>
-		<td><?php echo $devis->total_tax; ?></td>
+		<th style="text-align: left;">Total (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_ht); ?></td>
 	</tr>
 	<tr>
-		<th>Total due</th>
-		<th><?php echo $devis->total_ttc; ?></th>
+		<th style="text-align: left;">Total taxes (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_tax); ?></td>
+	</tr>
+	<tr>
+		<th style="text-align: left;">Total due (€)</th>
+		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
 </table>
 <br/>
 
-<table>
+<table class="evt_table">
 	<tr>
-		<td>Billing Entity name: </td>
+		<th style="text-align: left;">Billing Entity name: </th>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>
-		<td>Billing address: </td>
+		<th style="text-align: left;">Billing address: </th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
 </table>

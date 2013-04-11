@@ -131,8 +131,11 @@ function update_total(tax_rate) {
 				}
 			}
 			$('#tax_base_' + id).html(sub_total.toFixed(2));
+			var total = sub_total;
 			sub_total *= (tax/100);
 			$('#tax_total_' + id).html(sub_total.toFixed(2));
+			total += sub_total;
+			$('#tax_total_due_' + id).html(total.toFixed(2));
 		}
 	}
 

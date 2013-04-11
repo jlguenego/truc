@@ -61,9 +61,9 @@
 		<?php
 				if ($event->type == EVENT_TYPE_NOMINATIVE) {
 		?>
-					<td><?php echo default_str($item->participant_title, "&nbsp;"); ?></td>
-					<td><?php echo $item->participant_firstname; ?></td>
-					<td><?php echo $item->participant_lastname; ?></td>
+					<td><?php echo default_str($item->attendee_title, "&nbsp;"); ?></td>
+					<td><?php echo $item->attendee_firstname; ?></td>
+					<td><?php echo $item->attendee_lastname; ?></td>
 		<?php
 				}
 		?>

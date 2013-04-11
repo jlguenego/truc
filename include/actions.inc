@@ -589,9 +589,21 @@
 
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
-		$devis->address = $_GET['address'];
+		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
+		$label = "EventBiller-";
+		if ($event->is_confirmed()) {
+			$devis->status = DEVIS_STATUS_CONFIRMED;
+			$devis->type = DEVIS_TYPE_INVOICE;
+			$label .= "I-";
+		} else {
+			$devis->status = DEVIS_STATUS_PLANNED;
+			$devis->type = DEVIS_TYPE_QUOTATION;
+			$label .= "Q-";
+		}
+		$devis->label = $label."EVT-".sprintf("%06d", $event->id);
+
 		$rates = $event->get_rates();
 		$total_ttc = 0.00;
 		$i = 0;
@@ -660,9 +672,9 @@
 			$item->event_rate_amount = $amount_ht[$i];
 			$item->event_rate_tax = $taxes[$i];
 			$item->quantity = 1;
-			$item->participant_firstname = $firstname;
-			$item->participant_lastname = $lastnames[$i];
-			$item->participant_title = $titles[$i];
+			$item->attendee_firstname = $firstname;
+			$item->attendee_lastname = $lastnames[$i];
+			$item->attendee_title = $titles[$i];
 
 			$item->compute();
 

@@ -44,7 +44,7 @@
 	<table id="tickets" style="display:none;" class="evt_table">
 		<tr>
 			<th colspan="6">Event details</th>
-			<th colspan="3">Participant details</th>
+			<th colspan="3">Attendee details</th>
 		</tr>
 		<tr>
 			<th>Event</th>
@@ -261,7 +261,7 @@
 			$("input[name='address_street']").val() + "\n" +
 			state + $("input[name='address_zip']").val() + " " +
 			$("input[name='address_city']").val() + " " +
-			$("input[name='address_country']").val()
+			$("select[name='address_country']").val()
 		);
 	}
 
