@@ -193,6 +193,11 @@ EOF;
 						break;
 
 					case "submit":
+						if ($this->cancel) {
+						$result .= <<<EOF
+<span class="{$this->css}_cancel"><input type="button" onclick="window.location='{$this->cancel_url}'" value="Cancel"/></span><span class="spacer"></span>
+EOF;
+						}
 						$result .= "<input type=\"submit\" value=\"".$item->label."\"/>";
 						break;
 					default:

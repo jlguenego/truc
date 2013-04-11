@@ -2,6 +2,8 @@
 	$user = $g_display["user"];
 
 	$f = new Form();
+	$f->cancel = true;
+	$f->cancel_url = "?action=retrieve&amp;type=account";
 	$f->title = "Account update";
 	$f->action = "?action=update&amp;type=account";
 	$f->method = "POST";

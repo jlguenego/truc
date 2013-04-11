@@ -7,7 +7,11 @@
 	$f = new Form();
 	$button_text = "";
 	$f->cancel = true;
-	$f->cancel_url = "?action=retrieve&amp;type=event&amp;id=".$event->id;
+	if ($scenario == "create") {
+		$f->cancel_url = ""; // Main menu
+	} else {
+		$f->cancel_url = "?action=retrieve&amp;type=event&amp;id=".$event->id;
+	}
 	if ($scenario == "create") {
 		$button_text = "Create";
 		$f->title = "Event creation ";

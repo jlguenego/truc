@@ -2,6 +2,7 @@
 	require_once(BASE_DIR . '/include/recaptcha.inc');
 
 	$f = new Form();
+	$f->cancel = true;
 	$f->title = "Account creation";
 	$f->action = "?action=create&amp;type=account";
 	$f->method = "POST";

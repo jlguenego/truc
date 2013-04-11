@@ -22,10 +22,20 @@ a {
 	margin-right: 5px;
 }
 
-[type=submit] {
+input[type=submit] {
 	margin: 2px;
-	padding: 3px;
+	padding: 5px 20px 5px 20px;
 }
+
+input[type=submit]:enabled {
+	font-weight: bold;
+}
+
+input[type=button] {
+	margin: 2px;
+	padding: 5px 20px 5px 20px;
+}
+
 
 html, body {
 	height: 100%;
@@ -214,6 +224,11 @@ html, body {
 
 .evt_hr {
 	display: none;
+}
+
+.spacer {
+	display:inline-block;
+	width: 50px;
 }
 
 /* Table */
