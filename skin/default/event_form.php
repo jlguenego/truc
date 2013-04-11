@@ -2,6 +2,7 @@
 	$scenario = $g_display["scenario"];
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
+	$user = $g_display["user"];
 
 	$f = new Form();
 	$button_text = "";
@@ -21,7 +22,8 @@
 	$item = $f->add_text("Organizer name", "organizer_name", default_value("organizer_name", $event->organizer_name),
 		"The entity that is responsible for organizing the event.");
 	$item->other_attr = ' size="60" maxlength="255"';
-	$item = $f->add_text("Organizer phone (optional but recommended)", "phone", default_value("phone", $event->phone),
+	$item = $f->add_text("Organizer phone (optional but recommended)", "phone",
+		default_value("phone", $event->phone, $user->phone),
 		"Contact phone not published. Used only for support purpose.");
 	$item->is_optional = true;
 	if (!$event->has_accountancy_activity()) {
@@ -82,6 +84,13 @@ EOF
 	echo $f->html();
 ?>
 <script>
+	var scenerio = '<?php echo $scenario; ?>';
+	$("input[type=submit]").ready(manage_submit());
+
+	function manage_submit() {
+
+	}
+
 	function update_form() {
 		log("update_form");
 		log("date=" + $("#happening_t").val());

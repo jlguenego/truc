@@ -307,7 +307,7 @@
 	function action_event_create() {
 		global $g_error_msg;
 
-		need_authentication();
+		$user = need_authentication();
 		try {
 			debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
 			form_event_valid();
@@ -317,6 +317,7 @@
 
 			$event->user_id = User::get_id_from_account();
 			$event->store();
+			$user->sync_phone($event->phone);
 			debug(sprint_r($event));
 
 			debug(sprint_r($_GET['labels']));
@@ -370,7 +371,7 @@
 		global $g_error_msg;
 
 		try {
-			need_authentication();
+			$user = need_authentication();
 			debug("event_id=".$_GET["id"]);
 			if (!is_null_or_empty($_GET["id"])) {
 				if (Event::exists($_GET["id"])) {
@@ -382,6 +383,7 @@
 					$event->check_owner();
 
 					$event->update();
+					$user->sync_phone($event->phone);
 
 					$i = 0;
 					foreach ($_GET['labels'] as $label) {
@@ -449,6 +451,8 @@
 			$event = new Event();
 			$event->load_default();
 			$g_display["event"] = $event;
+			$user = User::get_from_id();
+			$g_display["user"] = $user;
 			$g_display["rates"] = NULL;
 			$g_display["scenario"] = "create";
 			$g_display["form_action"] = "?action=create&amp;type=event";
@@ -456,6 +460,8 @@
 		} else {
 			$event = Event::get_from_id($_GET["id"]);
 			$g_display["event"] = $event;
+			$user = User::get_from_id();
+			$g_display["user"] = $user;
 			$g_display["rates"] = $event->get_rates();
 			$g_display["scenario"] = "update";
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];

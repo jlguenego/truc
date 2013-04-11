@@ -105,24 +105,19 @@
 			&& $user->lastname != $_GET["lastname"]) {
 			$user->lastname = $_GET["lastname"];
 		}
-		if (!is_null_or_empty($_GET["phone"])
-			&& $user->phone != $_GET["phone"]) {
+		if ($user->phone != $_GET["phone"]) {
 			$user->phone = $_GET["phone"];
 		}
-		if (!is_null_or_empty($_GET["street"])
-			&& $user->street != $_GET["street"]) {
+		if ($user->street != $_GET["street"]) {
 			$user->street = $_GET["street"];
 		}
-		if (!is_null_or_empty($_GET["zip"])
-			&& $user->zip != $_GET["zip"]) {
+		if ($user->zip != $_GET["zip"]) {
 			$user->zip = $_GET["zip"];
 		}
-		if (!is_null_or_empty($_GET["city"])
-			&& $user->city != $_GET["city"]) {
+		if ($user->city != $_GET["city"]) {
 			$user->city = $_GET["city"];
 		}
-		if (!is_null_or_empty($_GET["country"])
-			&& $user->country != $_GET["country"]) {
+		if ($user->country != $_GET["country"]) {
 			$user->country = $_GET["country"];
 		}
 		$user->state = $_GET["state"];

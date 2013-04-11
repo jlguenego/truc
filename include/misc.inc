@@ -109,7 +109,18 @@ EOF;
 		if (!is_null_or_empty($_GET[$name])) {
 			return $_GET[$name];
 		} else {
-			return $default;
+			if (func_num_args() > 2) {
+				$array = func_get_args();
+				array_shift($array);
+				foreach ($array as $value) {
+					if (!is_null_or_empty($value)) {
+						return $value;
+					}
+				}
+				return "";
+			} else {
+				return $default;
+			}
 		}
 	}
 

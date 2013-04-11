@@ -501,5 +501,12 @@ EOF;
 		public function get_name() {
 			return format_firstname($this->firstname)." ".format_lastname($this->lastname);
 		}
+
+		public function sync_phone($phone) {
+			if (is_null_or_empty($this->phone)) {
+				$this->phone = $phone;
+				$this->update();
+			}
+		}
 	}
 ?>
