@@ -48,9 +48,10 @@
 		default_value("location", $event->location),
 		"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)");
 	$item->other_attr = 'size="60" maxlength="255"';
-	$item = $f->add_text("Web site", "link", default_value("link", $event->link),
+	$item = $f->add_text("Web site (optional)", "link", default_value("link", $event->link),
 		"Official event web site (if any).");
 	$item->other_attr = 'size="60" maxlength="255"';
+	$item->is_optional = true;
 	$f->add_textarea("Short description", "short_description",
 		default_value("short_description", $event->short_description),
 		"Enter a short description of the event. (HTML editor)");
@@ -85,11 +86,25 @@ EOF
 	echo $f->html();
 ?>
 <script>
-	var scenerio = '<?php echo $scenario; ?>';
-	$("input[type=submit]").ready(manage_submit());
-
 	function manage_submit() {
+		var test = true;
+		log("manage submit");
+		if ($("input[name=confirm]").length > 0) {
+			log("confirm="+$("input[name=confirm]").attr("checked"));
+			test &= $("input[name=confirm]:checked").length > 0;
+		}
+		test &= $("input[name=title]").val().length > 0;
+		test &= $("input[name=organizer_name]").val().length > 0;
+		test &= $("input[name=happening_t]").val().length > 0;
+		test &= $("input[name=confirmation_t]").val().length > 0;
+		test &= $("input[name=open_t]").val().length > 0;
+		test &= $("input[name=location]").val().length > 0;
 
+		if (test) {
+			$("input[type=submit]").removeAttr("disabled");
+		} else {
+			$("input[type=submit]").attr("disabled", true);
+		}
 	}
 
 	function update_form() {
@@ -127,8 +142,16 @@ EOF
 		$( "#open_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	}
 
-	$("form").change(update_form);
-	$(document).ready(update_form);
+	$("form").change(function() {
+		update_form();
+		manage_submit();
+	});
+	$(document).ready(function() {
+		update_form();
+		manage_submit();
+	});
+	$("input").keyup(manage_submit());
+
 
 
 	// Combobox for the tax rates.
