@@ -20,8 +20,8 @@
 </div>
 <?php
 	}
+	if (is_admin_logged()) {
 ?>
-
 <div id="evt_administration">
 	<div class="evt_administration_title">
 		Event Biller Admin
@@ -39,6 +39,10 @@
 		</form>
 	</div>
 </div>
+<?php
+	}
+	if ($event->can_be_administrated()) {
+?>
 <div id="evt_administration">
 	<div class="evt_administration_title">
 		Administration
@@ -74,6 +78,7 @@
 	</div>
 </div>
 <?php
+	}
 	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
 	echo $event->short_description;
 ?>

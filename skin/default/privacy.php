@@ -1,4 +1,4 @@
-﻿<div class="legal">
+<div class="legal">
 <div class="legal_title">Privacy Policies</div>
 
 <h1>What information do we collect?</h1>

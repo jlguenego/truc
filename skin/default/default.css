@@ -337,6 +337,7 @@ html, body {
 
 #evt_error {
 	color: red;
+	margin: 20px;
 }
 
 .ui-datepicker * {

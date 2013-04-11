@@ -6,7 +6,7 @@
 ?>
 		<p>
 			Dear Administrator,<br/>
-			A request for pubication has been send: <br/>
+			A request for pubication has been sent: <br/>
 			<ul>
 				<li><b>Event id:</b> <?php echo $event->id; ?></li>
 				<li><b>Event title:</b> <?php echo $event->title; ?></li>

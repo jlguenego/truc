@@ -6,11 +6,11 @@
 	<?php echo $devis->label; ?>
 	<table class="evt_table">
 		<tr>
-			<th>Billing entity:</th>
+			<th class="th_left">Billing entity</th>
 			<td><?php echo $devis->username; ?></td>
 		</tr>
 		<tr>
-			<th>Billing address: </th>
+			<th class="th_left">Billing address</th>
 			<td><?php echo $devis->address; ?></td>
 		</tr>
 	</table>
@@ -19,8 +19,8 @@
 		<tr>
 			<th>Event</th>
 			<th>Rate name</th>
-			<th>Amount HT</th>
-			<th>Rate tax</th>
+			<th>Amount</th>
+			<th>Tax rate</th>
 <?php
 	if ($event->type == EVENT_TYPE_ANONYMOUS) {
 ?>
@@ -46,18 +46,18 @@
 		<tr>
 			<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $item->event_name; ?></a></td>
 			<td><?php echo $item->event_rate_name; ?></td>
-			<td><?php echo $item->event_rate_amount; ?>€</td>
-			<td><?php echo $item->event_rate_tax; ?>%</td>
+			<td class="evt_curr"><?php echo $item->event_rate_amount; ?>€</td>
+			<td class="evt_curr"><?php echo $item->event_rate_tax; ?>%</td>
 <?php
 		if ($event->type == EVENT_TYPE_ANONYMOUS) {
 ?>
-			<td><?php echo $item->quantity; ?></td>
-			<td><?php echo $item->total_ht; ?>€</td>
+			<td class="evt_curr"><?php echo $item->quantity; ?></td>
+			<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 <?php
 		}
 ?>
-			<td><?php echo $item->total_tax; ?>€</td>
-			<td><?php echo $item->total_ttc; ?>€</td>
+			<td class="evt_curr"><?php echo $item->total_tax; ?>€</td>
+			<td class="evt_curr"><?php echo $item->total_ttc; ?>€</td>
 <?php
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 ?>
@@ -76,16 +76,16 @@
 	<br/>
 	<table class="evt_table">
 		<tr>
-			<th>Total</th>
-			<td><?php echo $devis->total_ht; ?>€</td>
+			<th class="th_left">Total</th>
+			<td class="evt_curr"><?php echo $devis->total_ht; ?>€</td>
 		</tr>
 		<tr>
-			<th>Total taxes</th>
-			<td><?php echo $devis->total_tax; ?>€</td>
+			<th class="th_left">Total taxes</th>
+			<td class="evt_curr"><?php echo $devis->total_tax; ?>€</td>
 		</tr>
 		<tr>
-			<th>Total due</th>
-			<td><b><?php echo $devis->total_ttc; ?>€</b></td>
+			<th class="th_left">Total due</th>
+			<td class="evt_curr"><b><?php echo $devis->total_ttc; ?>€</b></td>
 		</tr>
 	</table>
 </p>

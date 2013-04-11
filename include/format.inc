@@ -1,11 +1,10 @@
-﻿<?php
-
+<?php
 	function format_ucfirst($array) {
 		return ucfirst($array[1]);
 	}
-	
+
 	function format_ucwords($str) {
-		return preg_replace_callback('/([\w]+)/', "format_ucfirst", $str); 
+		return preg_replace_callback('/([\w]+)/', "format_ucfirst", $str);
 	}
 
 	function format_firstname($firstname) {
@@ -15,6 +14,6 @@
 	function format_lastname($lastname) {
 		return mb_strtoupper($lastname, "UTF-8");
 	}
-	
+
 
 ?>

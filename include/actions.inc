@@ -415,7 +415,12 @@
 		global $g_display;
 		global $g_error_msg;
 
+		$user = need_authentication();
+
 		$event = Event::get_from_id($_GET["id"]);
+		if (!$event->can_be_administrated()) {
+			throw new Exception("Cannot delete an event if you cannot administrate it.");
+		}
 		$g_display["event"] = $event;
 		if ($_SESSION["state"] != "event_delete") {
 			$_SESSION["state"] = "event_delete";
@@ -446,12 +451,11 @@
 	function action_event_get_form() {
 		global $g_display;
 
-		need_authentication();
+		$user = need_authentication();
 		if (is_null_or_empty($_GET["id"]) || $_GET["id"] == "-1") {
 			$event = new Event();
 			$event->load_default();
 			$g_display["event"] = $event;
-			$user = User::get_from_id();
 			$g_display["user"] = $user;
 			$g_display["rates"] = NULL;
 			$g_display["scenario"] = "create";
@@ -459,8 +463,11 @@
 			$_SESSION["state"] = "event_form";
 		} else {
 			$event = Event::get_from_id($_GET["id"]);
+			if (!$event->can_be_administrated()) {
+				throw new Exception("Cannot update an event if you cannot administrate it.");
+			}
+
 			$g_display["event"] = $event;
-			$user = User::get_from_id();
 			$g_display["user"] = $user;
 			$g_display["rates"] = $event->get_rates();
 			$g_display["scenario"] = "update";
@@ -543,6 +550,7 @@
 	function action_devis_retrieve() {
 		global $g_display;
 
+		$user = need_authentication();
 		if (!isset($_GET['id'])) {
 			throw new Exception("No devis given.");
 		}
@@ -550,6 +558,9 @@
 			throw new Exception("Devis does not exists.");
 		}
 		$devis = Devis::get_from_id($_GET['id']);
+		if (!$devis->can_be_retrieved()) {
+			throw new Exception("Cannot acces to this object. Permission denied.");
+		}
 		$event = Event::get_from_id($devis->event_id);
 
 		$g_display["devis"] = $devis;
@@ -849,11 +860,15 @@
 	function action_participation_list() {
 		global $g_display;
 
+		$user = need_authentication();
 		if (is_null_or_empty($_GET["id"])) {
 			throw new Exception("No event selected");
 		}
 		$event = new Event();
 		$event->load($_GET["id"]);
+		if (!$event->can_be_administrated()) {
+			throw new Exception("Cannot view attendees of an event if you cannot administrate it.");
+		}
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$_SESSION["state"] = "participation_list_nominative";
 		} else {

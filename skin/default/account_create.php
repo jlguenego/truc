@@ -10,8 +10,10 @@
 	$f->add_text("Firstname", "firstname", default_value("firstname"),
 		"Your Firstname.");
 	$f->add_text("Lastname", "lastname", default_value("lastname"), "Your Lastname.");
-	$f->add_password("Password", "clear_password", "The password you want to associate to your account.");
-	$f->add_password("Retype Password", "clear_password2", "Retype your password.");
+	$item = $f->add_password("Password", "clear_password", "The password you want to associate to your account.");
+	$item->is_optional = true;
+	$item = $f->add_password("Retype Password", "clear_password2", "Retype your password.");
+	$item->is_optional = true;
 	$f->add_hidden("password", "");
 	$f->add_hidden("password2", "");
 	//$f->add_text("Street# and street name", "street", default_value("street"), "Number and street name");

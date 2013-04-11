@@ -194,5 +194,18 @@ EOF;
 			}
 			return $items;
 		}
+
+		public function can_be_retrieved() {
+			$user = need_authentication();
+			$event = Event::get_from_id($this->event_id);
+
+			if (is_admin_logged() || $this->user_id == $user->id
+				|| $event->user_id == $user->id) {
+				debug("Can administrate.");
+				return TRUE;
+			}
+			debug("Cannot administrate.");
+			return FALSE;
+		}
 	}
 ?>

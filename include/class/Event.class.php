@@ -587,12 +587,12 @@ EOF;
 		}
 
 		public function can_be_administrated() {
-		if (is_admin_logged() || $this->id_user == User::get_id_from_account()) {
-			debug("Can administrate.");
-			return TRUE;
+			if (is_admin_logged() || $this->user_id == User::get_id_from_account()) {
+				debug("Can administrate.");
+				return TRUE;
+			}
+			debug("Cannot administrate.");
+			return FALSE;
 		}
-		debug("Cannot administrate.");
-		return FALSE;
-	}
 	}
 ?>
