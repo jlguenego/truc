@@ -341,26 +341,29 @@
 		global $g_display;
 		global $g_error_msg;
 
-		if (!is_null_or_empty($_GET["id"])) {
-			if (Event::exists($_GET["id"])) {
-				$event = Event::get_from_id($_GET["id"]);
-				if (!$event->is_published() && !$event->can_be_administrated()) {
-					$_SESSION["state"] = "not_allowed";
-					$g_error_msg = "This event is not published yet.";
-				} else {
-					$_SESSION["state"] = "event_retrieve";
-					$g_display["event"] = $event;
-					$user = User::get_from_id($event->user_id);
-					$g_display["author"] = $user;
-				}
-			} else {
-				$_SESSION["state"] = "not_allowed";
-				$g_error_msg = "Event does not exists.";
-			}
-		} else {
+		if (is_null_or_empty($_GET["id"])) {
 			$_SESSION["state"] = "not_allowed";
 			$g_error_msg = "No event selected.";
+			return;
 		}
+		if (!Event::exists($_GET["id"])) {
+			$_SESSION["state"] = "not_allowed";
+			$g_error_msg = "Event does not exists.";
+			return;
+		}
+		$event = Event::get_from_id($_GET["id"]);
+		if (!$event->is_published()) {
+			$user = need_authentication();
+			if (!$event->can_be_administrated()) {
+				$_SESSION["state"] = "not_allowed";
+				$g_error_msg = "This event is not yet published.";
+				return;
+			}
+		}
+		$_SESSION["state"] = "event_retrieve";
+		$g_display["event"] = $event;
+		$user = User::get_from_id($event->user_id);
+		$g_display["author"] = $user;
 	}
 
 	function action_event_update() {
@@ -866,6 +869,7 @@
 		}
 		$event = Event::get_from_id($_GET["id"]);
 		$event->set_ready_for_publication(true);
+		mail_publication_request($event);
 		action_event_retrieve();
 	}
 ?>

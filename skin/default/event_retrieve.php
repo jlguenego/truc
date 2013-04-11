@@ -24,6 +24,23 @@
 
 <div id="evt_administration">
 	<div class="evt_administration_title">
+		Event Biller Admin
+	</div>
+	<div class="evt_administration_body">
+<?php
+		$publish_button_grey = "";
+		if ($event->status == EVENT_STATUS_INACTIVATED
+			|| (!$event->is_ready_for_publication())) {
+			$publish_button_grey = "disabled";
+		}
+?>
+		<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
+			<input type="submit" value="Publish event" <?php echo $publish_button_grey ?>/>
+		</form>
+	</div>
+</div>
+<div id="evt_administration">
+	<div class="evt_administration_title">
 		Administration
 	</div>
 	<div class="evt_administration_body">

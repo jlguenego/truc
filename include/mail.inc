@@ -6,6 +6,16 @@
 	require_once(BASE_DIR."/mail/payment_authorization.php");
 	require_once(BASE_DIR."/mail/forgotten_password.php");
 	require_once(BASE_DIR."/mail/password_changed.php");
+	require_once(BASE_DIR."/mail/publication_request.php");
+
+
+	function mail_publication_request($event) {
+		$subject = "Publication request";
+		$msg_html = mail_html_publication_request($event);
+
+		$msg = mail_build($msg_html, CONTACT_MAIL);
+		mail(CONTACT_MAIL, $subject, $msg["content"], $msg["header"]);
+	}
 
 	function mail_payment($mail, $devis) {
 		$event = Event::get_from_id($devis->event_id);
