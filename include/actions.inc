@@ -118,9 +118,6 @@
 
 	function action_retrieve() {
 		switch ($_GET["type"]) {
-			case "events":
-				action_event_list();
-				break;
 			case "event":
 				action_event_retrieve();
 				break;

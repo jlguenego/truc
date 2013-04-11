@@ -33,10 +33,10 @@
 </div>
 <div id="evt_header_menu">
 	<ul>
-		<li><a href="index.php">Home</a></li>
-		<li><a href="index.php?action=display&amp;page=about_us">About us</a></li>
-		<li><a href="index.php?action=display&amp;page=what_we_do">What we do</a></li>
-		<li><a href="index.php?action=display&amp;page=contact">Contact</a></li>
+		<li><a href=".">Home</a></li>
+		<li><a href="info/about_us">About us</a></li>
+		<li><a href="info/what_we_do">What we do</a></li>
+		<li><a href="info/contact">Contact</a></li>
 	</ul>
 </div>
 <div class="evt_hr"></div>

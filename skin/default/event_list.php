@@ -13,7 +13,7 @@
 			} else {
 ?>
 	<tr>
-		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
+		<td><a href="event/<?php echo $event->id."/".rawurlencode($event->title) ?>"><?php echo $event->title ?></a></td>
 		<td><?php echo format_date($event->happening_t); ?></td>
 		<td>
 			<?php
