@@ -366,3 +366,26 @@ html, body {
 b, strong {
 	font-weight: bold;
 }
+
+/* LEGAL STUFF */
+
+.legal * {
+	font: 12px arial,sans-serif;
+	text-align: justify;
+}
+
+.legal h1 {
+	font-size: 14px;
+	font-weight: bold;
+	margin: 20px 0px 20px 0px;
+}
+
+.legal ul {
+	margin: 5px 0px 5px 25px;
+}
+
+.legal_title {
+	font-size: 20px;
+	font-weight: bold;	
+	text-align: center;
+}
