@@ -37,6 +37,13 @@
 		<li><a href="info/about_us">About us</a></li>
 		<li><a href="info/what_we_do">What we do</a></li>
 		<li><a href="info/contact">Contact</a></li>
+<?php
+		if (is_admin_logged()) {
+?>
+		<li><a href="uninstall.php">Uninstall</a></li>
+<?php
+		}
+?>
 	</ul>
 </div>
 <div class="evt_hr"></div>

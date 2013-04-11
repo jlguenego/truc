@@ -7,6 +7,7 @@
 		public $css = "form";
 		public $title = "";
 		public $cancel = false;
+		public $cancel_url = "";
 
 		public function add_text($label, $name, $default, $help) {
 			$item = new FormItem();
@@ -116,7 +117,7 @@
 EOF;
 			if ($this->cancel) {
 				$result .= <<<EOF
-<span class="{$this->css}_cancel"><a href="JavaScript:window.history.back()">Cancel</a></span>
+<span class="{$this->css}_cancel"><a href="{$this->cancel_url}">Cancel</a></span>
 EOF;
 			}
 				$result .= <<<EOF

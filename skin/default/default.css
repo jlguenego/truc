@@ -22,6 +22,11 @@ a {
 	margin-right: 5px;
 }
 
+[type=submit] {
+	margin: 2px;
+	padding: 3px;
+}
+
 html, body {
 	height: 100%;
 	background-color: #F5F5F5;
