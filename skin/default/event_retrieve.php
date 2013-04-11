@@ -33,10 +33,20 @@
 			|| (!$event->is_ready_for_publication())) {
 			$publish_button_grey = "disabled";
 		}
+		if (!$event->is_published()) {
 ?>
-		<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
-			<input type="submit" value="Publish event" <?php echo $publish_button_grey ?>/>
-		</form>
+			<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
+				<input type="submit" value="Publish event" <?php echo $publish_button_grey ?>/>
+			</form>
+<?php
+		} else {
+?>
+			<form action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
+				<input type="submit" value="Unpublish event" <?php echo $publish_button_grey ?>/>
+			</form>
+<?php
+		}
+?>
 	</div>
 </div>
 <?php

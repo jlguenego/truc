@@ -1,5 +1,5 @@
 <span class="evt_title">Attendee list</span>
-Event name: <?php echo $g_display["event"]->title; ?><br/>
+Event name: <?php echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$g_display["event"]->id."\">".$g_display["event"]->title."</a>"; ?><br/>
 Organizer: <?php echo $g_display["event"]->organizer_name; ?>
 <table class="evt_table">
 	<tr>
