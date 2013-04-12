@@ -646,6 +646,7 @@
 		$devis->compute();
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
+		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_recapitulation";
 	}

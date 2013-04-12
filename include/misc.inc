@@ -182,7 +182,7 @@ EOF;
 
 	//string to timestamp conversion
 	//s2t("2013-09-qwe v22", "%Y-%m-qwe v%d");
-	function s2t($string, $format) {
+	function s2t($string, $format = "%Y-%m-%d") {
 		list($hour, $minute, $second, $month, $day, $year) = array(0, 0, 0, 0, 0, 0);
 		$i = 0;
 		$j = 0;
