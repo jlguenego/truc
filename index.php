@@ -13,12 +13,13 @@
 	require_once(BASE_DIR . "/include/security.inc");
 	require_once(BASE_DIR . "/include/format.inc");
 
-	$protocol = 'http';
 	if (isset($_SERVER["HTTPS"])) {
-		$protocol = "https";
+		$base_url = HTTPS_ACCESS ."/";
+	} else {
+		$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
 	}
 
-	$base_url = $protocol . '://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
+	
 	if (substr($base_url, -1) != "/") {
 		$base_url .= "/";
 	}
