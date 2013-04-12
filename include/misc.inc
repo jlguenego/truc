@@ -234,11 +234,4 @@ EOF;
 	function format_date($date, $format = "%Y-%m-%d") {
 		return date("l, jS F Y", s2t($date, $format));
 	}
-
-	function purify_html($str) {
-		libxml_use_internal_errors(true);
-		$doc = new DOMdocument();
-		$doc->loadHTML($str);
-		return $doc->saveHTML();
-	}
 ?>

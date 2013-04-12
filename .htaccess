@@ -13,7 +13,6 @@ SetEnv PHP_VER 5
 </FilesMatch>
 
 
-
 # Activate URL rewriting
 RewriteEngine on
 

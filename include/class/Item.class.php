@@ -16,8 +16,10 @@
 		public function hydrate($record) {
 			foreach ($record as $key => $value) {
 				if (ESCAPE_QUOTE) {
-					$value = str_replace("\\'", "'", $value);
-					$value = str_replace('\\"', '"', $value);
+					//$value = str_replace("\\'", "'", $value);
+					//$value = str_replace('\\"', '"', $value);
+					$value = stripcslashes($value);
+					$value = str_replace("%5C%22", "", $value);
 				}
 				$this->$key = $value;
 			}

@@ -64,8 +64,10 @@ EOF;
 		public function hydrate($array) {
 			foreach ($array as $key => $value) {
 				if (ESCAPE_QUOTE) {
-					$value = str_replace("\\'", "'", $value);
-					$value = str_replace('\\"', '"', $value);
+					//$value = str_replace("\\'", "'", $value);
+					//$value = str_replace('\\"', '"', $value);
+					$value = stripcslashes($value);
+					$value = str_replace("%5C%22", "", $value);
 				}
 				if ($key == "id_user") {
 					$this->user_id = $value;

@@ -20,7 +20,17 @@
 		$str = strip_tags($str, $allowed_tag);
 		$str = purify_html($str);
 		$str = strip_tags($str, $allowed_tag);
+		if (get_magic_quotes_gpc()) {
+			$str = stripslashes($str);
+		}
 		debug("String=".$str);
 		return $str;
+	}
+
+	function purify_html($str) {
+		libxml_use_internal_errors(true);
+		$doc = new DOMdocument();
+		$doc->loadHTML($str);
+		return $doc->saveHTML();
 	}
 ?>
