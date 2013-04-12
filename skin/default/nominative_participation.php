@@ -52,7 +52,7 @@
 			<th>Unit price</th>
 			<th>Tax rate</th>
 			<th>Tax amount</th>
-			<th>TTC</th>
+			<th>Due</th>
 			<th>Title</th>
 			<th>Firstname</th>
 			<th>Lastname</th>
