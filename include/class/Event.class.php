@@ -354,6 +354,8 @@ EOF;
 		public function set_publish_flag($flag) {
 			global $g_pdo;
 
+			$this->publish_flag = $flag;
+
 			$request = <<<EOF
 UPDATE `event`
 SET	`publish_flag`= :flag
@@ -362,7 +364,7 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$array = array(
-				":flag" => $flag,
+				":flag" => $this->publish_flag,
 				":id" => $this->id,
 			);
 			$pst->execute($array);

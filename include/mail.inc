@@ -7,7 +7,21 @@
 	require_once(BASE_DIR."/mail/forgotten_password.php");
 	require_once(BASE_DIR."/mail/password_changed.php");
 	require_once(BASE_DIR."/mail/publication_request.php");
+	require_once(BASE_DIR."/mail/event_published.php");
+	require_once(BASE_DIR."/mail/event_unpublished.php");
 
+	function mail_notify_publication($user, $event, $reason = "") {
+		$subject = "Publication notification";
+		$msg_html = "";
+		if ($event->is_published()) {
+			$msg_html = mail_html_event_published($user, $event);
+		} else {
+			$msg_html = mail_html_event_unpublished($user, $event, $reason);
+		}
+
+		$msg = mail_build($msg_html, $user->email);
+		mail($user->email, $subject, $msg["content"], $msg["header"]);
+	}
 
 	function mail_publication_request($event) {
 		$subject = "Publication request";

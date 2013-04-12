@@ -479,7 +479,7 @@
 	function action_event_publish() {
 		global $g_error_msg;
 
-		need_authentication();
+		$user = need_authentication();
 		if (!is_admin_logged()) {
 			$g_error_msg = "You are not admin.";
 			return;
@@ -490,13 +490,18 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
-		action_supervision();
+		mail_notify_publication($user, $event);
+		if (TEST_MODE) {
+			action_supervision();
+		} else {
+			redirect_to("?action=supervision");
+		}
 	}
 
 	function action_event_unpublish() {
 		global $g_error_msg;
 
-		need_authentication();
+		$user = need_authentication();
 		if (!is_admin_logged()) {
 			$g_error_msg = "You are not admin.";
 			return;
@@ -507,7 +512,12 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
-		action_supervision();
+		mail_notify_publication($user, $event, $_GET["reason"]);
+		if (TEST_MODE) {
+			action_supervision();
+		} else {
+			redirect_to("?action=supervision");
+		}
 	}
 
 	function action_event_confirm() {

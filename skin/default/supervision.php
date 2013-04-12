@@ -43,8 +43,9 @@
 				} else {
 ?>
 		<td>
-			<form action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
+			<form name="unpublish" action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
 				<input type="submit" value="Unpublish event" <?php echo $publish_button_grey ?>/>
+				<input type="hidden" name="reason" />
 			</form>
 		</td>
 <?php
@@ -66,3 +67,28 @@
 		}
 ?>
 </table>
+<div id="dialog" style="display: none;" title="Unpublish reason">
+	<textarea id="dialog_textarea">The reason is ...</textarea>
+</div>
+<script>
+	$("form[name=unpublish]").submit(function() {
+		$("#dialog").dialog({
+			modal: true,
+			buttons: {
+				Ok: function() {
+					var content = $("#dialog_textarea").val();
+					console.log("content="+content);
+					$("input[name=reason]").val(content);
+					//$(this).dialog("close");
+					$(this).dialog("destroy").remove();
+					$("form[name=unpublish]").submit();
+				}
+			}
+	    });
+		//stop submit
+		var content = $("input[name=reason]").val();
+		if (!content) {
+		    return false;
+		}
+	});
+</script>
