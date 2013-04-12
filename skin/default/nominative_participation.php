@@ -26,9 +26,9 @@
 	<tr>
 		<td><?php echo $event_title; ?></td>
 		<td><?php echo $label; ?></td>
-		<td><?php echo $amount_ht; ?></td>
-		<td><?php echo $tax_rate; ?>%</td>
-		<td><?php echo $amount_ttc; ?></td>
+		<td class="evt_curr"><?php echo $amount_ht; ?></td>
+		<td class="evt_curr"><?php echo $tax_rate; ?>%</td>
+		<td class="evt_curr"><?php echo $amount_ttc; ?></td>
 		<td><button OnClick="add_ticket(<?php
 			echo "'$event_title', '$label', $amount_ht, $tax_rate";
 			?>)">Add</button></td>
@@ -72,33 +72,33 @@
 				$tax_rate_id = str_replace(".", "_", $tax_rate);
 		?>
 		<tr id="row_total_<?php echo $tax_rate_id; ?>">
-			<th>Tax(<?php echo $tax_rate; ?>)</th>
-			<td id="total_ht_<?php echo $tax_rate_id; ?>">0.00</td>
-			<td id="total_tax_<?php echo $tax_rate_id; ?>">0.00</td>
-			<td id="total_ttc_<?php echo $tax_rate_id; ?>">0.00</td>
+			<th class="th_left">Tax(<?php echo $tax_rate; ?>%)</th>
+			<td class="evt_curr" id="total_ht_<?php echo $tax_rate_id; ?>">0.00</td>
+			<td class="evt_curr" id="total_tax_<?php echo $tax_rate_id; ?>">0.00</td>
+			<td class="evt_curr" id="total_ttc_<?php echo $tax_rate_id; ?>">0.00</td>
 		</tr>
 		<?php
 			}
 		?>
 		<tr>
-			<th colspan="2">Total taxes</th>
-			<td id="total_tax">0.00</td>
+			<th class="th_left" colspan="2">Total taxes</th>
+			<td class="evt_curr" id="total_tax">0.00</td>
 		</tr>
 		<tr>
-			<th colspan="3"><b>Total due</b></th>
-			<td id="total_due"><b>0.00</b></td>
+			<th class="th_left" colspan="3"><b>Total due</b></th>
+			<td class="evt_curr" id="total_due"><b>0.00</b></td>
 		</tr>
 	</table>
 	<br/>
 
 	<table class="evt_table_billing">
 		<tr>
-			<th>Billing Entity name: </th>
+			<th class="th_left">Billing Entity name</th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
-			<th rowspan="5">Billing address: </th>
+			<th class="th_left" rowspan="5">Billing address</th>
 			<td>
 				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="street# and street name"/>
 			</td>
@@ -173,16 +173,16 @@
 								label +
 								"<input type=\"hidden\" name=\"labels[]\" value=\"" + label + "\"/>" +
 							"</td>" +
-							"<td type=\"amount_ht\">" +
+							"<td class=\"evt_curr\" type=\"amount_ht\">" +
 								eb_curr(amount_ht) +
 								"<input type=\"hidden\" name=\"amount_ht[]\" value=\"" + eb_curr(amount_ht) + "\"/>" +
 							"</td>" +
-							"<td type=\"tax\" value=\"" + eb_curr(tax).replace(".", "_") + "\">" +
+							"<td class=\"evt_curr\" type=\"tax\" value=\"" + eb_curr(tax).replace(".", "_") + "\">" +
 								eb_curr(tax) + "%" +
 								"<input type=\"hidden\" name=\"taxes[]\" value=\"" + eb_curr(tax) + "\"/>" +
 							"</td>" +
-							"<td type=\"tax_amount\">" + eb_curr(tax_amount) + "</td>" +
-							"<td>" + eb_curr(amount_ttc) + "</td>" +
+							"<td class=\"evt_curr\" type=\"tax_amount\">" + eb_curr(tax_amount) + "</td>" +
+							"<td class=\"evt_curr\">" + eb_curr(amount_ttc) + "</td>" +
 							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\" size=\"15\"/></td>" +
 							"<td><input type=\"text\" name=\"firstnames[]\" placeholder=\"mandatory\" value=\"<?php echo_default_value('firstname', $user->firstname); ?>\"/></td>" +
 							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\" value=\"<?php echo_default_value('lastname', $user->lastname); ?>\"/></td>" +

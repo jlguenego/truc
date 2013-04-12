@@ -44,7 +44,7 @@ How many ticket do you want?
 			debug(sprint_r($tax_array));
 		?>
 		<tr>
-			<th colspan="4">Total</th>
+			<th class="th_left" colspan="4">Total</th>
 			<td id="sub_total" class="evt_curr">0.00</td>
 		</tr>
 	</table>
@@ -62,7 +62,7 @@ How many ticket do you want?
 			foreach ($tax_array as $tax_rate) {
 		?>
 		<tr>
-			<th>Tax(<?php echo $tax_rate; ?>) (€)</td>
+			<th class="th_left">Tax(<?php echo $tax_rate; ?>%)</td>
 			<td id="tax_base_<?php echo $i2; ?>" class="evt_curr">0.00</td>
 			<td id="tax_total_<?php echo $i2; ?>" class="evt_curr">0.00</td>
 			<td id="tax_total_due_<?php echo $i2; ?>" class="evt_curr">0.00</td>
@@ -72,11 +72,11 @@ How many ticket do you want?
 			}
 		?>
 		<tr>
-			<th colspan="2">Total taxes (€)</td>
+			<th class="th_left" colspan="2">Total taxes</td>
 			<td id="tax_total" class="evt_curr">0.00</td>
 		</tr>
 		<tr>
-			<th colspan="3"><b>Total due (€)</b></td>
+			<th class="th_left" colspan="3"><b>Total due</b></td>
 			<td id="total_due" class="evt_curr"><b>0.00</b></td>
 		</tr>
 	</table>
@@ -84,12 +84,12 @@ How many ticket do you want?
 
 	<table id="total" class="evt_table_billing">
 		<tr>
-			<th>Billing Entity name: </th>
+			<th class="th_left">Billing Entity name</th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
 			<td class="help">The person or organisation name to be charged.</td>
 		</tr>
 		<tr>
-			<th rowspan="5">Billing address: </th>
+			<th class="th_left" rowspan="5">Billing address</th>
 			<td>
 				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="street# and street name"/>
 			</td>

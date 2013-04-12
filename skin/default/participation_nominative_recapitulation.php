@@ -40,10 +40,10 @@
 		<td><?php echo $attendee_firstname; ?></td>
 		<td><?php echo $attendee_lastname; ?></td>
 	</tr>
-</table>
 <?php
 	}
 ?>
+</table>
 <table class="evt_table">
 	<tr>
 		<th class="th_left">Total (€)</th>
@@ -62,11 +62,11 @@
 
 <table class="evt_table">
 	<tr>
-		<th class="th_left">Billing Entity name: </th>
+		<th class="th_left">Billing Entity name</th>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>
-		<th class="th_left">Billing address: </th>
+		<th class="th_left">Billing address</th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
 </table>
