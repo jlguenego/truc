@@ -65,6 +65,7 @@ EOF;
 			foreach ($array as $key => $value) {
 				if (ESCAPE_QUOTE) {
 					$value = str_replace("\\'", "'", $value);
+					$value = str_replace('\\"', '"', $value);
 				}
 				if ($key == "id_user") {
 					$this->user_id = $value;

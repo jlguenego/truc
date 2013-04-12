@@ -17,6 +17,7 @@
 			foreach ($record as $key => $value) {
 				if (ESCAPE_QUOTE) {
 					$value = str_replace("\\'", "'", $value);
+					$value = str_replace('\\"', '"', $value);
 				}
 				$this->$key = $value;
 			}

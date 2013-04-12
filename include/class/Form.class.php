@@ -130,14 +130,18 @@ EOF;
 						$result .= $item->html_spec;
 						break;
 					case "hidden":
+						$name = htmlentities($item->name);
+						$default = htmlentities($item->default);
 						$result .= <<<EOF
-<input type="hidden" name="{$item->name}" value="{$item->default}"/>
+<input type="hidden" name="$name" value="$default"/>
 EOF;
 						break;
 					case "text":
+						$name = htmlentities($item->name);
+						$default = htmlentities($item->default);
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="text" id="{$item->name}" name="{$item->name}" value="{$item->default}" {$item->other_attr} $autofocus/>
+<input type="text" id="$name" name="$name" value="$default" {$item->other_attr} $autofocus/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
