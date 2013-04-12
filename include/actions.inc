@@ -869,11 +869,10 @@
 		if (!$event->can_be_administrated()) {
 			throw new Exception("Cannot view attendees of an event if you cannot administrate it.");
 		}
-		if ($event->type == EVENT_TYPE_NOMINATIVE) {
-			$_SESSION["state"] = "participation_list_nominative";
-		} else {
-			$_SESSION["state"] = "participation_list_regular";
+		if ($event->type != EVENT_TYPE_NOMINATIVE) {
+			throw new Exception("This event cannot have attendee list.");
 		}
+		$_SESSION["state"] = "participation_list_regular";
 		$g_display["event"] = $event;
 		$g_display["participations"] = $event->get_participations();
 	}

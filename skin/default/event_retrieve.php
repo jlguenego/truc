@@ -81,7 +81,13 @@
 		}
 ?>
 		<li>Organizer phone: <?php echo $event->phone; ?></li>
-		<li><a href="?action=list&amp;type=participation&amp;id=<?php echo $event->id ?>">View registrations</a></li>
+<?php
+		if ($event->type == EVENT_TYPE_NOMINATIVE) {
+?>
+			<li><a href="?action=list&amp;type=participation&amp;id=<?php echo $event->id ?>">View registrations</a></li>
+<?php
+		}
+?>
 		<li><a href="?action=get_form&amp;type=event&amp;id=<?php echo $event->id ?>">Edit event</a></li>
 		<li><a href="?action=delete&amp;type=event&amp;id=<?php echo $event->id ?>">Delete event</a></li>
 		</ul>
