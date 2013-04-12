@@ -100,6 +100,7 @@ EOF;
 				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>
+				<input type="hidden" name="https_access"/>
 				<input type="hidden" name="profile"/>
 			</table>
 		</form>
@@ -131,6 +132,7 @@ EOF;
 				$("input[name=captcha_pub_key]").val(profile_array[i].captcha_pub_key);
 				$("input[name=captcha_priv_key]").val(profile_array[i].captcha_priv_key);
 				$("input[name=merchant_id]").val(profile_array[i].merchant_id);
+				$("input[name=https_access]").val(profile_array[i].https_access);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);

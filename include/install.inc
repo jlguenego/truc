@@ -30,11 +30,11 @@ EOF;
 			};
 
 			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
-			$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
 			$test_mode = (isset($_POST["test_mode"])) ? "true" : "false";
 			$payment_type = $_POST["payment_type"];
 			$escape_quote = (isset($_POST["escape_quote"])) ? "true" : "false";
 			$merchant_id = $_POST["merchant_id"];
+			$https_access = $_POST["https_access"];
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -43,8 +43,6 @@ EOF;
 	define("MYSQL_DBNAME", "$dbname");
 
 	define("CONTACT_MAIL", "$contact_email");
-
-	define('HOST', "$base_url");
 
 	define('TEST_MODE', $test_mode);
 
@@ -56,6 +54,8 @@ EOF;
 
 	define('CAPTCHA_PUB_KEY', '$captcha_pub_key');
 	define('CAPTCHA_PRIV_KEY', '$captcha_priv_key');
+
+	define('HTTPS_ACCESS', '$https_access');
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

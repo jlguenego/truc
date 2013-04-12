@@ -1,12 +1,13 @@
 <?php
 	header("Cache-Control: no-cache");
+	$host = "";
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
 		<title>Event Biller</title>
 		<meta charset="utf-8"/>
-		<base href="<?php echo HOST; ?>/" />
+		<base href="<?php echo HOST; ?>" />
 
 		<script type="text/javascript" src="jscript/misc.js"></script>
 		<link href="<?php echo SKIN_DIR; ?>/default.css" rel="stylesheet">
