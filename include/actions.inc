@@ -872,7 +872,7 @@
 		if ($event->type != EVENT_TYPE_NOMINATIVE) {
 			throw new Exception("This event cannot have attendee list.");
 		}
-		$_SESSION["state"] = "participation_list_regular";
+		$_SESSION["state"] = "participation_list_nominative";
 		$g_display["event"] = $event;
 		$g_display["participations"] = $event->get_participations();
 	}
