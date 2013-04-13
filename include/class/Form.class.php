@@ -113,14 +113,17 @@
 		public function html() {
 
 			$result = <<<EOF
-<span class="{$this->css}_title">{$this->title}</span>
+<div class="{$this->css}">
+<div class="{$this->css}_title">
+	{$this->title}
 EOF;
 			if ($this->cancel) {
 				$result .= <<<EOF
-<span class="{$this->css}_cancel"><a href="{$this->cancel_url}">Cancel</a></span>
+<a class="{$this->css}_cancel" href="{$this->cancel_url}">Cancel</a>
 EOF;
 			}
 				$result .= <<<EOF
+</div>
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
 			$autofocus = "autofocus";
@@ -208,7 +211,7 @@ EOF;
 				}
 				$autofocus = "";
 			}
-			$result .= "</form>";
+			$result .= "</form></div>";
 			$_SESSION["form"] = $this;
 			return $result;
 		}

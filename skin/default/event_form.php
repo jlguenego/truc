@@ -21,6 +21,11 @@
 	}
 	$f->action = $g_display["form_action"];
 	$f->method = "POST";
+	$f->add_raw_html(<<<EOF
+	<h1>Describe your event</h1>
+	<div class="form_section">
+EOF
+);
 	$item = $f->add_text("Title", "title", default_value("title", $event->title),
 		"Conference, or meeting name.");
 	$item->other_attr = ' size="60" maxlength="255"';
@@ -66,7 +71,9 @@
 	$f->add_hidden("id", $event->id);
 	$f->add_hidden("event_type", $event->type);
 	$f->add_raw_html(<<<EOF
-	<span class="form_h1">Create tickets and define their price</span><br/>
+	</div>
+	<h1>Create tickets and define their price</h1>
+	<div class="form_section">
 EOF
 );
 	if (!$event->has_accountancy_activity()) {
@@ -86,6 +93,10 @@ EOF
 		$f->add_checkbox("I have read and agree to the <a href=\"\">Terms and Conditions</a>", "confirm",
 			"", "You have to check this to continue.");
 	}
+	$f->add_raw_html(<<<EOF
+	</div>
+EOF
+);
 	$f->add_submit($button_text);
 	echo $f->html();
 ?>

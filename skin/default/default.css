@@ -124,7 +124,9 @@ html, body {
 	margin: 40px;
 	padding: 20px;
 
-	background: #E6F2FF;
+	background: #E9E9E9;
+	border: 1px solid #AAAAAA;
+	border-radius: 4px;
 }
 
 #evt_menu li:hover {
@@ -150,20 +152,36 @@ html, body {
 
 /* FORMS */
 
-.form_title {
-	display: inline-block;
-	font-size: 20px;
+.form h1 {
+	font-size: 15px;
 	font-weight: bold;
-	margin-right: 20px;
 	margin-bottom: 20px;
+	background-color: #E1ECDF;
+	padding: 4px 10px 4px 10px;
+	border: 1px solid #93B98C;
 }
 
-.form_h1 {
+.form_section {
+	margin-left: 10px;
+}
+
+.form_title {
+	font-size: 20px;
 	font-weight: bold;
+	margin-bottom: 20px;
+	background-color: #D2E2CF;
+	border: 1px solid #93B98C;
+	padding: 4px 10px 4px 10px;
+}
+
+.form_cancel {
+	font-size: 12px;
+	margin-left: 20px;
 }
 
 .form_label {
 	margin-bottom: 8px;
+	font-weight: bold;
 }
 
 .form_help {
@@ -242,12 +260,12 @@ html, body {
 .evt_table th, .evt_table_billing th {
 	padding: 5px;
 	font-weight: bold;
-	background-color: #FFEAEA;
+	background-color: #F4F4FF;
 	border: 1px solid black;
 }
 
 .evt_table tr:nth-child(odd), .evt_table_billing tr:first-child td {
-	background-color: #E6F2FF;
+	background-color: #FFF0F0;
 }
 
 .evt_table td, .evt_table_billing td {
@@ -329,10 +347,6 @@ html, body {
 	background-color: #FFFFB3;
 	font-weight: bold;
 	border: 1px solid #000000;
-}
-
-.form_cancel * {
-	font-size: 12px;
 }
 
 #evt_error {
