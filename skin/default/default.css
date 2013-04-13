@@ -235,9 +235,13 @@ html, body {
 
 .evt_title {
 	display: block;
-	min-height: 30px;
 	font-size: 20px;
 	font-weight: bold;
+	text-align: center;
+	background-color: #EEEEEE;
+	border: 1px solid #DDDDDD;
+	padding: 5px;
+	margin-bottom: 15px;
 }
 
 .evt_hr {
