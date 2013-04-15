@@ -109,6 +109,9 @@ html, body {
 	background: #F5F5F5;
 }
 
+#evt_header_menu li:hover {
+	background-color: #D2E2CF;
+}
 
 #evt_menu {
 	width: 100%;
@@ -131,6 +134,7 @@ html, body {
 
 #evt_menu li:hover {
 	text-decoration: underline;
+	background: #DDDDDD;
 }
 
 #evt_menu a {
@@ -453,4 +457,8 @@ b, strong {
 
 .legal td {
 	padding: 5px;
+}
+
+.about_us {
+	text-align: center;
 }

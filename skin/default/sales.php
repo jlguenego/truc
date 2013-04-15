@@ -53,7 +53,7 @@
 	</tr>
 	<tr>
 		<td>Ticket saling</td>
-		<td>0.50 € + 2.5% of a ticket price</td>
+		<td>0.50 € + 5% of a ticket price</td>
 		<td>19.6%</td>
 	</tr>
 </table>
