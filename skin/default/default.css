@@ -417,6 +417,14 @@ b, strong {
 	text-align: justify;
 }
 
+.legal p {
+	margin: 20px 0px 20px 0px;
+}
+
+.legal b {
+	font-weight: bold;
+}
+
 .legal h1 {
 	font-size: 14px;
 	font-weight: bold;
