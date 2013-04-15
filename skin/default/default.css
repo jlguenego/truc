@@ -440,3 +440,17 @@ b, strong {
 	font-weight: bold;
 	text-align: center;
 }
+
+.legal th {
+	font-weight: bold;
+	background-color: #FFEAEA;
+	padding: 5px;
+}
+
+.legal tr:nth-child(even) {
+	background-color: #E6F2FF;
+}
+
+.legal td {
+	padding: 5px;
+}

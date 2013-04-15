@@ -5,7 +5,7 @@
 <h1>Introduction</h1>
 
 <p>
-	These document purpose is to define how the web site event-biller.com services can be used.
+	This document purpose is to define how the event-biller.com web site services can be used.
 	The web site event-biller.com is the property of the following company,
 	which is based in France: 
 </p>
@@ -105,6 +105,13 @@
 	After an event is confirmed, all claims from buyer regarding this event must be
 	directly addressed to the organizer.
 </p>
+
+<h1>Event publication</h1>
+<p>
+	Event-Biller.com can decide on its own to not publish an event
+	or to remove an event without informing the user or giving a reason.
+</p>
+
 <h1>Event confirmation or cancellation</h1>
 <p>
 	An event will be confirmed or cancelled by Event-Biller.com
@@ -116,6 +123,17 @@
 	and the matching authorized payment will be captured.
 	If an event is cancelled then all booked tickets are cancelled,
 	and because no payment have been captured, no user needs to be refunded.
+</p>
+
+<h1>Transferring funds to the organizer</h1>
+<p>
+	All tickets are sold by Event-Biller.com, which acts as an intermediate.
+	Then, Event-Biller.com transfers the funds corresponding to the sold tickets
+	to the organizer except the service fees.
+	The transfer are regularely done according a period of time defined between the
+	organizer and Event-Biller.com.
+	Event-Biller.com cannot be responsible or liable for external problems
+	regarding fund transfers that may cause delayed transfer or no transfer at all.
 </p>
 
 <h1>Identification</h1>
@@ -149,3 +167,4 @@
 	If needed, the user can access the web site with an HTTPS access.
 	The certificate is owned by the Event-Biller.com web hosting provider, which is OVH SAS.
 </p>
+
