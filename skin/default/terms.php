@@ -59,7 +59,7 @@
 	Any such controversy or claim shall be arbitrated on an individual basis,
 	and shall not be consolidated in any arbitration with any claim or controversy
 	of any other party. The arbitration shall be conducted in France,
-	and judgment on the arbitration award may be entered in any court having jurisdiction thereof. Subject to the foregoing arbitration provision, you and EVENTBRITE agree to submit to the personal jurisdiction of the courts located within the city and county of San Francisco, California. Either you or EVENTBRITE may seek any interim or preliminary relief from a court of competent jurisdiction in San Francisco, California, necessary to protect the rights or property of you or EVENTBRITE (or its agents, suppliers, and subcontractors) pending the completion of arbitration.
+	and judgment on the arbitration award may be entered in any court having jurisdiction thereof.
 </p>
 
 <h1>General description</h1>
