@@ -63,3 +63,4 @@
 	Price are indicated when booking or buying ticket. Ticket bought cannot be refunded by Event-Biller.com. Users can still check the organizer policies. Ticket payment, when booked are captured only when the event is confirmed by Event-Biller.com.
 	
 </p>
+</div>

@@ -73,6 +73,13 @@ html, body {
 	border-bottom: 1px solid #D4D4D4;
 }
 
+#evt_i18n {
+	position:absolute;
+	left:500px;
+	top:0px;
+	background-color: #FFFFFF;
+}
+
 #evt_logo {
 	display: table-cell;
 
@@ -178,6 +185,12 @@ html, body {
 	border: 1px solid #93B98C;
 	padding: 4px 10px 4px 10px;
 }
+
+.form_title a {
+	font-size: 20px;
+	font-weight: bold;
+}
+
 
 .form_cancel {
 	font-size: 12px;

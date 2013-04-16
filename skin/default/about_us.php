@@ -12,3 +12,4 @@
 	bringing help to handicap in general.
 </p>
 <div class="about_us"><img src="skin/default/images/handi.png"/></div>
+</div>

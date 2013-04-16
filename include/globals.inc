@@ -4,6 +4,10 @@
  * Use this file to define global variable
  *
 **/
+
+	$g_locales = array("en", "fr");
+	$g_default_locale = "en";
+	
 	$g_states = array(
 		"root",
 		"error",

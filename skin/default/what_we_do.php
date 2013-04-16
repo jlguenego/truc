@@ -13,4 +13,4 @@
 	organizers can be sure to have enough finance to do the event.
 </p>
 <div class="about_us"><img src="skin/default/images/schema.png"/></div>
-
+</div>

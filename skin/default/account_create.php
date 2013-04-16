@@ -26,7 +26,7 @@
 		$publickey = CAPTCHA_PUB_KEY; // you got this from the signup page
 		$f->add_raw_html(recaptcha_get_html($publickey));
 	}
-	$f->add_checkbox("I have read and understood the <a href=\"CGU.pdf\" target=\"_blank\">CGU</a> and accept them.", "confirm", "", "");
+	$f->add_checkbox("I have read and understood the <a href=\"info/terms\" target=\"_blank\">CGU</a> and accept them.", "confirm", "", "");
 	$f->add_submit("Submit");
 	echo $f->html();
 ?>

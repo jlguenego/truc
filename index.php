@@ -12,18 +12,20 @@
 	require_once(BASE_DIR . "/include/form.inc");
 	require_once(BASE_DIR . "/include/security.inc");
 	require_once(BASE_DIR . "/include/format.inc");
+	require_once(BASE_DIR . "/include/i18n.inc");
 
 	if (isset($_SERVER["HTTPS"])) {
 		$base_url = HTTPS_ACCESS ."/";
 	} else {
 		$base_url = 'http://' . $_SERVER['SERVER_NAME'] . dirname($_SERVER['SCRIPT_NAME']);
 	}
-
-	
 	if (substr($base_url, -1) != "/") {
 		$base_url .= "/";
 	}
 	define('HOST', $base_url);
+
+	i18n_init();
+
 
 	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));

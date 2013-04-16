@@ -1,6 +1,6 @@
 <?php
 	$f = new Form();
-	$f->title = "Sign in";
+	$f->title = "Sign in | <a href=\"index.php?action=get_form&amp;type=account\">Create an account</a>";
 	$f->action = "?action=authenticate";
 	if (isset($_GET["redirect"])) {
 		$f->action .= "&amp;redirect=yes";
@@ -15,8 +15,6 @@
 <br/>
 <br/>
 <a href="?action=get_form&type=forgotten_password">Forgot your password?</a><br/>
-<br/>
-<a href="index.php?action=get_form&amp;type=account">Don't have an account ?</a>
 <script>
 	var hash_salt = "<?php echo RANDOM_SALT ?>";
 	$(document).ready(function() {

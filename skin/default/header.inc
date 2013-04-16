@@ -1,7 +1,9 @@
 <div id="evt_header">
+	<div id="evt_i18n"><?php i18n_menu(); ?></div>
 	<div id="evt_logo">
 		<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
-		<div id="evt_index">Organizing events without risks.</div>
+	<div id="evt_index">{{Organizing events without risks.}}</div>
+		
 	</div>
 	<div id="evt_user_info">
 <?php
@@ -9,9 +11,6 @@
 		$user = User::get_from_id();
 		$email = mb_strtolower($user->email, "UTF-8");
 ?>
-
-
-
 		<?php echo $user->get_name() ?> - <?php echo "${email}" ?>
 <?php
 		if (is_admin_logged()) {

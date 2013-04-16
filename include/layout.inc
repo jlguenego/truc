@@ -1,7 +1,7 @@
 <?php
 
 	function layout_header() {
-		require_once(BASE_DIR . "/" . SKIN_DIR."/header.inc");
+		require_once(i18n_parse(BASE_DIR . "/" . SKIN_DIR."/header.inc"));
 	}
 
 	function layout_footer() {

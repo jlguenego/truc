@@ -75,12 +75,26 @@
 			case "display":
 				action_display();
 				break;
+			case "set_locale":
+				action_set_locale();
+				break;			
 			case "none":
 				break;
 			default:
 				throw new Exception("This action does not exists.");
 				break;
 		}
+	}
+	
+	function action_set_locale() {
+		global $g_info_msg, $g_locales;
+		if (!in_array($_GET["locale"], $g_locales)) {
+			throw new Exception("unknown locale: ".$_GET["locale"]);
+		}
+		$_SESSION["locale"] = $_GET["locale"];
+		$g_info_msg = "Changing the locale to ".$_SESSION["locale"];
+		// get the page we come from.
+		redirect_to($_SERVER['HTTP_REFERER']);
 	}
 
 	function action_display() {

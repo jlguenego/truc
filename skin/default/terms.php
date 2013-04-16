@@ -23,7 +23,7 @@
 		<li><b>"Event-Biller.com", "We", "Us", "Ourselves" : </b> JLG Consulting</li>
 		<li><b>"User", "You", "Your" : </b> the person which is accessing the web site,
 			including the organization that this person may represent.</li>
-		<li><b>"the services": </b>All services offered by the web site.</li>
+		<li><b>"the Services": </b>All services offered by the web site.</li>
 		<li><b>The event organizer, "organizer": </b>A user that uses the web site to organize one or many events.</li>
 		<li><b>The event buyer: </b>A user that wants to buy or book tickets for an event.</li>
 		<li><b>T&C : Abbreviation for Terms and Conditions (the present document).</b></li>
@@ -167,4 +167,4 @@
 	If needed, the user can access the web site with an HTTPS access.
 	The certificate is owned by the Event-Biller.com web hosting provider, which is OVH SAS.
 </p>
-
+</div>
