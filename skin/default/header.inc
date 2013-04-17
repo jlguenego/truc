@@ -20,11 +20,11 @@
 		}
 ?>
 		<br/>
-		<a href="?action=sign_out">{{Sign out}}</a>&nbsp;|&nbsp;<a href="?action=retrieve&amp;type=account">Account info</a>
+		<a href="?action=sign_out">{{Sign out}}</a>&nbsp;|&nbsp;<a href="?action=retrieve&amp;type=account">{{Account info}}</a>
 <?php
 	} else {
 ?>
-		<a href="?action=sign_in">{{Sign in}}</a> | <a href="index.php?action=get_form&amp;type=account">Create account</a>
+		<a href="?action=sign_in">{{Sign in}}</a> | <a href="index.php?action=get_form&amp;type=account">{{Create account}}</a>
 <?php
 	}
 ?>
@@ -32,9 +32,9 @@
 </div>
 <div id="evt_header_menu">
 	<ul>
-		<li><a href=".">Home</a></li>
-		<li><a href="info/about_us">About us</a></li>
-		<li><a href="info/what_we_do">What we do</a></li>
+		<li><a href=".">{{Home}}</a></li>
+		<li><a href="info/about_us">{{About us}}</a></li>
+		<li><a href="info/what_we_do">{{What we do}}</a></li>
 		<li><a href="info/contact">Contact</a></li>
 <?php
 		if (is_admin_logged()) {

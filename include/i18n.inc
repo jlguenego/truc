@@ -55,7 +55,9 @@ EOF;
 		if (!file_exists($filename)) {
 			return;
 		}
-		$str = file_get_contents($filename);
+		$a = file($filename);
+		$a = preg_grep("/^\s*#/", $a, PREG_GREP_INVERT);
+		$str = join("", $a);
 		$g_i18n = json_decode($str, TRUE);
 		debug("g_i18n=".sprint_r($g_i18n));
 	}

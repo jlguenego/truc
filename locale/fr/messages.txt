@@ -1,3 +1,40 @@
 {
-	"Organizing events without risks.": "Organisez vos évènements sans risque."
+#Header
+	"Organizing events without risks.": "Organisez vos évènements sans risque.",
+	"Home": "Accueil",
+	"About us": "Qui somme nous ?",
+	"What we do": "Notre activité",
+	"Contact": "Nous contacter",
+	"Sign in": "Se connecter",
+	"Sign out": "Déconnexion",
+	"Account info": "Afficher mon profil",
+	"Create account": "S'inscrire",
+
+#Root
+	"Create an event": "Créer un évènement",
+	"See events": "Voir les évènements",
+	"Events supervision": "Gérer les évènements",
+
+#Sign in
+	"Email": "E-Mail",
+	"Enter your email": "Entrez votre addresse électronique",
+	"Password": "Mot de passe",
+	"Enter your password": "Entrez votre mot de passe",
+	"Create an account": "Créer un compte",
+	"Forgot your password?": "Mot de passe oublié ?",
+
+#Forgotten password
+	"Forgotten password": "Mot de passe oublié",
+	"Please enter your account email.": "Veulliez entrer le mail associé à votre compte.",
+	"Continue": "Continuer",
+	"Please check your mails.": "Veuillez vérifier votre boite mail.",
+
+#Footer
+	"EventBiller is a service provided by JLG-Consulting": "EventBiller est un service fourni par JLG-Consulting",
+	"This web site is hosted with": "Ce site web est hébergé par",
+	"For more security, you can use it with its": "Pour plus de sécurité, vous pouvez l'utiliser avec son",
+	"HTTPS access": "accès HTTPS",
+	"Terms and Conditions": "Conditions générales d'utilisation",
+	"Sales policies": "Conditions générales de vente",
+	"Privacy policies": "Règles de confidentialité"
 }
