@@ -1,6 +1,7 @@
 <?php
 	function layout_i18n($file) {
 		global $g_page;
+		global $g_display;
 
 		ob_start();
 		require_once($file);

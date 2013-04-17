@@ -7,7 +7,7 @@
 <p>
 	This document purpose is to define which and how the event-biller.com web site services are charged to the users.
 	The web site event-biller.com is the property of the following company,
-	which is based in France: 
+	which is based in France:
 </p>
 <p>
 	<b>JLG Consulting</b><br/>
@@ -26,7 +26,7 @@
 		<li><b>"the services": </b>All services offered by the web site.</li>
 		<li><b>The event organizer, "organizer": </b>A user that uses the web site to organize one or many events.</li>
 		<li><b>The event buyer: </b>A user that wants to buy or book tickets for an event.</li>
-		<li><b>T&C : Abbreviation for Terms and Conditions (the present document).</b></li>
+		<li><b>T&C : Abbreviation for Terms and Conditions.</b></li>
 	</ul>
 </p>
 <p>
@@ -60,7 +60,7 @@
 
 <h1>Price list for other users</h1>
 <p>
-	Price are indicated when booking or buying ticket. Ticket bought cannot be refunded by Event-Biller.com. Users can still check the organizer policies. Ticket payment, when booked are captured only when the event is confirmed by Event-Biller.com.
-	
+	Prices are indicated when booking or buying ticket. Ticket bought cannot be refunded by Event-Biller.com. Users can still check the organizer policies. Ticket payment, when booked are captured only when the event is confirmed by Event-Biller.com.
+
 </p>
 </div>
