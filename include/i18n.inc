@@ -20,8 +20,10 @@ EOF;
 	
 	function i18n_init() {
 		global $g_default_locale;
+		global $g_info_msg;
 		if (is_null_or_empty($_SESSION["locale"])) {
 			$_SESSION["locale"] = $g_default_locale;
+			$g_info_msg = "Bienvenue pour la 1ere fois.";
 		}
 	}
 

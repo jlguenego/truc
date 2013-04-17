@@ -23,6 +23,8 @@
 		$base_url .= "/";
 	}
 	define('HOST', $base_url);
+	
+	session_start();
 
 	i18n_init();
 
@@ -30,6 +32,7 @@
 	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
 	debug("POST=".sprint_r($_POST));
+	debug("SESSION=".sprint_r($_SESSION));
 
 	// If not installed, goto installation page
 	if (!is_installed()) {
@@ -42,8 +45,6 @@
 
 	// If installed
 	require_once(BASE_DIR . "/" . SETTINGS_INI);
-
-	session_start();
 
 	$_GET = array_merge($_GET, $_POST);
 	security_html_injection();
