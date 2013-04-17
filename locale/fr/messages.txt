@@ -1,0 +1,3 @@
+{
+	"Organizing events without risks.": "Organisez vos évènements sans risque."
+}

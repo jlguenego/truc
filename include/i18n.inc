@@ -22,8 +22,10 @@ EOF;
 		global $g_default_locale;
 		global $g_info_msg;
 		if (is_null_or_empty($_SESSION["locale"])) {
+			$_SESSION["locale"] = i18n_guess_locale();
+		}
+		if (is_null_or_empty($_SESSION["locale"])) {
 			$_SESSION["locale"] = $g_default_locale;
-			$g_info_msg = "Bienvenue pour la 1ere fois.";
 		}
 		i18n_load();
 	}
@@ -56,5 +58,32 @@ EOF;
 		$str = file_get_contents($filename);
 		$g_i18n = json_decode($str, TRUE);
 		debug("g_i18n=".sprint_r($g_i18n));
+	}
+
+	function i18n_guess_locale() {
+		return i18n_preffered_browser_language();
+	}
+
+	function i18n_preffered_browser_language()
+	{
+		$result = "";
+		$max_coef = 0;
+		$langs = explode(",",$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach($langs as $lang)
+		{
+			$array = explode(";",$lang);
+			$codelang = $array[0];
+			$coef = null;
+			if (count($array) > 1) {
+				$coef = $array[1];
+			}
+			if($coef == null) $coef = 1;
+			if($coef > $max_coef)
+			{
+				$result = substr($codelang,0,2);
+				$max_coef = $coef;
+			}
+		}
+		return $result;
 	}
 ?>
