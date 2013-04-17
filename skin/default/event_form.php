@@ -1,4 +1,6 @@
 <?php
+	global $g_tax_rates;
+
 	$scenario = $g_display["scenario"];
 	$event = $g_display["event"];
 	$rates = $g_display["rates"];
