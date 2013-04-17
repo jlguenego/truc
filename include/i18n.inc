@@ -17,7 +17,7 @@ $array_locale
 EOF;
 		echo $result;
 	}
-	
+
 	function i18n_init() {
 		global $g_default_locale;
 		global $g_info_msg;
@@ -25,18 +25,36 @@ EOF;
 			$_SESSION["locale"] = $g_default_locale;
 			$g_info_msg = "Bienvenue pour la 1ere fois.";
 		}
+		i18n_load();
 	}
 
-	function i18n_file($file) {
-		return $file;
+	function i18n_parse($str) {
+		$str = preg_replace_callback('/[{][{](.*?)[}][}]/', "i18n_gettext", $str);
+		return $str;
 	}
-	
-	function i18n_parse($file) {
-		$i18n_file = i18n_file($file);
-		if (!file_exists($i18n_file)) {
-			$str = file_get_contents($file);
-			file_put_contents($i18n_file , str_replace("", "", $str));
+
+	function i18n_gettext($array) {
+		return _t($array[1]);
+	}
+
+	function _t($msg) {
+		global $g_i18n;
+
+		if (isset($g_i18n[$msg])) {
+			return $g_i18n[$msg];
 		}
-		return $i18n_file;
+		return $msg;
+	}
+
+	function i18n_load() {
+		global $g_i18n;
+
+		$filename = BASE_DIR."/locale/".$_SESSION["locale"]."/messages.txt";
+		if (!file_exists($filename)) {
+			return;
+		}
+		$str = file_get_contents($filename);
+		$g_i18n = json_decode($str, TRUE);
+		debug("g_i18n=".sprint_r($g_i18n));
 	}
 ?>

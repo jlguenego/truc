@@ -7,11 +7,6 @@
 
 	spl_autoload_register('my_autoloader');
 
-	function _t($msg) {
-		// TODO: implement i18n
-		return $msg;
-	}
-
 	function is_null_or_empty(&$var) {
 		if (!isset($var)) {
 			return TRUE;

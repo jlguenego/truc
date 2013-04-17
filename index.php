@@ -1,5 +1,5 @@
 <?php
-	define("BASE_DIR", ".");
+	define("BASE_DIR", dirname(__FILE__));
 
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/include/globals.inc");
@@ -23,12 +23,12 @@
 		$base_url .= "/";
 	}
 	define('HOST', $base_url);
-	
+
 	session_start();
 
 	i18n_init();
 
-
+	debug(BASE_DIR);
 	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
 	debug("POST=".sprint_r($_POST));
@@ -72,13 +72,14 @@
 		$_SESSION["state"] = "error";
 	}
 	if ($_SESSION["state"] == "not_allowed") {
-		$page = "error";
+		$g_page = "error";
 	} else if (!is_null_or_empty($g_page)) {
-		$page = SKIN_DIR."/".$g_page;
+		$g_page = SKIN_DIR."/".$g_page;
 	} else {
-		$page = SKIN_DIR."/".$_SESSION["state"];
+		$g_page = SKIN_DIR."/".$_SESSION["state"];
 	}
 
 	debug("Session after: ".$_SESSION["state"]);
-	include_once(SKIN_DIR."/layout.php");
+
+	layout_i18n(SKIN_DIR."/layout.php");
 ?>

@@ -7,7 +7,8 @@
 
 	$g_locales = array("en", "fr");
 	$g_default_locale = "en";
-	
+	$g_i18n = array();
+
 	$g_states = array(
 		"root",
 		"error",
@@ -57,7 +58,7 @@
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";
-	
+
 	$g_page = null;
 
 	// Allows to have only one entity of PDO

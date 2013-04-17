@@ -1,7 +1,16 @@
 <?php
+	function layout_i18n($file) {
+		global $g_page;
+
+		ob_start();
+		require_once($file);
+		$layout = ob_get_contents();
+		ob_clean();
+		print(i18n_parse($layout));
+	}
 
 	function layout_header() {
-		require_once(i18n_parse(BASE_DIR . "/" . SKIN_DIR."/header.inc"));
+		require_once(BASE_DIR . "/" . SKIN_DIR."/header.inc");
 	}
 
 	function layout_footer() {

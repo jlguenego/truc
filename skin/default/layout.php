@@ -26,8 +26,8 @@
 ?>
 <div id="evt_main">
 <?php
-	debug("including ${page}.php");
-	include_once("${page}.php");
+	debug("including ${g_page}.php");
+	include_once("${g_page}.php");
 ?>
 </div>
 <?php
