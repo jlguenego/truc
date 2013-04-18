@@ -219,6 +219,11 @@
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
 	"Next": "Suivant",
 
+#Participation list
+	"Attendee list": "Liste des participants",
+	"Ticket name": "Nom du billet",
+	"Ticket amount": "Prix du billet",
+	"Ticket total due": "Prix total du billet",
 #Payment success
 	"Payment success!": "Payement réussi !",
 	"The payment succeeded. We just sent a mail to you for details.":

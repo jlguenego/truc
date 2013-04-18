@@ -1,16 +1,16 @@
-<span class="evt_title">Attendee list</span>
-Event name: <?php echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$g_display["event"]->id."\">".$g_display["event"]->title."</a>"; ?><br/>
-Organizer: <?php echo $g_display["event"]->organizer_name; ?>
+<span class="evt_title">{{Attendee list}}</span>
+{{Event name}}: <?php echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$g_display["event"]->id."\">".$g_display["event"]->title."</a>"; ?><br/>
+{{Organizer}}: <?php echo $g_display["event"]->organizer_name; ?>
 <table class="evt_table">
 	<tr>
-		<th>Label</th>
-		<th>Ticket name</th>
-		<th>Ticket amount</th>
-		<th>Tax</th>
-		<th>Ticket total due</th>
-		<th>Title</th>
-		<th>Firstname</th>
-		<th>Lastname</th>
+		<th>{{Label}}</th>
+		<th>{{Ticket name}}</th>
+		<th>{{Ticket amount}}</th>
+		<th>{{Tax}}</th>
+		<th>{{Ticket total due}}</th>
+		<th>{{Title}}</th>
+		<th>{{Firstname}}</th>
+		<th>{{Lastname}}</th>
 	</tr>
 <?php
 	foreach ($g_display["participations"] as $participation) {
