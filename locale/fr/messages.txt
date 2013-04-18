@@ -140,7 +140,8 @@
 	"Organizer": "Organisateur",
 	"Location": "Localisation",
 	"Happening date": "Date de l'évènement",
-
+	"Participation opening date": "Date d'ouverture des participations",
+	"Event website": "Site de l'évènement",
 
 #Event Delete
 	"Are you sure you want to delete this event?":
