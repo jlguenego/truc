@@ -2,7 +2,7 @@
 <table class="evt_table">
 	<tr>
 		<th>{{Name}}</th>
-		<th>Date</th>
+		<th>{{Date}}</th>
 		<th>{{Status}}</th>
 		<th>{{Participate}}</th>
 	</tr>
@@ -17,9 +17,9 @@
 		<td><?php echo format_date($event->happening_t); ?></td>
 		<td>
 			<?php
-				echo $event->display_status();
+				echo _t($event->display_status());
 				if (!$event->is_published()) {
-					echo " (Non Published)";
+					echo _t(" (Non Published)");
 				}
 			?>
 		</td>

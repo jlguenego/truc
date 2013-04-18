@@ -1,3 +1,9 @@
+<?php
+	global $g_event_states;
+	global $g_event_publish_flag;
+
+?>
+
 <table class="evt_table">
 	<tr>
 		<th>Event ID</th>
@@ -71,24 +77,5 @@
 	<textarea id="dialog_textarea">The reason is ...</textarea>
 </div>
 <script>
-	$("form[name=unpublish]").submit(function() {
-		$("#dialog").dialog({
-			modal: true,
-			buttons: {
-				Ok: function() {
-					var content = $("#dialog_textarea").val();
-					console.log("content="+content);
-					$("input[name=reason]").val(content);
-					//$(this).dialog("close");
-					$(this).dialog("destroy").remove();
-					$("form[name=unpublish]").submit();
-				}
-			}
-	    });
-		//stop submit
-		var content = $("input[name=reason]").val();
-		if (!content) {
-		    return false;
-		}
-	});
+	$(document).ready(eb_unpublish);
 </script>

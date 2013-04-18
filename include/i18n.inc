@@ -45,7 +45,7 @@ EOF;
 		if (isset($g_i18n[$msg])) {
 			return $g_i18n[$msg];
 		}
-		return $msg;
+		return preg_replace("/^\[.*?\]/", "", $msg);
 	}
 
 	function i18n_load() {

@@ -12,55 +12,6 @@ function log(msg) {
 	if (window.console) console.log(msg);
 }
 
-function addRate(divName, label, amount, selected_tax){
-	label = label || "";
-	amount = amount || "";
-	log(selected_tax);
-	if (selected_tax == undefined) {
-		selected_tax = taxes[0][1];
-	}
-	counter++;
-	var id = new Date().getTime();
-	$("#" + divName).append("<div id=\"" + id + "\"></div>");
-	var content =
-			"<table class=\"evt_rate\">" +
-				"<tr>" +
-					"<td>Ticket rate</td>" +
-					"<td>" +
-						"<table>" +
-							"<tr>" +
-								"<td>Ticket rate name</td>" +
-								"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\" placeholder=\"Ex: Normal, Student, Member, etc.\" size=\"40\"></td>" +
-							"</tr>" +
-							"<tr>" +
-								"<td>Amount (Tax excluded)</td>" +
-								"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
-							"</tr>" +
-							"<tr>" +
-								"<td>Tax</td>" +
-								"<td>" +
-									"<select name=\"tax_rates[]\" \">";
-	for (var i = 0; i < taxes.length; i++) {
-		var selected = "";
-		log("selected_tax=" + selected_tax);
-		log("taxes[i][1]=" + taxes[i][1]);
-		if (taxes[i][1] == selected_tax) {
-			selected = "selected";
-		}
-		content += 				"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
-	}
-	content +=				"</select>" +
-								"</td>" +
-							"</tr>" +
-						"</table>" +
-					"</td>";
-					content += "<td id=\"remove_" + id + "\"></td>";
-				content += "</tr>" +
-			"</table>";
-	$("#" + id).html(content);
-	$("#" + id).find("[name*=labels]").focus();
-	sync_remove_button(divName);
-}
 
 function sync_remove_button(divName) {
 	if (counter > 1) {
@@ -168,4 +119,27 @@ function eb_handle_sync_hash(txt_field_name, hidden_field_name) {
 	} else {
 		$('input[name='+hidden_field_name+']').val(null);
 	}
+}
+
+function eb_unpublish() {
+	$("form[name=unpublish]").submit(function() {
+		$("#dialog").dialog({
+			modal: true,
+			buttons: {
+				Ok: function() {
+					var content = $("#dialog_textarea").val();
+					console.log("content="+content);
+					$("input[name=reason]").val(content);
+					//$(this).dialog("close");
+					$(this).dialog("destroy").remove();
+					$("form[name=unpublish]").submit();
+				}
+			}
+	    });
+		//stop submit
+		var content = $("input[name=reason]").val();
+		if (!content) {
+		    return false;
+		}
+	});
 }

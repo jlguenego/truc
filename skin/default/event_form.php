@@ -15,66 +15,66 @@
 		$f->cancel_url = "?action=retrieve&amp;type=event&amp;id=".$event->id;
 	}
 	if ($scenario == "create") {
-		$button_text = "Create";
-		$f->title = "Event creation ";
+		$button_text = _t("Create");
+		$f->title = _t("Event creation");
 	} else {
-		$button_text = "Update";
-		$f->title = "Event edition ";
+		$button_text = _t("Update");
+		$f->title = _t("Event edition");
 	}
 	$f->action = $g_display["form_action"];
 	$f->method = "POST";
 	$f->add_raw_html(<<<EOF
-	<h1>Describe your event</h1>
+	<h1>{{Describe your event}}</h1>
 	<div class="form_section">
 EOF
 );
-	$item = $f->add_text("Title", "title", default_value("title", $event->title),
-		"Conference, or meeting name.");
+	$item = $f->add_text(_t("[event]Title"), "title", default_value("title", $event->title),
+		_t("Conference, or meeting name."));
 	$item->other_attr = ' size="60" maxlength="255"';
-	$item = $f->add_text("Organizer name", "organizer_name", default_value("organizer_name", $event->organizer_name),
-		"The entity that is responsible for organizing the event.");
+	$item = $f->add_text(_t("Organizer name"), "organizer_name", default_value("organizer_name", $event->organizer_name),
+		_t("The entity that is responsible for organizing the event."));
 	$item->other_attr = ' size="60" maxlength="255"';
-	$item = $f->add_text("Organizer phone (optional but recommended)", "phone",
+	$item = $f->add_text(_t("Organizer phone (optional but recommended)"), "phone",
 		default_value("phone", $event->phone, $user->phone),
-		"Contact phone not published. Used only for support purpose.");
+		_t("Contact phone not published. Used ONLY for support purpose."));
 	$item->is_optional = true;
 	if (!$event->has_accountancy_activity()) {
-		$item = $f->add_number("Required funding (Euros)", "funding_needed",
+		$item = $f->add_number(_t("Required funding (Euro)"), "funding_needed",
 			default_value("funding_needed", $event->funding_needed),
-			"Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement.");
+			_t("Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement."));
 		$item->other_attr = ' step="0.01" min="0"';
 	} else {
 		$f->add_hidden("funding_needed", $event->funding_needed);
 	}
-	$f->add_text("Event starting date", "happening_t",
+	$f->add_text(_t("Event starting date"), "happening_t",
 		default_value("happening_t", $event->happening_t),
-		"Date at which starts the event (Format: YYYY-MM-DD).");
-	$f->add_text("Confirmation date", "confirmation_t",
+		_t("Date at which starts the event (Format: YYYY-MM-DD)."));
+	$f->add_text(_t("Confirmation date"), "confirmation_t",
 		default_value("confirmation_t", $event->confirmation_t),
-		"Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD).");
-	$f->add_text("Ticket Sale opening start date", "open_t",
+		_t("Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)."));
+	$f->add_text(_t("Ticket Sale opening start date"), "open_t",
 		default_value("open_t", $event->open_t),
-		"Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD).");
-	$item = $f->add_text("Event place", "location",
+		_t("Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD)."));
+	$item = $f->add_text(_t("Event place"), "location",
 		default_value("location", $event->location),
-		"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)");
+		_t("Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
 	$item->other_attr = 'size="60" maxlength="255"';
-	$item = $f->add_text("Web site (optional)", "link", default_value("link", $event->link),
-		"Official event web site (if any).");
+	$item = $f->add_text(_t("Web site (optional)"), "link", default_value("link", $event->link),
+		_t("Official event web site (if any)."));
 	$item->other_attr = 'size="60" maxlength="255"';
 	$item->is_optional = true;
-	$f->add_textarea("Short description", "short_description",
+	$f->add_textarea(_t("Short description"), "short_description",
 		default_value("short_description", $event->short_description),
-		"Enter a short description of the event. (HTML editor)");
-	$item = $f->add_textarea("Long description", "long_description",
+		_t("Enter a short description of the event. (HTML editor)"));
+	$item = $f->add_textarea(_t("Long description"), "long_description",
 		default_value("long_description", $event->long_description),
-		"Enter a long description of the event. (HTML editor)");
+		_t("Enter a long description of the event. (HTML editor)"));
 	$item->other_attr = 'width="200px"';
 	$f->add_hidden("id", $event->id);
 	$f->add_hidden("event_type", $event->type);
 	$f->add_raw_html(<<<EOF
 	</div>
-	<h1>Create tickets and define their price</h1>
+	<h1>{{Create tickets and define their price}}</h1>
 	<div class="form_section">
 EOF
 );
@@ -83,17 +83,17 @@ EOF
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$checked = " checked";
 		}
-		$f->add_checkbox("I want to know the name of my attendees", "event_type_checkbox", $checked, "");
+		$f->add_checkbox(_t("I want to know the name of my attendees"), "event_type_checkbox", $checked, "");
 	}
 	$f->add_raw_html(<<<EOF
 <div id="rates">
 </div>
-<a href="JavaScript:addRate('rates');">Add another ticket rate</a><br/><br/>
+<a href="JavaScript:addRate('rates');">{{Add another ticket rate}}</a><br/><br/>
 EOF
 );
 	if ($scenario == "create") {
-		$f->add_checkbox("I have read and agree to the <a href=\"\">Terms and Conditions</a>", "confirm",
-			"", "You have to check this to continue.");
+		$f->add_checkbox(_t("I have read and agree to the <a href=\"info/terms\">Terms and Conditions</a>"), "confirm",
+			"", _t("You have to check this to continue."));
 	}
 	$f->add_raw_html(<<<EOF
 	</div>
@@ -181,7 +181,7 @@ EOF
 			} else {
 				echo ',';
 			}
-			echo "new Array('${name}', '${rate}')";
+			echo "new Array('"._t($name)."', '${rate}')";
 		}
 	?>
 	);
@@ -246,4 +246,54 @@ EOF
 			$("input[name=event_type]").attr("value", <?php echo EVENT_TYPE_ANONYMOUS; ?>);
 		}
 	});
+
+	function addRate(divName, label, amount, selected_tax){
+		label = label || "";
+		amount = amount || "";
+		log(selected_tax);
+		if (selected_tax == undefined) {
+			selected_tax = taxes[0][1];
+		}
+		counter++;
+		var id = new Date().getTime();
+		$("#" + divName).append("<div id=\"" + id + "\"></div>");
+		var content =
+				"<table class=\"evt_rate\">" +
+					"<tr>" +
+						"<td>{{Ticket rate}}</td>" +
+						"<td>" +
+							"<table>" +
+								"<tr>" +
+									"<td>{{Ticket rate name}}</td>" +
+									"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\" placeholder=\"{{Ex: Normal, Student, Member, etc...}}\" size=\"40\"></td>" +
+								"</tr>" +
+								"<tr>" +
+									"<td>{{Amount (Tax excluded)}}</td>" +
+									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
+								"</tr>" +
+								"<tr>" +
+									"<td>{{Tax}}</td>" +
+									"<td>" +
+										"<select name=\"tax_rates[]\" \">";
+		for (var i = 0; i < taxes.length; i++) {
+			var selected = "";
+			log("selected_tax=" + selected_tax);
+			log("taxes[i][1]=" + taxes[i][1]);
+			if (taxes[i][1] == selected_tax) {
+				selected = "selected";
+			}
+			content += 				"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
+		}
+		content +=				"</select>" +
+									"</td>" +
+								"</tr>" +
+							"</table>" +
+						"</td>";
+						content += "<td id=\"remove_" + id + "\"></td>";
+					content += "</tr>" +
+				"</table>";
+		$("#" + id).html(content);
+		$("#" + id).find("[name*=labels]").focus();
+		sync_remove_button(divName);
+	}
 </script>

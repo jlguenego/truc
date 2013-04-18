@@ -6,37 +6,37 @@
 	<?php echo $devis->label; ?>
 	<table class="evt_table">
 		<tr>
-			<th class="th_left">Billing entity</th>
+			<th class="th_left">{{Billing entity}}</th>
 			<td><?php echo $devis->username; ?></td>
 		</tr>
 		<tr>
-			<th class="th_left">Billing address</th>
+			<th class="th_left">{{Billing address}}</th>
 			<td><?php echo $devis->address; ?></td>
 		</tr>
 	</table>
 	<br/>
 	<table class="evt_table">
 		<tr>
-			<th>Event</th>
-			<th>Rate name</th>
-			<th>Amount</th>
-			<th>Tax rate</th>
+			<th>{{Event}}</th>
+			<th>{{Rate name}}</th>
+			<th>{{Amount}}</th>
+			<th>{{Tax rate}}</th>
 <?php
 	if ($event->type == EVENT_TYPE_ANONYMOUS) {
 ?>
-			<th>Quantity</th>
-			<th>Total</th>
+			<th>{{Quantity}}</th>
+			<th>{{Total}}</th>
 <?php
 	}
 ?>
-			<th>Total taxes</th>
-			<th>Total due</th>
+			<th>{{Total taxes}}</th>
+			<th>{{Total due}}</th>
 <?php
 	if ($event->type == EVENT_TYPE_NOMINATIVE) {
 ?>
-			<th>Title</th>
-			<th>Firsname</th>
-			<th>Lastname</th>
+			<th>{{Title}}</th>
+			<th>{{Firstname}}</th>
+			<th>{{Lastname}}</th>
 <?php
 	}
 
@@ -76,15 +76,15 @@
 	<br/>
 	<table class="evt_table">
 		<tr>
-			<th class="th_left">Total</th>
+			<th class="th_left">{{Total}}</th>
 			<td class="evt_curr"><?php echo $devis->total_ht; ?>€</td>
 		</tr>
 		<tr>
-			<th class="th_left">Total taxes</th>
+			<th class="th_left">{{Total taxes}}</th>
 			<td class="evt_curr"><?php echo $devis->total_tax; ?>€</td>
 		</tr>
 		<tr>
-			<th class="th_left">Total due</th>
+			<th class="th_left">{{Total due}}</th>
 			<td class="evt_curr"><b><?php echo $devis->total_ttc; ?>€</b></td>
 		</tr>
 	</table>
