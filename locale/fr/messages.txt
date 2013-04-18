@@ -57,11 +57,41 @@
 	"Email": "E-Mail",
 	"Postal address": "Addresse postale",
 	"Phone number": "Téléphone",
-	"Events organized:": "Évènements organisé:",
+	"Events organized:": "Évènements organisés:",
 	"Event": "Évènement",
 	"None": "Aucun",
 	"Edit your account": "Mettre à jour vos informations",
 	"Delete your account": "Supprimer votre compte",
+
+#Account update
+	"Account update": "Mise à jour de votre compte",
+	"A valid Email you want to associate to your account.":
+		"Une addresse E-Mail valide à laquelle vous avez accès.",
+	"Phone number (optional)": "Numéro de téléphone (facultatif)",
+	"Used only when processing order if we need to contact you quickly.":
+		"Utilisé uniquement pour aider le support à traiter l'ordre.",
+	"Street# and street name": "Numéro et nom de rue",
+	"Number and street name": "Numéro et nom de rue",
+	"ZIP": "Code postale",
+	"ZIP code of your city.": "Code postale de votre ville.",
+	"City": "Ville",
+	"Your city": "Votre ville.",
+	"Country": "Pays",
+	"Your country": "Votre pays",
+	"State (optional)": "État (facultatif)",
+	"Your state if any.": "Votre état si nécessaire.",
+	"New Password (optional)": "Nouveau mot de passe (facultatif)",
+	"Leave empty if you do not want to change your password.":
+		"Laissez vide si vous ne voulez pas changer votre mot de passe.",
+	"Retype new Password (optional)": "Confirmer le nouveau mot de passe (facultatif)",
+	"Retype your new password.": "Confirmer le nouveau mot de passe.",
+	"Update": "Mettre à jour",
+
+#Cancel Payment
+	"Payment canceled.": "Payement annulé.",
+
+#Contact
+	"Contact information": "Contact",
 
 #Account delete confirm
 	"Are you sure you want to delete your account?":
