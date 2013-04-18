@@ -82,7 +82,7 @@
 	"Update": "Mettre à jour",
 
 #Cancel Payment
-	"Payment cancelled.": "Payement annulé.",
+	"Payment cancelled.": "Paiement annulé.",
 
 #Contact
 	"Contact information": "Contact",
@@ -219,6 +219,10 @@
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
 	"Next": "Suivant",
 
+#Participation regular
+	"How many ticket do you want?": "Combient de billet voulez-vous ?",
+	"Total tax excluded": "Total HT",
+
 #Participation nominative recapitulation
 	"Label: ": "Référence: ",
 
@@ -227,14 +231,18 @@
 	"Ticket name": "Nom du billet",
 	"Ticket amount": "Prix du billet",
 	"Ticket total due": "Prix total du billet",
+
 #Payment success
-	"Payment success!": "Payement réussi !",
+	"Payment success!": "Paiement réussi !",
 	"The payment succeeded. We just sent a mail to you for details.":
-		"Le payement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
+		"Le paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"The payment authorization succeeded. We just sent a mail to you for details.":
-		"L'authorisation de  payement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
+		"L'authorisation de  paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"You can access to your quotation with this permalink":
 		"Vous pouvez acceder à votre devis via ce lien permanent",
+
+#Payment cancel
+	"The payment/authorization has been cancelled.": "L'authorisation de paiement a été annulée.",
 
 #Account delete confirm
 	"Are you sure you want to delete your account?":
