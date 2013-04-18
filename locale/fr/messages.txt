@@ -219,6 +219,9 @@
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
 	"Next": "Suivant",
 
+#Participation nominative recapitulation
+	"Label: ": "Référence: ",
+
 #Participation list
 	"Attendee list": "Liste des participants",
 	"Ticket name": "Nom du billet",

@@ -133,7 +133,7 @@
 	</table>
 	<input type="hidden" name="address" value=""/>
 	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>
-	<input type="submit" value="{{Next}}" disabled/>
+	<input type="submit" name="next" value="{{Next}}" disabled/>
 </form>
 <form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
 	<input type="submit" value="{{Cancel}}"/>
@@ -288,9 +288,9 @@
 		});
 
 		if (test) {
-			$('input[value=Next]').removeAttr('disabled');
+			$('input[name=next]').removeAttr('disabled');
 		} else {
-			$('input[value=Next]').attr('disabled', 'disabled');
+			$('input[name=next]').attr('disabled', 'disabled');
 		}
 	}
 </script>

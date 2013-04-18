@@ -2,19 +2,19 @@
 	global $g_display;
 	$devis = $g_display["devis"];
 
-	echo "Label: ".$devis->label;
+	echo _t("Label: ").$devis->label;
 ?>
 <table class="evt_table">
 	<tr>
-		<th>Event</th>
-		<th>Rate name</th>
-		<th>Unit price (€)</th>
-		<th>Tax rate (%)</th>
-		<th>Tax amount (€)</th>
-		<th>Total (€)</th>
-		<th>Title</th>
-		<th>Firstname</th>
-		<th>Lastname</th>
+		<th>{{Event}}</th>
+		<th>{{Rate name}}</th>
+		<th>{{Unit price}} (€)</th>
+		<th>{{Tax rate}} (%)</th>
+		<th>{{Tax amount}} (€)</th>
+		<th>{{Total}} (€)</th>
+		<th>{{Title}}</th>
+		<th>{{Firstname}}</th>
+		<th>{{Lastname}}</th>
 	</tr>
 <?php
 	foreach ($devis->items as $item) {
@@ -46,15 +46,15 @@
 </table>
 <table class="evt_table">
 	<tr>
-		<th class="th_left">Total (€)</th>
+		<th class="th_left">{{Total}} (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ht); ?></td>
 	</tr>
 	<tr>
-		<th class="th_left">Total taxes (€)</th>
+		<th class="th_left">{{Total taxes}} (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_tax); ?></td>
 	</tr>
 	<tr>
-		<th class="th_left">Total due (€)</th>
+		<th class="th_left">{{Total due}} (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
 </table>
@@ -62,11 +62,11 @@
 
 <table class="evt_table">
 	<tr>
-		<th class="th_left">Billing Entity name</th>
+		<th class="th_left">{{Billing Entity name}}</th>
 		<td><?php echo $devis->username; ?></td>
 	</tr>
 	<tr>
-		<th class="th_left">Billing address</th>
+		<th class="th_left">{{Billing address}}</th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
 </table>
