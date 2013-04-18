@@ -632,7 +632,7 @@
 		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
-		$label = "EventBiller-";
+		$label = "Event-Biller-";
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
 			$devis->type = DEVIS_TYPE_INVOICE;
@@ -685,7 +685,7 @@
 		$devis->address = nl2br($_GET['address']);
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
-		$label = "EventBiller-";
+		$label = "Event-Biller-";
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
 			$devis->type = DEVIS_TYPE_INVOICE;

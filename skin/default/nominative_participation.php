@@ -5,11 +5,11 @@
 ?>
 <table class="evt_table">
 	<tr>
-		<th>Event name</th>
-		<th>Categories</th>
-		<th>Rate</th>
-		<th>Tax</th>
-		<th>Total</th>
+		<th>{{Event name}}</th>
+		<th>{{Categories}}</th>
+		<th>{{Rate}}</th>
+		<th>{{Tax}}</th>
+		<th>{{Total}}</th>
 	</tr>
 	<?php
 		$tax_array = array();
@@ -31,7 +31,7 @@
 		<td class="evt_curr"><?php echo $amount_ttc; ?></td>
 		<td><button OnClick="add_ticket(<?php
 			echo "'$event_title', '$label', $amount_ht, $tax_rate";
-			?>)">Add</button></td>
+			?>)">{{Add}}</button></td>
 	</tr>
 	<?php
 		}
@@ -43,19 +43,19 @@
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table id="tickets" style="display:none;" class="evt_table">
 		<tr>
-			<th colspan="6">Event details</th>
-			<th colspan="3">Attendee details</th>
+			<th colspan="6">{{Event details}}</th>
+			<th colspan="3">{{Attendee details}}</th>
 		</tr>
 		<tr>
-			<th>Event</th>
-			<th>Rate</th>
-			<th>Unit price</th>
-			<th>Tax rate</th>
-			<th>Tax amount</th>
-			<th>Due</th>
-			<th>Title</th>
-			<th>Firstname</th>
-			<th>Lastname</th>
+			<th>{{Event}}</th>
+			<th>{{Rate}}</th>
+			<th>{{Unit price}}</th>
+			<th>{{Tax rate}}</th>
+			<th>{{Tax amount}}</th>
+			<th>{{Due}}</th>
+			<th>{{Title}}</th>
+			<th>{{Firstname}}</th>
+			<th>{{Lastname}}</th>
 		</tr>
 	</table>
 	<br/>
@@ -63,16 +63,16 @@
 	<table id="total" style="display:none;" class="evt_table">
 		<tr>
 			<th>&nbsp;</th>
-			<th>Amount (€)</th>
-			<th>Taxes (€)</th>
-			<th>Due (€)</th>
+			<th>{{Amount}} (€)</th>
+			<th>{{Taxes}} (€)</th>
+			<th>{{Due}} (€)</th>
 		</tr>
 		<?php
 			foreach ($tax_array as $tax_rate) {
 				$tax_rate_id = str_replace(".", "_", $tax_rate);
 		?>
 		<tr id="row_total_<?php echo $tax_rate_id; ?>">
-			<th class="th_left">Tax(<?php echo $tax_rate; ?>%)</th>
+			<th class="th_left">{{Tax}} (<?php echo $tax_rate; ?>%)</th>
 			<td class="evt_curr" id="total_ht_<?php echo $tax_rate_id; ?>">0.00</td>
 			<td class="evt_curr" id="total_tax_<?php echo $tax_rate_id; ?>">0.00</td>
 			<td class="evt_curr" id="total_ttc_<?php echo $tax_rate_id; ?>">0.00</td>
@@ -81,11 +81,11 @@
 			}
 		?>
 		<tr>
-			<th class="th_left" colspan="2">Total taxes</th>
+			<th class="th_left" colspan="2">{{Total taxes}}</th>
 			<td class="evt_curr" id="total_tax">0.00</td>
 		</tr>
 		<tr>
-			<th class="th_left" colspan="3"><b>Total due</b></th>
+			<th class="th_left" colspan="3"><b>{{Total due}}</b></th>
 			<td class="evt_curr" id="total_due"><b>0.00</b></td>
 		</tr>
 	</table>
@@ -93,28 +93,28 @@
 
 	<table class="evt_table_billing">
 		<tr>
-			<th class="th_left">Billing Entity name</th>
+			<th class="th_left">{{Billing Entity name}}</th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
-			<td class="help">The person or organisation name to be charged.</td>
+			<td class="help">{{The person or organisation name to be charged.}}</td>
 		</tr>
 		<tr>
-			<th class="th_left" rowspan="5">Billing address</th>
+			<th class="th_left" rowspan="5">{{Billing address}}</th>
 			<td>
-				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="street# and street name"/>
+				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="{{street# and street name}}"/>
 			</td>
-			<td class="help">Street# and street name</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="City"/>
-			</td>
-			<td class="help">City</td>
+			<td class="help">{{Street# and street name}}</td>
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="ZIP code"/>
+				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="{{City}}"/>
 			</td>
-			<td class="help">Zip code</td>
+			<td class="help">{{City}}</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="{{ZIP code}}"/>
+			</td>
+			<td class="help">{{ZIP code}}</td>
 		</tr>
 		<tr>
 			<td>
@@ -122,21 +122,21 @@
 					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
 				</select>
 			</td>
-			<td class="help">Country</td>
+			<td class="help">{{Country}}</td>
 		</tr>
 		<tr>
 			<td>
-				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="State (optional)"/>
+				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="{{State (optional)}}"/>
 			</td>
-			<td class="help">State (if applicable)</td>
+			<td class="help">{{State (if applicable)}}</td>
 		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>
-	<input type="checkbox" name="confirm"/> I have read the <a href="CGV.pdf">CGV</a> and accept them.<br/>
-	<input type="submit" value="Next" disabled/>
+	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>
+	<input type="submit" value="{{Next}}" disabled/>
 </form>
 <form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
-	<input type="submit" value="Cancel"/>
+	<input type="submit" value="{{Cancel}}"/>
 </form>
 <script>
 	var taxes = new Array(

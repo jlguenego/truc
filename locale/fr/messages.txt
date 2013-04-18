@@ -199,6 +199,26 @@
 	"Create": "Créer",
 	"Ex: Normal, Student, Member, etc...": "Ex: Normal, Élève, Membre, etc...",
 
+#Participation nominative
+	"Event name": "Nom de l'évènement",
+	"Categories": "Catégories",
+	"Rate": "Tarif",
+	"Tax": "Taxe",
+	"Total": "Total",
+	"Add": "Ajouter",
+	"Event details": "Détails de l'évènement",
+	"Attendee details": "Détails des participants",
+	"Tax amount": "Total taxe",
+	"Due": "Due",
+	"Billing Entity name": "Nom du client",
+	"The person or organisation name to be charged.":
+		"La personne ou l'organisation en charge de règler la facture.",
+	"ZIP code": "Code postale",
+	"State (if applicable)": "État (si applicable)",
+	"I have read the <a href=\"info/sales\">Sales policies</a> and accept them.":
+		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
+	"Next": "Suivant",
+
 #Payment success
 	"Payment success!": "Payement réussi !",
 	"The payment succeeded. We just sent a mail to you for details.":
@@ -215,7 +235,7 @@
 	"No": "Non",
 
 #Footer
-	"EventBiller is a service provided by JLG-Consulting": "EventBiller est un service fourni par JLG-Consulting",
+	"Event-Biller is a service provided by JLG-Consulting": "Event-Biller est un service fourni par JLG-Consulting",
 	"This web site is hosted with": "Ce site web est hébergé par",
 	"For more security, you can use it with its": "Pour plus de sécurité, vous pouvez l'utiliser avec son",
 	"HTTPS access": "accès HTTPS",
