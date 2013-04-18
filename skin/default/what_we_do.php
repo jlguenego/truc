@@ -1,3 +1,8 @@
+<?php
+	if ($_SESSION["locale"] != "en") {
+		require_once("what_we_do.".$_SESSION["locale"].".php");
+	} else {
+?>
 <div class="legal">
 <div class="legal_title">What we do ?</div>
 <h1>Crowdfunding events.</h1>
@@ -14,3 +19,6 @@
 </p>
 <div class="about_us"><img src="skin/default/images/schema.png"/></div>
 </div>
+<?php
+	}
+?>
