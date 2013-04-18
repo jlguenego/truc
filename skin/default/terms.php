@@ -1,3 +1,8 @@
+<?php
+	if ($_SESSION["locale"] != "en") {
+		require_once("terms.".$_SESSION["locale"].".php");
+	} else {
+?>
 <div class="legal">
 <div class="legal_title">Terms and conditions</div>
 
@@ -7,7 +12,7 @@
 <p>
 	This document purpose is to define how the event-biller.com web site services can be used.
 	The web site event-biller.com is the property of the following company,
-	which is based in France: 
+	which is based in France:
 </p>
 <p>
 	<b>JLG Consulting</b><br/>
@@ -117,7 +122,7 @@
 	An event will be confirmed or cancelled by Event-Biller.com
 	at the confirmation date if the expected minimum event amount is reached.
 	It can be cancelled or confirmed by the owner before the confirmation date.
-	
+
 	An event will be confirmed or cancelled before the confirmation date.
 	If it is confirmed then the booked tickets will be emitted as bought tickets
 	and the matching authorized payment will be captured.
@@ -144,20 +149,20 @@
 <p>
 	It is the responsibility of the Organizer to communicate its refund policy
 	to Buyers and to issue refunds to Buyers via the Site or otherwise.
-	
+
 	If a Buyer desires to request a refund,
 	Buyer must request the refund from the Organizer.
-	
+
 	All communications or disputes regarding refunds are between
 	the Organizer and Buyer and Event-Biller.com will not be responsible
 	or liable in any way for refunds, errors in issuing refunds,
 	or lack of refunds in connection with the Services.
-	
+
 	All communications and disputes regarding chargebacks
 	and refunds are between the Organizer and Buyer and Event-Biller.com will not
 	be responsible or liable in any way for chargebacks in connection with a Buyer's use
 	of the Services.
-	
+
 	If you are a Buyer and you wish to request a refund in connection
 	with an event listed on the Services, you should contact the applicable Organizer directly.
 </p>
@@ -168,3 +173,6 @@
 	The certificate is owned by the Event-Biller.com web hosting provider, which is OVH SAS.
 </p>
 </div>
+<?php
+	}
+?>
