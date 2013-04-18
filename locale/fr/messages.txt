@@ -5,8 +5,8 @@
 #Header
 	"Organizing events without risks.": "Organisez vos évènements sans risque.",
 	"Home": "Accueil",
-	"About us": "Qui somme nous ?",
-	"What we do": "Notre activité",
+	"About us": "Qui sommes nous ?",
+	"What we do": "Que faisons nous ?",
 	"Contact": "Nous contacter",
 	"Sign in": "Se connecter",
 	"Sign out": "Déconnexion",
@@ -249,6 +249,24 @@
 		"Êtes-vous sûr de vouloir supprimer votre compte ?",
 	"Yes": "Oui",
 	"No": "Non",
+
+#Reset password form
+	"Reset password": "Réinitialiser le mot de passe",
+	"New password": "Nouveau mot de passe",
+	"Choose a new password": "Choisissez un nouveau mot de passe",
+	"Confirm the new password": "Confirmer le nouveau mot de passe",
+	"Retype new password": "Confirmer le nouveau mot de passe",
+
+#Supervision
+	"Event ID": "ID de l'évènement",
+	"Event date": "Date de l'évènement",
+	"Publish flag": "État de publication",
+	"Published": "Publié",
+	"Not Published": "Non publié",
+	"Publish event": "Publier l'évènement",
+	"Unpublish event": "Dépublier l'évènement",
+	"Confirm event": "Confirmer l'évènement",
+	"Cancel event": "Annuler l'évènement",
 
 #Footer
 	"Event-Biller is a service provided by JLG-Consulting": "Event-Biller est un service fourni par JLG-Consulting",

@@ -46,7 +46,7 @@
 
 	$g_event_publish_flag = array(
 		EVENT_PUBLISH_FLAG_YES => "Published",
-		EVENT_PUBLISH_FLAG_NO => "Non Published",
+		EVENT_PUBLISH_FLAG_NO => "Not Published",
 	);
 
 	$g_tax_rates = array(
