@@ -1,1 +1,1 @@
-Please check your mails.
+{{Please check your mails.}}

@@ -119,7 +119,7 @@
 EOF;
 			if ($this->cancel) {
 				$result .= <<<EOF
-<a class="{$this->css}_cancel" href="{$this->cancel_url}">Cancel</a>
+<a class="{$this->css}_cancel" href="{$this->cancel_url}">{{Cancel}}</a>
 EOF;
 			}
 				$result .= <<<EOF
@@ -202,7 +202,7 @@ EOF;
 					case "submit":
 						if ($this->cancel) {
 						$result .= <<<EOF
-<span class="{$this->css}_cancel"><input type="button" onclick="window.location='{$this->cancel_url}'" value="Cancel"/></span><span class="spacer"></span>
+<span class="{$this->css}_cancel"><input type="button" onclick="window.location='{$this->cancel_url}'" value="{{Cancel}}"/></span><span class="spacer"></span>
 EOF;
 						}
 						$result .= "<input type=\"submit\" value=\"".$item->label."\"/>";

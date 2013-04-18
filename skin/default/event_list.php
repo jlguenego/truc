@@ -1,10 +1,10 @@
-<span class="evt_title">Event List</span>
+<span class="evt_title">{{Event List}}</span>
 <table class="evt_table">
 	<tr>
-		<th>Name</th>
+		<th>{{Name}}</th>
 		<th>Date</th>
-		<th>Status</th>
-		<th>Participate</th>
+		<th>{{Status}}</th>
+		<th>{{Participate}}</th>
 	</tr>
 <?php
 		foreach ($g_display["events"] as $event) {
@@ -28,7 +28,7 @@
 				if ($event->can_participate()) {
 			?>
 			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
-				<button>Participate</button>
+				<button>{{Participate}}</button>
 			</a>
 			<?php
 				}

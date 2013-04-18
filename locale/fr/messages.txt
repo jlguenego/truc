@@ -1,4 +1,7 @@
 {
+#Class Form
+	"Cancel": "Annuler",
+
 #Header
 	"Organizing events without risks.": "Organisez vos évènements sans risque.",
 	"Home": "Accueil",
@@ -28,6 +31,26 @@
 	"Please enter your account email.": "Veulliez entrer le mail associé à votre compte.",
 	"Continue": "Continuer",
 	"Please check your mails.": "Veuillez vérifier votre boite mail.",
+
+#Event List
+	"Event List": "Liste des évènements",
+	"Name": "Nom",
+	"Status": "Statut",
+	"Participate": "Participer",
+
+#Account create
+	"Your Firstname.": "Votre prénom.",
+	"Lastname": "Nom de famille",
+	"Your Lastname.": "Votre nom de famille",
+	"The password you want to associate to your account.": "Le mot de passe que vous souhaitez associer à votre compte.",
+	"Retype Password": "Confirmer votre mot de passe",
+	"Retype your password.": "Confirmer votre mot de passe",
+	"I have read and understood the <a href=\"info/terms\" target=\"_blank\">Terms and Conditions</a> and accept them.":
+		"J'accepte et reconnais avoir pris connaissance des <a href=\"info/terms\" target=\"_blank\">Conditions Générales d'Utilisation</a>.",
+	"Account creation": "Création d'un compte",
+	"Firstname": "Prénom",
+	"A valid Email you want to associate to your account. Will act as your login.":
+		"Une addresse E-Mail valide à laquelle vous avez accès. Ce sera votre login.",
 
 #Footer
 	"EventBiller is a service provided by JLG-Consulting": "EventBiller est un service fourni par JLG-Consulting",
