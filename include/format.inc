@@ -15,5 +15,11 @@
 		return mb_strtoupper($lastname, "UTF-8");
 	}
 
-
+	function format_participate_button($event) {
+		$participate = _t("Book tickets");
+		if ($event->is_confirmed()) {
+			$participate = _t("Buy tickets");
+		}
+		return $participate;
+	}
 ?>
