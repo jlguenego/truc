@@ -52,6 +52,23 @@
 	"A valid Email you want to associate to your account. Will act as your login.":
 		"Une addresse E-Mail valide à laquelle vous avez accès. Ce sera votre login.",
 
+#Account retrieve
+	"Account Infos": "Informations du compte",
+	"Email": "E-Mail",
+	"Postal address": "Addresse postale",
+	"Phone number": "Téléphone",
+	"Events organized:": "Évènements organisé:",
+	"Event": "Évènement",
+	"None": "Aucun",
+	"Edit your account": "Mettre à jour vos informations",
+	"Delete your account": "Supprimer votre compte",
+
+#Account delete confirm
+	"Are you sure you want to delete your account?":
+		"Êtes-vous sûr de vouloir supprimer votre compte?",
+	"Yes": "Oui",
+	"No": "Non",
+
 #Footer
 	"EventBiller is a service provided by JLG-Consulting": "EventBiller est un service fourni par JLG-Consulting",
 	"This web site is hosted with": "Ce site web est hébergé par",

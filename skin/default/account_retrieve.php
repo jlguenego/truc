@@ -1,26 +1,26 @@
 <?php
 	$user = $g_display["user"];
 ?>
-<span class="evt_title">Account Infos</span>
+<span class="evt_title">{{Account Infos}}</span>
 	<table class="evt_table">
 		<tr>
-			<th class="th_left">Email</th>
+			<th class="th_left">{{Email}}</th>
 			<td><?php echo $user->email ?></td>
 		</tr>
 		<tr>
-			<th class="th_left">Firstname</th>
+			<th class="th_left">{{Firstname}}</th>
 			<td><?php echo $user->firstname ?></td>
 		</tr>
 		<tr>
-			<th class="th_left">Lastname</th>
+			<th class="th_left">{{Lastname}}</th>
 			<td><?php echo $user->lastname ?></td>
 		</tr>
 		<tr>
-			<th class="th_left">Postal address</th>
+			<th class="th_left">{{Postal address}}</th>
 			<td><?php echo $user->address(); ?></td>
 		</tr>
 		<tr>
-			<th class="th_left">Phone number</th>
+			<th class="th_left">{{Phone number}}</th>
 			<td><?php echo $user->phone; ?></td>
 		</tr>
 	</table>
@@ -28,23 +28,23 @@
 <?php
 	if ($user->id == $_SESSION['user_id']) { // If the user is the owner
 ?>
-	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">Edit your account</a>&nbsp;|&nbsp;<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>">Delete your account</a>
+	<a href="?action=get_form&amp;type=account&amp;id=<?php echo $user->id ?>">{{Edit your account}}</a>&nbsp;|&nbsp;<a href="?action=delete&amp;type=account&amp;id=<?php echo $user->id ?>">{{Delete your account}}</a>
 <?php
 	}
 ?>
 	<br/>
 	<br/>
-	<h3>Events organized:</h3>
+	<h3>{{Events organized:}}</h3>
 	<ul>
 <?php
 	if (count($g_display["events_organized"]) == 0) {
-		echo "None";
+		echo _t("None");
 	}
 ?>
 <table class="evt_table">
 	<tr>
 		<th>Date</th>
-		<th>Event</th>
+		<th>{{Event}}</th>
 	</tr>
 <?php
 	foreach ($g_display["events_organized"] as $event) {
