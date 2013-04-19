@@ -22,9 +22,11 @@ a {
 	margin-right: 5px;
 }
 
+/*
 input[type=text], input[type=email], input[type=password] {
 	width: 300px;
 }
+*/
 
 input[type=submit] {
 	margin: 2px;
