@@ -94,7 +94,7 @@
 <?php
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 ?>
-			<td><?php echo $item->attendee_title; ?></td>
+			<td><?php echo "&nbsp;".$item->attendee_title; ?></td>
 			<td><?php echo $item->attendee_firstname; ?></td>
 			<td><?php echo $item->attendee_lastname; ?></td>
 <?php
@@ -107,7 +107,7 @@
 ?>
 	</table>
 	<br/>
-	<table class="evt_table">
+	<table border="1px" class="evt_table">
 		<tr>
 			<th class="th_left">{{Total (Tax excluded)}}</th>
 			<td class="evt_curr"><?php echo $bill->total_ht; ?>€</td>
@@ -121,6 +121,8 @@
 			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
 		</tr>
 	</table>
+	<br/>
+	<br/>
 	<?php require_once(i18n_filename(BASE_DIR."/etc/".$bill_type."_legal.html")); ?>
 </p>
 <?php

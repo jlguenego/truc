@@ -51,14 +51,11 @@ EOF;
 	function i18n_load() {
 		global $g_i18n;
 
-		$filename = BASE_DIR."/locale/".$_SESSION["locale"]."/messages.txt";
+		$filename = BASE_DIR."/locale/".$_SESSION["locale"]."/messages.php";
 		if (!file_exists($filename)) {
 			return;
 		}
-		$a = file($filename);
-		$a = preg_grep("/^\s*#/", $a, PREG_GREP_INVERT);
-		$str = join("", $a);
-		$g_i18n = json_decode($str, TRUE);
+		require_once($filename);
 		debug("g_i18n=".sprint_r($g_i18n));
 	}
 
