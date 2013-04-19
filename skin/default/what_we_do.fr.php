@@ -16,4 +16,4 @@ Si suffisamment de personnes ont fait la réservation dans les temps impartis,
 les organisateurs peuvent être sûrs d'avoir assez de fond pour financer l'événement.
 </p>
 <div class="about_us"><img src="skin/default/images/schema.fr.png"/></div>
-</ div>
+</div>

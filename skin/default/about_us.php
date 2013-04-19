@@ -1,8 +1,3 @@
-<?php
-	if ($_SESSION["locale"] != "en") {
-		require_once("about_us.".$_SESSION["locale"].".php");
-	} else {
-?>
 <div class="legal">
 <div class="legal_title">Who are we ?</div>
 <h1>Just simple people...</h1>
@@ -18,6 +13,3 @@
 </p>
 <div class="about_us"><img src="skin/default/images/handi.png"/></div>
 </div>
-<?php
-	}
-?>

@@ -1,7 +1,6 @@
 ﻿<div class="legal">
 <div class="legal_title">Condition Générales de Ventes</div>
 
-
 <h1>Introduction</h1>
 
 <p>

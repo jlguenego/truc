@@ -88,4 +88,12 @@ EOF;
 		}
 		return $result;
 	}
+
+	function i18n_filename($filename) {
+		$result = preg_replace("/([.].*?)$/", ".".$_SESSION["locale"]."$1", $filename);
+		if (file_exists($result)) {
+			return $result;
+		}
+		return $filename;
+	}
 ?>

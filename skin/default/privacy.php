@@ -1,8 +1,3 @@
-<?php
-	if ($_SESSION["locale"] != "en") {
-		require_once("privacy.".$_SESSION["locale"].".php");
-	} else {
-?>
 <div class="legal">
 <div class="legal_title">Privacy Policies</div>
 
@@ -105,6 +100,3 @@ FRANCE
 contact@event-biller.com
 </p>
 </div>
-<?php
-	}
-?>

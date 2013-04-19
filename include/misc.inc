@@ -225,8 +225,4 @@ EOF;
 		}
 		return $val1;
 	}
-
-	function format_date($date, $format = "%Y-%m-%d") {
-		return date("l, jS F Y", s2t($date, $format));
-	}
 ?>

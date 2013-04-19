@@ -1,8 +1,3 @@
-<?php
-	if ($_SESSION["locale"] != "en") {
-		require_once("terms.".$_SESSION["locale"].".php");
-	} else {
-?>
 <div class="legal">
 <div class="legal_title">Terms and conditions</div>
 
@@ -173,6 +168,3 @@
 	The certificate is owned by the Event-Biller.com web hosting provider, which is OVH SAS.
 </p>
 </div>
-<?php
-	}
-?>

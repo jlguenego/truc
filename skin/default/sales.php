@@ -1,11 +1,5 @@
-<?php
-	if ($_SESSION["locale"] != "en") {
-		require_once("sales.".$_SESSION["locale"].".php");
-	} else {
-?>
 <div class="legal">
 <div class="legal_title">Sales policies</div>
-
 
 <h1>Introduction</h1>
 
@@ -69,6 +63,3 @@
 
 </p>
 </div>
-<?php
-	}
-?>
