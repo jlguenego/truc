@@ -24,7 +24,7 @@
 	}
 
 	function format_date($date, $format = "%Y-%m-%d") {
-		setlocale(LC_TIME, 'fr_FR.UTF-8');
-		return strftime("%A, %d %B %Y", s2t($date, $format));
+		setlocale(LC_ALL, i18n_get_os_locale());
+		return strftime("%A, %#d %B %Y", s2t($date, $format));
 	}
 ?>

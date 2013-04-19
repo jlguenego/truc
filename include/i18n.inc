@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	function i18n_menu() {
 		global $g_locales, $g_default_locale;
 		$array_link = array();
@@ -95,5 +95,18 @@ EOF;
 			return $result;
 		}
 		return $filename;
+	}
+
+	function i18n_get_os_locale() {
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			if ($_SESSION["locale"] == "fr") {
+				return 'fra';
+			}
+		} else {
+			if ($_SESSION["locale"] == "fr") {
+				return 'fr_FR';
+			}
+		}
+		return $_SESSION["locale"];
 	}
 ?>

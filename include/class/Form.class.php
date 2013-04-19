@@ -166,7 +166,7 @@ EOF;
 					case "password":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<input type="password" name="{$item->name}"/>
+<input type="password" name="{$item->name}" {$item->other_attr}/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
