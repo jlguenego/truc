@@ -630,6 +630,7 @@
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
 		$devis->address = nl2br($_GET['address']);
+		$devis->vat = $_GET["vat"];
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
 		$label = "Event-Biller-";
@@ -683,6 +684,7 @@
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
 		$devis->address = nl2br($_GET['address']);
+		$devis->vat = $_GET["vat"];
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
 		$label = "Event-Biller-";
@@ -764,7 +766,7 @@
 		$user = need_authentication();
 		debug($user->email);
 		try {
-			if ($_SESSION['state'] == "payment_success") {
+			if ((!TEST_MODE) && $_SESSION['state'] == "payment_success") {
 				return;
 			}
 			$devis = $_SESSION['devis'];

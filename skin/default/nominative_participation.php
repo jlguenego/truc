@@ -130,6 +130,13 @@
 			</td>
 			<td class="help">{{State (if applicable)}}</td>
 		</tr>
+		<tr>
+			<th>VAT number (if applicable)</th>
+			<td>
+				<input type="text" name="vat" value="" placeholder="{{For companies only.}}"/>
+			</td>
+			<td class="help">{{For companies only.}}</td>
+		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>
 	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>

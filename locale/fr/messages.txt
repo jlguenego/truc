@@ -90,14 +90,25 @@
 #Devis retrieve
 	"Billing entity": "Nom du client",
 	"Billing address": "Addresse de facturation",
-	"Rate name": "Billet",
+	"Rate name": "Type de billet",
 	"Amount": "Montant HT",
 	"Tax rate": "Taxe",
 	"Total taxes": "Total taxes",
 	"Quantity": "Quantité",
 	"Total": "Total",
-	"Total due": "Total due",
+	"Total due": "Total TTC",
 	"Title": "Titre",
+	"Due date": "Date d'échéance du règlement ",
+	"INVOICE": "FACTURE",
+	"QUOTATION": "DEVIS",
+	"Provider identification": "Identification du fournisseur",
+	"Client identification": "Identification du client",
+	"VAT identification number": "TVA intra-communautaire",
+	"Invoice ID": "Numéro de facture",
+	"Quotation ID": "Numéro du devis",
+	"Invoice date": "Facture émise le ",
+	"Quotation date": "Devis émis le ",
+	"Total (Tax excluded)": "Total HT",
 
 #Event List
 	"Event List": "Liste des évènements",
@@ -239,8 +250,8 @@
 		"Le paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"The payment authorization succeeded. We just sent a mail to you for details.":
 		"L'authorisation de  paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
-	"You can access to your quotation with this permalink":
-		"Vous pouvez acceder à votre devis via ce lien permanent",
+	"You can access to your quotation with this permalink:":
+		"Vous pouvez acceder à votre devis via ce lien permanent :",
 
 #Payment cancel
 	"The payment/authorization has been cancelled.": "L'authorisation de paiement a été annulée.",
@@ -276,5 +287,16 @@
 	"HTTPS access": "accès HTTPS",
 	"Terms and Conditions": "Conditions générales d'utilisation",
 	"Sales policies": "Conditions générales de vente",
-	"Privacy policies": "Règles de confidentialité"
+	"Privacy policies": "Règles de confidentialité",
+
+#MAIL
+#Payment full
+	"Dear": "Cher(e)",
+	"You have made a payment for the following invoice.":
+		"Vous venez de régler la facture suivante.",
+	"You can access to this invoice via this permalink:":
+		"Vous pouvez accéder à cette facture via ce lien permanent :",
+	"Total tax": "Total taxe",
+	"Bill ID": "Référence de la facture ",
+	"Invoice send by": "Facture émise par "
 }

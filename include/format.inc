@@ -25,6 +25,9 @@
 
 	function format_date($date, $format = "%Y-%m-%d") {
 		setlocale(LC_ALL, i18n_get_os_locale());
-		return strftime("%A, %#d %B %Y", s2t($date, $format));
+		if ($format != "timestamp") {
+			$date = s2t($date, $format);
+		}
+		return strftime("%A %#d %B %Y", $date);
 	}
 ?>

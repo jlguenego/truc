@@ -78,6 +78,7 @@ CREATE TABLE bill(
         total_ttc    Decimal (25,2) NOT NULL  ,
         username     Varchar (255) NOT NULL  ,
         address      Text NOT NULL  ,
+        vat          Varchar (255) ,
         status       Int NOT NULL  ,
         type         Int NOT NULL  ,
         id_user      Int NOT NULL  ,

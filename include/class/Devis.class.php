@@ -1,6 +1,7 @@
 <?php
 	class Devis {
 		public $id;
+		public $created_t;
 		public $items = array();
 		public $total_ht;
 		public $total_tax;
@@ -8,6 +9,7 @@
 		public $label;
 		public $username;
 		public $address;
+		public $vat;
 		public $status = DEVIS_STATUS_PLANNED;
 		public $type = DEVIS_TYPE_QUOTATION;
 		public $payment_info;
@@ -63,7 +65,7 @@ EOF;
 				$this->label .= "#".seq_next('quotation');
 			}
 			$this->id = create_id();
-			$created_t = time();
+			$this->created_t = time();
 
 			$request = <<<EOF
 INSERT INTO `bill`
@@ -80,12 +82,13 @@ SET
 	`type`= :type,
 	`id_user`= :id_user,
 	`id_event`= :id_event,
-	`payment_info`= :payment_info
+	`payment_info`= :payment_info,
+	`vat`= :vat
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
 				":id" => $this->id,
-				":created_t" => $created_t,
+				":created_t" => $this->created_t,
 				":total_ht" => $this->total_ht,
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
@@ -97,6 +100,7 @@ EOF;
 				":id_user" => $this->user_id,
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
+				":vat" => $this->vat,
 			);
 
 			$pst->execute($array);
@@ -206,6 +210,10 @@ EOF;
 			}
 			debug("Cannot administrate.");
 			return FALSE;
+		}
+
+		public function is_for_company() {
+			return !is_null_or_empty($this->vat);
 		}
 	}
 ?>

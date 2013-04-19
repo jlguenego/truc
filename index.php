@@ -8,11 +8,12 @@
 	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
 	require_once(BASE_DIR . "/include/payment.inc");
+	require_once(BASE_DIR . "/include/i18n.inc");
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
 	require_once(BASE_DIR . "/include/security.inc");
 	require_once(BASE_DIR . "/include/format.inc");
-	require_once(BASE_DIR . "/include/i18n.inc");
+	require_once(BASE_DIR . "/include/print.inc");
 
 	if (isset($_SERVER["HTTPS"])) {
 		$base_url = HTTPS_ACCESS ."/";

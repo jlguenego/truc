@@ -480,3 +480,11 @@ b, strong {
 .about_us {
 	text-align: center;
 }
+
+.legal_little, .legal_little * {
+	font-size: 10px;
+}
+
+.legal_little ul {
+	margin-left: 30px;
+}

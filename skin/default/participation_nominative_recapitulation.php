@@ -69,6 +69,16 @@
 		<th class="th_left">{{Billing address}}</th>
 		<td><?php echo $devis->address; ?></td>
 	</tr>
+<?php
+	if ($devis->is_for_company()) {
+?>
+	<tr>
+		<th class="th_left">{{VAT #}}</th>
+		<td><?php echo $devis->vat; ?></td>
+	</tr>
+<?php
+	}
+?>
 </table>
 <br/>
 
