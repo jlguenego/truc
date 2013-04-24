@@ -14,6 +14,7 @@
 		public $country;
 		public $state;
 		public $phone;
+		public $locale = "en";
 
 		public static function get_from_id($id = null) {
 			$user = new User();
@@ -130,7 +131,8 @@ SET
 	`zip`= :zip,
 	`city`= :city,
 	`country`= :country,
-	`state`= :state;
+	`state`= :state,
+	`locale`= :locale;
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -150,6 +152,7 @@ EOF;
 				":city" => $this->city,
 				":country" => $this->country,
 				":state" => $this->state,
+				":locale" => $this->locale,
 			);
 			$pst->execute($array);
 			if (!$this->is_activated()) {
@@ -173,7 +176,8 @@ SET
 	`city`= :city,
 	`country`= :country,
 	`state`= :state,
-	`phone`= :phone
+	`phone`= :phone,
+	`locale`= :locale
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -190,6 +194,7 @@ EOF;
 				":state" => $this->state,
 				":id" => $this->id,
 				":phone" => $this->phone,
+				":locale" => $this->locale,
 			);
 			$pst->execute($array);
 			$pst->closeCursor();

@@ -216,6 +216,7 @@
 			$user = new User();
 			$user->id = create_id();
 			$user->hydrate_from_form();
+			$user->locale = $_SESSION["locale"];
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
@@ -248,6 +249,7 @@
 			if (User::exists($_GET["id"])) {
 				$user = User::get_from_id($_GET["id"]);
 				form_valid_user_update($user);
+				$user->locale = $_SESSION["locale"];
 				$user->update();
 
 				$g_info_msg = _t("Your personal informations has been changed.");
