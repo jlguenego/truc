@@ -5,8 +5,8 @@
 	$link = HOST."?action=retrieve&amp;type=event&amp;id=".$event->id;
 ?>
 <p>
-	Dear <?php echo $user->get_name(); ?>,<br/>
-	Your event (<a href="<?php echo $link; ?>"><?php echo $event->title; ?></a>) has been unpublished.<br/>
+	Chèr(e) <?php echo $user->get_name(); ?>,<br/>
+	Votre évènement (<a href="<?php echo $link; ?>"><?php echo $event->title; ?></a>) a été dépublié.<br/>
 </p>
 <p>
 <?php echo nl2br($reason); ?>

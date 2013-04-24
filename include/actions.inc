@@ -545,6 +545,7 @@
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
 		$event->set_devis_status(DEVIS_STATUS_CONFIRMED);
+		debug("Send Confirmation mail.");
 		mail_event_confirm($_GET['id']);
 		action_supervision();
 	}

@@ -1,22 +1,23 @@
 <?php
 	require_once(BASE_DIR."/mail/inscription.php");
-	require_once(BASE_DIR."/mail/event_confirm.php");
-	require_once(BASE_DIR."/mail/event_cancel.php");
 	require_once(BASE_DIR."/mail/payment_full.php");
 	require_once(BASE_DIR."/mail/payment_authorization.php");
 	require_once(BASE_DIR."/mail/forgotten_password.php");
 	require_once(BASE_DIR."/mail/password_changed.php");
 	require_once(BASE_DIR."/mail/publication_request.php");
-	require_once(BASE_DIR."/mail/event_published.php");
-	require_once(BASE_DIR."/mail/event_unpublished.php");
 
 	function mail_notify_publication($user, $event, $reason = "") {
+  		global $g_display;
+
 		$subject = "Publication notification";
 		$msg_html = "";
+		$g_display["user"] = $user;
+		$g_display["event"] = $event;
+		$g_display["reason"] = $reason;
 		if ($event->is_published()) {
-			$msg_html = mail_html_event_published($user, $event);
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/event_published.php"));
 		} else {
-			$msg_html = mail_html_event_unpublished($user, $event, $reason);
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/event_unpublished.php"));
 		}
 
 		$msg = mail_build($msg_html, $user->email);
@@ -49,6 +50,8 @@
   	}
 
   	function mail_event_confirm($event_id) {
+  		global $g_display;
+
 		$subject = "Event confirmation";
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
@@ -56,10 +59,11 @@
 			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;
 
-			debug("event id=".$devis->event_id);
-			$event = Event::get_from_id($devis->event_id);
-			$invoice = $devis->create_invoice();
-			$msg_html = mail_html_event_confirm($devis->label, $invoice, $event, $user);
+
+			$g_display["invoice"] = $devis->create_invoice();
+			$g_display["quotation"] = $devis;
+			$g_display["user"] = $user;
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/event_confirm.php"));
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			debug("send mail to: ". $mail);
@@ -68,6 +72,8 @@
   	}
 
   	function mail_event_cancel($event_id) {
+  		global $g_display;
+
 		$subject = "Event cancellation";
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
@@ -75,8 +81,9 @@
 			$user = User::get_from_id($devis->user_id);
 			$mail = $user->email;
 
-			$event = Event::get_from_id($devis->event_id);
-			$msg_html = mail_html_event_cancel($devis, $event, $user);
+			$g_display["bill"] = $devis;
+			$g_display["user"] = $user;
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/event_cancel.php"));
 			debug("msg_html=".$msg_html);
 			$msg = mail_build($msg_html, $mail);
 			mail($mail, $subject, $msg["content"], $msg["header"]);

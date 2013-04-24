@@ -53,9 +53,6 @@
 				<input type="submit" value="{{Unpublish event}}" <?php echo $publish_button_grey ?>/>
 				<input type="hidden" name="reason" />
 			</form>
-			<div id="dialog" style="display: none;" title="Unpublish reason">
-				<textarea id="dialog_textarea">The reason is ...</textarea>
-			</div>
 		</td>
 <?php
 				}
@@ -76,6 +73,9 @@
 		}
 ?>
 </table>
+<div id="dialog" style="display: none;" title="Unpublish reason">
+	<textarea id="dialog_textarea">The reason is ...</textarea>
+</div>
 <script>
 	$(document).ready(eb_unpublish);
 </script>

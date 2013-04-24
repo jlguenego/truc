@@ -35,6 +35,17 @@ EOF;
 		return $str;
 	}
 
+	function i18n_get_html($filename) {
+		global $g_display;
+		ob_start();
+		include(BASE_DIR."/mail/header.php");
+		include($filename);
+		include(BASE_DIR."/mail/footer.php");
+		$result = ob_get_contents();
+		ob_end_clean();
+		return i18n_parse($result);
+	}
+
 	function i18n_gettext($array) {
 		return _t($array[1]);
 	}
