@@ -4,7 +4,7 @@
 
 		foreach ($_GET as $key => $value) {
 			if (is_null_or_empty($_SESSION["form"])) {
-				throw new Exception("Please fill all fields");
+				throw new Exception(_t("Please fill all fields"));
 			}
 			$f = $_SESSION["form"];
 			if (!$f->has_item($key)) {
@@ -14,25 +14,25 @@
 				continue;
 			}
 			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields: " . $f->get_label($key));
+				throw new Exception(_t("Please fill all fields: ") . $f->get_label($key));
 			}
 		}
 
 		if (!check_date($_GET["happening_t"])) {
-			throw new Exception("The given date is wrong");
+			throw new Exception(_t("The given date is wrong"));
 		}
 		if (!check_date($_GET["confirmation_t"])) {
-			throw new Exception("Please choose a date for your event");
+			throw new Exception(_t("Please choose a confirmation date for your event"));
 		}
 		if (!check_date($_GET["open_t"])) {
-			throw new Exception("The participation open date is wrong");
+			throw new Exception(_t("The participation open date is wrong"));
 		}
 
 		foreach ($_GET['rates'] as $rate) {
 			if (is_null_or_empty($rate)
 				|| (!is_null_or_empty($rate) && !is_number($rate))) {
 
-				throw new Exception("Please enter a number for the rates");
+				throw new Exception(_t("Please enter a number for the rates"));
 			}
 		}
 
@@ -40,17 +40,17 @@
 			if (is_null_or_empty($tax_rate)
 				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
 
-				throw new Exception("Please enter a number for the tax rates");
+				throw new Exception(_t("Please enter a number for the tax rates"));
 			}
 		}
 		foreach ($_GET['labels'] as $label) {
 			if (is_null_or_empty($label)) {
-				throw new Exception("Please enter a label for each rate");
+				throw new Exception(_t("Please enter a label for each rate"));
 			}
 		}
 
 		if (!$update && !isset($_GET["confirm"])) {
-			throw new Exception("You have to read and agree with the CGU");
+			throw new Exception(_t("You have to read and agree with the CGU"));
 		}
 		unset($_SESSION["form"]);
 	}
@@ -58,7 +58,7 @@
 	function form_valid_user() {
 		global $g_use_recaptcha;
 		if (is_null_or_empty($_SESSION["form"])) {
-			throw new Exception("SESSION not well set.");
+			throw new Exception(_t("SESSION not well set."));
 		}
 		$f = $_SESSION["form"];
 		foreach ($_GET as $key => $value) {
@@ -70,17 +70,17 @@
 			}
 			debug($key."=>".$value);
 			if (is_null_or_empty($value)) {
-				throw new Exception("Please fill all fields: " . $f->get_label($key));
+				throw new Exception(_t("Please fill all fields: ") . $f->get_label($key));
 			}
 		}
 		if (!check_mail($_GET["email"])) {
-			throw new Exception("Invalid mail");
+			throw new Exception(_t("Invalid mail"));
 		}
 		if (User::used_mail($_GET["email"])) {
-			throw new Exception("This mail is already used");
+			throw new Exception(_t("This mail is already used."));
 		}
 		if ($_GET['password'] != $_GET['password2']) {
-			throw new Exception("Passwords are different");
+			throw new Exception(_t("Passwords are different"));
 		}
 		if ($g_use_recaptcha) {
 			require_once(BASE_DIR . '/include/recaptcha.inc');
@@ -92,7 +92,7 @@
 
 			if (!$resp->is_valid) {
 				// What happens when the CAPTCHA was entered incorrectly
-				throw new Exception ("The reCAPTCHA wasn't entered correctly.");
+				throw new Exception (_t("The reCAPTCHA wasn't entered correctly."));
 			}
 		}
 	}

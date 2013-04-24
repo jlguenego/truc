@@ -21,6 +21,9 @@
 	function layout_message() {
 		global $g_info_msg;
 		global $g_error_msg;
+
+		//$g_info_msg .= "DEBUG";
+
 		if (!is_null_or_empty($g_info_msg)) {
 ?>
 		<div id="evt_info">Info: <?php echo $g_info_msg; ?></div>
@@ -28,7 +31,7 @@
 		}
 		if (!is_null_or_empty($g_error_msg)) {
 ?>
-		<div id="evt_error">Error: <?php echo $g_error_msg; ?></div>
+		<div id="evt_error">{{Error:}} <?php echo $g_error_msg; ?></div>
 <?php
 		}
 	}

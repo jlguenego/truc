@@ -81,7 +81,7 @@
 			case "none":
 				break;
 			default:
-				throw new Exception("This action does not exists.");
+				throw new Exception(_t("This action does not exists."));
 				break;
 		}
 	}
@@ -89,7 +89,7 @@
 	function action_set_locale() {
 		global $g_info_msg, $g_locales;
 		if (!in_array($_GET["locale"], $g_locales)) {
-			throw new Exception("unknown locale: ".$_GET["locale"]);
+			throw new Exception(_t("unknown locale: ").$_GET["locale"]);
 		}
 		$_SESSION["locale"] = $_GET["locale"];
 		// get the page we come from.
@@ -243,7 +243,7 @@
 		try {
 			need_authentication();
 			if (is_null_or_empty($_GET["id"])) {
-				throw new Exception("No id given.");
+				throw new Exception(_t("No id given."));
 			}
 			if (User::exists($_GET["id"])) {
 				$user = User::get_from_id($_GET["id"]);
@@ -281,15 +281,15 @@
 			need_authentication();
 			if (isset($_GET['confirm'])) {
 				if (is_null_or_empty($_GET['id'])) {
-					throw new Exception("No account given.");
+					throw new Exception(_t("No account given."));
 				}
 				if (!User::exists($_GET['id'])) {
-					throw new Exception("Account does not exists.");
+					throw new Exception(_t("Account does not exists."));
 				}
 				$user = User::get_from_id($_GET['id']);
 				if (!$user->check_owner()) {
 					debug(sprint_r($_SESSION));
-					throw new Exception("This account is not yours.");
+					throw new Exception(_t("This account is not yours."));
 				}
 				if($_GET['confirm'] == "yes") {
 					$user->delete_try();
@@ -425,7 +425,7 @@
 
 		$event = Event::get_from_id($_GET["id"]);
 		if (!$event->can_be_administrated()) {
-			throw new Exception("Cannot delete an event if you cannot administrate it.");
+			throw new Exception(_t("Cannot delete an event if you cannot administrate it."));
 		}
 		$g_display["event"] = $event;
 		if ($_SESSION["state"] != "event_delete") {
@@ -436,10 +436,10 @@
 			need_authentication();
 			if (isset($_GET['confirm'])) {
 				if (is_null_or_empty($_GET['id'])) {
-					throw new Exception("No event given.");
+					throw new Exception(_t("No event given."));
 				}
 				if (!Event::exists($_GET['id'])) {
-					throw new Exception("Event does not exists.");
+					throw new Exception(_t("Event does not exists."));
 				}
 				$event = Event::get_from_id($_GET['id']);
 				$event->check_owner();
@@ -470,7 +470,7 @@
 		} else {
 			$event = Event::get_from_id($_GET["id"]);
 			if (!$event->can_be_administrated()) {
-				throw new Exception("Cannot update an event if you cannot administrate it.");
+				throw new Exception(_t("Cannot update an event if you cannot administrate it."));
 			}
 
 			$g_display["event"] = $event;
@@ -561,14 +561,14 @@
 
 		$user = need_authentication();
 		if (!isset($_GET['id'])) {
-			throw new Exception("No devis given.");
+			throw new Exception(_t("No devis given."));
 		}
 		if (!Devis::exists($_GET['id'])) {
-			throw new Exception("Devis does not exists.");
+			throw new Exception(_t("Bill does not exists."));
 		}
 		$devis = Devis::get_from_id($_GET['id']);
 		if (!$devis->can_be_retrieved()) {
-			throw new Exception("Cannot acces to this object. Permission denied.");
+			throw new Exception(_t("Cannot acces to this object. Permission denied."));
 		}
 		$event = Event::get_from_id($devis->event_id);
 
@@ -610,7 +610,7 @@
 		global $g_display;
 
 		if (!isset($_GET['confirm'])) {
-			throw new Exception("You must read and accept the policies.");
+			throw new Exception(_t("You must read and accept the policies."));
 		}
 
 		$devis = new Devis();
@@ -636,7 +636,7 @@
 		$i = 0;
 		while (isset($_GET["ticket_${i}"])) {
 			if (!is_number($_GET["ticket_${i}"])) {
-				throw new Exception("Please enter a number for the amount of person");
+				throw new Exception(_t("Please enter a number for the amount of person"));
 			}
 			if ($_GET["ticket_${i}"] > 0) {
 				$item = new Item();
@@ -665,7 +665,7 @@
 		global $g_display;
 
 		if (!isset($_GET['confirm'])) {
-			throw new Exception("You must read and accept the policies.");
+			throw new Exception(_t("You must read and accept the policies."));
 		}
 		$devis = new Devis();
 		$devis->username = $_GET['username'];
@@ -866,15 +866,15 @@
 
 		$user = need_authentication();
 		if (is_null_or_empty($_GET["id"])) {
-			throw new Exception("No event selected");
+			throw new Exception(_t("No event selected"));
 		}
 		$event = new Event();
 		$event->load($_GET["id"]);
 		if (!$event->can_be_administrated()) {
-			throw new Exception("Cannot view attendees of an event if you cannot administrate it.");
+			throw new Exception(_t("Cannot view attendees of an event if you cannot administrate it."));
 		}
 		if ($event->type != EVENT_TYPE_NOMINATIVE) {
-			throw new Exception("This event cannot have attendee list.");
+			throw new Exception(_t("This event cannot have attendee list."));
 		}
 		$_SESSION["state"] = "participation_list_nominative";
 		$g_display["event"] = $event;
@@ -883,7 +883,7 @@
 
 	function action_request_for_publication() {
 		if (is_null_or_empty($_GET["id"])) {
-			throw new Exception("No event selected");
+			throw new Exception(_t("No event selected"));
 		}
 		$event = Event::get_from_id($_GET["id"]);
 		$event->set_ready_for_publication(true);

@@ -53,7 +53,7 @@
 
 	function eb_sync_next_button() {
 		if ($('input[type=checkbox]').is(':checked')) {
-			$('input[value=Submit]').removeAttr('disabled');
+			$('input[type=Submit]').removeAttr('disabled');
 		} else {
 			$('input[type=Submit]').attr('disabled', 'disabled');
 		}

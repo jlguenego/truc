@@ -38,7 +38,7 @@ EOF;
 			$pst->execute(array(":id" => $id));
 			$record = $pst->fetch(PDO::FETCH_ASSOC);
 			if (!isset($record['id'])) {
-				throw new Exception("Cannot load the event with id=" . $id);
+				throw new Exception(_t("Cannot load the event with id=") . $id);
 			}
 			$this->hydrate($record);
 		}
@@ -238,7 +238,7 @@ EOF;
 
 		public function check_owner() {
 			if ($this->user_id != User::get_id_from_account() && !is_admin_logged()) {
-				throw new Exception("You are not the creator of this event");
+				throw new Exception(_t("You are not the creator of this event"));
 			}
 		}
 

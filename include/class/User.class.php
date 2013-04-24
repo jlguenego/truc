@@ -266,7 +266,7 @@ EOF;
 			$pst->execute(array(":token" => $token));
 			$record = $pst->fetch();
 			if ($record == NULL) {
-				throw new Exception("No user found with this token.");
+				throw new Exception(_t("No user found with this token."));
 			}
 			$user = new User();
 			$user->hydrate($record);
@@ -275,7 +275,7 @@ EOF;
 
 			$exp_ts = explode("_", $token);
 			if ($exp_ts[0] < time()) {
-				throw new Exception("This token is expired.");
+				throw new Exception(_t("This token is expired."));
 			}
 			return $user;
 		}
@@ -431,7 +431,7 @@ EOF;
 			$pst->execute(array(":key" => $key));
 			$count = $pst->fetch();
 			if ($count[0] == 0) {
-				throw new Exception("This account does not exist or is already activated");
+				throw new Exception(_t("This account does not exist or is already activated"));
 			}
 			$mod_t = time();
 			$status = ACTIVATION_STATUS_ACTIVATED;

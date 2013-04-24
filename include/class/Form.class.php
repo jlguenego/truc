@@ -222,7 +222,7 @@ EOF;
 					return $item->label;
 				}
 			}
-			throw new Exception("Item not found: ".$name);
+			throw new Exception(_t("Item not found: ").$name);
 		}
 
 		public function is_optional($name) {
@@ -231,7 +231,7 @@ EOF;
 					return $item->is_optional;
 				}
 			}
-			throw new Exception("Item not found: ".$name);
+			throw new Exception(_t("Item not found: ").$name);
 		}
 
 		public function has_item($name) {

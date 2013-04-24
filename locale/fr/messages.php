@@ -4,7 +4,8 @@ $g_i18n = array_merge($g_i18n, array(
 	"Cancel" => "Annuler",
 
 //Header
-	"Organizing events without risks." => "Organisez vos évènements sans risque.",
+	"Organizing events without risks." =>
+		"Organisez vos évènements sans risque.",
 	"Home" => "Accueil",
 	"About us" => "Qui sommes nous ?",
 	"What we do" => "Que faisons nous ?",
@@ -337,6 +338,58 @@ $g_i18n = array_merge($g_i18n, array(
 	"Please fill all field." => "Veuillez remplir tout les champs.",
 	"Submit" => "Soumettre",
 	"You are not admin." => "Vous devez être administrateur.",
+	"Error:" => "Erreur :",
+
+//Exceptions
+	"Account does not exists." => "Ce compte n'existe pas.",
+	"Cannot access to this object. Permission denied." =>
+		"Accès impossible à l'objet. Permission refusée.",
+	"Cannot delete an event if you cannot administrate it." =>
+		"Vous devez être administrateur ou propriétaire de cet évènement pour l'effacer.",
+	"Cannot load the event with id=" => "Impossible de charger l'évènement avec id=",
+	"Cannot update an event if you cannot administrate it." =>
+		"Vous devez être administrateur ou propriétaire de cet évènement pour le mettre à jour.",
+	"Cannot view attendees of an event if you cannot administrate it." =>
+		"Vous devez être administrateur ou propriétaire de cet évènement pour en voir les participants.",
+	"Bill does not exists." => "Ce devis ou facture n'existe pas.",
+	"Item not found:" => "Item non trouvé:",
+	"No account given." => "Aucun compte donné.",
+	"No bill given." => "Aucun devis ou facture donné.",
+	"No event given." => "Aucun évènement donné.",
+	"No id given." => "Aucun id donné",
+	"No user found with this token." => "Aucun utilisateur trouvé avec ce token.",
+	"Please choose a confirmation date for your event" =>
+		"Veuillez choisir une date de confirmation pour votre évènement",
+	"Please enter a label for each rate" =>
+		"Veuillez choisir un nom pour votre billet",
+	"Please enter a number for the recquired funds" =>
+		"Veuillez saisir un nombre pour les fonds recquis",
+	"Please enter a number for the rates" =>
+		"Veuillez saisir un nombre pour le prix des billets",
+	"Please enter a number for the tax rates" =>
+		"Veuillez saisir un nombre pour les taxes",
+	"Please fill all fields" => "Veuillez compléter tous les champs",
+	"Please fill all fields:" => "Veuillez compléter tous les champs :",
+	"SESSION not well set." => "La SESSION n'est pas définie correctement.",
+	"The given date is wrong" => "La date donnée est incorrecte",
+	"The participation open date is wrong" =>
+		"La date d'ouverture des participations donnée est incorrecte",
+	"The reCAPTCHA wasn't entered correctly." =>
+		"Le reCAPTCHA n'a pas été entré correctement.",
+	"This account does not exist or is already activated" =>
+		"Ce compte n'existe pas ou est déjà activé",
+	"This account is not yours." => "Ce compte n'est pas le votre.",
+	"This action does not exists." => "Cette action n'existe pas.",
+	"This event cannot have attendee list." =>
+		"Cet évènement ne peut pas avoir de liste de participant.",
+	"This token is expired." => "Ce jeton est expiré.",
+	"unknown locale:" => "Locale inconnue :",
+	"You are not the creator of this event" =>
+		"Vous n'êtes pas l'organisateur de cet évènement",
+	"You have to read and agree with the CGU" =>
+		"Vous devez lire et accepter les CGU",
+	"You must read and accept the policies." =>
+		"Vous devez lire et accepter le règlement.",
 
 //The End
 ));
