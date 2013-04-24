@@ -4,14 +4,14 @@
 
 ?>
 
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
 		<th>{{Event ID}}</th>
 		<th>{{Event name}}</th>
-		<th>{{Event date}}</th>
+		<th style="min-width: 80px;">{{Event date}}</th>
 		<th>{{Confirmation date}}</th>
 		<th>{{Status}}</th>
-		<th>{{Publish flag}}</th>
+		<th>{{Published?}}</th>
 	</tr>
 <?php
 		foreach ($g_display["events"] as $event) {
@@ -21,8 +21,8 @@
 	<tr>
 		<td><?php echo $event->id; ?></td>
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
-		<td><?php echo $event->happening_t; ?></td>
-		<td><?php echo $event->confirmation_t; ?></td>
+		<td class="evt_date"><?php echo $event->happening_t; ?></td>
+		<td class="evt_date"><?php echo $event->confirmation_t; ?></td>
 		<td><?php echo $event->display_status(); ?></td>
 		<td><?php echo _t($publish_flag); ?></td>
 <?php
@@ -42,7 +42,7 @@
 ?>
 		<td>
 			<form action="?action=publish_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="{{Publish event}}" <?php echo $publish_button_grey ?>/>
+				<input type="submit" value="{{Publish}}" <?php echo $publish_button_grey ?>/>
 			</form>
 		</td>
 <?php
@@ -50,7 +50,7 @@
 ?>
 		<td>
 			<form name="unpublish" action="?action=unpublish_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="{{Unpublish event}}" <?php echo $publish_button_grey ?>/>
+				<input type="submit" value="{{Unpublish}}" <?php echo $publish_button_grey ?>/>
 				<input type="hidden" name="reason" />
 			</form>
 		</td>
@@ -60,12 +60,12 @@
 ?>
 		<td>
 			<form action="?action=confirm_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="{{Confirm event}}" <?php echo $confirm_button_grey ?>/>
+				<input type="submit" value="{{Confirm}}" <?php echo $confirm_button_grey ?>/>
 			</form>
 		</td>
 		<td>
 			<form action="?action=cancel_event&amp;id=<?php echo $event->id ?>" method="POST">
-				<input type="submit" value="{{Cancel event}}" <?php echo $cancel_button_grey ?>/>
+				<input type="submit" value="{{Cancel}}" <?php echo $cancel_button_grey ?>/>
 			</form>
 		</td>
 	</tr>

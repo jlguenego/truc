@@ -28,18 +28,18 @@
 		mail(CONTACT_MAIL, $subject, $msg["content"], $msg["header"]);
 	}
 
-	function mail_payment($mail, $devis) {
+	function mail_payment($mail, $bill) {
 		global $g_display;
 
-		$event = Event::get_from_id($devis->event_id);
-		$user = User::get_from_id($devis->user_id);
+		$event = Event::get_from_id($bill->event_id);
+		$user = User::get_from_id($bill->user_id);
 		$subject = _t("Payment authorization");
 		$g_display["user"] = $user;
 		$g_display["bill"] = $bill;
-		if ($devis->status == DEVIS_STATUS_CONFIRMED) {
+		if ($bill->status == DEVIS_STATUS_CONFIRMED) {
 			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/payment_authorization.php"));
 			$subject = _t("Payment confirmation and invoice");
-		} else if ($devis->status == DEVIS_STATUS_PLANNED) {
+		} else if ($bill->status == DEVIS_STATUS_PLANNED) {
 			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/payment_full.php"));
 		} else {
 			throw new Exception("Unexpected devis status.");

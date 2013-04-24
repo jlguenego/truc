@@ -26,7 +26,7 @@
 
 		if (!is_null_or_empty($g_info_msg)) {
 ?>
-		<div id="evt_info">Info: <?php echo $g_info_msg; ?></div>
+		<div id="evt_info">{{Info:}} <?php echo $g_info_msg; ?></div>
 <?php
 		}
 		if (!is_null_or_empty($g_error_msg)) {

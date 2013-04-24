@@ -268,8 +268,10 @@ $g_i18n = array_merge($g_i18n, array(
 		"Le paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"The payment authorization succeeded. We just sent a mail to you for details." =>
 		"L'authorisation de  paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
-	"You can access to your quotation with this permalink =>" =>
-		"Vous pouvez acceder à votre devis via ce lien permanent  =>",
+	"You can access to this quotation via this permalink:" =>
+		"Vous pouvez acceder à ce devis via ce lien permanent :",
+	"You can access to this invoice via this permalink:" =>
+		"Vous pouvez acceder à cette facture via ce lien permanent :",
 
 //Payment cancel
 	"The payment/authorization has been cancelled." => "L'authorisation de paiement a été annulée.",
@@ -290,13 +292,11 @@ $g_i18n = array_merge($g_i18n, array(
 //Supervision
 	"Event ID" => "ID de l'évènement",
 	"Event date" => "Date de l'évènement",
-	"Publish flag" => "État de publication",
-	"Published" => "Publié",
-	"Not Published" => "Non publié",
-	"Publish event" => "Publier l'évènement",
-	"Unpublish event" => "Dépublier l'évènement",
-	"Confirm event" => "Confirmer l'évènement",
-	"Cancel event" => "Annuler l'évènement",
+	"Published?" => "Publié ?",
+	"Publish" => "Publier",
+	"Unpublish" => "Dépublier",
+	"Confirm" => "Confirmer",
+	"Cancel" => "Annuler",
 
 //Footer
 	"Event-Biller is a service provided by JLG-Consulting" => "Event-Biller est un service fourni par JLG-Consulting",
@@ -339,6 +339,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"Submit" => "Soumettre",
 	"You are not admin." => "Vous devez être administrateur.",
 	"Error:" => "Erreur :",
+	"Info:" => "Information :",
 
 //Exceptions
 	"Account does not exists." => "Ce compte n'existe pas.",

@@ -22,11 +22,9 @@ a {
 	margin-right: 5px;
 }
 
-/*
 input[type=text], input[type=email], input[type=password] {
 	width: 300px;
 }
-*/
 
 input[type=submit] {
 	margin: 2px;
@@ -37,11 +35,27 @@ input[type=submit]:enabled {
 	font-weight: bold;
 }
 
-input[type=button] {
+input[type=button], button {
 	margin: 2px;
 	padding: 5px 20px 5px 20px;
 }
 
+th {
+	white-space: nowrap;
+}
+
+.inline * {
+	font:12px arial,sans-serif;
+}
+
+.inline input[type=submit] {
+	margin: 2px;
+	padding: 5px 10px 5px 10px;
+}
+
+.inline input[type=text] {
+	width: 150px;
+}
 
 html, body {
 	height: 100%;
@@ -421,6 +435,10 @@ html, body {
 
 .evt_curr {
 	text-align: right;
+}
+
+.evt_date {
+	text-align: center;
 }
 
 .evt_participate {

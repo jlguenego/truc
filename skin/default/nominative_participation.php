@@ -41,7 +41,7 @@
 </table>
 <br/>
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
-	<table id="tickets" style="display:none;" class="evt_table">
+	<table id="tickets" style="display:none;" class="evt_table inline">
 		<tr>
 			<th colspan="6">{{Event details}}</th>
 			<th colspan="3">{{Attendee details}}</th>
