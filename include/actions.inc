@@ -494,7 +494,7 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
-		mail_notify_publication($user, $event);
+		mail_notify_publication($event);
 		if (TEST_MODE) {
 			action_supervision();
 		} else {
@@ -514,7 +514,7 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
-		mail_notify_publication($user, $event, $_GET["reason"]);
+		mail_notify_publication($event, $_GET["reason"]);
 		if (TEST_MODE) {
 			action_supervision();
 		} else {

@@ -1,10 +1,11 @@
 <?php
-	function mail_notify_publication($user, $event, $reason = "") {
+	function mail_notify_publication($event, $reason = "") {
   		global $g_display;
 
 		$subject = _t("Publication notification");
 		$msg_html = "";
-		$g_display["user"] = $user;
+		$event_owner = User::get_from_id($event->user_id);
+		$g_display["user"] = $event_owner;
 		$g_display["event"] = $event;
 		$g_display["reason"] = $reason;
 		if ($event->is_published()) {
@@ -13,8 +14,8 @@
 			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/event_unpublished.php"));
 		}
 
-		$msg = mail_build($msg_html, $user->email);
-		mail($user->email, $subject, $msg["content"], $msg["header"]);
+		$msg = mail_build($msg_html, $event_owner->email);
+		mail($event_owner->email, $subject, $msg["content"], $msg["header"]);
 	}
 
 	function mail_publication_request($event) {

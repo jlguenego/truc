@@ -333,7 +333,7 @@ html, body {
 #evt_info {
 	border: 1px solid #CCCCCC;
 	padding: 3px;
-	margin: 20px;
+	margin: 40px;
 	background-color: #FFFFDD;
 }
 
@@ -341,7 +341,7 @@ html, body {
 	border: 1px solid #CCCCCC;
 	color: red;
 	padding: 3px;
-	margin: 20px;
+	margin: 40px;
 }
 
 #evt_retrieve_publish {
