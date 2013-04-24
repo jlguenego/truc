@@ -32,7 +32,7 @@
 						break;
 					default:
 						$_SESSION["state"] = "not_allowed";
-						$g_error_msg = "Action not permitted from the state we are.";
+						$g_error_msg = _t("Action not permitted from the state we are.");
 						break;
 				}
 				break;
@@ -220,7 +220,7 @@
 			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
 			$user->store();
-			$g_info_msg = "Account successfully created. Check your email for activation.";
+			$g_info_msg = _t("Account successfully created. Check your email for activation.");
 			$_SESSION["state"] = "root";
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
@@ -250,9 +250,9 @@
 				form_valid_user_update($user);
 				$user->update();
 
-				$g_info_msg = "Your personal informations has been changed.";
+				$g_info_msg = _t("Your personal informations has been changed.");
 				if (!is_null_or_empty($_GET["new_pass"])) {
-					$g_info_msg .= " Your password has changed. We just sent you a mail for information.";
+					$g_info_msg .= _t(" Your password has changed. We just sent you a mail for information.");
 					debug("password changed => mail send");
 					mail_password_changed($user);
 				}
@@ -355,22 +355,16 @@
 		global $g_error_msg;
 
 		if (is_null_or_empty($_GET["id"])) {
-			$_SESSION["state"] = "not_allowed";
-			$g_error_msg = "No event selected.";
-			return;
+			throw new Exception(_t("No event selected."));
 		}
 		if (!Event::exists($_GET["id"])) {
-			$_SESSION["state"] = "not_allowed";
-			$g_error_msg = "Event does not exists.";
-			return;
+			throw new Exception(_t("Event does not exists."));
 		}
 		$event = Event::get_from_id($_GET["id"]);
 		if (!$event->is_published()) {
 			$user = need_authentication();
 			if (!$event->can_be_administrated()) {
-				$_SESSION["state"] = "not_allowed";
-				$g_error_msg = "This event is not yet published.";
-				return;
+				throw new Exception(_t("This event is not yet published."));
 			}
 		}
 		$_SESSION["state"] = "event_retrieve";
@@ -415,8 +409,7 @@
 					action_event_create();
 				}
 			} else {
-				$_SESSION["state"] = "not_allowed";
-				$g_error_msg = "No event selected.";
+				throw new Exception(_t("No event selected."));
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
@@ -494,12 +487,10 @@
 
 		$user = need_authentication();
 		if (!is_admin_logged()) {
-			$g_error_msg = "You are not admin.";
-			return;
+			throw new Exception(_t("You are not admin."));
 		}
 		if (!isset($_GET['id'])) {
-			$g_error_msg = "No event selected.";
-			return;
+			throw new Exception(_t("No event selected."));
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
@@ -516,12 +507,10 @@
 
 		$user = need_authentication();
 		if (!is_admin_logged()) {
-			$g_error_msg = "You are not admin.";
-			return;
+			throw new Exception(_t("You are not admin."));
 		}
 		if (!isset($_GET['id'])) {
-			$g_error_msg = "No event selected.";
-			return;
+			throw new Exception(_t("No event selected."));
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
@@ -538,9 +527,7 @@
 
 		need_authentication();
 		if (!isset($_GET['id'])) {
-			$g_error_msg = "No event selected.";
-			action_supervision();
-			return;
+			throw new Exception(_t("No event selected."));
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
@@ -561,9 +548,7 @@
 
 		need_authentication();
 		if (!isset($_GET['id'])) {
-			$g_error_msg = "No event selected.";
-			action_supervision();
-			return;
+			throw new Exception(_t("No event selected."));
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CANCELLED);
@@ -741,24 +726,20 @@
 		global $g_error_msg;
 
 		$user = need_authentication();
-		if (!is_null_or_empty($_GET["event_id"])) {
-			$event = Event::get_from_id($_GET["event_id"]);
-			if (!$event->is_published()) {
-				$_SESSION["state"] = "not_allowed";
-				$g_error_msg = "This event is not published yet.";
-				return;
-			}
-			$g_display["user"] = $user;
-			$g_display["event"] = $event;
-			$g_display["rates"] = $event->get_rates();
-			if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
-				$_SESSION["state"] = "nominative_participation";
-			} else {
-				$_SESSION["state"] = "regular_participation";
-			}
+		if (is_null_or_empty($_GET["event_id"])) {
+			throw new Exception(_t("No event selected."));
+		}
+		$event = Event::get_from_id($_GET["event_id"]);
+		if (!$event->is_published()) {
+			throw new Exception(_t("This event is not yet published."));
+		}
+		$g_display["user"] = $user;
+		$g_display["event"] = $event;
+		$g_display["rates"] = $event->get_rates();
+		if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
+			$_SESSION["state"] = "nominative_participation";
 		} else {
-			$_SESSION["state"] = "not_allowed";
-			$g_error_msg = "No event selected.";
+			$_SESSION["state"] = "regular_participation";
 		}
 	}
 
@@ -829,7 +810,7 @@
 		global $g_error_msg;
 		try {
 			$user = User::activate($_GET["key"]);
-			$g_info_msg = "Account successfully activated";
+			$g_info_msg = _t("Account successfully activated");
 			$_GET["email"] = $user->email;
 			$_SESSION["state"] = "sign_in";
 		} catch (Exception $e) {
@@ -856,17 +837,13 @@
 		global $g_error_msg;
 		global $g_info_msg;
 
-		if (!is_null_or_empty($_GET["clear_password1"])) {
-			throw new Exception("Clear password send.");
-		}
-
 		if (is_null_or_empty($_GET["password1"]) || is_null_or_empty($_GET["password2"])) {
-			$g_error_msg = "Please fill all field.";
+			$g_error_msg = _t("Please fill all field.");
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
 		if ($_GET["password1"] != $_GET["password2"]) {
-			$g_error_msg = "Passwords are different.";
+			$g_error_msg = _t("Passwords are different.");
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
@@ -874,7 +851,7 @@
 		$user->password = $_GET["password1"];
 		$user->update();
 		$user->reset_token();
-		$g_info_msg = "Your password has been updated.";
+		$g_info_msg = _t("Your password has been updated.");
 		$_SESSION["state"] = "root";
 	}
 

@@ -26,6 +26,8 @@ $g_i18n = array_merge($g_i18n, array(
 	"Enter your password" => "Entrez votre mot de passe",
 	"Create an account" => "Créer un compte",
 	"Forgot your password?" => "Mot de passe oublié ?",
+	"Wrong email or password" => "Mauvais E-mail ou mot de passe",
+	"Your account is not activated" => "Votre compte n'est pas activé",
 
 //Forgotten password
 	"Forgotten password" => "Mot de passe oublié",
@@ -46,6 +48,12 @@ $g_i18n = array_merge($g_i18n, array(
 	"Firstname" => "Prénom",
 	"A valid Email you want to associate to your account. Will act as your login." =>
 		"Une addresse E-Mail valide à laquelle vous avez accès. Ce sera votre login.",
+	"Account successfully created. Check your email for activation." =>
+		"Compte créer. Veuillez vérifier vos e-mail pour l'activer.",
+	"Account successfully activated" => "Compte activé avec succès",
+	"Invalid mail." => "E-mail invalide.",
+	"This mail is already used." => "Cet E-mail est déjà utilisé.",
+	"Passwords are different." => "Les mots de passe sont différents.",
 
 //Account retrieve
 	"Account Infos" => "Informations du compte",
@@ -59,6 +67,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"Delete your account" => "Supprimer votre compte",
 
 //Account update
+	"This user does not exists." => "Cet utilisateur n'existe pas.",
 	"Account update" => "Mise à jour de votre compte",
 	"A valid Email you want to associate to your account." =>
 		"Une addresse E-Mail valide à laquelle vous avez accès.",
@@ -67,10 +76,10 @@ $g_i18n = array_merge($g_i18n, array(
 		"Utilisé uniquement pour aider le support à traiter l'ordre.",
 	"Street# and street name" => "Numéro et nom de rue",
 	"Number and street name" => "Numéro et nom de rue",
-	"ZIP" => "Code postale",
-	"ZIP code of your city." => "Code postale de votre ville.",
+	"ZIP" => "Code postal",
+	"ZIP code of your city." => "Code postal de votre ville.",
 	"City" => "Ville",
-	"Your city" => "Votre ville.",
+	"Your city." => "Votre ville.",
 	"Country" => "Pays",
 	"Your country" => "Votre pays",
 	"State (optional)" => "État (facultatif)",
@@ -81,6 +90,12 @@ $g_i18n = array_merge($g_i18n, array(
 	"Retype new Password (optional)" => "Confirmer le nouveau mot de passe (facultatif)",
 	"Retype your new password." => "Confirmer le nouveau mot de passe.",
 	"Update" => "Mettre à jour",
+	" Your password has changed. We just sent you a mail for information." =>
+		" Votre mot de passe a été changé. Nous vous avons envoyé un mail d'information.",
+	"New passwords are different." => "Les nouveaux mots de passe sont différents",
+	"Your password has been updated." => "Votre mot de passe a été mis à jour.",
+	"Your personal informations has been changed." =>
+		"Vos informations personnelles ont été mises à jour.",
 
 //Cancel Payment
 	"Payment cancelled." => "Paiement annulé.",
@@ -155,6 +170,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"Happening date" => "Date de l'évènement",
 	"Participation opening date" => "Date d'ouverture des participations",
 	"Event website" => "Site de l'évènement",
+	"This event is not yet published." => "Cet évènement n'est pas encore publié.",
 
 //Event Delete
 	"Are you sure you want to delete this event?" =>
@@ -190,10 +206,10 @@ $g_i18n = array_merge($g_i18n, array(
 		"Nom du lieu où se passera l'évènement. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
 	"Web site (optional)" => "Site Web (facultatif)",
 	"Official event web site (if any)." => "Site web officiel de l'évènement (s'il y en a).",
-	"Short description" => "Description courte",
+	"Short description" => "Brève description",
 	"Enter a short description of the event. (HTML editor)" =>
 		"Faites une courte description de votre évènement. (Éditeur HTML)",
-	"Long description" => "Longue description",
+	"Long description" => "Description détaillée",
 	"Enter a long description of the event. (HTML editor)" =>
 		"Faites une description plus complète de votre évènement. (Éditeur HTML)",
 	"Create tickets and define their price" => "Créer des billets et définir leur prix",
@@ -226,7 +242,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"Billing Entity name" => "Nom du client",
 	"The person or organisation name to be charged." =>
 		"La personne ou l'organisation en charge de règler la facture.",
-	"ZIP code" => "Code postale",
+	"ZIP code" => "Code postal",
 	"State (if applicable)" => "État (si applicable)",
 	"I have read the <a href=\"info/sales\">Sales policies</a> and accept them." =>
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
@@ -311,6 +327,16 @@ $g_i18n = array_merge($g_i18n, array(
 	"The Event-Biller support team" => "L'équipe d'Event-Biller",
 	"a service provided by JLG-Consulting (France)" => "un service fourni par JLG-Consulting (France)",
 	"Best regards" => "Bien cordialement",
+
+//Others
+	"Action not permitted from the state we are." =>
+		"Action non permise depuis l'état actuel.",
+	"Event does not exists." => "Cet évènement n'existe pas.",
+	"No event selected." => "Aucun évènement sélectionné.",
+	"Label:" => "Nom :",
+	"Please fill all field." => "Veuillez remplir tout les champs.",
+	"Submit" => "Soumettre",
+	"You are not admin." => "Vous devez être administrateur.",
 
 //The End
 ));
