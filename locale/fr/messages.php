@@ -295,6 +295,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"Publication notification" => "Notification de publication",
 	"Publication request" => "Demande de publication",
 	"Payment authorization" => "Autorisation de paiement",
+	"Payment confirmation and invoice" => "Autorisation de paiement et facture",
 	"Event confirmation" => "Confirmation d'évènement",
 	"Event cancellation" => "Annulation d'évènement",
 	"Activate your account" => "Activation de compte",
@@ -302,29 +303,9 @@ $g_i18n = array_merge($g_i18n, array(
 	"Password changed" => "Mot de passe modifié",
 
 //Payment full
-	"Dear" => "Cher(e)",
-	"You have made a payment for the following invoice." =>
-		"Vous venez de régler la facture suivante.",
-	"You can access to this invoice via this permalink" =>
-		"Vous pouvez accéder à cette facture via ce lien permanent  ",
 	"Total tax" => "Total taxe",
 	"Bill ID" => "Référence de la facture ",
 	"Invoice send by" => "Facture émise par ",
-
-//Payment authorization
-	"[mail_html_payment_authorization]header" => <<<EOF
-Vous avez effectué une autorisation de paiement pour le devis suivant.<br/>
-Si l'évènement est confirmé, vous recevrez une facture et votre paiement
-sera prélevé.<br/>
-Si l'évènement est annulé, votre autorisation de paiement le sera aussi et
-vous en serez informé par mail.<br/>
-EOF
-,
-	"Please make sure that the amount of" => "Veuillez vous assurer que la quantité de",
-	"will be avalable for at least" => "sera disponible pour au moins",
-	"days" => "jours",
-	"You can access to this quotation via this permalink" =>
-		"Vous pouvez accéder à ce devis via ce lien permanent  ",
 
 //Footer
 	"The Event-Biller support team" => "L'équipe d'Event-Biller",

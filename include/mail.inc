@@ -1,8 +1,4 @@
 <?php
-	require_once(BASE_DIR."/mail/payment_full.php");
-	require_once(BASE_DIR."/mail/payment_authorization.php");
-	require_once(BASE_DIR."/mail/publication_request.php");
-
 	function mail_notify_publication($user, $event, $reason = "") {
   		global $g_display;
 
@@ -22,22 +18,29 @@
 	}
 
 	function mail_publication_request($event) {
+		global $g_display;
+
+		$g_display["event"] = $event;
 		$subject = _t("Publication request");
-		$msg_html = mail_html_publication_request($event);
+		$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/publication_request.php"));
 
 		$msg = mail_build($msg_html, CONTACT_MAIL);
 		mail(CONTACT_MAIL, $subject, $msg["content"], $msg["header"]);
 	}
 
 	function mail_payment($mail, $devis) {
+		global $g_display;
+
 		$event = Event::get_from_id($devis->event_id);
 		$user = User::get_from_id($devis->user_id);
 		$subject = _t("Payment authorization");
+		$g_display["user"] = $user;
+		$g_display["bill"] = $bill;
 		if ($devis->status == DEVIS_STATUS_CONFIRMED) {
-			$msg_html = mail_html_payment_full($devis, $event, $user);
-			$subject = "Payment confirmation and invoice";
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/payment_authorization.php"));
+			$subject = _t("Payment confirmation and invoice");
 		} else if ($devis->status == DEVIS_STATUS_PLANNED) {
-			$msg_html = mail_html_payment_authorization($devis, $event, $user);
+			$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/payment_full.php"));
 		} else {
 			throw new Exception("Unexpected devis status.");
 		}

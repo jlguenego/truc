@@ -1,26 +1,22 @@
 <?php
-	function mail_html_payment_authorization($devis, $event, $user) {
-		ob_start();
-		include("header.php");
+	$user = $g_display["user"];
+	$bill = $g_display["bill"];
 ?>
-		<p>
-			{{Dear}} <?php echo $user->get_name(); ?>,<br/>
-			{{[mail_html_payment_authorization]header}}
-		</p>
-<?php
-		print_bill($devis);
-?>
-		<p>
-			{{Please make sure that the amount of}}
-			<b><?php echo curr($devis->total_ttc); ?>€</b>
-			{{will be avalable for at least}}
-			<?php echo AUTHORIZATION_DELAY; ?> {{days}}.<br/>
-			{{You can access to this quotation via this permalink}}: <a href="<?php echo $devis->url(); ?>"><?php echo $devis->url(); ?></a>
-		</p>
-<?php
-		include("footer.php");
-		$result = ob_get_contents();
-		ob_end_clean();
-		return i18n_parse($result);
-	}
-?>
+<p>
+	Dear <?php echo $user->get_name(); ?>,<br/>
+	You have made a payment authorization for the following quotation.<br/>
+	If the event is confirmed, you will receive an invoice and your payment
+	will be captured.<br/>
+	If the event is cancelled, your payment authorization
+	will be also cancelled and you will receive a notification by email.<br/>
+</p>
+<?php print_bill($bill); ?>
+<br/>
+<br/>
+<p>
+	Please make sure that the amount of
+	<b><?php echo curr($bill->total_ttc); ?>€</b>
+	will be avalable for at least
+	<?php echo AUTHORIZATION_DELAY; ?> days.<br/>
+	You can access to this quotation via this permalink: <a href="<?php echo $bill->url(); ?>"><?php echo $bill->url(); ?></a>
+</p>
