@@ -30,7 +30,7 @@
 	i18n_init();
 
 	debug(BASE_DIR);
-	debug("SERVER=".sprint_r($_SERVER));
+	//debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
 	debug("POST=".sprint_r($_POST));
 	debug("SESSION=".sprint_r($_SESSION));

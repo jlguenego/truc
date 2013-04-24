@@ -67,7 +67,7 @@ EOF;
 			return;
 		}
 		require_once($filename);
-		debug("g_i18n=".sprint_r($g_i18n));
+		//debug("g_i18n=".sprint_r($g_i18n));
 	}
 
 	function i18n_guess_locale() {

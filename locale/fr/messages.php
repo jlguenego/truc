@@ -1,5 +1,5 @@
 <?php
-	$g_i18n = array_merge($g_i18n, array(
+$g_i18n = array_merge($g_i18n, array(
 //Class Form
 	"Cancel" => "Annuler",
 
@@ -291,6 +291,16 @@
 	"Privacy policies" => "Règles de confidentialité",
 
 //MAIL
+//Objects
+	"Publication notification" => "Notification de publication",
+	"Publication request" => "Demande de publication",
+	"Payment authorization" => "Autorisation de paiement",
+	"Event confirmation" => "Confirmation d'évènement",
+	"Event cancellation" => "Annulation d'évènement",
+	"Activate your account" => "Activation de compte",
+	"Forgotten password" => "Mot de passe oublié",
+	"Password changed" => "Mot de passe modifié",
+
 //Payment full
 	"Dear" => "Cher(e)",
 	"You have made a payment for the following invoice." =>
@@ -319,5 +329,8 @@ EOF
 //Footer
 	"The Event-Biller support team" => "L'équipe d'Event-Biller",
 	"a service provided by JLG-Consulting (France)" => "un service fourni par JLG-Consulting (France)",
-	));
+	"Best regards" => "Bien cordialement",
+
+//The End
+));
 ?>

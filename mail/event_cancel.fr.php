@@ -11,5 +11,4 @@
 	<br/>
 	Nous avons le regret de vous informer que l'évènement a été annulé.
 	Votre autorisation de paiement ne sera pas prélevée.<br/>
-	Cordialement,
 </p>

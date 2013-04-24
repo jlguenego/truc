@@ -1,15 +1,12 @@
 <?php
-	require_once(BASE_DIR."/mail/inscription.php");
 	require_once(BASE_DIR."/mail/payment_full.php");
 	require_once(BASE_DIR."/mail/payment_authorization.php");
-	require_once(BASE_DIR."/mail/forgotten_password.php");
-	require_once(BASE_DIR."/mail/password_changed.php");
 	require_once(BASE_DIR."/mail/publication_request.php");
 
 	function mail_notify_publication($user, $event, $reason = "") {
   		global $g_display;
 
-		$subject = "Publication notification";
+		$subject = _t("Publication notification");
 		$msg_html = "";
 		$g_display["user"] = $user;
 		$g_display["event"] = $event;
@@ -25,7 +22,7 @@
 	}
 
 	function mail_publication_request($event) {
-		$subject = "Publication request";
+		$subject = _t("Publication request");
 		$msg_html = mail_html_publication_request($event);
 
 		$msg = mail_build($msg_html, CONTACT_MAIL);
@@ -35,7 +32,7 @@
 	function mail_payment($mail, $devis) {
 		$event = Event::get_from_id($devis->event_id);
 		$user = User::get_from_id($devis->user_id);
-		$subject = "Payment authorization";
+		$subject = _t("Payment authorization");
 		if ($devis->status == DEVIS_STATUS_CONFIRMED) {
 			$msg_html = mail_html_payment_full($devis, $event, $user);
 			$subject = "Payment confirmation and invoice";
@@ -52,7 +49,7 @@
   	function mail_event_confirm($event_id) {
   		global $g_display;
 
-		$subject = "Event confirmation";
+		$subject = _t("Event confirmation");
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
 		foreach ($devis_array as $devis) {
@@ -74,7 +71,7 @@
   	function mail_event_cancel($event_id) {
   		global $g_display;
 
-		$subject = "Event cancellation";
+		$subject = _t("Event cancellation");
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
 		foreach ($devis_array as $devis) {
@@ -91,26 +88,36 @@
   	}
 
   	function mail_inscription($user) {
-		$msg_html = mail_html_inscription($user);
+  		global $g_display;
+
+  		$g_display["user"] = $user;
+		$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/inscription.php"));
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = "Activate your account";
+		$subject = _t("Activate your account");
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
   	function mail_forgotten_password($user, $token) {
-		$msg_html = mail_html_forgotten_password($user, $token);
+  		global $g_display;
+
+		$g_display["user"] = $user;
+		$g_display["token"] = $token;
+		$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/forgotten_password.php"));
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = "Forgotten password";
+		$subject = _t("Forgotten password");
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
   	function mail_password_changed($user) {
-  		$msg_html = mail_html_password_changed($user);
+  		global $g_display;
+
+  		$g_display["user"] = $user;
+		$msg_html = i18n_get_html(i18n_filename(BASE_DIR."/mail/password_changed.php"));
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = "Password changed";
+		$subject = _t("Password changed");
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 

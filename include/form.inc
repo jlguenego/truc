@@ -68,6 +68,7 @@
 			if ($f->is_optional($key)) {
 				continue;
 			}
+			debug($key."=>".$value);
 			if (is_null_or_empty($value)) {
 				throw new Exception("Please fill all fields: " . $f->get_label($key));
 			}

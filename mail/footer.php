@@ -1,4 +1,5 @@
 		<p>
+			{{Best regards}}.<br/>
 			{{The Event-Biller support team}}.
 		</p>
 		<hr/>
