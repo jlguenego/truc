@@ -516,5 +516,11 @@ EOF;
 				$this->update();
 			}
 		}
+
+		public function get_i18n() {
+			$result = new I18n();
+			$result->init($this->locale);
+			return $result;
+		}
 	}
 ?>

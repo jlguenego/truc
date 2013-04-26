@@ -27,7 +27,7 @@
 <div id="evt_main">
 <?php
 	debug("including ${g_page}.php");
-	include_once(i18n_filename("${g_page}.php"));
+	include_once($g_i18n->filename("${g_page}.php"));
 ?>
 </div>
 <?php

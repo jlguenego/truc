@@ -7,7 +7,7 @@
 
 	$g_locales = array("en", "fr");
 	$g_default_locale = "en";
-	$g_i18n = array();
+	$g_i18n = null;
 
 	$g_states = array(
 		"root",

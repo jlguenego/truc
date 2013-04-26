@@ -1,4 +1,4 @@
-﻿<div class="legal">
+<div class="legal">
 <div class="legal_title"> Règles de confidentialité </ div>
 
 <h1>Quelles sont les informations que nous recueillons ?</h1>

@@ -1,5 +1,7 @@
 <?php
 	function print_bill($bill) {
+		global $g_i18n;
+
 		$event = Event::get_from_id($bill->event_id);
 
 		$bill_type = "invoice";
@@ -123,7 +125,7 @@
 	</table>
 	<br/>
 	<br/>
-	<?php require_once(i18n_filename(BASE_DIR."/etc/".$bill_type."_legal.html")); ?>
+	<?php require_once($g_i18n->filename(BASE_DIR."/etc/".$bill_type."_legal.html")); ?>
 </p>
 <?php
 	}

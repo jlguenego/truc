@@ -44,6 +44,8 @@ EOF;
 		}
 
 		public function load_default() {
+			global $g_i18n;
+
 			$this->title = "";
 			$this->confirmation_t = "";
 			$this->happening_t = "";
@@ -52,8 +54,8 @@ EOF;
 			$this->funding_authorized = 0;
 			$this->location = "";
 			$this->link = "http://";
-			$this->short_description = file_get_contents(i18n_filename(BASE_DIR . "/etc/short_description.html"));
-			$this->long_description = file_get_contents(i18n_filename(BASE_DIR . "/etc/long_description.html"));
+			$this->short_description = file_get_contents($g_i18n->filename(BASE_DIR . "/etc/short_description.html"));
+			$this->long_description = file_get_contents($g_i18n->filename(BASE_DIR . "/etc/long_description.html"));
 			$this->type = EVENT_TYPE_NOMINATIVE;
 			$this->status = EVENT_STATUS_PLANNED;
 			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;

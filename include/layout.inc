@@ -2,12 +2,13 @@
 	function layout_i18n($file) {
 		global $g_page;
 		global $g_display;
+		global $g_i18n;
 
 		ob_start();
 		require_once($file);
 		$layout = ob_get_contents();
 		ob_clean();
-		print(i18n_parse($layout));
+		print($g_i18n->parse($layout));
 	}
 
 	function layout_header() {

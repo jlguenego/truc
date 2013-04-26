@@ -1,5 +1,5 @@
 <div id="evt_header">
-	<div id="evt_i18n"><?php i18n_menu(); ?></div>
+	<div id="evt_i18n"><?php I18n::menu(); ?></div>
 	<div id="evt_logo">
 		<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
 	<div id="evt_index">{{Organizing events without risks.}}</div>

@@ -1,5 +1,5 @@
 <?php
-$g_i18n = array_merge($g_i18n, array(
+$this->array = array(
 //Class Form
 	"Cancel" => "Annuler",
 
@@ -50,7 +50,7 @@ $g_i18n = array_merge($g_i18n, array(
 	"A valid Email you want to associate to your account. Will act as your login." =>
 		"Une addresse E-Mail valide à laquelle vous avez accès. Ce sera votre login.",
 	"Account successfully created. Check your email for activation." =>
-		"Compte créer. Veuillez vérifier vos e-mail pour l'activer.",
+		"Compte créer. Veuillez vérifier votre e-mail pour l'activer.",
 	"Account successfully activated" => "Compte activé avec succès",
 	"Invalid mail." => "E-mail invalide.",
 	"This mail is already used." => "Cet E-mail est déjà utilisé.",
@@ -248,6 +248,10 @@ $g_i18n = array_merge($g_i18n, array(
 	"I have read the <a href=\"info/sales\">Sales policies</a> and accept them." =>
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
 	"Next" => "Suivant",
+	"VAT number (if applicable)" => "Numéro de TVA (si applicable)",
+	"For EU companies only." => "Uniquement pour les entreprises.",
+	"[help]For EU companies only." =>
+		"Uniquement pour les entreprises et autres organismes assujettis à la TVA.",
 
 //Participation regular
 	"How many ticket do you want?" => "Combient de billet voulez-vous ?",
@@ -393,5 +397,5 @@ $g_i18n = array_merge($g_i18n, array(
 		"Vous devez lire et accepter le règlement.",
 
 //The End
-));
+);
 ?>

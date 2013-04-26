@@ -100,7 +100,7 @@
 		<tr>
 			<th class="th_left" rowspan="5">{{Billing address}}</th>
 			<td>
-				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="{{street# and street name}}"/>
+				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="{{Street# and street name}}"/>
 			</td>
 			<td class="help">{{Street# and street name}}</td>
 		</tr>
@@ -131,11 +131,11 @@
 			<td class="help">{{State (if applicable)}}</td>
 		</tr>
 		<tr>
-			<th>VAT number (if applicable)</th>
+			<th>{{VAT number (if applicable)}}</th>
 			<td>
-				<input type="text" name="vat" value="" placeholder="{{For companies only.}}"/>
+				<input type="text" name="vat" value="" placeholder="{{For EU companies only.}}"/>
 			</td>
-			<td class="help">{{For companies only.}}</td>
+			<td class="help">{{[help]For EU companies only.}}</td>
 		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>

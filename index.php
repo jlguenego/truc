@@ -8,7 +8,6 @@
 	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
 	require_once(BASE_DIR . "/include/payment.inc");
-	require_once(BASE_DIR . "/include/i18n.inc");
 	require_once(BASE_DIR . "/include/mail.inc");
 	require_once(BASE_DIR . "/include/form.inc");
 	require_once(BASE_DIR . "/include/security.inc");
@@ -27,7 +26,8 @@
 
 	session_start();
 
-	i18n_init();
+	$g_i18n = new I18n();
+	$g_i18n->init();
 
 	debug(BASE_DIR);
 	//debug("SERVER=".sprint_r($_SERVER));
