@@ -51,12 +51,19 @@ CREATE TABLE user(
 )ENGINE=InnoDB;
 
 
-CREATE TABLE rate(
-        id       Int NOT NULL  ,
-        label    Varchar (255) NOT NULL  ,
-        amount   Decimal (25,2) NOT NULL  ,
-        tax_rate Decimal (25,2) NOT NULL  ,
-        id_event Int NOT NULL  ,
+CREATE TABLE ticket(
+        id           Int NOT NULL  ,
+        created_t    Varchar (25) NOT NULL  ,
+        mod_t        Varchar (25) NOT NULL  ,
+        name         Varchar (255) NOT NULL  ,
+        type         Int NOT NULL  ,
+        max_quantity Int ,
+        amount       Decimal (25,2) NOT NULL  ,
+        tax_rate     Decimal (25,2) NOT NULL  ,
+        start_t      Varchar (25) ,
+        end_t        Varchar (25) ,
+        description  Text NOT NULL  ,
+        id_event     Int NOT NULL  ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -105,7 +112,7 @@ CREATE TABLE item(
 )ENGINE=InnoDB;
 
 ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (id_user) REFERENCES user(id);
-ALTER TABLE rate ADD CONSTRAINT FK_rate_id_event FOREIGN KEY (id_event) REFERENCES event(id);
+ALTER TABLE ticket ADD CONSTRAINT FK_ticket_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
