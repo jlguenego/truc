@@ -3,7 +3,7 @@
 
 	$scenario = $g_display["scenario"];
 	$event = $g_display["event"];
-	$rates = $g_display["rates"];
+	$tickets = $g_display["tickets"];
 	$user = $g_display["user"];
 
 	$f = new Form();
@@ -86,9 +86,9 @@ EOF
 		$f->add_checkbox(_t("I want to know the name of my attendees"), "event_type_checkbox", $checked, "");
 	}
 	$f->add_raw_html(<<<EOF
-<div id="rates">
+<div id="tickets">
 </div>
-<a href="JavaScript:addRate('rates');">{{Add another ticket rate}}</a><br/><br/>
+<a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>
 EOF
 );
 	if ($scenario == "create") {
@@ -187,13 +187,13 @@ EOF
 	);
 <?php
 	$i = 0;
-	debug("rates=".sprint_r($rates));
-	if ($rates != NULL) {
-		foreach ($rates as $rate) {
-			$label = $rate["label"];
-			$amount = $rate["amount"];
-			$tax_rate = $rate["tax_rate"];
-			echo "addRate('rates', '$label', '$amount', $tax_rate);";
+	debug("tickets=".sprint_r($tickets));
+	if ($tickets != NULL) {
+		foreach ($tickets as $ticket) {
+			$label = $ticket->name;
+			$amount = $ticket->amount;
+			$tax_rate = $ticket->tax_rate;
+			echo "addRate('tickets', '$label', '$amount', $tax_rate);";
 			$i++;
 		}
 	}
@@ -201,7 +201,7 @@ EOF
 	setCounter(<?php echo $i; ?>);
 	if (getCounter() < 1) {
 		log("No rate.");
-		addRate('rates');
+		addRate('tickets');
 	}
 	$("[name=title]").focus();
 
@@ -265,16 +265,16 @@ EOF
 							"<table>" +
 								"<tr>" +
 									"<td>{{Ticket rate name}}</td>" +
-									"<td><input type=\"text\" name=\"labels[]\" value=\"" + label + "\" placeholder=\"{{Ex: Normal, Student, Member, etc...}}\" size=\"40\"></td>" +
+									"<td><input type=\"text\" name=\"ticket_name_a[]\" value=\"" + label + "\" placeholder=\"{{Ex: Normal, Student, Member, etc...}}\" size=\"40\"></td>" +
 								"</tr>" +
 								"<tr>" +
 									"<td>{{Amount (Tax excluded)}}</td>" +
-									"<td><input type=\"number\" name=\"rates[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
+									"<td><input type=\"number\" name=\"ticket_amount_a[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
 								"</tr>" +
 								"<tr>" +
 									"<td>{{Tax}}</td>" +
 									"<td>" +
-										"<select name=\"tax_rates[]\" \">";
+										"<select name=\"ticket_tax_a[]\" \">";
 		for (var i = 0; i < taxes.length; i++) {
 			var selected = "";
 			log("selected_tax=" + selected_tax);
@@ -293,7 +293,7 @@ EOF
 					content += "</tr>" +
 				"</table>";
 		$("#" + id).html(content);
-		$("#" + id).find("[name*=labels]").focus();
+		$("#" + id).find("[name*=ticket_name_a]").focus();
 		sync_remove_button(divName);
 	}
 </script>

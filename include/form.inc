@@ -4,7 +4,7 @@
 
 		foreach ($_GET as $key => $value) {
 			if (is_null_or_empty($_SESSION["form"])) {
-				throw new Exception(_t("Please fill all fields"));
+				throw new Exception("Internal Error: SESSION['form'] is not set");
 			}
 			$f = $_SESSION["form"];
 			if (!$f->has_item($key)) {
@@ -28,22 +28,18 @@
 			throw new Exception(_t("The participation open date is wrong"));
 		}
 
-		foreach ($_GET['rates'] as $rate) {
-			if (is_null_or_empty($rate)
-				|| (!is_null_or_empty($rate) && !is_number($rate))) {
-
+		foreach ($_GET['ticket_amount_a'] as $amount) {
+			if (is_null_or_empty($amount) || !is_number($amount)) {
 				throw new Exception(_t("Please enter a number for the rates"));
 			}
 		}
 
-		foreach ($_GET['tax_rates'] as $tax_rate) {
-			if (is_null_or_empty($tax_rate)
-				|| (!is_null_or_empty($tax_rate) && !is_number($tax_rate))) {
-
+		foreach ($_GET['ticket_tax_a'] as $tax_rate) {
+			if (is_null_or_empty($tax_rate) || !is_number($tax_rate)) {
 				throw new Exception(_t("Please enter a number for the tax rates"));
 			}
 		}
-		foreach ($_GET['labels'] as $label) {
+		foreach ($_GET['ticket_name_a'] as $label) {
 			if (is_null_or_empty($label)) {
 				throw new Exception(_t("Please enter a label for each rate"));
 			}
@@ -58,7 +54,7 @@
 	function form_valid_user() {
 		global $g_use_recaptcha;
 		if (is_null_or_empty($_SESSION["form"])) {
-			throw new Exception(_t("SESSION not well set."));
+			throw new Exception("SESSION not well set.");
 		}
 		$f = $_SESSION["form"];
 		foreach ($_GET as $key => $value) {

@@ -1,6 +1,6 @@
 <?php
 	$event = $g_display["event"];
-	$rates = $g_display["rates"];
+	$tickets = $g_display["tickets"];
 	$user = $g_display["user"];
 ?>
 {{How many ticket do you want?}}
@@ -19,11 +19,11 @@
 		<?php
 			$i = 0;
 			$tax_array = array();
-			foreach ($rates as $rate) {
+			foreach ($tickets as $ticket) {
 				$event_title = $event->title;
-				$amount_ht = str_replace(",", "", curr($rate["amount"]));
-				$label = $rate["label"];
-				$tax_rate = $rate["tax_rate"];
+				$amount_ht = str_replace(",", "", curr($ticket->amount));
+				$label = $ticket->name;
+				$tax_rate = $ticket->tax_rate;
 				if (!in_array($tax_rate, $tax_array)) {
 					$tax_array[] = $tax_rate;
 				}

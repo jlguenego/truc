@@ -2,7 +2,14 @@
 	$event = $g_display["event"];
 	$author = $g_display["author"];
 
-	if (!$event->is_published()) {
+	if ($event->is_inactivated()) {
+?>
+	<div id="evt_retrieve_publish">
+		{{This event is inactivated.}}
+	</div>
+<?php
+	}
+	if (!$event->is_published() && !$event->is_inactivated()) {
 ?>
 <div id="evt_retrieve_publish">
 	{{Your event is not published.}}
@@ -15,12 +22,12 @@
 ?>
 	<br/>{{A request for publication has been done. Our support team is going to process it very soon.}}
 <?php
-		}
+	}
 ?>
 </div>
 <?php
 	}
-	if (is_admin_logged()) {
+	if (is_admin_logged() && !$event->is_inactivated()) {
 ?>
 <div id="evt_administration">
 	<div class="evt_administration_title">
@@ -55,7 +62,7 @@
 </div>
 <?php
 	}
-	if ($event->can_be_administrated()) {
+	if ($event->can_be_administrated() && !$event->is_inactivated()) {
 ?>
 <div id="evt_administration">
 	<div class="evt_administration_title">
@@ -108,16 +115,16 @@
 ?>
 <?php
 	}
-	$rates = $event->get_rates();
+	$tickets = $event->get_tickets();
 ?>
 
 <table class="evt_rate_table">
 	<tr>
-		<td class="evt_rate_title" colspan="4">Rates</td>
+		<td class="evt_rate_title" colspan="4">{{Tickets}}</td>
 <?php
 		if ($event->can_participate()) {
 ?>
-		<td class="evt_participate"rowspan="<?php echo (count($rates)+2); ?>">
+		<td class="evt_participate"rowspan="<?php echo (count($tickets)+2); ?>">
 			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
 				<button><?php echo format_participate_button($event); ?></button>
 			</a>
@@ -133,10 +140,10 @@
 			<th>{{Total due}}</th>
 		</tr>
 <?php
-	foreach ($rates as $rate) {
-		$tax = $rate['tax_rate'];
-		$label = $rate['label'];
-		$amount_ht = curr($rate['amount']);
+	foreach ($tickets as $ticket) {
+		$tax = $ticket->tax_rate;
+		$label = $ticket->name;
+		$amount_ht = curr($ticket->amount);
 		$amount_ttc = curr($amount_ht * (($tax/100) + 1));
 ?>
 		<tr>

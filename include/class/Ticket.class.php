@@ -2,13 +2,13 @@
 	class Ticket {
 		public $id;
 		public $name;
-		public $type;
+		public $type = 0;
 		public $amount;
 		public $max_quantity;
 		public $tax_rate;
 		public $start_t;
 		public $end_t;
-		public $description;
+		public $description = "";
 		public $event_id;
 
 		public function hydrate($array) {
@@ -23,6 +23,20 @@
 				$this->$key = $value;
 			}
 		}
+
+		public function hydrate_from_form($i) {
+			$this->name = $_GET['ticket_name_a'][$i];
+			$this->amount = $_GET['ticket_amount_a'][$i];
+			$this->tax_rate = $_GET['ticket_tax_a'][$i];
+			debug("hydrate_from_form=".sprint_r($this));
+		}
+
+		public static function get_from_id($id) {
+			$ticket = new Ticket();
+			$ticket->load($id);
+			return $ticket;
+		}
+
 
 		public function store() {
 			global $g_pdo;
@@ -45,7 +59,7 @@ SET
 	`start_t`= :start_t,
 	`end_t`= :end_t,
 	`description`= :description,
-	`event_id`= :event_id
+	`id_event`= :event_id
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -54,6 +68,7 @@ EOF;
 				":created_t" => $created_t,
 				":mod_t" => $mod_t,
 				":name" => $this->name,
+				":type" => $this->type,
 				":amount" => $this->amount,
 				":max_quantity" => $this->max_quantity,
 				":tax_rate" => $this->tax_rate,
@@ -121,7 +136,7 @@ EOF;
 			global $g_pdo;
 
 			$request = <<<EOF
-DELETE FROM `rate`
+DELETE FROM `ticket`
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -129,6 +144,26 @@ EOF;
 			$pst->execute(array(
 				":id" => $id,
 			));
+		}
+
+		public function has_accountancy_activity() {
+			global $g_pdo;
+
+			$event = Event::get_from_id($this->event_id);
+			$bills = $event->get_devis();
+
+			foreach ($bills as $bill) {
+				foreach ($bill->items as $item) {
+					if (($item->event_rate_name == $this->name)
+						&& ($item->event_rate_amount == $this->amount)
+						&& ($item->event_rate_tax == $this->tax_rate)
+					) {
+						return true;
+					}
+				}
+				return false;
+			}
+			return $count[0] > 0;
 		}
 	}
 ?>

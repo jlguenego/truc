@@ -321,7 +321,7 @@
 
 		$user = need_authentication();
 		try {
-			debug("Tax_rate array: ".sprint_r($_GET['tax_rates']));
+			debug("Tax_rate array: ".sprint_r($_GET['ticket_tax_a']));
 			form_event_valid();
 
 			$event = new Event();
@@ -332,12 +332,13 @@
 			$user->sync_phone($event->phone);
 			debug(sprint_r($event));
 
-			debug(sprint_r($_GET['labels']));
+			debug(sprint_r($_GET['ticket_name_a']));
 			$i = 0;
-			foreach ($_GET['labels'] as $label) {
-				$rate = $_GET['rates'][$i];
-				$tax_rate = $_GET['tax_rates'][$i];
-				$event->add_rate($label, $rate, $tax_rate);
+			foreach ($_GET['ticket_name_a'] as $label) {
+				$ticket = new Ticket();
+				$ticket->hydrate_from_form($i);
+				$ticket->event_id = $event->id;
+				$ticket->store();
 				$i++;
 			}
 			$_GET["id"] = $event->id;
@@ -401,7 +402,7 @@
 						$event->update_rate($label, $tax_rate, $rate);
 						$i++;
 					}
-					$event->delete_unused_rates($_GET['labels']);
+					$event->delete_unused_tickets($_GET['labels']);
 					if (TEST_MODE) {
 						action_event_retrieve();
 					} else {
@@ -422,6 +423,7 @@
 	function action_event_delete() {
 		global $g_display;
 		global $g_error_msg;
+		global $g_info_msg;
 
 		$user = need_authentication();
 
@@ -435,21 +437,26 @@
 			return;
 		}
 		try {
-			need_authentication();
-			if (isset($_GET['confirm'])) {
-				if (is_null_or_empty($_GET['id'])) {
-					throw new Exception(_t("No event given."));
-				}
-				if (!Event::exists($_GET['id'])) {
-					throw new Exception(_t("Event does not exists."));
-				}
-				$event = Event::get_from_id($_GET['id']);
-				$event->check_owner();
-				if($_GET['confirm'] == "yes") {
-					$event->delete_try();
-				}
+			if (!isset($_GET['confirm']) || $_GET['confirm'] != "yes") {
+				$_SESSION["state"] = "root";
+				$g_info_msg = _t("Event not deleted.");
+				return;
 			}
+			if (is_null_or_empty($_GET['id'])) {
+				throw new Exception(_t("No event given."));
+			}
+			if (!Event::exists($_GET['id'])) {
+				throw new Exception(_t("Event does not exists."));
+			}
+			$event = Event::get_from_id($_GET['id']);
+			$event->check_owner();
+			if ((!$event->is_cancelled()) && ($event->has_already_happened())) {
+				$event->set_status(EVENT_STATUS_CANCELLED);
+				mail_event_cancel($_GET['id']);
+			}
+			$event->delete_try();
 			$_SESSION["state"] = "root";
+			$g_info_msg = _t("Event succesfully deleted.");
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
 			$g_error_msg = $e->getMessage();
@@ -465,7 +472,7 @@
 			$event->load_default();
 			$g_display["event"] = $event;
 			$g_display["user"] = $user;
-			$g_display["rates"] = NULL;
+			$g_display["tickets"] = NULL;
 			$g_display["scenario"] = "create";
 			$g_display["form_action"] = "?action=create&amp;type=event";
 			$_SESSION["state"] = "event_form";
@@ -477,7 +484,7 @@
 
 			$g_display["event"] = $event;
 			$g_display["user"] = $user;
-			$g_display["rates"] = $event->get_rates();
+			$g_display["tickets"] = $event->get_tickets();
 			$g_display["scenario"] = "update";
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
 			$_SESSION["state"] = "event_form";
@@ -633,7 +640,7 @@
 		}
 		$devis->label = $label."EVT-".sprintf("%06d", $event->id);
 
-		$rates = $event->get_rates();
+		$tickets = $event->get_tickets();
 		$total_ttc = 0.00;
 		$i = 0;
 		while (isset($_GET["ticket_${i}"])) {
@@ -644,9 +651,9 @@
 				$item = new Item();
 
 				$item->event_name = $event->title;
-				$item->event_rate_name = $rates[$i]["label"];
-				$item->event_rate_amount = $rates[$i]["amount"];
-				$item->event_rate_tax = $rates[$i]["tax_rate"];
+				$item->event_rate_name = $tickets[$i]["label"];
+				$item->event_rate_amount = $tickets[$i]["amount"];
+				$item->event_rate_tax = $tickets[$i]["tax_rate"];
 				$item->quantity = $_GET["ticket_${i}"];
 
 				$item->compute();
@@ -737,7 +744,7 @@
 		}
 		$g_display["user"] = $user;
 		$g_display["event"] = $event;
-		$g_display["rates"] = $event->get_rates();
+		$g_display["tickets"] = $event->get_tickets();
 		if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
 			$_SESSION["state"] = "nominative_participation";
 		} else {
@@ -798,7 +805,7 @@
 			$g_display["user"] = $user;
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
-			$g_display["rates"] = $event->get_rates();
+			$g_display["tickets"] = $event->get_tickets();
 			if ($event->type == EVENT_TYPE_NOMINATIVE) {
 				$_SESSION["state"] = "nominative_participation";
 			} else {

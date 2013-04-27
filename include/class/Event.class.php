@@ -18,7 +18,7 @@
 		public $flags;
 		public $publish_flag;
 		public $user_id;
-		public $rates = array();
+		public $tickets = array();
 
 		public static function get_from_id($id) {
 			$event = new Event();
@@ -98,7 +98,7 @@ SET
 	`title`= :title,
 	`organizer_name`= :organizer_name,
 	`location`= :location,
-	`link`=  :link,
+	`link`= :link,
 	`short_description`= :short_description,
 	`long_description`= :long_description,
 	`happening_t`= :happening_t,
@@ -192,13 +192,9 @@ EOF;
 				return;
 			}
 
-			$request = <<<EOF
-DELETE FROM `rate`
-WHERE `id_event`= :id
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(":id" => $this->id));
+			foreach ($this->get_tickets() as $ticket) {
+				$ticket->delete();
+			}
 
 			$request = <<<EOF
 DELETE FROM `event`
@@ -227,6 +223,10 @@ EOF;
 
 		public function is_ready_for_publication() {
 			return ($this->flags & EVENT_FLAG_READY_FOR_PUBLICATION) != 0;
+		}
+
+		public function has_already_happened() {
+			return s2t($this->happening_t) > time();
 		}
 
 		public function set_ready_for_publication($bool) {
@@ -520,77 +520,32 @@ EOF;
 
 		}
 
-		public function add_rate($label, $rate, $tax_rate) {
-			global $g_pdo;
-
-			if ($this->has_rate($label)) {
-				return;
-			}
-			$id = create_id();
-
-			$request = <<<EOF
-INSERT INTO `rate`
-SET
-	`id`= :id,
-	`label`= :label,
-	`id_event`= :id_event,
-	`tax_rate`= :tax_rate,
-	`amount`= :amount;
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(
-				":id" => $id,
-				":label" => $label,
-				":id_event" => $this->id,
-				":tax_rate" => $tax_rate,
-				":amount" => $rate,
-			));
-		}
-
-		public function delete_unused_rates($labels) {
-			$rates = $this->get_rates();
-			foreach ($rates as $rate) {
-				if (!in_array($rate["label"], $labels)) {
-					debug("Deleted ".$rate["label"]);
-					$this->delete_rate($rate["label"]);
+		public function delete_unused_tickets($names) {
+			$tickets = $this->get_tickets();
+			foreach ($tickets as $ticket) {
+				if (!in_array($ticket->name, $names)) {
+					debug("Deleted ".$ticket->name);
+					$ticket->delete();
 				}
 			}
 		}
 
-		public function delete_rate($label) {
+		public function get_tickets() {
 			global $g_pdo;
 
 			$request = <<<EOF
-DELETE FROM `rate`
-WHERE `label`= :label AND `id_event`= :id_event
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(
-				":label" => $label,
-				":id_event" => $this->id,
-			));
-		}
-
-		public function get_rates() {
-			global $g_pdo;
-
-			$request = <<<EOF
-SELECT `label`, `amount`, `tax_rate` FROM `rate`
+SELECT `id` FROM `ticket`
 WHERE `id_event`= :id
 ORDER BY tax_rate DESC
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(":id" => $this->id));
-			$rate = $pst->fetch();
-			$rates = array();
-			while (isset($rate["label"])) {
-				$rates[] = $rate;
-				$rate = $pst->fetch();
+			$result = array();
+			while (($record = $pst->fetch()) != NULL) {
+				$result[] = Ticket::get_from_id($record["id"]);
 			}
-			return $rates;
+			return $result;
 		}
 
 		public function can_be_administrated() {

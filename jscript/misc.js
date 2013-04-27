@@ -26,7 +26,7 @@ function delete_remove_button() {
 }
 
 function add_remove_button() {
-	$("#remove_" + $(this).attr("id")).html("<input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + $(this).attr("id") + "', 'rates');\">");
+	$("#remove_" + $(this).attr("id")).html("<input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + $(this).attr("id") + "', 'tickets');\">");
 }
 
 function removeRate(el, parent) {
