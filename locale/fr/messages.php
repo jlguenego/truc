@@ -196,13 +196,14 @@ $this->array = array(
 	"Event starting date" => "Date du début de l'évènement",
 	"Date at which starts the event (Format => YYYY-MM-DD)." =>
 		"Date à laquelle démarre l'évènement (Format => AAAA-MM-JJ).",
-	"Confirmation date" => "Date de confirmation",
+	"help_checkbox_confirmation" => "Cochez cette case si vous vous engagez à réaliser l'évènement.<br/>".
+			"Si vous ne pouvez être sûr que l'évènement aura lieu, NE LA COCHEZ PAS.",
 	"Maximum date at which the event will be confirmed or cancelled (Format => YYYY-MM-DD)." =>
 		"Date maximum à laquelle l'évènement sera confirmé ou annulé (Format => AAAA-MM-JJ).",
 	"Ticket Sale opening start date" => "Début d'ouverture de la vente des tickets",
 	"Date at which starts the ticket reservation or sale (Format => YYYY-MM-DD)." =>
 		"Date à laquelle démarre la réservation ou la vente de ticket (Format => AAAA-MM-JJ).",
-	"Event place" => "Lieux de l'évènement",
+	"Event place" => "Lieu de l'évènement",
 	"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)" =>
 		"Nom du lieu où se passera l'évènement. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
 	"Web site (optional)" => "Site Web (facultatif)",

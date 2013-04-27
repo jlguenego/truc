@@ -21,12 +21,6 @@
 		if (!check_date($_GET["happening_t"])) {
 			throw new Exception(_t("The given date is wrong"));
 		}
-		if (!check_date($_GET["confirmation_t"])) {
-			throw new Exception(_t("Please choose a confirmation date for your event"));
-		}
-		if (!check_date($_GET["open_t"])) {
-			throw new Exception(_t("The participation open date is wrong"));
-		}
 
 		foreach ($_GET['ticket_amount_a'] as $amount) {
 			if (is_null_or_empty($amount) || !is_number($amount)) {

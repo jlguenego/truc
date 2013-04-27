@@ -48,7 +48,7 @@ th {
 	font:12px arial,sans-serif;
 }
 
-.inline input[type=submit] {
+.inline input[type=submit], .inline input[type=button] {
 	margin: 2px;
 	padding: 5px 10px 5px 10px;
 }
@@ -238,8 +238,7 @@ html, body {
 /* FORM RATE */
 
 .evt_rate {
-	border: 1px solid black;
-	background-color: #EEEEEE;
+	background-color: #F5F5F5;
 	border-spacing: 0px;
 	border-collapse: collapse;
 	empty-cells: hide;
@@ -247,9 +246,20 @@ html, body {
 	margin: 10px 0px 10px 0px;
 }
 
+.evt_rate input[type=text] {
+	width: 200px;
+}
+
+.evt_rate [id*=remove_] {
+	min-width: 120px;
+	height: 35px;
+
+	text-align: center;
+}
+
 .evt_rate td  {
-	border: 1px solid black;
-	padding: 3px;
+	border: 1px solid #CCCCCC;
+	padding: 3px 10px 3px 10px;
 	empty-cells: hide;
 }
 
@@ -263,6 +273,14 @@ html, body {
 	border: none;
 	border-spacing: 0px;
 	border-collapse: collapse;
+}
+
+.evt_rate_qty {
+	width: 80px;
+}
+
+.evt_rate_price {
+	width: 80px;
 }
 
 .help {

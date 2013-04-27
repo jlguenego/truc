@@ -60,7 +60,6 @@ EOF;
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
 			chmod(SETTINGS_INI, 0400);
-			chmod("install.sql", 0400);
 			$requests = file_get_contents("install.sql");
 			$requests = str_replace("ENGINE=InnoDB", "", $requests);
 

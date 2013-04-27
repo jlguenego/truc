@@ -158,7 +158,7 @@
 </table>
 <div id="evt_status">
 			<?php
-	if ((time() + 86400) >= s2t($event->happening_t, "%Y-%m-%d")) {
+	if ((time()) >= s2t($event->happening_t, "%Y-%m-%d") + 86400) {
 ?>
 			{{This event has already happened.}}
 <?php
@@ -187,8 +187,7 @@
 			<li><b>{{Organizer}}: </b><?php echo $event->organizer_name; ?></li>
 			<li><b>{{Location}}:</b> <?php echo $event->location; ?></li>
 			<li><b>{{Happening date}}:</b> <?php echo format_date($event->happening_t); ?></li>
-			<li><b>{{Confirmation date}}:</b> <?php echo format_date($event->confirmation_t); ?></li>
-			<li><b>{{Participation opening date}}:</b> <?php echo format_date($event->open_t); ?></li>
+			<li><b>{{Confirmation date}}:</b> <?php echo format_date($event->get_confirmation_date()); ?></li>
 			<li><b>{{Event website}}:</b> <a href="<?php echo $event->link; ?>"><?php echo $event->link; ?></a></li>
 		</ul>
 	</div>

@@ -46,15 +46,18 @@ EOF
 	} else {
 		$f->add_hidden("funding_needed", $event->funding_needed);
 	}
-	$f->add_text(_t("Event starting date"), "happening_t",
+	$item = $f->add_text(_t("Event date"), "happening_t",
 		default_value("happening_t", $event->happening_t),
 		_t("Date at which starts the event (Format: YYYY-MM-DD)."));
-	$f->add_text(_t("Confirmation date"), "confirmation_t",
+	$item->other_attr = 'autocomplete="off"';
+	if (!$event->is_confirmed()) {
+		$f->add_checkbox(_t("This event is confirmed."), "is_confirmed",
+			"", _t("help_checkbox_confirmation"));
+	}
+	$item = $f->add_text(_t("Confirmation date"), "confirmation_t",
 		default_value("confirmation_t", $event->confirmation_t),
 		_t("Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)."));
-	$f->add_text(_t("Ticket Sale opening start date"), "open_t",
-		default_value("open_t", $event->open_t),
-		_t("Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD)."));
+	$item->other_attr = 'autocomplete="off"';
 	$item = $f->add_text(_t("Event place"), "location",
 		default_value("location", $event->location),
 		_t("Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
@@ -63,13 +66,14 @@ EOF
 		_t("Official event web site (if any)."));
 	$item->other_attr = 'size="60" maxlength="255"';
 	$item->is_optional = true;
-	$f->add_textarea(_t("Short description"), "short_description",
+	$item = $f->add_textarea(_t("Short description"), "short_description",
 		default_value("short_description", $event->short_description),
 		_t("Enter a short description of the event. (HTML editor)"));
+	$item->other_attr = 'class="apply_tinymce"';
 	$item = $f->add_textarea(_t("Long description"), "long_description",
 		default_value("long_description", $event->long_description),
 		_t("Enter a long description of the event. (HTML editor)"));
-	$item->other_attr = 'width="200px"';
+	$item->other_attr = 'class="apply_tinymce" width="200px"';
 	$f->add_hidden("id", $event->id);
 	$f->add_hidden("event_type", $event->type);
 	$f->add_raw_html(<<<EOF
@@ -86,8 +90,8 @@ EOF
 		$f->add_checkbox(_t("I want to know the name of my attendees"), "event_type_checkbox", $checked, "");
 	}
 	$f->add_raw_html(<<<EOF
-<div id="tickets">
-</div>
+<table id="tickets" class="evt_rate">
+</table>
 <a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>
 EOF
 );
@@ -113,8 +117,8 @@ EOF
 		test &= $("input[name=title]").val().length > 0;
 		test &= $("input[name=organizer_name]").val().length > 0;
 		test &= $("input[name=happening_t]").val().length > 0;
-		test &= $("input[name=confirmation_t]").val().length > 0;
-		test &= $("input[name=open_t]").val().length > 0;
+		test &= $("input[name=confirmation_t]").val().length > 0
+				|| $("input[name=is_confirmed]:checked").length > 0;
 		test &= $("input[name=location]").val().length > 0;
 
 		if (test) {
@@ -127,36 +131,18 @@ EOF
 	function update_form() {
 		log("update_form");
 		log("date=" + $("#happening_t").val());
+		log("is_confirmed="+$("input[name=is_confirmed]:checked").length);
 
-		if ($("#happening_t").val() == "") {
+		if ($("#happening_t").val() == "" || $("input[name=is_confirmed]:checked").length > 0) {
 			$("#confirmation_t").val("");
 			$( "#confirmation_t" ).attr("disabled", "");
 		} else {
 			$( "#confirmation_t" ).removeAttr("disabled");
 		}
-
-		if ($("#confirmation_t").val() == "") {
-			$("#open_t").val("");
-			$( "#open_t" ).attr("disabled", "");
-		} else {
-			$( "#open_t" ).removeAttr("disabled");
-		}
-
-		$( "#open_t" ).datepicker('option', 'maxDate', $("#confirmation_t").val());
-		var date = $("#confirmation_t").datepicker('getDate');
-		if (date) {
-			date.setDate(date.getDate() - 29);
-			var today = new Date();
-			if (date < today) {
-				date = today;
-			}
-		}
-		$( "#open_t" ).datepicker('option', 'minDate', date);
 		$( "#confirmation_t" ).datepicker('option', 'maxDate', $("#happening_t").val());
 
 		$( "#happening_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 		$( "#confirmation_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
-		$( "#open_t" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	}
 
 	$("form").change(function() {
@@ -168,6 +154,10 @@ EOF
 		manage_submit();
 	});
 	$("input").keyup(manage_submit());
+	$("input").change(function() {
+		update_form();
+		manage_submit();
+	});
 
 
 
@@ -193,7 +183,9 @@ EOF
 			$label = $ticket->name;
 			$amount = $ticket->amount;
 			$tax_rate = $ticket->tax_rate;
-			echo "addRate('tickets', '$label', '$amount', $tax_rate);";
+			$quantity = $ticket->max_quantity;
+			$description = $ticket->description;
+			echo "addRate('tickets', '$label', '$quantity', '$amount', $tax_rate, '$description');";
 			$i++;
 		}
 	}
@@ -207,7 +199,8 @@ EOF
 
 	tinyMCE.init({
 	        // General options
-	        mode : "textareas",
+	        mode : "specific_textareas",
+	        editor_selector : "apply_tinymce",
 	        theme : "advanced",
 	        plugins : "lists,spellchecker,advhr,preview",
 
@@ -247,34 +240,30 @@ EOF
 		}
 	});
 
-	function addRate(divName, label, amount, selected_tax){
+	function addRate(divName, label, quantity, amount, selected_tax, description){
 		label = label || "";
 		amount = amount || "";
+		quantity = quantity || "";
+		description = description || "";
 		log(selected_tax);
 		if (selected_tax == undefined) {
 			selected_tax = taxes[0][1];
 		}
 		counter++;
 		var id = new Date().getTime();
-		$("#" + divName).append("<div id=\"" + id + "\"></div>");
+		$("#" + divName).append("<tr id=\"" + id + "\"></tr>");
 		var content =
-				"<table class=\"evt_rate\">" +
-					"<tr>" +
-						"<td>{{Ticket rate}}</td>" +
-						"<td>" +
-							"<table>" +
-								"<tr>" +
-									"<td>{{Ticket rate name}}</td>" +
-									"<td><input type=\"text\" name=\"ticket_name_a[]\" value=\"" + label + "\" placeholder=\"{{Ex: Normal, Student, Member, etc...}}\" size=\"40\"></td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>{{Amount (Tax excluded)}}</td>" +
-									"<td><input type=\"number\" name=\"ticket_amount_a[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\">&nbsp;EUR (Euro)</td>" +
-								"</tr>" +
-								"<tr>" +
-									"<td>{{Tax}}</td>" +
-									"<td>" +
-										"<select name=\"ticket_tax_a[]\" \">";
+					"<td>" +
+						"<input type=\"text\" name=\"ticket_name_a[]\" value=\"" + label + "\" placeholder=\"{{Ticket name}}\"/>" +
+					"</td>" +
+					"<td>" +
+						"<input class=\"evt_rate_qty\" type=\"number\" name=\"ticket_quantity_a[]\" value=\""+quantity+"\" min=\"0\" placeholder=\"{{Quantity}}\">" +
+					"</td>" +
+					"<td>" +
+						"<input class=\"evt_rate_price\" type=\"number\" name=\"ticket_amount_a[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\" placeholder=\"{{Price}}\"/>&nbsp;€&nbsp;(Euro)" +
+						"</td>" +
+					"<td>" +
+						"<select name=\"ticket_tax_a[]\" \">";
 		for (var i = 0; i < taxes.length; i++) {
 			var selected = "";
 			log("selected_tax=" + selected_tax);
@@ -282,17 +271,41 @@ EOF
 			if (taxes[i][1] == selected_tax) {
 				selected = "selected";
 			}
-			content += 				"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
+			content += 			"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
 		}
-		content +=				"</select>" +
-									"</td>" +
-								"</tr>" +
-							"</table>" +
-						"</td>";
-						content += "<td id=\"remove_" + id + "\"></td>";
-					content += "</tr>" +
-				"</table>";
+		content +=		"</select>" +
+					"</td>" +
+					"<td>settings</td>" +
+					"<td id=\"remove_" + id + "\"></td>";
 		$("#" + id).html(content);
+		$("#" + divName).append("<tr id=\"advanced_" + id + "\"></tr>");
+		var content =
+					"<td colspan=\"7\">" +
+						"<table id=\"table_advanced_" + id + "\" width=\"100%\">" +
+							"<tr>" +
+								"<td class=\"form_label\" width=\"200px\">Description</td>" +
+								"<td><textarea name=\"ticket_description_a[]\" style=\"resize: none; width: 100%;\">"+description+"</textarea></td>" +
+							"</tr>" +
+//							"<tr>" +
+//								"<td class=\"form_label\">Start/End salling date</td>" +
+//								"<td>" +
+//									"<table>" +
+//										"<tr>" +
+//											"<td align=\"right\">Sale starts at</td>" +
+//											"<td><input type=\"text\" name=\"ticket_start_a[]\"/></td>" +
+//											"<td class=\"form_help\">{{Leave empty to start from now.}}</td>" +
+//										"</tr>" +
+//										"<tr>" +
+//											"<td align=\"right\">Sale ends at</td>" +
+//											"<td><input type=\"text\" name=\"ticket_end_a[]\"/></td>" +
+//											"<td class=\"form_help\">{{Leave empty to nerver end.}}</td>" +
+//										"</tr>" +
+//									"</table>" +
+//								"</td>" +
+//							"</tr>" +
+						"</table>" +
+					"</td>";
+		$("#advanced_" + id).html(content);
 		$("#" + id).find("[name*=ticket_name_a]").focus();
 		sync_remove_button(divName);
 	}

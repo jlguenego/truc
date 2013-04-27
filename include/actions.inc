@@ -396,13 +396,21 @@
 					$user->sync_phone($event->phone);
 
 					$i = 0;
-					foreach ($_GET['labels'] as $label) {
-						$rate = $_GET['rates'][$i];
-						$tax_rate = $_GET['tax_rates'][$i];
-						$event->update_rate($label, $tax_rate, $rate);
+					foreach ($_GET['ticket_name_a'] as $name) {
+						$ticket = $event->get_ticket($name);
+						if ($ticket != NULL) {
+							$ticket->hydrate_from_form($i);
+							$ticket->event_id = $event->id;
+							$ticket->update();
+						} else {
+							$ticket = new Ticket();
+							$ticket->hydrate_from_form($i);
+							$ticket->event_id = $event->id;
+							$ticket->store();
+						}
 						$i++;
 					}
-					$event->delete_unused_tickets($_GET['labels']);
+					$event->delete_unused_tickets($_GET['ticket_name_a']);
 					if (TEST_MODE) {
 						action_event_retrieve();
 					} else {

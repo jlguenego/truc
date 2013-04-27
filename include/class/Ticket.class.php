@@ -28,6 +28,8 @@
 			$this->name = $_GET['ticket_name_a'][$i];
 			$this->amount = $_GET['ticket_amount_a'][$i];
 			$this->tax_rate = $_GET['ticket_tax_a'][$i];
+			$this->max_quantity = $_GET['ticket_quantity_a'][$i];
+			$this->description = $_GET['ticket_description_a'][$i];
 			debug("hydrate_from_form=".sprint_r($this));
 		}
 

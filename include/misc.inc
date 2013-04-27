@@ -224,6 +224,11 @@ EOF;
 		return $result;
 	}
 
+	function t2s($timestamp, $format = "%Y-%m-%d") {
+		// TODO: revisiter la fonction
+		return date("Y-m-d", $timestamp);
+	}
+
 	function default_str($val1, $val2) {
 		if (is_null_or_empty($val1)) {
 			return $val2;

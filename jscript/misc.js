@@ -14,19 +14,24 @@ function log(msg) {
 
 
 function sync_remove_button(divName) {
+	log("divName=" + divName);
 	if (counter > 1) {
-		$("#" + divName).children("div[id]").each(add_remove_button);
+		$("#" + divName).find("[id*=remove_]").each(add_remove_button);
 	} else {
-		$("#" + divName).children("div[id]").each(delete_remove_button);
+		$("#" + divName).find("[id*=remove_]").each(delete_remove_button);
 	}
 }
 
 function delete_remove_button() {
-	$("#remove_" + $(this).attr("id")).html("");
+	log("Delete remove button from: " + $(this).attr("id"));
+	$("#" + $(this).attr("id")).html("");
 }
 
 function add_remove_button() {
-	$("#remove_" + $(this).attr("id")).html("<input type=\"button\" value=\"Remove\" onClick=\"removeRate('" + $(this).attr("id") + "', 'tickets');\">");
+	log("Add remove button to: " + $(this).attr("id"));
+	$("#" + $(this).attr("id")).html(
+		"<input type=\"button\" value=\"Remove\" onClick=\"removeRate('"
+		+ $(this).closest('tr').attr("id") + "', 'tickets');\">");
 }
 
 function removeRate(el, parent) {
@@ -40,7 +45,7 @@ function removeRate(el, parent) {
 }
 
 function removeElement(el, parent) {
-	$("#" + parent).children("#" + el).remove();
+	$("#" + parent).find("#" + el).remove();
 }
 
 function eb_sync_amount() {

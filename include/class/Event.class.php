@@ -3,9 +3,8 @@
 		public $id = -1;
 		public $title;
 		public $organizer_name;
-		public $confirmation_t;
 		public $happening_t;
-		public $open_t;
+		public $confirmation_t = "";
 		public $funding_needed;
 		public $funding_authorized;
 		public $location;
@@ -47,9 +46,8 @@ EOF;
 			global $g_i18n;
 
 			$this->title = "";
-			$this->confirmation_t = "";
 			$this->happening_t = "";
-			$this->open_t = "";
+			$this->confirmation_t = "";
 			$this->funding_needed = 0.00;
 			$this->funding_authorized = 0;
 			$this->location = "";
@@ -103,7 +101,6 @@ SET
 	`long_description`= :long_description,
 	`happening_t`= :happening_t,
 	`confirmation_t`= :confirmation_t,
-	`open_t`= :open_t,
 	`funding_needed`= :funding_needed,
 	`funding_acquired`=0,
 	`type`= :type,
@@ -127,7 +124,6 @@ EOF;
 				":long_description" => $this->long_description,
 				":happening_t" => $this->happening_t,
 				":confirmation_t" => $this->confirmation_t,
-				":open_t" => $this->open_t,
 				":funding_needed" => $this->funding_needed,
 				":type" => $this->type,
 				":status" => $status,
@@ -154,7 +150,6 @@ SET
 	`long_description`= :long_description,
 	`happening_t`= :happening_t,
 	`confirmation_t`= :confirmation_t,
-	`open_t`= :open_t,
 	`funding_needed`= :funding_needed,
 	`flags`= :flags,
 	`type`= :type,
@@ -173,7 +168,6 @@ EOF;
 				":long_description" => $this->long_description,
 				":happening_t" => $this->happening_t,
 				":confirmation_t" => $this->confirmation_t,
-				":open_t" => $this->open_t,
 				":funding_needed" => $this->funding_needed,
 				":id" => $this->id,
 				":flags" => $this->flags,
@@ -225,6 +219,52 @@ EOF;
 			return ($this->flags & EVENT_FLAG_READY_FOR_PUBLICATION) != 0;
 		}
 
+		public function is_ticket_office_open() {
+			return true;
+		}
+
+		public function get_confirmation_date() {
+			$first_ticket_t = $this->get_first_booked_ticket_ts();
+			if (is_null_or_empty($first_ticket_t)) {
+				if (is_null_or_empty($this->confirmation_t)) {
+					return $this->happening_t;
+				} else {
+					return $this->confirmation_t;
+				}
+			}
+			$first_ticket_29_t = strtotime('+29 days', $first_ticket_t);
+			$confirmation_t = "";
+			if (is_null_or_empty($this->confirmation_t)) {
+				$confirmation_t = min($first_ticket_29_t, s2t($this->happening_t));
+			} else {
+				$confirmation_t = min($first_ticket_29_t, s2t($this->happening_t), s2t($this->confirmation_t));
+			}
+			return t2s($confirmation_t);
+		}
+
+		public function get_first_booked_ticket_ts() {
+			// if no booked ticket return the happening date.
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT * FROM `bill`
+WHERE `type`= :type AND `id_event`= :id
+ORDER BY created_t DESC
+LIMIT 1
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id" => $this->id,
+				":type" => DEVIS_TYPE_QUOTATION,
+			);
+			$pst->execute($array);
+			if (($record = $pst->fetch(PDO::FETCH_ASSOC)) != NULL) {
+				return $record["created_t"];
+			}
+			return NULL;
+		}
+
 		public function has_already_happened() {
 			return s2t($this->happening_t) > time();
 		}
@@ -256,7 +296,7 @@ EOF;
 		}
 
 		public function can_participate() {
-			if (s2t($this->open_t, "%Y-%m-%d") >= time()) {
+			if (!$this->is_ticket_office_open()) {
 				return FALSE;
 			}
 			if (!$this->is_published()) {
@@ -342,16 +382,22 @@ EOF;
 		public function set_status($status) {
 			global $g_pdo;
 
+			$this->status = $status;
+			$confirmation_t = "";
+			if ($status == EVENT_STATUS_CONFIRMED) {
+				$confirmation_t = t2s(time());
+			}
 			$request = <<<EOF
 UPDATE `event`
-SET	`status`= :status
+SET	`status`= :status, confirmation_t= :confirmation_t
 WHERE `id`= :id
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$array = array(
-				":status" => $status,
+				":status" => $this->status,
 				":id" => $this->id,
+				":confirmation_t" => $confirmation_t,
 			);
 			$pst->execute($array);
 		}
@@ -463,8 +509,6 @@ EOF;
 			$this->title = $_GET['title'];
 			$this->organizer_name = $_GET['organizer_name'];
 			$this->happening_t = $_GET['happening_t'];
-			$this->confirmation_t = $_GET['confirmation_t'];
-			$this->open_t = $_GET['open_t'];
 			$this->funding_needed = $_GET['funding_needed'];
 			$this->location = $_GET['location'];
 			$this->link = $_GET['link'];
@@ -472,6 +516,12 @@ EOF;
 			$this->long_description = $_GET['long_description'];
 			$this->type = $_GET['event_type'];
 			$this->phone = $_GET['phone'];
+			if (isset($_GET["is_confirmed"])) {
+				$this->status = EVENT_STATUS_CONFIRMED;
+				$this->confirmation_t = t2s(time());
+			} else {
+				$this->confirmation_t = $_GET['confirmation_t'];
+			}
 			debug("hydrate_from_form=".sprint_r($this));
 		}
 
@@ -528,6 +578,22 @@ EOF;
 					$ticket->delete();
 				}
 			}
+		}
+
+		public function get_ticket($name) {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id` FROM `ticket`
+WHERE `id_event`= :id AND name = :name
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id, ":name" => $name));
+			if (($record = $pst->fetch()) != NULL) {
+				return Ticket::get_from_id($record["id"]);
+			}
+			return NULL;
 		}
 
 		public function get_tickets() {

@@ -9,7 +9,7 @@
 Your payment authorization will not be captured until the event is confirmed.<br/>
 If the event is cancelled, your authorization payment will be cancelled as well.<br/>
 In both case of confirmation or cancellation, you will be noticed by email.<br/>
-This event will be confirmed or cancelled before the <?php echo date("d F Y", s2t($event->confirmation_t)); ?>.<br/>
+This event will be confirmed or cancelled before the <?php echo date("d F Y", s2t($event->get_confirmation_date())); ?>.<br/>
 <br/>
 <br/>
 

@@ -173,7 +173,7 @@ EOF;
 					case "textarea":
 						$result .= <<<EOF
 <div class="{$this->css}_label">{$item->label}</div>
-<textarea name="{$item->name}" maxlength="{$item->maxlength}" title="Up to {$item->maxlength} characters">{$item->default}</textarea>
+<textarea name="{$item->name}" maxlength="{$item->maxlength}" title="Up to {$item->maxlength} characters" {$item->other_attr}>{$item->default}</textarea>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
