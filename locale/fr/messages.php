@@ -19,6 +19,7 @@ $this->array = array(
 	"Create an event" => "Créer un évènement",
 	"See events" => "Voir les évènements",
 	"Events supervision" => "Gérer les évènements",
+	"Manage my events" => "Gérer mes évènements",
 
 //Sign in
 	"Email" => "E-Mail",
@@ -50,7 +51,7 @@ $this->array = array(
 	"A valid Email you want to associate to your account. Will act as your login." =>
 		"Une addresse E-Mail valide à laquelle vous avez accès. Ce sera votre login.",
 	"Account successfully created. Check your email for activation." =>
-		"Compte créer. Veuillez vérifier votre e-mail pour l'activer.",
+		"Votre Compte a été créé. Veuillez vérifier votre e-mail pour l'activer.",
 	"Account successfully activated" => "Compte activé avec succès",
 	"Invalid mail." => "E-mail invalide.",
 	"This mail is already used." => "Cet E-mail est déjà utilisé.",
