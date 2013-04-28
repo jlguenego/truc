@@ -197,6 +197,7 @@ $this->array = array(
 	"Event starting date" => "Date du début de l'évènement",
 	"Date at which starts the event (Format => YYYY-MM-DD)." =>
 		"Date à laquelle démarre l'évènement (Format => AAAA-MM-JJ).",
+	"This event is confirmed." => "Cet évènement est confirmé, il aura bien lieu.",
 	"help_checkbox_confirmation" => "Cochez cette case si vous vous engagez à réaliser l'évènement.<br/>".
 			"Si vous ne pouvez être sûr que l'évènement aura lieu, NE LA COCHEZ PAS.",
 	"Maximum date at which the event will be confirmed or cancelled (Format => YYYY-MM-DD)." =>
@@ -215,7 +216,7 @@ $this->array = array(
 	"Long description" => "Description détaillée",
 	"Enter a long description of the event. (HTML editor)" =>
 		"Faites une description plus complète de votre évènement. (Éditeur HTML)",
-	"Create tickets and define their price" => "Créer des billets et définir leur prix",
+	"Create tickets and define their price" => "Définissez vos billets",
 	"I want to know the name of my attendees" => "Je veux connaître le nom de mes participants",
 	"Add another ticket rate" => "Ajouter un autre billet",
 	"I have read and agree to the <a href=\"info/terms\">Terms and Conditions</a>" =>
