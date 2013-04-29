@@ -24,9 +24,9 @@ evt_convert() {
 	fi
 
 	if file "${1}" | grep -q 'with BOM'; then
-		tail -c +4 "${1}" > "${1}.tmp"
-		mv "${1}.tmp" "${1}"
-		echo "${1}: UTF-8 BOM Removed."
+		#tail -c +4 "${1}" > "${1}.tmp"
+		#mv "${1}.tmp" "${1}"
+		echo "${1}: UTF-8 BOM"
 	fi
 }
 
