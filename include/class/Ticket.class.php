@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class Ticket {
 		public $id;
 		public $name;

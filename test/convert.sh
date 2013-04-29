@@ -11,7 +11,7 @@ evt_convert() {
 	fi
 	if file "${1}" | grep -q CRLF; then
 		dos2unix "${1}"
-		echo "Converted DOS=>UNIX: ${1}"
+		echo "${1}: Converted DOS=>UNIX: ${1}"
 	fi
 	if file "${1}" | grep -q ISO-8859; then
 		iconv -f ISO-8859-1 -t UTF-8 "${1}" > "${1}.tmp"
@@ -19,8 +19,14 @@ evt_convert() {
 			rm "${1}.tmp"
 		else
 			mv "${1}.tmp" "${1}"
-			echo "Converted ASCII=>UTF-8: ${1}"
+			echo "${1}: Converted ASCII=>UTF-8: ${1}"
 		fi
+	fi
+
+	if file "${1}" | grep -q 'with BOM'; then
+		tail -c +4 "${1}" > "${1}.tmp"
+		mv "${1}.tmp" "${1}"
+		echo "${1}: UTF-8 BOM Removed."
 	fi
 }
 
