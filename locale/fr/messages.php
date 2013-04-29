@@ -195,7 +195,7 @@ $this->array = array(
 	"Minimum amount of fund needed to organize the event. Please indicate 0 if no requirement." =>
 		"Quantité minimum de fonds requis pour organiser l'évènement. Veuillez indiquer 0 s'il n'y en a pas.",
 	"Event starting date" => "Date du début de l'évènement",
-	"Date at which starts the event (Format => YYYY-MM-DD)." =>
+	"Date at which starts the event (Format: YYYY-MM-DD)." =>
 		"Date à laquelle démarre l'évènement (Format => AAAA-MM-JJ).",
 	"This event is confirmed." => "Cet évènement est confirmé, il aura bien lieu.",
 	"help_checkbox_confirmation" => "Cochez cette case si vous vous engagez à réaliser l'évènement.<br/>".
