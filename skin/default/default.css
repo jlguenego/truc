@@ -95,7 +95,7 @@ body {
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
-	margin-top: 95px;
+	margin-top: 85px;
 
 	padding-bottom: 130px;
 
@@ -110,7 +110,7 @@ body {
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-top: 100px;
-	margin-top: 95px;
+	margin-top: 85px;
 
 	padding-bottom: 130px;
 
@@ -124,7 +124,7 @@ body {
 	top: 5px;
 	z-index: 1;
 	width: 1098px;
-	height: 90px;
+	height: 80px;
 
 	margin-bottom: 0px;
 	border: 1px solid #909090;
@@ -198,7 +198,7 @@ body {
 #evt_header_menu li {
 	display: inline-block;
 	margin: 0px 10px 0px 10px;
-	padding: 10px;
+	padding: 5px;
 
 	background: #EEEEEE;
 
