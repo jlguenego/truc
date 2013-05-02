@@ -34,5 +34,6 @@
 	layout_footer();
 ?>
 		</div>
+<?php layout_trace(); ?>
 	</body>
 </html>

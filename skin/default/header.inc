@@ -1,11 +1,11 @@
+<div id="evt_header_top"></div>
 <div id="evt_header">
 	<div id="evt_i18n"><?php I18n::menu(); ?></div>
-	<div id="evt_logo">
-		<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
-	<div id="evt_index">{{Organizing events without risks.}}</div>
-
-	</div>
-	<div id="evt_user_info">
+	<div id="evt_header_table">
+		<div id="evt_logo">
+			<a href="index.php"><img src="<?php echo SKIN_DIR ?>/images/logo.png"/></a>
+		</div>
+		<div id="evt_user_info">
 <?php
 	if (is_logged()) {
 		$user = User::get_from_id();
@@ -28,21 +28,21 @@
 <?php
 	}
 ?>
+		</div>
 	</div>
-</div>
-<div id="evt_header_menu">
-	<ul>
-		<li><a href=".">{{Home}}</a></li>
-		<li><a href="info/about_us">{{About us}}</a></li>
-		<li><a href="info/what_we_do">{{What we do}}</a></li>
-		<li><a href="info/contact">Contact</a></li>
+	<div id="evt_header_menu">
+		<ul>
+			<li><a href=".">{{Home}}</a></li>
+			<li><a href="info/about_us">{{About us}}</a></li>
+			<li><a href="info/what_we_do">{{What we do}}</a></li>
+			<li><a href="info/contact">Contact</a></li>
 <?php
 		if (is_admin_logged()) {
 ?>
-		<li><a href="uninstall.php">Uninstall</a></li>
+			<li><a href="uninstall.php">Uninstall</a></li>
 <?php
 		}
 ?>
-	</ul>
+		</ul>
+	</div>
 </div>
-<div class="evt_hr"></div>
