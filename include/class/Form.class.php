@@ -143,30 +143,26 @@ EOF;
 						$name = htmlentities($item->name);
 						$default = htmlentities($item->default);
 						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<input type="text" id="$name" name="$name" value="$default" {$item->other_attr} $autofocus/>
+<input type="text" id="$name" name="$name" value="$default" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
 					case "email":
 						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<input type="email" name="{$item->name}" value="{$item->default}"/>
+<input type="email" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}"/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
 					case "number":
 						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<input type="number" name="{$item->name}" value="{$item->default}" {$item->other_attr}/>
+<input type="number" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}" {$item->other_attr}/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
 
 					case "password":
 						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<input type="password" name="{$item->name}" {$item->other_attr}/>
+<input type="password" name="{$item->name}" {$item->other_attr} placeholder="{$item->label}"/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;

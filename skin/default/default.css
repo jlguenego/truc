@@ -73,6 +73,10 @@ html, body {
 	background-color: #F5F5F5;
 }
 
+body {
+	counter-reset: counter_h1;
+}
+
 /* PRINCIPAL BLOCKS */
 
 #body {
@@ -91,7 +95,7 @@ html, body {
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
-	margin-top: 130px;
+	margin-top: 95px;
 
 	padding-bottom: 130px;
 
@@ -106,7 +110,7 @@ html, body {
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-top: 100px;
-	margin-top: 130px;
+	margin-top: 95px;
 
 	padding-bottom: 130px;
 
@@ -117,10 +121,10 @@ html, body {
 
 #evt_header {
 	position: fixed;
-	top: 10px;
+	top: 5px;
 	z-index: 1;
 	width: 1098px;
-	height: 120px;
+	height: 90px;
 
 	margin-bottom: 0px;
 	border: 1px solid #909090;
@@ -133,7 +137,7 @@ html, body {
 	left: 0px;
 	z-index: 1;
 	width: 100%;
-	height: 10px;
+	height: 5px;
 	background-color: #F5F5F5;
 }
 
@@ -150,12 +154,12 @@ html, body {
 #evt_logo {
 	display: table-cell;
 
-	padding: 10px;
+	padding: 5px;
 }
 
 #evt_user_info {
 	display: table-cell;
-	padding: 10px;
+	padding: 5px;
 	min-width: 400px;
 
 	vertical-align: top;
@@ -258,12 +262,15 @@ html, body {
 /* FORMS */
 
 .form h1 {
-	font-size: 15px;
-	font-weight: bold;
+	font-size: 25px;
 	margin-bottom: 20px;
-	background-color: #E1ECDF;
 	padding: 4px 10px 4px 10px;
-	border: 1px solid #93B98C;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+.form h1:before {
+	content: counter(counter_h1) ". ";
+	counter-increment: counter_h1;
 }
 
 .form_section {
@@ -303,11 +310,6 @@ html, body {
 .form_cancel {
 	font-size: 12px;
 	margin-left: 20px;
-}
-
-.form_label {
-	margin-bottom: 8px;
-	font-weight: bold;
 }
 
 .form_help {
