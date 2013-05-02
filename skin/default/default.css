@@ -280,7 +280,7 @@ body {
 .form_title {
 	display: block;
 	text-align: center;
-	margin-bottom: 80px;
+	min-height: 230px;
 }
 
 .form_title p {
@@ -381,13 +381,26 @@ body {
 
 .evt_title {
 	display: block;
-	font-size: 20px;
-	font-weight: bold;
 	text-align: center;
-	background-color: #EEEEEE;
-	border: 1px solid #DDDDDD;
-	padding: 5px;
-	margin-bottom: 15px;
+	min-height: 230px;
+}
+
+.evt_title p {
+	display: inline-block;
+	font-size: 40px;
+	font-weight: 400;
+	text-align: center;
+	padding: 30px;
+	margin-left: auto;
+	margin-right: auto;
+
+	background-color: white;
+	border: 1px solid #CCCCCC;
+
+	background-color: rgba(255, 255, 255, 0.8);
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 1);
 }
 
 .evt_hr {
@@ -600,7 +613,7 @@ i {
 .legal_title {
 	display: block;
 	text-align: center;
-	margin-bottom: 80px;
+	min-height: 230px;
 }
 
 .legal_title p {

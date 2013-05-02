@@ -2,6 +2,8 @@
 	$event = $g_display["event"];
 	$author = $g_display["author"];
 
+	echo "<div class=\"evt_title\"><p>".$event->title."</p></div>";
+
 	if ($event->is_inactivated()) {
 ?>
 	<div id="evt_retrieve_publish">
@@ -106,7 +108,6 @@
 </div>
 <?php
 	}
-	echo "<h1 class=\"evt_title\">".$event->title."</h1>";
 	echo $event->short_description;
 ?>
 <br/>

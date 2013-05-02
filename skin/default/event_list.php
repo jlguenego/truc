@@ -1,4 +1,4 @@
-<span class="evt_title">{{Event List}}</span>
+<div class="evt_title"><p>{{Event List}}</p></div>
 <table class="evt_table">
 	<tr>
 		<th>{{Name}}</th>
