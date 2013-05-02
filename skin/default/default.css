@@ -40,6 +40,17 @@ input[type=button], button {
 	padding: 5px 20px 5px 20px;
 }
 
+h1 {
+	margin: 10px 0px;
+	font-size: 38.5px;
+	font-weight: 400px;
+	line-height: 40px;
+}
+
+p {
+	margin: 0px 0px 10px;
+}
+
 th {
 	white-space: nowrap;
 }
@@ -76,7 +87,7 @@ html, body {
 }
 
 #evt_main {
-	min-height: 700px;
+	min-height: 600px;
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
@@ -84,6 +95,7 @@ html, body {
 
 	padding-bottom: 130px;
 
+	background-position: 0px -100px;
 	background-image: url('images/crowdsurf.jpg');
 	background-repeat: no-repeat;
 }
@@ -175,32 +187,22 @@ html, body {
 }
 
 #evt_menu {
-	position: relative;
-	top: 100px;
+	position: absolute;
+	top: 200px;
+	right: 0px;
 	display: inline-block;
 
-	background-color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.6);
 	margin: 50px;
 	padding: 20px;
+
+	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+	box-shadow: 0 0 20px rgba(0, 0, 0, 1);
 }
 
-#evt_menu ul {
-	list-style: none;
-}
-
-#evt_menu li {
-	display: inline-block;
-	margin: 40px;
-	padding: 20px;
-
-	background: #E9E9E9;
-	border: 1px solid #AAAAAA;
-	border-radius: 4px;
-}
-
-#evt_menu li:hover {
-	text-decoration: underline;
-	background: #DDDDDD;
+#evt_menu p {
+	line-height: 25px;
 }
 
 #evt_menu a {
@@ -519,6 +521,10 @@ b, strong {
 	font-weight: bold;
 }
 
+i {
+	font-style: italic;
+}
+
 /* LEGAL STUFF */
 
 .legal * {
@@ -580,6 +586,7 @@ b, strong {
 .evt_button {
 	display: inline-block;
 	padding: 11px 19px;
+	margin: 0px 10px;
 
 	cursor: pointer;
 	font-size: 17.5px;
