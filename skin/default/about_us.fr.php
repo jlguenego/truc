@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">Qui sommes nous ?</div>
+<div class="legal_title"><p>Qui sommes nous ?</p></div>
 <h1>Juste de simples personnes...</h1>
 <p>
 	Event-Biller est un service géré par JLG Consulting, une entreprise française, composée de 2 personnes: Jean-Louis GUENEGO, le propriétaire et un employé qui l'assiste.

@@ -24,7 +24,7 @@
 <?php
 	} else {
 ?>
-		<a href="?action=sign_in">{{Sign in}}</a> | <a href="index.php?action=get_form&amp;type=account">{{Create account}}</a>
+		<a href="?action=sign_in">{{Sign in}}</a><a class="evt_button evt_btn_small" href="index.php?action=get_form&amp;type=account">{{Create account}}</a>
 <?php
 	}
 ?>

@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">Sales policies</div>
+<div class="legal_title"><p>Sales policies</p></div>
 
 <h1>Introduction</h1>
 

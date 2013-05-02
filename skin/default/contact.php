@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">{{Contact information}}</div>
+<div class="legal_title"><p>{{Contact information}}</p></div>
 <p>
 	JLG Consulting<br/>
 	Jean-Louis GUENEGO - Entreprise Individuelle<br/>

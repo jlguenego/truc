@@ -1,6 +1,14 @@
 <?php
 	header("Cache-Control: no-cache");
-	$host = "";
+	$css_id = null;
+	global $g_state;
+	switch ($g_state) {
+		case "root":
+			$css_id = "evt_main_root";
+			break;
+		default:
+			$css_id = "evt_main_default";
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,6 +25,7 @@
 		<script src="ext/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.js"></script>
 		<script src="ext/tiny_mce/tiny_mce.js"></script>
 		<script src="ext/sha1.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
 	</head>
 	<body>
 		<div id="body">
@@ -24,10 +33,10 @@
 	layout_header();
 	layout_message();
 ?>
-<div id="evt_main">
+<div id="<?php echo $css_id; ?>">
 <?php
-	debug("including ${g_page}.php");
-	include_once($g_i18n->filename("${g_page}.php"));
+	debug("including ".$g_i18n->filename("${g_page}"));
+	include_once($g_i18n->filename("${g_page}"));
 ?>
 </div>
 <?php

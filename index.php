@@ -72,14 +72,19 @@
 		$g_error_msg = "Undeclared state: ".$_SESSION["state"].".";
 		$_SESSION["state"] = "error";
 	}
+	debug("SESSION['state']=".$_SESSION["state"]);
+	debug("g_page=".$g_page);
 	if ($_SESSION["state"] == "not_allowed") {
 		$g_page = "error";
-	} else if (!is_null_or_empty($g_page)) {
-		$g_page = SKIN_DIR."/".$g_page;
-	} else {
-		$g_page = SKIN_DIR."/".$_SESSION["state"];
 	}
 
+	if (!is_null_or_empty($g_page)) {
+		$g_state = $g_page;
+		$g_page = SKIN_DIR."/".$g_page.".php";
+	} else {
+		$g_state = $_SESSION["state"];
+		$g_page = SKIN_DIR."/".$_SESSION["state"].".php";
+	}
 	debug("Session after: ".$_SESSION["state"]);
 
 	layout_i18n(SKIN_DIR."/layout.php");

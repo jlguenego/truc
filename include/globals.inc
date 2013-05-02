@@ -60,6 +60,7 @@
 	$g_info_msg = "";
 
 	$g_page = null;
+	$g_state = null;
 
 	// Allows to have only one entity of PDO
 	$g_pdo = null;

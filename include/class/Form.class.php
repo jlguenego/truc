@@ -114,7 +114,7 @@
 
 			$result = <<<EOF
 <div class="{$this->css}">
-<div class="{$this->css}_title">
+<div class="{$this->css}_title"><p>
 	{$this->title}
 EOF;
 			if ($this->cancel) {
@@ -123,7 +123,7 @@ EOF;
 EOF;
 			}
 				$result .= <<<EOF
-</div>
+</p></div>
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
 			$autofocus = "autofocus";

@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">What we do ?</div>
+<div class="legal_title"><p>What we do ?</p></div>
 <h1>Crowdfunding events.</h1>
 <p>
 	The purpose of Event-Biller is to help people organizing events with significant charges.

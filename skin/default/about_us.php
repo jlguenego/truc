@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">Who are we ?</div>
+<div class="legal_title"><p>Who are we ?</p></div>
 <h1>Just simple people...</h1>
 <p>
 	Event-Biller is a service maintained by JLG Consulting, a French company, composed of 2 persons: Jean-Louis GUENEGO, the owner and 1 employee that helps him.

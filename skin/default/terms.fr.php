@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title">Conditions Générales d'Utilisation</div>
+<div class="legal_title"><p>Conditions Générales d'Utilisation</p></div>
 
 
 <h1>Introduction</h1>
