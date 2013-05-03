@@ -465,6 +465,26 @@ EOF;
 			return $user;
 		}
 
+		public function force_activation() {
+			global $g_pdo;
+
+			$mod_t = time();
+			$status = ACTIVATION_STATUS_ACTIVATED;
+			$request = <<<EOF
+UPDATE `user`
+SET
+	`activation_status`= :status,
+	`mod_t`= :mod_t
+WHERE `id`= :id
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				":status" => $status,
+				":mod_t" => $mod_t,
+				":id" => $this->id,
+			));
+		}
+
 		public function get_organized_events() {
 			global $g_pdo;
 

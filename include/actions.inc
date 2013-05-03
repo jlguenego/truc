@@ -872,6 +872,7 @@
 		$user = need_authentication();
 		$user->password = $_GET["password1"];
 		$user->update();
+		$user->force_activation();
 		$user->reset_token();
 		$g_info_msg = _t("Your password has been updated.");
 		$_SESSION["state"] = "root";
