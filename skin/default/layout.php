@@ -27,10 +27,10 @@
 		<div id="body">
 <?php
 	layout_header();
-	layout_message();
 ?>
 <div id="<?php echo $css_div_id; ?>" class="<?php echo $css_class_id; ?>">
 <?php
+	layout_message();
 	debug("including ".$g_i18n->filename("${g_page}"));
 	include_once($g_i18n->filename("${g_page}"));
 ?>

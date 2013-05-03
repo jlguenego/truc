@@ -91,6 +91,7 @@ body {
 }
 
 .evt_main {
+	position: relative;
 	min-height: 610px;
 	margin: 0px;
 	padding-left: 40px;
@@ -457,18 +458,27 @@ body {
 	font-size: 1px;
 }
 
-#evt_info {
-	border: 1px solid #CCCCCC;
-	padding: 3px;
-	margin: 40px;
-	background-color: #FFFFDD;
+.evt_message {
+	display: block;
+	position: absolute;
+	top: 20px;
+
+	padding: 5px 20px;
 }
 
 #evt_error {
-	border: 1px solid #CCCCCC;
+	border: 1px solid #FFAAAA;
+	background-color: #FFD5D5;
+
 	color: red;
-	padding: 3px;
-	margin: 40px;
+	font-weight: bold;
+}
+
+#evt_info {
+	top: 230px;
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFDD;
+	font-weight: bold;
 }
 
 #evt_retrieve_publish {
@@ -563,11 +573,10 @@ body {
 
 
 #evt_status {
-	padding: 3px;
-	margin: 20px 2px 20px 2px;
-	background-color: #FFFFB3;
-	font-weight: bold;
-	border: 1px solid #000000;
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFC4;
+	margin-bottom: 30px;
+	padding: 2px;
 }
 
 .evt_shadowed {

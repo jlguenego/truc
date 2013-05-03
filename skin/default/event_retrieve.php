@@ -157,7 +157,7 @@
 	}
 ?>
 </table>
-<div id="evt_status">
+<div id="evt_status" class="evt_shadowed">
 			<?php
 	if ((time()) >= s2t($event->happening_t, "%Y-%m-%d") + 86400) {
 ?>
