@@ -1,14 +1,10 @@
 <?php
-	header("Cache-Control: no-cache");
-	$css_id = null;
 	global $g_state;
-	switch ($g_state) {
-		case "root":
-			$css_id = "evt_main_root";
-			break;
-		default:
-			$css_id = "evt_main_default";
-	}
+
+	header("Cache-Control: no-cache");
+
+	$css_div_id = "evt_".$g_state;
+	$css_class_id = "evt_main";
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,7 +29,7 @@
 	layout_header();
 	layout_message();
 ?>
-<div id="<?php echo $css_id; ?>">
+<div id="<?php echo $css_div_id; ?>" class="<?php echo $css_class_id; ?>">
 <?php
 	debug("including ".$g_i18n->filename("${g_page}"));
 	include_once($g_i18n->filename("${g_page}"));

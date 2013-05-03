@@ -90,32 +90,27 @@ body {
 
 }
 
-#evt_main_root {
+.evt_main {
 	min-height: 610px;
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
-	margin-top: 85px;
+	margin-top: 97px;
 
-	padding-bottom: 92px;
-
-	background-position: 0px 0px;
-	background-image: url('images/crowdsurf_2.jpg');
-	background-repeat: no-repeat;
-}
-
-#evt_main_default {
-	min-height: 600px;
-	margin: 0px;
-	padding-left: 40px;
-	padding-right: 40px;
-	padding-top: 100px;
-	margin-top: 90px;
-
-	padding-bottom: 130px;
+	padding-bottom: 120px;
 
 	background-color: white;
 	background-image: url('images/headband_2.jpg');
+	background-repeat: no-repeat;
+}
+
+#evt_event_retrieve {
+	background-color: white;
+	background-image: none;
+}
+
+#evt_root {
+	background-image: url('images/crowdsurf_2.jpg');
 	background-repeat: no-repeat;
 }
 
@@ -283,7 +278,10 @@ body {
 .form_title {
 	display: block;
 	text-align: center;
+	vertical-align: middle;
 	min-height: 230px;
+	padding-top: 80px;
+	padding-bottom: 20px;
 }
 
 .form_title p {
@@ -385,7 +383,9 @@ body {
 .evt_title {
 	display: block;
 	text-align: center;
+	vertical-align: middle;
 	min-height: 230px;
+	padding-top: 80px;
 }
 
 .evt_title p {
@@ -665,7 +665,9 @@ i {
 .legal_title {
 	display: block;
 	text-align: center;
+	vertical-align: middle;
 	min-height: 230px;
+	padding-top: 80px;
 }
 
 .legal_title p {
@@ -673,6 +675,7 @@ i {
 	font-size: 40px;
 	font-weight: 400;
 	text-align: center;
+	vertical-align: middle;
 	padding: 30px;
 	margin-left: auto;
 	margin-right: auto;

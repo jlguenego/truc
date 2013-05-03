@@ -1,1 +1,1 @@
-{{The payment/authorization has been cancelled.}}
+<div class="evt_title"><p>{{The payment/authorization has been cancelled.}}</p></div>
