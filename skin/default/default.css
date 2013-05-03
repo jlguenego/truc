@@ -110,6 +110,7 @@ body {
 }
 
 #evt_root {
+	padding-bottom: 100px;
 	background-image: url('images/crowdsurf_2.jpg');
 	background-repeat: no-repeat;
 }
@@ -216,6 +217,8 @@ body {
 	top: 150px;
 	right: 0px;
 	display: inline-block;
+
+	max-width: 750px;
 
 	background-color: rgba(255, 255, 255, 0.6);
 	margin: 50px;

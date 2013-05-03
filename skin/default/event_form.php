@@ -298,7 +298,7 @@ EOF
 //										"<tr>" +
 //											"<td align=\"right\">Sale ends at</td>" +
 //											"<td><input type=\"text\" name=\"ticket_end_a[]\"/></td>" +
-//											"<td class=\"form_help\">{{Leave empty to nerver end.}}</td>" +
+//											"<td class=\"form_help\">{{Leave empty to never end.}}</td>" +
 //										"</tr>" +
 //									"</table>" +
 //								"</td>" +

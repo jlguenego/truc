@@ -585,7 +585,7 @@
 		}
 		$devis = Devis::get_from_id($_GET['id']);
 		if (!$devis->can_be_retrieved()) {
-			throw new Exception(_t("Cannot acces to this object. Permission denied."));
+			throw new Exception(_t("Cannot access to this object. Permission denied."));
 		}
 		$event = Event::get_from_id($devis->event_id);
 

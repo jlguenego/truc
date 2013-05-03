@@ -16,7 +16,7 @@ $this->array = array(
 	"Create account" => "S'inscrire",
 
 //Root
-	"Create an event" => "Créer un évènement",
+	"Declare an event" => "Déclarer un évènement",
 	"See events" => "Voir les évènements",
 	"Events supervision" => "Gérer les évènements",
 	"Manage my events" => "Gérer mes évènements",
@@ -62,11 +62,12 @@ $this->array = array(
 	"Email" => "E-Mail",
 	"Postal address" => "Addresse postale",
 	"Phone number" => "Téléphone",
-	"Events organized" => "Évènements organisés ",
-	"Event" => "Évènement",
+	"Events organized" => "Evènements organisés ",
+	"Event" => "Evènement",
 	"None" => "Aucun",
 	"Edit your account" => "Mettre à jour vos informations",
 	"Delete your account" => "Supprimer votre compte",
+	"Events organized:" => "Evènements organisés :",
 
 //Account update
 	"This user does not exists." => "Cet utilisateur n'existe pas.",
@@ -84,7 +85,7 @@ $this->array = array(
 	"Your city." => "Votre ville.",
 	"Country" => "Pays",
 	"Your country" => "Votre pays",
-	"State (optional)" => "État (facultatif)",
+	"State (optional)" => "Etat (facultatif)",
 	"Your state if any." => "Votre état si nécessaire.",
 	"New Password (optional)" => "Nouveau mot de passe (facultatif)",
 	"Leave empty if you do not want to change your password." =>
@@ -140,9 +141,11 @@ $this->array = array(
 	"Confirmed" => "Confirmé",
 	"Cancelled" => "Annulé",
 	"Inactivated" => "Désactivé",
+	"Participate" => "Participer",
 
 //Event Retrieve
 	"Your event is not published." => "Votre évènement n'est pas publié.",
+	"This event is inactivated." => "Cet évènement est désactivé.",
 	"Please click" => "Veuillez cliquer",
 	"here" => "ici",
 	"to request its publication to our support." => "pour demander sa publication à notre support.",
@@ -178,6 +181,8 @@ $this->array = array(
 //Event Delete
 	"Are you sure you want to delete this event?" =>
 		"Êtes-vous sûr de vouloir supprimer cet évènement ?",
+	"Event not deleted." => "Evènement non supprimé.",
+	"Event succesfully deleted." => "Evènement supprimé avec succès.",
 
 //Event Form
 	"Event creation" => "Création d'un événement",
@@ -201,11 +206,11 @@ $this->array = array(
 	"This event is confirmed." => "Cet évènement est confirmé, il aura bien lieu.",
 	"help_checkbox_confirmation" => "Cochez cette case si vous vous engagez à réaliser l'évènement.<br/>".
 			"Si vous ne pouvez être sûr que l'évènement aura lieu, NE LA COCHEZ PAS.",
-	"Maximum date at which the event will be confirmed or cancelled (Format => YYYY-MM-DD)." =>
-		"Date maximum à laquelle l'évènement sera confirmé ou annulé (Format => AAAA-MM-JJ).",
+	"Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)." =>
+		"Date maximum à laquelle l'évènement sera confirmé ou annulé (Format : AAAA-MM-JJ).",
 	"Confirmation date" => "Date de confirmation",
-	"Date at which starts the ticket reservation or sale (Format => YYYY-MM-DD)." =>
-		"Date à laquelle démarre la réservation ou la vente de ticket (Format => AAAA-MM-JJ).",
+	"Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD)." =>
+		"Date à laquelle démarre la réservation ou la vente de ticket (Format : AAAA-MM-JJ).",
 	"Event place" => "Lieu de l'évènement",
 	"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)" =>
 		"Nom du lieu où se passera l'évènement. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
@@ -213,10 +218,10 @@ $this->array = array(
 	"Official event web site (if any)." => "Site web officiel de l'évènement (s'il y en a).",
 	"Short description" => "Brève description",
 	"Enter a short description of the event. (HTML editor)" =>
-		"Faites une courte description de votre évènement. (Éditeur HTML)",
+		"Faites une courte description de votre évènement. (Editeur HTML)",
 	"Long description" => "Description détaillée",
 	"Enter a long description of the event. (HTML editor)" =>
-		"Faites une description plus complète de votre évènement. (Éditeur HTML)",
+		"Faites une description plus complète de votre évènement. (Editeur HTML)",
 	"Create tickets and define their price" => "Définissez vos billets",
 	"I want to know the name of my attendees" => "Je veux connaître le nom de mes participants",
 	"Add another ticket rate" => "Ajouter un autre billet",
@@ -231,13 +236,16 @@ $this->array = array(
 	"With tax (5.5%)" => "Avec taxe (5.5%)",
 	"Without tax" => "Sans taxe",
 	"Create" => "Créer",
-	"Ex => Normal, Student, Member, etc..." => "Ex => Normal, Élève, Membre, etc...",
+	"Ex => Normal, Student, Member, etc..." => "Ex => Normal, Elève, Membre, etc...",
+	"Leave empty to never end." => "Laisser vide si nécessaire.",
+	"Leave empty to start from now." => "Laisser vide pour commencer immédiatement.",
+	"Price" => "Prix",
 
 //Participation nominative
 	"Event name" => "Nom de l'évènement",
 	"Categories" => "Catégories",
 	"Rate" => "Tarif",
-	"Tax" => "Taxe",
+	"Taxes" => "Taxes",
 	"Total" => "Total",
 	"Add" => "Ajouter",
 	"Event details" => "Détails de l'évènement",
@@ -248,7 +256,7 @@ $this->array = array(
 	"The person or organisation name to be charged." =>
 		"La personne ou l'organisation en charge de règler la facture.",
 	"ZIP code" => "Code postal",
-	"State (if applicable)" => "État (si applicable)",
+	"State (if applicable)" => "Etat (si applicable)",
 	"I have read the <a href=\"info/sales\">Sales policies</a> and accept them." =>
 		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
 	"Next" => "Suivant",
@@ -256,6 +264,7 @@ $this->array = array(
 	"For EU companies only." => "Uniquement pour les entreprises.",
 	"[help]For EU companies only." =>
 		"Uniquement pour les entreprises et autres organismes assujettis à la TVA.",
+	"VAT #" => "n° TVA",
 
 //Participation regular
 	"How many ticket do you want?" => "Combient de billet voulez-vous ?",
@@ -400,6 +409,10 @@ $this->array = array(
 		"Vous devez lire et accepter les CGU",
 	"You must read and accept the policies." =>
 		"Vous devez lire et accepter le règlement.",
+	"Cannot load the ticket with id=" => "Impossible de charger le billet avec l'id = ",
+	"No devis given." => "Aucun devis donné.",
+	"Please enter a number for the amount of person" =>
+		"Veuillez entrer un nombre pour la quantité de personne",
 
 //The End
 );
