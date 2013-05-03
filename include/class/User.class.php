@@ -358,7 +358,23 @@ EOF;
 					return true;
 				}
 			}
+			if ($this->has_bill()) {
+				return true;
+			}
 			return false;
+		}
+
+		public function has_bill() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM `bill`
+WHERE `id_user`= :id
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+			$record = $pst->fetch();
+			return $record[0] > 0;
 		}
 
 		public function list_event() {

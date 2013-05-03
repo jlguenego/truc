@@ -18,8 +18,8 @@ $this->array = array(
 //Root
 	"Declare an event" => "Déclarer un évènement",
 	"Explore events" => "Explorer les évènements",
-	"Events supervision" => "Gérer les évènements",
-	"Manage my events" => "Gérer mes évènements",
+	"Events supervision" => "Superviser",
+	"Manage my events" => "Superviser",
 
 //Sign in
 	"Email" => "E-Mail",
