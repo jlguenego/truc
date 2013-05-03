@@ -13,7 +13,7 @@
 		public $short_description;
 		public $long_description;
 		public $type;
-		public $status;
+		public $status = EVENT_STATUS_PLANNED;
 		public $flags;
 		public $publish_flag;
 		public $user_id;
@@ -83,7 +83,6 @@ EOF;
 			$this->id = create_id();
 			$created_t = time();
 			$mod_t = $created_t;
-			$status = EVENT_STATUS_PLANNED;
 			$publish_flag = EVENT_PUBLISH_FLAG_NO;
 
 			$request = <<<EOF
@@ -126,7 +125,7 @@ EOF;
 				":confirmation_t" => $this->confirmation_t,
 				":funding_needed" => $this->funding_needed,
 				":type" => $this->type,
-				":status" => $status,
+				":status" => $this->status,
 				":publish_flag" => $publish_flag,
 				":flags" => $this->flags,
 				":phone" => $this->phone,

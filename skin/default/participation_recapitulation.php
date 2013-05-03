@@ -1,8 +1,15 @@
 <?php
 	global $g_display;
 	$devis = $g_display["devis"];
-
-	echo _t("Label: ").$devis->label;
+	$event = $devis->get_event();
+?>
+<div class="evt_title"><p><?php echo format_participate_button($event); ?> - {{Confirmation}}</p></div>
+<?php
+	if ($event->is_confirmed()) {
+		echo _t("Invoice ID: ").$devis->label;
+	} else {
+		echo _t("Quotation ID: ").$devis->label;
+	}
 ?>
 <table class="evt_table">
 	<tr>

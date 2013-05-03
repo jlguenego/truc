@@ -3,6 +3,7 @@
 	$tickets = $g_display["tickets"];
 	$user = $g_display["user"];
 ?>
+<div class="evt_title"><p><?php echo format_participate_button($event); ?></p></div>
 {{How many ticket do you want?}}
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table class="evt_table">

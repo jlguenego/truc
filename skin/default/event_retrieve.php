@@ -6,14 +6,14 @@
 
 	if ($event->is_inactivated()) {
 ?>
-	<div id="evt_retrieve_publish">
+	<div id="evt_retrieve_publish" class="evt_shadowed">
 		{{This event is inactivated.}}
 	</div>
 <?php
 	}
 	if (!$event->is_published() && !$event->is_inactivated()) {
 ?>
-<div id="evt_retrieve_publish">
+<div id="evt_retrieve_publish" class="evt_shadowed">
 	{{Your event is not published.}}
 <?php
 		if (!$event->is_ready_for_publication()) {
@@ -31,8 +31,8 @@
 	}
 	if (is_admin_logged() && !$event->is_inactivated()) {
 ?>
-<div id="evt_administration">
-	<div class="evt_administration_title">
+<div id="evt_administration" class="evt_shadowed">
+	<div class="evt_administration_title evt_admin">
 		Event Biller Admin
 	</div>
 	<div class="evt_administration_body">
@@ -66,7 +66,7 @@
 	}
 	if ($event->can_be_administrated() && !$event->is_inactivated()) {
 ?>
-<div id="evt_administration">
+<div id="evt_administration" class="evt_shadowed">
 	<div class="evt_administration_title">
 		{{Administration}}
 	</div>
@@ -165,11 +165,11 @@
 <?php
 	} else if ($event->is_confirmed()) {
 ?>
-			{{Will append. Enough persons have registered.}}
+			{{This event is confirmed. It will happen!}}
 <?php
 	} else if ($event->is_cancelled()) {
 ?>
-			{{This event is cancelled.}}
+			{{Unfortunately this event is cancelled.}}
 <?php
 	} else {
 ?>

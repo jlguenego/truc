@@ -3,7 +3,7 @@
 	global $g_event_publish_flag;
 
 ?>
-
+<div class="evt_title"><p>{{Supervision}}</p></div>
 <table class="evt_table inline">
 	<tr>
 		<th>{{Event ID}}</th>

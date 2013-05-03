@@ -161,9 +161,10 @@ $this->array = array(
 	"Categories" => "Catégories",
 	"Unit price" => "Prix unitaire",
 	"This event has already happened." => "Cet évènement à déjà eu lieu.",
-	"Will append. Enough persons have registered." =>
-		"Se produira. Assez de personnes se sont enregistrées.",
-	"This event is cancelled." => "Cet évènement est annulé.",
+	"This event is confirmed. It will happen!" =>
+		"Cet évènement est confirmé. Son organisateur s'engage à le préparer.",
+	"Unfortunately this event is cancelled." =>
+		"Malheureusement cet évènement est annulé.",
 	"This event needs to be confirmed to happen. More people needed." =>
 		"Cet évènement doit être confirmé pour se produire. Plus de personnes sont nécessaires.",
 	"General informations" => "Informations générales",
@@ -202,7 +203,7 @@ $this->array = array(
 			"Si vous ne pouvez être sûr que l'évènement aura lieu, NE LA COCHEZ PAS.",
 	"Maximum date at which the event will be confirmed or cancelled (Format => YYYY-MM-DD)." =>
 		"Date maximum à laquelle l'évènement sera confirmé ou annulé (Format => AAAA-MM-JJ).",
-	"Ticket Sale opening start date" => "Début d'ouverture de la vente des tickets",
+	"Confirmation date" => "Date de confirmation",
 	"Date at which starts the ticket reservation or sale (Format => YYYY-MM-DD)." =>
 		"Date à laquelle démarre la réservation ou la vente de ticket (Format => AAAA-MM-JJ).",
 	"Event place" => "Lieu de l'évènement",
@@ -261,7 +262,8 @@ $this->array = array(
 	"Total tax excluded" => "Total HT",
 
 //Participation nominative recapitulation
-	"Label => " => "Référence => ",
+	"Invoice ID: " => "Référence facture: ",
+	"Quotation ID: " => "Référence devis: ",
 
 //Participation list
 	"Attendee list" => "Liste des participants",

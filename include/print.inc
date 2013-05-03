@@ -9,7 +9,7 @@
 			$bill_type = "quotation";
 		}
 ?>
-<div class="evt_title">{{<?php echo strtoupper($bill_type); ?>}}</div>
+<div class="evt_title"><p>{{<?php echo strtoupper($bill_type); ?>}}</p></div>
 <p>
 	<table width="100%">
 		<tr valign="top">

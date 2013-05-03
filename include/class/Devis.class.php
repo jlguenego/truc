@@ -215,5 +215,9 @@ EOF;
 		public function is_for_company() {
 			return !is_null_or_empty($this->vat);
 		}
+
+		public function get_event() {
+			return Event::get_from_id($this->event_id);
+		}
 	}
 ?>

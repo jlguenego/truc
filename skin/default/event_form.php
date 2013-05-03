@@ -153,7 +153,7 @@ EOF
 		update_form();
 		manage_submit();
 	});
-	$("input").keyup(manage_submit());
+	$("input").keyup(manage_submit);
 	$("input").change(function() {
 		update_form();
 		manage_submit();
