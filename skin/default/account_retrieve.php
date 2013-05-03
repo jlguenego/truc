@@ -1,7 +1,7 @@
 <?php
 	$user = $g_display["user"];
 ?>
-<span class="evt_title">{{Account Infos}}</span>
+<span class="evt_title"><p>{{Account Infos}}</p></span>
 	<table class="evt_table">
 		<tr>
 			<th class="th_left">{{Email}}</th>

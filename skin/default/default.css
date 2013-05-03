@@ -105,9 +105,44 @@ body {
 	background-repeat: no-repeat;
 }
 
+.evt_main div[data-message=evt_error] {
+	border: 1px solid #FFAAAA;
+	background-color: #FFD5D5;
+
+	color: red;
+	font-weight: bold;
+}
+
+#evt_event_retrieve div[data-message=evt_error] {
+	position: static;
+	margin: 10px;
+}
+
+#evt_root div[data-message=evt_error] {
+
+}
+
+.evt_main div[data-message=evt_info] {
+	top: 230px;
+	border: 1px solid #CCCCCC;
+	background-color: #FFFFDD;
+	font-weight: bold;
+}
+
+#evt_event_retrieve div[data-message=evt_info] {
+	position: static;
+	margin: 10px;
+}
+
+#evt_root div[data-message=evt_info] {
+	top: 130px;
+}
+
 #evt_event_retrieve {
 	background-color: white;
 	background-image: none;
+	margin-top: 0px;
+	padding-top: 97px;
 }
 
 #evt_root {
@@ -466,21 +501,6 @@ body {
 	padding: 5px 20px;
 }
 
-#evt_error {
-	border: 1px solid #FFAAAA;
-	background-color: #FFD5D5;
-
-	color: red;
-	font-weight: bold;
-}
-
-#evt_info {
-	top: 230px;
-	border: 1px solid #CCCCCC;
-	background-color: #FFFFDD;
-	font-weight: bold;
-}
-
 #evt_retrieve_publish {
 	border: 1px solid #CCCCCC;
 	background-color: #FFFFC4;
@@ -772,4 +792,10 @@ a.evt_button {
 
 .evt_btn_small {
 	font-size: 15px;
+}
+
+/* PHP */
+.xdebug-error, .xe-notice {
+	position: relative;
+	z-index: 99;
 }

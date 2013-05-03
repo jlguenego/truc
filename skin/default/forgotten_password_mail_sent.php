@@ -1,1 +1,1 @@
-{{Please check your mails.}}
+<div class="evt_title"><p>{{Please check your mails.}}</p></div>

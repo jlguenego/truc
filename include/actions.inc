@@ -272,6 +272,7 @@
 	function action_account_delete() {
 		global $g_display;
 		global $g_error_msg;
+		global $g_info_msg;
 
 		$user = User::get_from_id($_GET["id"]);
 		$g_display["user"] = $user;
@@ -297,6 +298,7 @@
 					$user->delete_try();
 				}
 			}
+			$g_info_msg = _t("Account successfully deleted");
 			action_signout();
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
@@ -842,6 +844,9 @@
 
 	function action_handle_forgotten_password() {
 		$_SESSION["state"] = "forgotten_password_mail_sent";
+		if (is_null_or_empty($_GET["email"])) {
+			return;
+		}
 		$user = User::get_from_email($_GET["email"]);
 		if ($user == NULL) {
 			return;

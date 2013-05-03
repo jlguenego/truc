@@ -27,12 +27,12 @@
 
 		if (!is_null_or_empty($g_info_msg)) {
 ?>
-		<div id="evt_info" class="evt_message">{{Info:}} <?php echo $g_info_msg; ?></div>
+		<div data-message="evt_info" class="evt_message evt_shadowed">{{Info:}} <?php echo $g_info_msg; ?></div>
 <?php
 		}
 		if (!is_null_or_empty($g_error_msg)) {
 ?>
-		<div id="evt_error" class="evt_message evt_shadowed">{{Error:}} <?php echo $g_error_msg; ?></div>
+		<div data-message="evt_error" class="evt_message evt_shadowed">{{Error:}} <?php echo $g_error_msg; ?></div>
 <?php
 		}
 	}

@@ -1,6 +1,7 @@
 <?php
 	$user = $g_display["user"];
 ?>
+<span class="evt_title"><p>{{Confirmation}}</p></span>
 {{Are you sure you want to delete your account?}}
 <div class="form_delete_confirmation">
 	<form name="input" action="?action=delete&amp;type=account" method="POST">
