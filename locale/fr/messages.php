@@ -169,7 +169,7 @@ $this->array = array(
 	"Unfortunately this event is cancelled." =>
 		"Malheureusement cet évènement est annulé.",
 	"This event needs to be confirmed to happen. More people needed." =>
-		"Cet évènement doit être confirmé pour se produire. Plus de personnes sont nécessaires.",
+		"Cet évènement doit être confirmé pour se produire. Davantage de participants sont nécessaires.",
 	"General informations" => "Informations générales",
 	"Organizer" => "Organisateur",
 	"Location" => "Localisation",
