@@ -220,7 +220,7 @@ body {
 #evt_header_menu li {
 	display: inline-block;
 	margin: 0px 10px 0px 10px;
-	padding: 5px;
+	padding: 5px 10px;
 
 	background: #EEEEEE;
 
