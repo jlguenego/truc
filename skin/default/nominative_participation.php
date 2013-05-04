@@ -15,6 +15,7 @@
 	<?php
 		$tax_array = array();
 		foreach ($tickets as $ticket) {
+			$event_title_js = addslashes($event->title);
 			$event_title = $event->title;
 			$amount_ht = curr($ticket->amount);
 			$label = $ticket->name;
@@ -31,7 +32,7 @@
 		<td class="evt_curr"><?php echo $tax_rate; ?>%</td>
 		<td class="evt_curr"><?php echo $amount_ttc; ?></td>
 		<td><button OnClick="add_ticket(<?php
-			echo "'$event_title', '$label', $amount_ht, $tax_rate";
+			echo "'$event_title_js', '$label', $amount_ht, $tax_rate";
 			?>)">{{Add}}</button></td>
 	</tr>
 	<?php
