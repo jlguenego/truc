@@ -95,7 +95,6 @@ body {
 
 .evt_main {
 	position: relative;
-	min-height: 610px;
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
@@ -140,6 +139,7 @@ body {
 	padding-bottom: 100px;
 	background-image: url('images/crowdsurf_2.jpg');
 	background-repeat: no-repeat;
+	background-color: #869C86; /* iphone */
 }
 
 #evt_root div[data-message=evt_error] {
@@ -239,16 +239,15 @@ body {
 }
 
 #evt_menu {
-	position: absolute;
-	top: 150px;
-	right: 0px;
 	display: inline-block;
+	margin: 200px 0px 10px 250px;
+	padding: 20px;
 
 	max-width: 700px;
 
+	background-color: #FFFFFF; /* old ie */
 	background-color: rgba(255, 255, 255, 0.6);
-	margin: 50px;
-	padding: 20px;
+
 
 	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
 	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
@@ -259,6 +258,7 @@ body {
 }
 
 #evt_menu p {
+	font: 15px 'Open Sans',sans-serif;
 	line-height: 25px;
 }
 
