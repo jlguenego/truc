@@ -105,6 +105,10 @@ body {
 	background-repeat: no-repeat;
 }
 
+.evt_main ul, .evt_main ol {
+	padding-left: 40px;
+}
+
 .evt_main div[data-message=evt_error] {
 	border: 1px solid #FFAAAA;
 	background-color: #FFD5D5;
