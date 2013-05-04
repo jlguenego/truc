@@ -24,7 +24,8 @@
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
 	</head>
 	<body>
-		<div id="body">
+		<div id="global_frame">
+			<div id="body">
 <?php
 	layout_header();
 ?>
@@ -38,7 +39,8 @@
 <?php
 	layout_footer();
 ?>
+			</div>
+			<?php layout_trace(); ?>
 		</div>
-<?php layout_trace(); ?>
 	</body>
 </html>
