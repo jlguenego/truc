@@ -157,28 +157,34 @@
 	}
 ?>
 </table>
-<div id="evt_status" class="evt_shadowed">
 			<?php
-	if ((time()) >= s2t($event->happening_t, "%Y-%m-%d") + 86400) {
+	if ($event->can_be_administrated()) {
 ?>
-			{{This event has already happened.}}
+<div id="evt_status" class="evt_shadowed">
 <?php
-	} else if ($event->is_confirmed()) {
+		if ((time()) >= s2t($event->happening_t, "%Y-%m-%d") + 86400) {
 ?>
-			{{This event is confirmed. It will happen!}}
+				{{This event has already happened.}}
 <?php
-	} else if ($event->is_cancelled()) {
+		} else if ($event->is_confirmed()) {
 ?>
-			{{Unfortunately this event is cancelled.}}
+				{{This event is confirmed. It will happen!}}
 <?php
-	} else {
+		} else if ($event->is_cancelled()) {
 ?>
-			{{This event needs to be confirmed to happen. More people needed.}}
+				{{Unfortunately this event is cancelled.}}
+<?php
+		} else {
+?>
+				{{This event needs to be confirmed to happen. More people needed.}}
+<?php
+		}
+?>
+</div>
 <?php
 	}
 	debug("event->happening_t=".$event->happening_t);
 ?>
-</div>
 <div id="evt_general_info">
 	<div class="evt_general_info_title">
 		{{General informations}}
