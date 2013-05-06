@@ -285,14 +285,14 @@ $this->array = array(
 	"The payment succeeded. We just sent a mail to you for details." =>
 		"Le paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"The payment authorization succeeded. We just sent a mail to you for details." =>
-		"L'authorisation de  paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
+		"L'autorisation de  paiement a réussi. Nous venons de vous envoyer un e-mail pour plus de détails.",
 	"You can access to this quotation via this permalink:" =>
 		"Vous pouvez acceder à ce devis via ce lien permanent :",
 	"You can access to this invoice via this permalink:" =>
 		"Vous pouvez acceder à cette facture via ce lien permanent :",
 
 //Payment cancel
-	"The payment/authorization has been cancelled." => "L'authorisation de paiement a été annulée.",
+	"The payment/authorization has been cancelled." => "L'autorisation de paiement a été annulée.",
 
 //Account delete confirm
 	"Are you sure you want to delete your account?" =>
