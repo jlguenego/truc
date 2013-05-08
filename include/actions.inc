@@ -63,6 +63,9 @@
 			case "cancel_event":
 				action_event_cancel();
 				break;
+			case "promote_event":
+				action_promote_event();
+				break;
 			case "handle_forgotten_password":
 				action_handle_forgotten_password();
 				break;
@@ -84,6 +87,29 @@
 				throw new Exception(_t("This action does not exists."));
 				break;
 		}
+	}
+
+	function action_promote_event() {
+		global $g_display;
+		global $g_error_msg;
+
+		$user = need_authentication();
+		if (is_null_or_empty($_GET["id"])) {
+			throw new Exception(_t("No event selected."));
+		}
+		if (!Event::exists($_GET["id"])) {
+			throw new Exception(_t("Event does not exists."));
+		}
+		$event = Event::get_from_id($_GET["id"]);
+
+		if (!$event->can_be_administrated()) {
+			throw new Exception(_t("You cannot access to this event."));
+		}
+		$g_display["event"] = $event;
+		$user = User::get_from_id($event->user_id);
+		$g_display["author"] = $user;
+		$_SESSION["state"] = "event_promote";
+		$_SESSION["event_id"] = $event->id;
 	}
 
 	function action_set_locale() {
@@ -141,7 +167,7 @@
 				action_devis_retrieve();
 				break;
 			default:
-				$_SESSION["state"] = "not_allowed";
+				throw new Exception("Cannot retrieve object of type ".$_GET["type"]);
 				break;
 		}
 
@@ -202,7 +228,17 @@
 			case "reset_password":
 				action_reset_password_get_form();
 				break;
+			case "guest_file":
+				action_guest_file_get_form();
+				break;
+			default:
+				throw new Exception("Cannot get form for type ".$_GET["type"]);
 		}
+	}
+
+	function action_guest_file_get_form() {
+		global $g_display;
+		$_SESSION["state"] = "guest_file_form";
 	}
 
 	function action_account_create() {

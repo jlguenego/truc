@@ -86,8 +86,8 @@
 		$g_page = SKIN_DIR."/".$_SESSION["state"].".php";
 	}
 	debug("Session after: ".$_SESSION["state"]);
-	//$g_info_msg = "coucou c'est moi.";
-	//$g_error_msg = "coucou c'est moi.";
+	//$g_info_msg = "This is an info message.";
+	//$g_error_msg = "This is an error message.";
 
 	layout_i18n(SKIN_DIR."/layout.php");
 ?>

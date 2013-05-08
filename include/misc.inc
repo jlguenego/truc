@@ -235,4 +235,9 @@ EOF;
 		}
 		return $val1;
 	}
+
+	# for the attributes (specially in forms)
+	function _a($str) {
+		return htmlentities($str, ENT_COMPAT, "UTF-8");
+	}
 ?>

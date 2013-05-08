@@ -20,6 +20,16 @@
 			return $item;
 		}
 
+		public function add_file($label, $name, $help) {
+			$item = new FormItem();
+			$item->label = $label;
+			$item->type = "file";
+			$item->name = $name;
+			$item->help = $help;
+			$this->elements[] = $item;
+			return $item;
+		}
+
 		public function add_select($label, $name, $html_spec, $help) {
 			$item = new FormItem();
 			$item->label = $label;
@@ -114,16 +124,22 @@
 
 			$result = <<<EOF
 <div class="{$this->css}">
+EOF;
+			if (!is_null_or_empty($this->title)) {
+				$result .= <<<EOF
 <div class="{$this->css}_title"><p>
 	{$this->title}
 EOF;
-			if ($this->cancel) {
-				$result .= <<<EOF
+				if ($this->cancel) {
+					$result .= <<<EOF
 <a class="{$this->css}_cancel" href="{$this->cancel_url}">{{Cancel}}</a>
 EOF;
-			}
+				}
 				$result .= <<<EOF
 </p></div>
+EOF;
+			}
+			$result .= <<<EOF
 <form class="{$this->css}" action="{$this->action}" method="{$this->method}">
 EOF;
 			$autofocus = "autofocus";
@@ -133,20 +149,28 @@ EOF;
 						$result .= $item->html_spec;
 						break;
 					case "hidden":
-						$name = htmlentities($item->name);
-						$default = htmlentities($item->default);
+						$name = _a($item->name);
+						$default = _a($item->default);
 						$result .= <<<EOF
 <input type="hidden" name="$name" value="$default"/>
 EOF;
 						break;
 					case "text":
-						$name = htmlentities($item->name);
-						$default = htmlentities($item->default);
+						$name = _a($item->name);
+						$default = _a($item->default);
 						$result .= <<<EOF
 <input type="text" id="$name" name="$name" value="$default" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
 <div class="{$this->css}_help">{$item->help}</div>
 EOF;
 						break;
+					case "file":
+						$name = _a($item->name);
+						$result .= <<<EOF
+<input type="file" id="$name" name="$name" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+						break;
+
 					case "email":
 						$result .= <<<EOF
 <input type="email" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}"/>

@@ -22,6 +22,7 @@
 		"event_form",
 		"event_delete",
 		"event_list",
+		"event_promote",
 		"account_create",
 		"account_retrieve",
 		"account_update",
@@ -35,6 +36,7 @@
 		"reset_password_form",
 		"participation_list_regular",
 		"participation_list_nominative",
+		"guest_file_form",
 	);
 
 	$g_event_states = array(
