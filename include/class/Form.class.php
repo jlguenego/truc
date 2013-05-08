@@ -8,6 +8,7 @@
 		public $title = "";
 		public $cancel = false;
 		public $cancel_url = "";
+		public $other_attrs = 'enctype="multipart/form-data"';
 
 		public function add_text($label, $name, $default, $help) {
 			$item = new FormItem();
@@ -140,7 +141,7 @@ EOF;
 EOF;
 			}
 			$result .= <<<EOF
-<form class="{$this->css}" action="{$this->action}" method="{$this->method}">
+<form class="{$this->css}" action="{$this->action}" method="{$this->method}" {$this->other_attrs}>
 EOF;
 			$autofocus = "autofocus";
 			foreach ($this->elements as $item) {
@@ -261,6 +262,20 @@ EOF;
 				}
 			}
 			return false;
+		}
+
+		public static function get_file($form_filename) {
+			if (!array_key_exists($form_filename, $_FILES)) {
+				throw new Exception("Cannot retrieve file uploaded with fieldname=$form_filename");
+			}
+			if ($_FILES[$form_filename]["error"] > 0) {
+				throw new Exception("Error while retrieving the uploaded files: ".$_FILES[$form_filename]["error"]);
+			}
+			$file = $_FILES["guest_filename"]["tmp_name"];
+			if (!file_exists($file)) {
+				throw new Exception("Error, cannot find the uploaded file.");
+			}
+			return $file;
 		}
 	}
 

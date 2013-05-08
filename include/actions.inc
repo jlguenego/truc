@@ -81,11 +81,36 @@
 			case "set_locale":
 				action_set_locale();
 				break;
+			case "merge":
+				action_merge();
 			case "none":
 				break;
 			default:
 				throw new Exception(_t("This action does not exists."));
 				break;
+		}
+	}
+
+	function action_merge() {
+		switch ($_GET["type"]) {
+			case "guest_file":
+				action_guest_file_merge();
+				break;
+			default:
+				$_SESSION["state"] = "not_allowed";
+				break;
+		}
+	}
+
+	function action_guest_file_merge() {
+		// take the file content and create guest if not existing.
+		$event = Event::get_from_id($_SESSION["event_id"]);
+		$file = Form::get_file("guest_filename");
+		$event->import_guest($file);
+		if (TEST_MODE) {
+			action_guest_file_get_form();
+		} else {
+			redirect_to("?action=get_form&type=guest_file");
 		}
 	}
 
@@ -238,6 +263,8 @@
 
 	function action_guest_file_get_form() {
 		global $g_display;
+		$event = Event::get_from_id($_SESSION["event_id"]);
+		$g_display["guests"] = $event->get_guests();
 		$_SESSION["state"] = "guest_file_form";
 	}
 
