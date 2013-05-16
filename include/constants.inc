@@ -39,4 +39,7 @@
 	define('EVENT_FLAG_READY_FOR_PUBLICATION', 1);
 
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
+
+	define('TASK_RUNNING_DURATION', 2);
+	define('SYNC_LOCK_FILE', '.evt_lock.txt');
 ?>

@@ -141,6 +141,18 @@ CREATE TABLE advertisment(
 )ENGINE=InnoDB;
 
 
+CREATE TABLE task(
+        id          Int NOT NULL  ,
+        created_t   Varchar (25) ,
+        mod_t       Varchar (25) ,
+        start_t     Varchar (25) ,
+        description Varchar (255) ,
+        command     Text ,
+        parameters  Text ,
+        PRIMARY KEY (id )
+)ENGINE=InnoDB;
+
+
 CREATE TABLE event_guest(
         id_guest Int NOT NULL  ,
         id_event Int NOT NULL  ,

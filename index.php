@@ -47,6 +47,9 @@
 	// If installed
 	require_once(BASE_DIR . "/" . SETTINGS_INI);
 
+	// execute some task if any.
+	Task::run(TASK_RUNNING_DURATION);
+
 	$_GET = array_merge($_GET, $_POST);
 	security_html_injection();
 	debug("GET=".sprint_r($_GET));

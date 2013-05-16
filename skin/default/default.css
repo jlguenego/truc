@@ -790,6 +790,12 @@ a.evt_button {
 	font-size: 15px;
 }
 
+.evt_sidebar {
+	float: left;
+	margin: 20px;
+	border: 1px solid black;
+}
+
 /* PHP */
 .xdebug-error, .xe-notice {
 	position: relative;

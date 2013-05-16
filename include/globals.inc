@@ -9,6 +9,9 @@
 	$g_default_locale = "en";
 	$g_i18n = null;
 
+	// sync lib
+	$g_sync_lock_file = null;
+
 	$g_states = array(
 		"root",
 		"error",
