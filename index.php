@@ -13,6 +13,7 @@
 	require_once(BASE_DIR . "/include/security.inc");
 	require_once(BASE_DIR . "/include/format.inc");
 	require_once(BASE_DIR . "/include/print.inc");
+	require_once(BASE_DIR . "/include/dd.inc");
 
 	if (isset($_SERVER["HTTPS"])) {
 		$base_url = HTTPS_ACCESS ."/";

@@ -41,5 +41,10 @@
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 
 	define('TASK_RUNNING_DURATION', 2);
+	define('TASK_STATUS_PENDING', 0);
+	define('TASK_STATUS_RUNNING', 1);
+	define('TASK_STATUS_SUCCESS', 2);
+	define('TASK_STATUS_ERROR', 3);
+
 	define('SYNC_LOCK_FILE', '.evt_lock.txt');
 ?>

@@ -197,40 +197,7 @@ EOF
 	}
 	$("[name=title]").focus();
 
-	tinyMCE.init({
-	        // General options
-	        mode : "specific_textareas",
-	        editor_selector : "apply_tinymce",
-	        theme : "advanced",
-	        plugins : "lists,spellchecker,advhr,preview",
-
-	        // Theme options
-	        theme_advanced_buttons1 : "fontsizeselect,|,bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,copy,cut,paste,|,code,|,preview,",
-	        theme_advanced_toolbar_location : "top",
-	        theme_advanced_toolbar_align : "left",
-	        theme_advanced_statusbar_location : "bottom",
-	        theme_advanced_resizing : true,
-	        theme_advanced_path : false,
-
-	        // Skin options
-	        skin : "o2k7",
-	        skin_variant : "silver",
-
-	        // Example content CSS (should be your site CSS)
-	        //content_css : "css/example.css",
-
-	        // Drop lists for link/image/media/template dialogs
-	        template_external_list_url : "js/template_list.js",
-	        external_link_list_url : "js/link_list.js",
-	        external_image_list_url : "js/image_list.js",
-	        media_external_list_url : "js/media_list.js",
-
-	        // Replace values for the template plugin
-	        template_replace_values : {
-	                username : "Some User",
-	                staffid : "991234"
-	        }
-	});
+	eb_tiny_mce_on();
 
 	$('form').submit(function() {
 		if ($("input[name=event_type_checkbox]:checked").length > 0) {

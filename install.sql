@@ -121,21 +121,21 @@ CREATE TABLE guest(
 
 
 CREATE TABLE interaction(
-        id              Int NOT NULL  ,
-        created_t       Varchar (25) ,
-        mod_t           Varchar (25) ,
-        type            Int ,
-        id_guest        Int ,
-        id_advertisment Int ,
+        id               Int NOT NULL  ,
+        created_t        Varchar (25) ,
+        mod_t            Varchar (25) ,
+        type             Int ,
+        id_guest         Int ,
+        id_advertisement Int ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
 
-CREATE TABLE advertisment(
+CREATE TABLE advertisement(
         id        Int NOT NULL  ,
         created_t Varchar (25) ,
         mod_t     Varchar (25) ,
-        content   Text ,
+        content_h Text ,
         id_event  Int NOT NULL  ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
@@ -146,9 +146,10 @@ CREATE TABLE task(
         created_t   Varchar (25) ,
         mod_t       Varchar (25) ,
         start_t     Varchar (25) ,
+        status      Int NOT NULL  ,
         description Varchar (255) ,
         command     Text ,
-        parameters  Text ,
+        error_msg   Text ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -165,7 +166,7 @@ ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
-ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_advertisment FOREIGN KEY (id_advertisment) REFERENCES advertisment(id);
-ALTER TABLE advertisment ADD CONSTRAINT FK_advertisment_id_event FOREIGN KEY (id_event) REFERENCES event(id);
+ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_advertisement FOREIGN KEY (id_advertisement) REFERENCES advertisement(id);
+ALTER TABLE advertisement ADD CONSTRAINT FK_advertisement_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE event_guest ADD CONSTRAINT FK_event_guest_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
 ALTER TABLE event_guest ADD CONSTRAINT FK_event_guest_id_event FOREIGN KEY (id_event) REFERENCES event(id);

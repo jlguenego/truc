@@ -1,4 +1,8 @@
 <?php
+	function mail_advertise($event_id, $guest_id, $advertisement_id) {
+
+	}
+
 	function mail_notify_publication($event, $reason = "") {
   		global $g_display;
 

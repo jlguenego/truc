@@ -3,6 +3,7 @@
 		$array = array(
 			"long_description",
 			"short_description",
+			"content_h",
 		);
 		foreach ($_GET as $key => $value) {
 			if (is_array($_GET[$key])) {

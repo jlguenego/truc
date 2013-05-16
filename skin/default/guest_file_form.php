@@ -26,6 +26,7 @@
 	<tr>
 		<td><?php echo $guest->id; ?></td>
 		<td><?php echo $guest->email; ?></td>
+		<td><a href="?action=delete&amp;type=guest&amp;id=<?php echo $guest->id; ?>">Delete</a></td>
 	</tr>
 <?php
 	}

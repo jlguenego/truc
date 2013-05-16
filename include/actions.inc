@@ -83,12 +83,30 @@
 				break;
 			case "merge":
 				action_merge();
+			case "manage":
+				action_manage();
+				break;
 			case "none":
 				break;
 			default:
 				throw new Exception(_t("This action does not exists."));
 				break;
 		}
+	}
+
+	function action_manage() {
+		global $g_dd;
+		global $g_display;
+
+		if (!isset($_GET["type"])) {
+			throw new Exception("No type specified.");
+		}
+		$type = $_GET["type"];
+		if (!isset($g_dd[$type])) {
+			throw new Exception("Bad type: ".$type);
+		}
+		$g_display["type"] = $type;
+		$_SESSION["state"] = "record_manage";
 	}
 
 	function action_merge() {
@@ -167,6 +185,7 @@
 	}
 
 	function action_create() {
+		global $g_dd;
 		switch ($_GET["type"]) {
 			case "event":
 				action_event_create();
@@ -174,10 +193,12 @@
 			case "account":
 				action_account_create();
 				break;
-			default:
-				$_SESSION["state"] = "not_allowed";
-				break;
 		}
+		if (isset($g_dd[$_GET["type"]])) {
+			action_record_create();
+			return;
+		}
+		$_SESSION["state"] = "not_allowed";
 	}
 
 	function action_retrieve() {
@@ -213,6 +234,7 @@
 	}
 
 	function action_delete() {
+		global $g_dd;
 		switch ($_GET["type"]) {
 			case "event":
 				action_event_delete();
@@ -220,10 +242,13 @@
 			case "account":
 				action_account_delete();
 				break;
-			default:
-				$_SESSION["state"] = "not_allowed";
-				break;
 		}
+		debug("type=".$_GET["type"]);
+		if (isset($g_dd[$_GET["type"]])) {
+			action_record_delete();
+			return;
+		}
+		$_SESSION["state"] = "not_allowed";
 	}
 
 	function action_signin() {
@@ -266,6 +291,50 @@
 		$event = Event::get_from_id($_SESSION["event_id"]);
 		$g_display["guests"] = $event->get_guests();
 		$_SESSION["state"] = "guest_file_form";
+	}
+
+	function action_record_create() {
+		global $g_info_msg;
+		global $g_error_msg;
+
+		debug(sprint_r($_GET));
+
+		try {
+			$record = new Record($_GET["type"]);
+			$record->check_form();
+			$record->id = create_id();
+			$record->hydrate_from_form();
+			$record->store();
+			$g_info_msg = _t("Record successfully created.");
+			if (TEST_MODE) {
+				action_manage();
+			} else {
+				redirect_to("?action=manage&type=".$_GET["type"]);
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+		}
+	}
+
+	function action_record_delete() {
+		global $g_info_msg;
+		global $g_error_msg;
+
+		debug(sprint_r($_GET));
+		debug("Delete record");
+
+		try {
+			$record = Record::get_from_id($_GET["type"], $_GET["id"]);
+			$record->delete();
+			$g_info_msg = _t("Record successfully deleted.");
+			if (TEST_MODE) {
+				action_manage();
+			} else {
+				redirect_to("?action=manage&type=".$_GET["type"]);
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+		}
 	}
 
 	function action_account_create() {
