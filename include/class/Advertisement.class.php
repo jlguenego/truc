@@ -7,6 +7,15 @@
 		public function send() {
 			debug("Action Send");
 			$this->set_status(ADVERTISEMENT_STATUS_SENT);
+			$event = Event::get_from_id($this->get_field("event_id")->value);
+			foreach ($event->get_guests() as $guest) {
+				$task = new Task();
+				$task->start_t = time();
+				$task->description = "";
+				$task->command = "send a mail";
+				$task->error_msg = "";
+				$task->store();
+			}
 		}
 
 		public function send_to_me() {

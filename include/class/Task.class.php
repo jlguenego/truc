@@ -2,10 +2,13 @@
 	require_once(BASE_DIR . "/include/sync.inc");
 
 	class Task {
+		public $id;
+		public $created_t;
+		public $mod_t;
 		public $start_t;
 		public $description = "";
 		public $command;
-		public $parameters;
+		public $error_msg;
 
 		public static function get_from_id($id) {
 			$task = new Task();
@@ -83,8 +86,8 @@ EOF;
 			$pst->execute($array);
 		}
 
+		public function store() {
 
-
+		}
 	}
-
 ?>
