@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class Record {
 		public $type;
 
@@ -13,7 +13,6 @@
 
 		public static function get_from_id($type, $id) {
 			global $g_pdo;
-			global $g_dd;
 
 			$request = <<<EOF
 SELECT * FROM $type
@@ -31,8 +30,9 @@ EOF;
 			$record->id = $id;
 			$record->created_t = time();
 			$record->mod_t = $record->created_t;
-			foreach ($g_dd->get_entity($record->type)->get_fields() as $f) {
+			foreach (dd()->get_entity($record->type)->get_fields() as $f) {
 				$field = clone $f;
+				debug("value=".$r[$field->colname]);
 				$field->value = $r[$field->colname];
 				$record->fields[] = $field;
 			}
@@ -81,13 +81,11 @@ EOF;
 				$result .= <<<EOF
 		<td><a href="?action=delete&amp;type=$type&amp;id=$id">Delete</a></td>
 EOF;
-				$classname = dd_get_classname($type);
-				foreach (get_class_methods(new $classname()) as $method) {
-					if (preg_match("#^action_#", $method)) {
-						$result .= <<<EOF
-		<td><a href="?action=$method&amp;type=$type&amp;id=$id">$method</a></td>
+				$classname = dd()->get_entity($type)->classname;
+				foreach (dd()->get_entity($type)->get_actions() as $action) {
+					$result .= <<<EOF
+		<td><a href="?action={$action->name}&amp;type=$type&amp;id=$id">{$action->label}</a></td>
 EOF;
-					}
 				}
 				$result .= <<<EOF
 	</tr>
@@ -100,13 +98,12 @@ EOF;
 		}
 
 		public static function get_fields($type) {
-			global $g_dd;
-			debug("g_dd=".sprint_r($g_dd));
+			debug("dd=".sprint_r(dd()));
 			$fields = array();
 			$fields[] = new Field("id", "primary_key");
 			$fields[] = new Field("created_t", "timestamp");
 			$fields[] = new Field("mod_t", "timestamp");
-			return array_merge($fields, $g_dd->get_entity($type)->get_fields());
+			return array_merge($fields, dd()->get_entity($type)->get_fields());
 		}
 
 		public static function select_all($type) {
@@ -127,7 +124,6 @@ EOF;
 		}
 
 		public static function format_value($value, $field, $id) {
-			global $g_dd;
 			if ($field->type == "timestamp") {
 				return t2s($value, "Y/m/d-H:i:s");
 			}
@@ -140,7 +136,7 @@ EOF;
 EOF;
 				return $result;
 			}
-			if ($g_dd->has_entity($field->type)) {
+			if (dd()->has_entity($field->type)) {
 				return '<a href="?action=manage&amp;type='.$field->type.'">'.$value.'</a>';
 			}
 			return $value;
@@ -151,11 +147,9 @@ EOF;
 		}
 
 		public function hydrate_from_form() {
-			global $g_dd;
-
 			$this->created_t = time();
 			$this->mod_t = $this->created_t;
-			foreach ($g_dd->get_entity($this->type)->get_fields() as $field) {
+			foreach (dd()->get_entity($this->type)->get_fields() as $field) {
 				$field->value = $_GET[$field->name];
 				$this->fields[] = $field;
 			}

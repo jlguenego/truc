@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	$event = $g_display["event"];
 	$author = $g_display["author"];
 ?>

@@ -135,6 +135,7 @@ CREATE TABLE advertisement(
         id        Int NOT NULL  ,
         created_t Varchar (25) ,
         mod_t     Varchar (25) ,
+        name      Varchar (255) ,
         content_h Text ,
         id_event  Int NOT NULL  ,
         PRIMARY KEY (id )

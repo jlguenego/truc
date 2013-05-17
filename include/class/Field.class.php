@@ -19,11 +19,10 @@
 		}
 
 		public function is_foreign_key() {
-			global $g_dd;
 			if (preg_match("#_id$#", $this->name) != 1) {
 				return false;
 			}
-			if (!$g_dd->has_entity($this->type)) {
+			if (!dd()->has_entity($this->type)) {
 				return false;
 			}
 			return true;

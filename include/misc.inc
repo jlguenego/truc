@@ -58,8 +58,11 @@ EOF;
 		global $g_debug;
 		global $g_debug_lines;
 		if ($g_debug) {
-			$g_debug_lines[] = "<p>[DEBUG] $msg</p>";
+			$e = new Exception("");
+			$trace = $e->getTrace()[0];
+			$g_debug_lines[] = "<p>[DEBUG] ".$trace["file"].":".$trace["line"]." ".$msg."</p>";
 		}
+
 	}
 
 	function create_id() {
@@ -239,5 +242,10 @@ EOF;
 	# for the attributes (specially in forms)
 	function _a($str) {
 		return htmlentities($str, ENT_COMPAT, "UTF-8");
+	}
+
+	function dd() {
+		global $g_dd;
+		return $g_dd;
 	}
 ?>

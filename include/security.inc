@@ -31,7 +31,7 @@
 	function purify_html($str) {
 		libxml_use_internal_errors(true);
 		$doc = new DOMdocument();
-		$doc->loadHTML($str);
+		$doc->loadHTML('<?xml encoding="UTF-8">'.$str);
 		return $doc->saveHTML();
 	}
 ?>

@@ -1,10 +1,10 @@
-﻿<?php
+<?php
 	class Advertisement extends Record {
 		public function __construct() {
 			parent::__construct("advertisement");
 		}
 
-		public function action_send() {
+		public function send() {
 			debug("Action Send");
 		}
 	}

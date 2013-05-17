@@ -3,7 +3,6 @@
 		global $g_page;
 		global $g_display;
 		global $g_i18n;
-		global $g_dd;
 
 		ob_start();
 		require_once($file);

@@ -205,8 +205,11 @@ function eb_create_record(type) {
 
 function eb_show_html(id) {
 	$("#"+id).attr("title", "Details");
+	var dialog_w = 500;
+	var dialog_h = 300;
 	$("#"+id).dialog({
 		modal: true,
+		width: 1000,
 		buttons: {
 			Ok: function() {
 				$(this).dialog("close");

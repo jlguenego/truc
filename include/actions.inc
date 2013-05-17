@@ -1,5 +1,8 @@
 <?php
 	function action() {
+		if (action_entity_execute()) {
+			return;
+		}
 		switch ($_GET["action"]) {
 			case "request_for_publication":
 				action_request_for_publication();
@@ -94,15 +97,33 @@
 		}
 	}
 
+	function action_entity_execute() {
+		if (isset($_GET["type"])) {
+			$type = $_GET["type"];
+			if (dd()->has_entity($type)) {
+				$e = dd()->get_entity($type);
+				if ($e->is_valid_action($_GET["action"])) {
+					$e->execute_action($_GET["action"]);
+					if (TEST_MODE) {
+						action_manage();
+					} else {
+						redirect_to("?action=manage&type=".$_GET["type"]);
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	function action_manage() {
-		global $g_dd;
 		global $g_display;
 
 		if (!isset($_GET["type"])) {
 			throw new Exception("No type specified.");
 		}
 		$type = $_GET["type"];
-		if (!$g_dd->has_entity($type)) {
+		if (!dd()->has_entity($type)) {
 			throw new Exception("Bad type: ".$type);
 		}
 		$g_display["type"] = $type;
@@ -185,7 +206,7 @@
 	}
 
 	function action_create() {
-		global $g_dd;
+		debug("action_create()");
 		switch ($_GET["type"]) {
 			case "event":
 				action_event_create();
@@ -193,12 +214,13 @@
 			case "account":
 				action_account_create();
 				break;
+			default:
+				if (dd()->has_entity($_GET["type"])) {
+					action_record_create();
+					break;
+				}
+				$_SESSION["state"] = "not_allowed";
 		}
-		if ($g_dd->has_entity($_GET["type"])) {
-			action_record_create();
-			return;
-		}
-		$_SESSION["state"] = "not_allowed";
 	}
 
 	function action_retrieve() {
@@ -234,7 +256,6 @@
 	}
 
 	function action_delete() {
-		global $g_dd;
 		switch ($_GET["type"]) {
 			case "event":
 				action_event_delete();
@@ -244,7 +265,7 @@
 				break;
 		}
 		debug("type=".$_GET["type"]);
-		if ($g_dd->has_entity($_GET["type"])) {
+		if (dd()->has_entity($_GET["type"])) {
 			action_record_delete();
 			return;
 		}
@@ -466,7 +487,7 @@
 			$user->sync_phone($event->phone);
 			debug(sprint_r($event));
 
-			debug(sprint_r($_GET['ticket_name_a']));
+			debug("Ticket=".sprint_r($_GET['ticket_name_a']));
 			$i = 0;
 			foreach ($_GET['ticket_name_a'] as $label) {
 				$ticket = new Ticket();

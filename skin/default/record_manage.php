@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	$type = $g_display["type"];
 ?>
 <a href="JavaScript:eb_create_record('<?php echo $type; ?>');">New</a>
@@ -9,7 +9,7 @@
 <div id="dialog" style="display: none;" title="">
 	<form name="create_record" action="?action=create&amp;type=<?php echo $type; ?>" method="post">
 <?php
-	foreach ($g_dd->get_entity($type)->get_fields() as $field) {
+	foreach (dd()->get_entity($type)->get_fields() as $field) {
 		if (!$field->is_in_create_form) {
 			continue;
 		}
