@@ -1,13 +1,15 @@
 <?php
 	class Field {
 		public $name;
+		public $label;
 		public $type;
 		public $value;
 		public $colname;
 		public $is_in_create_form = true;
 
-		public function __construct($name, $type) {
+		public function __construct($name, $label, $type) {
 			$this->name = $name;
+			$this->label = $label;
 			$this->type = $type;
 			$this->colname = Field::get_colname($name);
 		}

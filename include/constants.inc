@@ -46,5 +46,8 @@
 	define('TASK_STATUS_SUCCESS', 2);
 	define('TASK_STATUS_ERROR', 3);
 
+	define('ADVERTISEMENT_STATUS_DEFAULT', 0);
+	define('ADVERTISEMENT_STATUS_SENT', 1);
+
 	define('SYNC_LOCK_FILE', '.evt_lock.txt');
 ?>

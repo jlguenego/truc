@@ -60,7 +60,12 @@ EOF;
 		if ($g_debug) {
 			$e = new Exception("");
 			$trace = $e->getTrace()[0];
-			$g_debug_lines[] = "<p>[DEBUG] ".$trace["file"].":".$trace["line"]." ".$msg."</p>";
+			$function = "";
+			if (isset($e->getTrace()[1])) {
+				$function = $e->getTrace()[1]["function"];
+			}
+			$g_debug_lines[] = "<p>[DEBUG] ".$trace["file"].":".$trace["line"]." ".$function.
+				"<br>\t".$msg."</p>";
 		}
 
 	}

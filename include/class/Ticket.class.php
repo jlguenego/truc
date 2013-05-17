@@ -144,7 +144,7 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(
-				":id" => $id,
+				":id" => $this->id,
 			));
 		}
 

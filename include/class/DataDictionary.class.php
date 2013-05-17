@@ -32,8 +32,8 @@
 			}
 		}
 
-		public function add_field($name, $type) {
-			$f = new Field($name, $type);
+		public function add_field($name, $label, $type) {
+			$f = new Field($name, $label, $type);
 			$this->fields[] = $f;
 			return $f;
 		}
@@ -62,7 +62,12 @@
 		}
 
 		public function execute_action($action) {
-			$record = new $this->classname();
+			$record = null;
+			if (isset($_GET["id"])) {
+				$record = Record::get_from_id($this->name, $_GET["id"]);
+			} else {
+				$record = new $this->classname();
+			}
 			$record->$action();
 		}
 	}

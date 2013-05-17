@@ -1,6 +1,14 @@
 <?php
-	function mail_advertise($event_id, $guest_id, $advertisement_id) {
+	function mail_advertise($event_id, $guest_mail, $advertisement_id) {
+		global $g_display;
 
+		$event = Event::get_from_id($event_id);
+		$ad = Record::get_from_id("advertisement", $advertisement_id);
+		$subject = $ad->get_field("name")->value;
+		$msg_html = $ad->get_field("content_h")->value;
+
+		$msg = mail_build($msg_html, $guest_mail);
+		mail($guest_mail, $subject, $msg["content"], $msg["header"]);
 	}
 
 	function mail_notify_publication($event, $reason = "") {

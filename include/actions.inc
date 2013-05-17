@@ -263,13 +263,14 @@
 			case "account":
 				action_account_delete();
 				break;
+			default:
+				debug("type=".$_GET["type"]);
+				if (dd()->has_entity($_GET["type"])) {
+					action_record_delete();
+					return;
+				}
+				$_SESSION["state"] = "not_allowed";
 		}
-		debug("type=".$_GET["type"]);
-		if (dd()->has_entity($_GET["type"])) {
-			action_record_delete();
-			return;
-		}
-		$_SESSION["state"] = "not_allowed";
 	}
 
 	function action_signin() {
@@ -321,7 +322,7 @@
 		debug(sprint_r($_GET));
 
 		try {
-			$record = new Record($_GET["type"]);
+			$record = Record::new_instance($_GET["type"]);
 			$record->check_form();
 			$record->id = create_id();
 			$record->hydrate_from_form();
@@ -346,6 +347,7 @@
 
 		try {
 			$record = Record::get_from_id($_GET["type"], $_GET["id"]);
+			debug("record=".sprint_r($record));
 			$record->delete();
 			$g_info_msg = _t("Record successfully deleted.");
 			if (TEST_MODE) {
