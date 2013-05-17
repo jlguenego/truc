@@ -3,12 +3,19 @@
 		public $name;
 		public $type;
 		public $value;
+		public $colname;
+		public $is_in_create_form = true;
 
-		public function __construct($array = "") {
-			if (is_array($array)) {
-				$this->name = $array[0];
-				$this->type = $array[1];
-			}
+		public function __construct($name, $type) {
+			$this->name = $name;
+			$this->type = $type;
+			$this->colname = Field::get_colname($name);
+		}
+
+		public static function get_colname($name) {
+			$result = preg_replace("#^(.*)_id$#", "id_$1", $name);
+			debug("dd_get_colname($name)=".$result);
+			return $result;
 		}
 
 		public function is_foreign_key() {
@@ -16,7 +23,7 @@
 			if (preg_match("#_id$#", $this->name) != 1) {
 				return false;
 			}
-			if (!isset($g_dd[$this->type])) {
+			if (!$g_dd->has_entity($this->type)) {
 				return false;
 			}
 			return true;

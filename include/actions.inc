@@ -102,7 +102,7 @@
 			throw new Exception("No type specified.");
 		}
 		$type = $_GET["type"];
-		if (!isset($g_dd[$type])) {
+		if (!$g_dd->has_entity($type)) {
 			throw new Exception("Bad type: ".$type);
 		}
 		$g_display["type"] = $type;
@@ -194,7 +194,7 @@
 				action_account_create();
 				break;
 		}
-		if (isset($g_dd[$_GET["type"]])) {
+		if ($g_dd->has_entity($_GET["type"])) {
 			action_record_create();
 			return;
 		}
@@ -244,7 +244,7 @@
 				break;
 		}
 		debug("type=".$_GET["type"]);
-		if (isset($g_dd[$_GET["type"]])) {
+		if ($g_dd->has_entity($_GET["type"])) {
 			action_record_delete();
 			return;
 		}

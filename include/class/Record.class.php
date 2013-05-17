@@ -31,9 +31,9 @@ EOF;
 			$record->id = $id;
 			$record->created_t = time();
 			$record->mod_t = $record->created_t;
-			foreach ($g_dd[$record->type] as $array) {
-				$field = new Field($array);
-				$field->value = $r[dd_get_colname($field->name)];
+			foreach ($g_dd->get_entity($record->type)->get_fields() as $f) {
+				$field = clone $f;
+				$field->value = $r[$field->colname];
 				$record->fields[] = $field;
 			}
 
@@ -70,7 +70,7 @@ EOF;
 	<tr>
 EOF;
 				foreach ($columns as $field) {
-					$colname = dd_get_colname($field->name);
+					$colname = Field::get_colname($field->name);
 					$value = $record[$colname];
 					$html = Record::format_value($value, $field, $record["id"]);
 					$result .= <<<EOF
@@ -102,18 +102,11 @@ EOF;
 		public static function get_fields($type) {
 			global $g_dd;
 			debug("g_dd=".sprint_r($g_dd));
-			$fields = $g_dd[$type];
-			debug("fields=".sprint_r($fields));
-			array_unshift($fields,
-				array("id", "primary_key"),
-				array("created_t", "timestamp"),
-				array("mod_t", "timestamp"));
-			$result = array();
-			foreach ($fields as $array) {
-				$field = new Field($array);
-				$result[] = $field;
-			}
-			return $result;
+			$fields = array();
+			$fields[] = new Field("id", "primary_key");
+			$fields[] = new Field("created_t", "timestamp");
+			$fields[] = new Field("mod_t", "timestamp");
+			return array_merge($fields, $g_dd->get_entity($type)->get_fields());
 		}
 
 		public static function select_all($type) {
@@ -147,7 +140,7 @@ EOF;
 EOF;
 				return $result;
 			}
-			if (isset($g_dd[$field->type])) {
+			if ($g_dd->has_entity($field->type)) {
 				return '<a href="?action=manage&amp;type='.$field->type.'">'.$value.'</a>';
 			}
 			return $value;
@@ -162,8 +155,7 @@ EOF;
 
 			$this->created_t = time();
 			$this->mod_t = $this->created_t;
-			foreach ($g_dd[$this->type] as $array) {
-				$field = new Field($array);
+			foreach ($g_dd->get_entity($this->type)->get_fields() as $field) {
 				$field->value = $_GET[$field->name];
 				$this->fields[] = $field;
 			}
@@ -174,8 +166,7 @@ EOF;
 
 			$other_fields = array();
 			foreach ($this->fields as $field) {
-				$colname = dd_get_colname($field->name);
-				$other_fields[] = "`$colname`= :{$field->name}";
+				$other_fields[] = "`{$field->colname}`= :{$field->name}";
 			}
 			$rest = join(",", $other_fields);
 

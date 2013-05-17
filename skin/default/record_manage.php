@@ -9,9 +9,10 @@
 <div id="dialog" style="display: none;" title="">
 	<form name="create_record" action="?action=create&amp;type=<?php echo $type; ?>" method="post">
 <?php
-	$fields = $g_dd[$type];
-	foreach ($fields as $array) {
-		$field = new Field($array);
+	foreach ($g_dd->get_entity($type)->get_fields() as $field) {
+		if (!$field->is_in_create_form) {
+			continue;
+		}
 		if ($field->is_foreign_key()) {
 ?>
 			<input type="hidden" name="<?php echo $field->name; ?>" value="<?php echo $_SESSION[$field->name]; ?>"/>
