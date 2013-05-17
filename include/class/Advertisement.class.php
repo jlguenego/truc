@@ -6,6 +6,7 @@
 
 		public function send() {
 			debug("Action Send");
+			$this->set_status(ADVERTISEMENT_STATUS_SENT);
 		}
 
 		public function send_to_me() {
@@ -43,6 +44,25 @@ EOF;
 				}
 			}
 			return true;
+		}
+
+		public function set_status($status) {
+			global $g_pdo;
+
+			$this->status = $status;
+			$request = <<<EOF
+UPDATE advertisement
+SET	`status`= :status, mod_t= :mod_t
+WHERE `id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":status" => $this->status,
+				":id" => $this->id,
+				":mod_t" => time(),
+			);
+			$pst->execute($array);
 		}
 	}
 ?>
