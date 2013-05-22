@@ -82,8 +82,9 @@ EOF;
 		public static function get_table($type) {
 			$classname = Record::get_classname($type);
 			$result = <<<EOF
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
+		<th>Actions</th>
 EOF;
 			$columns = $classname::get_fields($type);
 			foreach ($columns as $field) {
@@ -99,6 +100,25 @@ EOF;
 				$result .= <<< EOF
 	<tr>
 EOF;
+				$id = $db_record["id"];
+				$html = <<<EOF
+			<select class="evt_record_actions">
+				<option value="#" selected>Choose...</option>
+EOF;
+						$classname = dd()->get_entity($type)->classname;
+				foreach (dd()->get_entity($type)->get_actions() as $action) {
+					if ($record->accept($action)) {
+						$html .= <<<EOF
+				<option value="?action={$action->name}&amp;type=$type&amp;id=$id">{$action->label}</option>
+EOF;
+					}
+				}
+					$html .= <<<EOF
+			</select>
+EOF;
+			$result .= <<<EOF
+		<td>$html</td>
+EOF;
 				foreach ($columns as $field) {
 					$colname = Field::get_colname($field->name);
 					$value = $db_record[$colname];
@@ -107,19 +127,7 @@ EOF;
 		<td>$html</td>
 EOF;
 				}
-				$id = $db_record["id"];
-				$classname = dd()->get_entity($type)->classname;
-				foreach (dd()->get_entity($type)->get_actions() as $action) {
-					if (!$record->accept($action)) {
-						$result .= <<<EOF
-		<td>&nbsp;</td>
-EOF;
-					} else {
-						$result .= <<<EOF
-		<td><a href="?action={$action->name}&amp;type=$type&amp;id=$id">{$action->label}</a></td>
-EOF;
-					}
-				}
+
 				$result .= <<<EOF
 	</tr>
 EOF;

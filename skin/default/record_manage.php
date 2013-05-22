@@ -39,4 +39,7 @@
 </div>
 <script>
 	$( ".timestamp_date" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+	$("select.evt_record_actions").change(function() {
+		window.location = $(this).val();
+	});
 </script>

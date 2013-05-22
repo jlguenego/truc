@@ -796,6 +796,11 @@ a.evt_button {
 	border: 1px solid black;
 }
 
+
+/* RECORD MANAGEMENT */
+.evt_record_actions {
+}
+
 /* PHP */
 .xdebug-error, .xe-notice {
 	position: relative;
