@@ -22,6 +22,7 @@
 		public $classname;
 		public $fields = array();
 		public $actions = array();
+		public $global_actions = array();
 
 		public function __construct($name, $classname = null) {
 			$this->name = $name;
@@ -42,12 +43,20 @@
 			$this->actions[$action] = new Action($action, $label);
 		}
 
+		public function add_global_action($action, $label) {
+			$this->global_actions[$action] = new Action($action, $label);
+		}
+
 		public function get_fields() {
 			return $this->fields;
 		}
 
 		public function get_actions() {
 			return $this->actions;
+		}
+
+		public function get_global_actions() {
+			return $this->global_actions;
 		}
 
 		public function is_valid_action($action) {

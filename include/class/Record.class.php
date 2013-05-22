@@ -284,5 +284,22 @@ EOF;
 		public function accept($action) {
 			return true;
 		}
+
+		public static function get_menu($type) {
+			$result = <<<EOF
+<a href="javascript:eb_create_record('$type');">New</a>
+EOF;
+			foreach (dd()->get_entity($type)->get_global_actions() as $action) {
+				$result .= <<<EOF
+&nbsp;|&nbsp;<a href="javascript:eb_execute_global_action('$type', '{$action->name}', '{$action->label}');">{$action->label}</a>
+EOF;
+			}
+			return $result;
+		}
+
+		public static function get_dialog_content($type) {
+			$result = "";
+			return $result;
+		}
 	}
 ?>

@@ -217,3 +217,19 @@ function eb_show_html(id) {
 		}
     });
 }
+
+function eb_execute_global_action(type, name, label) {
+	$("#dialog_" + name).attr("title", type + " : " + label);
+	$("#dialog_" + name).dialog({
+		modal: true,
+		buttons: {
+			Cancel: function() {
+				$(this).dialog("close");
+			},
+			Ok: function() {
+				$("form[name=form_execute_global_action_" + name + "]").submit();
+				$(this).dialog("close");
+			}
+		}
+    });
+}

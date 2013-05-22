@@ -1,19 +1,11 @@
 <?php
-	class Guest {
-		public $id = -1;
-		public $email;
-
-		public static function get_from_id($id) {
-			$guest = new Guest();
-			$guest->load($id);
-			return $guest;
-		}
+	class Guest extends Record {
 
 		public static function get_from_email($email) {
 			global $g_pdo;
 
 			$request = <<<EOF
-SELECT * FROM `guest`
+SELECT id FROM `guest`
 WHERE `email`= :email
 EOF;
 			debug($request);
@@ -23,8 +15,7 @@ EOF;
 			if (!isset($record['id'])) {
 				return NULL;
 			}
-			$guest = new Guest();
-			$guest->hydrate($record);
+			$guest = Record::get_from_id("guest", $record['id']);
 			return $guest;
 		}
 
@@ -45,86 +36,46 @@ EOF;
 			$this->hydrate($record);
 		}
 
-		public function hydrate($array) {
-			foreach ($array as $key => $value) {
-				debug($key."=>".$value);
-				$this->$key = $value;
-			}
-		}
-
 		public function store() {
 			global $g_pdo;
 
-			if (($guest = Guest::get_from_email($this->email)) != null) {
+			if (($guest = Guest::get_from_email($this->get_value("email"))) != null) {
 				$this->id = $guest->id;
-				return;
+			} else {
+				parent::store();
 			}
-
-			$this->id = create_id();
-			$created_t = time();
-			$mod_t = $created_t;
-
-			$request = <<<EOF
-INSERT INTO `guest`
-SET
-	`id`= :id,
-	`created_t`= :created_t,
-	`mod_t`= :mod_t,
-	`email`= :email
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$array = array(
-				":id" => $this->id,
-				":created_t" => $created_t,
-				":mod_t" => $mod_t,
-				":email" => $this->email,
-			);
-			$pst->execute($array);
+			$this->link_to_event();
 		}
 
-
-		public static function list_all($event_id = NULL) {
+		public static function select_all($type) {
 			global $g_pdo;
-			$result = array();
-			$where_clause = "";
-			if ($event_id != NULL) {
-				$where_clause = "AND eg.id_event= :id";
-			}
 
+			$event_id = $_SESSION["event_id"];
 
 			$request = <<<EOF
 SELECT
-	g.id as id
+  g.*
 FROM
   guest g,
   event_guest eg
 WHERE
-	g.id = eg.id_guest
-    ${where_clause} ORDER BY g.id
+  g.id = eg.id_guest
+  AND eg.id_event = :id
+ORDER BY g.id
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
-			if ($event_id != NULL) {
-				$pst->execute(array(":id" => $event_id));
-			} else {
-				$pst->execute();
+			$pst->execute(array(":id" => $event_id));
+
+			$result = array();
+			while (($record = $pst->fetch(PDO::FETCH_ASSOC)) != null) {
+				$result[] = $record;
 			}
-			$guest_record = $pst->fetch();
-			while (isset($guest_record["id"])) {
-				$guest = Guest::get_from_id($guest_record["id"]);
-				$result[] = $guest;
-				$guest_record = $pst->fetch();
-			}
+			debug(sprint_r($result));
 			return $result;
 		}
 
-		public function hydrate_from_form() {
-			$this->email = $_GET['email'];
-			debug("hydrate_from_form=".sprint_r($this));
-		}
-
-		public function link_to_event($event_id) {
+		public function link_to_event() {
 			global $g_pdo;
 
 			$request = <<<EOF
@@ -137,7 +88,7 @@ EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
 				":id_guest" => $this->id,
-				":id_event" => $event_id,
+				":id_event" => $_SESSION["event_id"],
 			);
 			debug('array: '.sprint_r($array));
 			$pst->execute($array);
@@ -150,6 +101,21 @@ EOF;
 				return false;
 			}
 			return true;
+		}
+
+		public function delete() {
+			global $g_pdo;
+			$request = <<<EOF
+DELETE FROM
+  event_guest
+WHERE
+  id_guest = :id
+EOF;
+			debug($request);
+			debug("array=".sprint_r(array(":id" => $this->id)));
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+			parent::delete();
 		}
 	}
 ?>

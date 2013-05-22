@@ -3,11 +3,12 @@
 	require($g_i18n->filename(SKIN_DIR."/sidebar_promote.php"));
 ?>
 <div>
-<a href="JavaScript:eb_create_record('<?php echo $type; ?>');">New</a>
 <?php
+	echo Record::get_menu($type);
 	echo Record::get_table($type);
+	echo Record::get_menu($type);
+	echo Record::get_dialog_content($type);
 ?>
-<a href="JavaScript:eb_create_record('<?php echo $type; ?>');">New</a>
 </div>
 <div id="dialog" style="display: none;" title="">
 	<form name="create_record" action="?action=create&amp;type=<?php echo $type; ?>" method="post">

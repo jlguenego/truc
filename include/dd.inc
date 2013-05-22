@@ -36,6 +36,8 @@
 
 	$e = $g_dd->add_entity("guest");
 	$e->add_field("email", "{{Email}}", "mail");
+	$e->add_action("delete", "{{Delete}}");
+	$e->add_global_action("import", "{{Import}}");
 
 	$e = $g_dd->add_entity("interaction");
 	$e->add_field("guest_id", "{{Guest Id}}", "guest");
