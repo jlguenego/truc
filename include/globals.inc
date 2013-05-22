@@ -61,6 +61,10 @@
 		"Without tax" => 0
 	);
 
+	$g_task_command_list = array(
+		"mail_advertisement",
+	);
+
 	$g_debug_lines = array();
 	$g_error_msg = "";
 	$g_info_msg = "";

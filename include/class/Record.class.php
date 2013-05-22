@@ -18,8 +18,8 @@
 				$result = new $e->classname();
 			} else {
 				$result = new Record();
-				$result->type = $type;
 			}
+			$result->type = $type;
 			return $result;
 		}
 
@@ -148,6 +148,14 @@ EOF;
 			throw new Exception("Field $name not found in {$this->type}");
 		}
 
+		public function get_value($name) {
+			return $this->get_field($name)->value;
+		}
+
+		public function set_value($name, $value) {
+			$this->get_field($name)->value = $value;
+		}
+
 		public static function select_all($type) {
 			global $g_pdo;
 
@@ -178,6 +186,10 @@ EOF;
 EOF;
 				return $result;
 			}
+			if ($field->type == "status") {
+				$result = $field->status_def[$value];
+				return $result;
+			}
 			if (dd()->has_entity($field->type)) {
 				return '<a href="?action=retrieve&amp;type='.$field->type.'&amp;id='.$value.'">'.$value.'</a>';
 			}
@@ -188,11 +200,30 @@ EOF;
 			// TODO: To be done.
 		}
 
+		public function hydrate() {
+			$this->created_t = time();
+			$this->mod_t = $this->created_t;
+			foreach (dd()->get_entity($this->type)->get_fields() as $field) {
+				$this->fields[] = clone $field;
+			}
+		}
+
 		public function hydrate_from_form() {
 			$this->created_t = time();
 			$this->mod_t = $this->created_t;
 			foreach (dd()->get_entity($this->type)->get_fields() as $field) {
-				$field->value = $_GET[$field->name];
+				if ($field->is_in_create_form) {
+					$field->value = $_GET[$field->name];
+				} else {
+					switch ($field->type) {
+						case "int":
+						case "status":
+							$field->value = 0;
+							break;
+						default:
+							$field->value = null;
+					}
+				}
 				$this->fields[] = $field;
 			}
 		}

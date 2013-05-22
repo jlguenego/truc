@@ -86,6 +86,7 @@
 				break;
 			case "merge":
 				action_merge();
+				break;
 			case "manage":
 				action_manage();
 				break;
@@ -98,12 +99,17 @@
 	}
 
 	function action_entity_execute() {
+		global $g_error_msg;
 		if (isset($_GET["type"])) {
 			$type = $_GET["type"];
 			if (dd()->has_entity($type)) {
 				$e = dd()->get_entity($type);
 				if ($e->is_valid_action($_GET["action"])) {
-					$e->execute_action($_GET["action"]);
+					try {
+						$e->execute_action($_GET["action"]);
+					} catch (Exception $ex) {
+						$g_error_msg = $ex->getMessage();
+					}
 					if (TEST_MODE) {
 						action_manage();
 					} else {

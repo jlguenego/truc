@@ -793,8 +793,6 @@ a.evt_button {
 }
 
 .evt_sidebar {
-	float: left;
-	margin: 20px;
 	border: 1px solid black;
 }
 

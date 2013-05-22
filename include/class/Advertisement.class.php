@@ -10,10 +10,15 @@
 			$event = Event::get_from_id($this->get_field("event_id")->value);
 			foreach ($event->get_guests() as $guest) {
 				$task = new Task();
-				$task->start_t = time();
-				$task->description = "";
-				$task->command = "send a mail";
-				$task->error_msg = "";
+				$task->hydrate();
+				$task->id = create_id();
+				$task->set_value("start_t", time());
+				$task->set_value("description", "");
+				$task->set_value("command", "mail_advertisement");
+				$task->set_value("parameters", $event->id.",".$guest->email.",".$this->id);
+				$task->set_value("status", TASK_STATUS_PENDING);
+				$task->set_value("error_msg", "");
+				$task->set_value("event_id", $_SESSION["event_id"]);
 				$task->store();
 			}
 		}
@@ -58,7 +63,6 @@ EOF;
 		public function set_status($status) {
 			global $g_pdo;
 
-			$this->status = $status;
 			$request = <<<EOF
 UPDATE advertisement
 SET	`status`= :status, mod_t= :mod_t
@@ -67,7 +71,7 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$array = array(
-				":status" => $this->status,
+				":status" => $status,
 				":id" => $this->id,
 				":mod_t" => time(),
 			);

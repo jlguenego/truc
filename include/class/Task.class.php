@@ -1,21 +1,10 @@
 <?php
 	require_once(BASE_DIR . "/include/sync.inc");
 
-	class Task {
-		public $id;
-		public $created_t;
-		public $mod_t;
-		public $start_t;
-		public $description = "";
-		public $command;
-		public $error_msg;
-
-		public static function get_from_id($id) {
-			$task = new Task();
-			$task->load($id);
-			return $task;
+	class Task extends Record {
+		public function __construct() {
+			$this->type = "task";
 		}
-
 		public static function run($max_duration) {
 			if (sync_lock() === false) {
 				return;
@@ -50,14 +39,30 @@ EOF;
 			if (!isset($record['id'])) {
 				return null;
 			}
-			return Task::get_from_id($record['id']);
+			return Record::get_from_id("task", $record['id']);
 		}
 
 		public function execute() {
-			debug("Execute task id ".$this->id);
+			if ($this->get_value("start_t") < time()) {
+				$this->execute_now();
+			} else {
+				throw new Exception("Cannot execute this task now (start date = ".$this->get_value("start_t").").");
+			}
+		}
+
+		public function execute_now() {
+			global $g_task_command_list;
+
+			debug("Execute now task id ".$this->id);
 			$this->update_status(TASK_STATUS_RUNNING);
 			try {
-				eval($this->command);
+				$this->check_command();
+				if ($this->get_value("command") == "mail_advertisement") {
+					list($event_id, $guest_mail, $advertisement_id) = explode(",", $this->get_value("parameters"));
+					mail_advertise($event_id, $guest_mail, $advertisement_id);
+				} else {
+					debug("Task not understood.");
+				}
 				$this->update_status(TASK_STATUS_SUCCESS);
 			} catch (Exception $e) {
 				$this->update_status(TASK_STATUS_ERROR, $e->getMessage());
@@ -82,12 +87,37 @@ EOF;
 				":mod_t" => $mod_t,
 				":status" => $status,
 				":error_msg" => $error_msg,
+				":id" => $this->id,
 			);
 			$pst->execute($array);
 		}
 
-		public function store() {
+		public static function select_all($type) {
+			global $g_pdo;
 
+			$event_id = $_SESSION["event_id"];
+
+			$request = <<<EOF
+SELECT * FROM $type
+WHERE id_event = :event_id
+ORDER BY id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":event_id" => $event_id));
+
+			$result = array();
+			while (($record = $pst->fetch(PDO::FETCH_ASSOC)) != null) {
+				$result[] = $record;
+			}
+			return $result;
+		}
+
+		public function check_command() {
+			global $g_task_command_list;
+			if (!in_array($this->get_value("command"), $g_task_command_list)) {
+				throw new Exception("Forbidden command: ".$this->get_value("command"));
+			}
 		}
 	}
 ?>
