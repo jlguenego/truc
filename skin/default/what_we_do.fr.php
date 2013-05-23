@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title"><p>Notre activité</p></div>
+<div class="evt_title"><p>Notre activité</p></div>
 <h1>Financement participatif d'évènement</h1>
 <p>
 Le but d'Event-Biller est d'aider les gens à organiser des événements dont le coût ne peut être supporté par

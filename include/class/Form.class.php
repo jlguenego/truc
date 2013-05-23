@@ -128,7 +128,7 @@
 EOF;
 			if (!is_null_or_empty($this->title)) {
 				$result .= <<<EOF
-<div class="{$this->css}_title"><p>
+<div class="evt_title"><p>
 	{$this->title}
 EOF;
 				if ($this->cancel) {

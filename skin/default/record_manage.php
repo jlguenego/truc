@@ -1,10 +1,11 @@
 <?php
 	$type = $g_display["type"];
-	require($g_i18n->filename(SKIN_DIR."/sidebar_promote.php"));
+	$classname = Record::get_classname($type);
 ?>
+<div class="evt_title"><p><?php echo $classname; ?> management</p></div>
+<?php require($g_i18n->filename(SKIN_DIR."/sidebar_promote.php")); ?>
 <div>
 <?php
-	$classname = Record::get_classname($type);
 	echo $classname::get_menu($type);
 	echo $classname::get_table($type);
 	echo $classname::get_menu($type);

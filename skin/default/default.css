@@ -110,38 +110,32 @@ body {
 	background-repeat: no-repeat;
 }
 
+.evt_main p {
+	margin: 20px 0px;
+}
+
 .evt_main ul, .evt_main ol {
 	padding-left: 40px;
 }
 
+div[data-message] {
+	font-size: 12px;
+	color: black;
+	font-weight: bold;
+	padding: 2px 10px;
+	z-index: 10;
+}
+
 .evt_main div[data-message=evt_error] {
+	top: -10px;
 	border: 1px solid #FFAAAA;
 	background-color: #FFD5D5;
-
-	color: red;
-	font-weight: bold;
 }
 
 .evt_main div[data-message=evt_info] {
-	top: 230px;
+	top: -45px;
 	border: 1px solid #CCCCCC;
 	background-color: #FFFFDD;
-	font-weight: bold;
-}
-
-#evt_event_retrieve {
-	background-color: white;
-	background-image: none;
-}
-
-#evt_event_retrieve div[data-message=evt_error] {
-	position: static;
-	margin: 10px;
-}
-
-#evt_event_retrieve div[data-message=evt_info] {
-	position: static;
-	margin: 10px;
 }
 
 #evt_root {
@@ -150,15 +144,6 @@ body {
 	background-repeat: no-repeat;
 	background-color: #869C86; /* iphone */
 }
-
-#evt_root div[data-message=evt_error] {
-
-}
-
-#evt_root div[data-message=evt_info] {
-	top: 130px;
-}
-
 
 #evt_header_top {
 	display: none;
@@ -422,16 +407,16 @@ body {
 	display: block;
 	text-align: center;
 	vertical-align: middle;
-	min-height: 240px;
-	padding-top: 80px;
 }
 
 .evt_title p {
 	display: inline-block;
-	font-size: 40px;
+	font-size: 30px;
 	font-weight: 400;
 	text-align: center;
-	padding: 30px;
+	vertical-align: middle;
+	padding: 10px;
+	margin: 20px 0px 20px 0px;
 	margin-left: auto;
 	margin-right: auto;
 
@@ -439,9 +424,6 @@ body {
 	border: 1px solid #CCCCCC;
 
 	background-color: rgba(255, 255, 255, 0.8);
-	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
-	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
-	box-shadow: 0 0 20px rgba(0, 0, 0, 1);
 }
 
 .evt_hr {
@@ -670,9 +652,6 @@ i {
 
 .legal {
 	width: 100%;
-}
-
-.legal * {
 	font: 12px 'Open Sans',sans-serif;
 	text-align: justify;
 }
@@ -693,33 +672,6 @@ i {
 
 .legal ul {
 	margin: 5px 0px 5px 25px;
-}
-
-.legal_title {
-	display: block;
-	text-align: center;
-	vertical-align: middle;
-	min-height: 230px;
-	padding-top: 80px;
-}
-
-.legal_title p {
-	display: inline-block;
-	font-size: 40px;
-	font-weight: 400;
-	text-align: center;
-	vertical-align: middle;
-	padding: 30px;
-	margin-left: auto;
-	margin-right: auto;
-
-	background-color: white;
-	border: 1px solid #CCCCCC;
-
-	background-color: rgba(255, 255, 255, 0.8);
-	-webkit-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
-	-moz-box-shadow: 0 0 20px rgba(0, 0, 0, 1);
-	box-shadow: 0 0 20px rgba(0, 0, 0, 1);
 }
 
 .legal th {
@@ -797,6 +749,8 @@ a.evt_button {
 
 .evt_sidebar {
 	border: 1px solid black;
+	padding: 10px;
+	margin: 10px;
 }
 
 

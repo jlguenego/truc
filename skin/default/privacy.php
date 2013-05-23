@@ -1,5 +1,5 @@
 <div class="legal">
-<div class="legal_title"><p>Privacy Policies</p></div>
+<div class="evt_title"><p>Privacy Policies</p></div>
 
 <h1>What information do we collect?</h1>
 <p>

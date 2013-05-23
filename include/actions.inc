@@ -102,6 +102,7 @@
 			if (dd()->has_entity($type)) {
 				$e = dd()->get_entity($type);
 				if ($e->is_valid_action()) {
+					need_authentication();
 					try {
 						if ($e->is_global_action()) {
 							$e->execute_global_action($_GET["action"]);
@@ -159,7 +160,6 @@
 		$user = User::get_from_id($event->user_id);
 		$g_display["author"] = $user;
 		$_SESSION["state"] = "event_promote";
-		$_SESSION["event_id"] = $event->id;
 	}
 
 	function action_set_locale() {
@@ -460,6 +460,7 @@
 				throw new Exception(_t("This event is not yet published."));
 			}
 		}
+		$_SESSION["event_id"] = $event->id;
 		$_SESSION["state"] = "event_retrieve";
 		$g_display["event"] = $event;
 		$user = User::get_from_id($event->user_id);

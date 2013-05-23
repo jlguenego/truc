@@ -89,6 +89,11 @@
 		$g_state = $_SESSION["state"];
 		$g_page = SKIN_DIR."/".$_SESSION["state"].".php";
 	}
+
+	if (!file_exists($g_page)) {
+		$g_page = SKIN_DIR."/error.php";
+		$g_error_msg = _t("Page not existing.");
+	}
 	debug("Session after: ".$_SESSION["state"]);
 	//$g_info_msg = "This is an info message.";
 	//$g_error_msg = "This is an error message.";
