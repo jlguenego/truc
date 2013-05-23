@@ -622,24 +622,15 @@ EOF;
 			return FALSE;
 		}
 
-		public function import_guest($file) {
-			$guest_array = file($file, FILE_IGNORE_NEW_LINES);
-			debug('guest_array: '. sprint_r($guest_array));
-			foreach ($guest_array as $line) {
-				if (!Guest::valid_line($line)) {
-					continue;
-				}
-				$guest = new Guest();
-				$record = array();
-				$record['email'] = $line;
-				$guest->hydrate($record);
-				$guest->store();
-				$guest->link_to_event($this->id);
-			}
-		}
-
 		public function get_guests() {
-			return Guest::list_all($this->id);
+			$result = array();
+			foreach (Guest::select_all() as $r) {
+				$guest = new Guest();
+				$guest->hydrate();
+				$guest->set_value("email", $r["email"]);
+				$result[] = $guest;
+			}
+			return $result;
 		}
 
 	}

@@ -4,10 +4,11 @@
 ?>
 <div>
 <?php
-	echo Record::get_menu($type);
-	echo Record::get_table($type);
-	echo Record::get_menu($type);
-	echo Record::get_dialog_content($type);
+	$classname = Record::get_classname($type);
+	echo $classname::get_menu($type);
+	echo $classname::get_table($type);
+	echo $classname::get_menu($type);
+	echo $classname::get_dialog_content($type);
 ?>
 </div>
 <div id="dialog" style="display: none;" title="">
@@ -42,5 +43,16 @@
 	$( ".timestamp_date" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	$("select.evt_record_actions").change(function() {
 		window.location = $(this).val();
+	});
+	$("input.check_all_record").change(function() {
+		if ($(this).is(':checked')) {
+			$("input.record").each(function(){
+				$(this).prop('checked', true);;
+			});
+		} else {
+			$("input.record").each(function(){
+				$(this).prop('checked', false);;
+			});
+		}
 	});
 </script>

@@ -186,23 +186,6 @@ function eb_tiny_mce_on() {
 	});
 }
 
-function eb_create_record(type) {
-	$("#dialog").attr("title", "Create new " + type);
-	log("Create new entry: " + type);
-	$("#dialog").dialog({
-		modal: true,
-		buttons: {
-			Cancel: function() {
-				$(this).dialog("close");
-			},
-			Ok: function() {
-				$("form[name=create_record]").submit();
-				$(this).dialog("close");
-			}
-		}
-    });
-}
-
 function eb_show_html(id) {
 	$("#"+id).attr("title", "Details");
 	var dialog_w = 500;
@@ -232,4 +215,13 @@ function eb_execute_global_action(type, name, label) {
 			}
 		}
     });
+}
+
+function eb_execute_grouped_action(type, name, label) {
+	var id_array = new Array();
+	$("input.record:checked").each(function(){
+		id_array.push($(this).attr("name"));
+	});
+	var id_list = id_array.join("_");
+	window.location = "?action=" + name + "&type=" + type + "&grouped=y&ids=" + id_list;
 }

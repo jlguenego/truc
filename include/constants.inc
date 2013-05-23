@@ -5,7 +5,7 @@
 
 	define('COMPANY_NAME', 'Eventual');
 
-	define('ALLOWED_TAGS', "<br><div><p><img><ul><ol><li><span><a><b><i><strong>");
+	define('ALLOWED_TAGS', "<br><div><p><img><ul><ol><li><span><a><b><i><strong><table><tr><th><td>");
 
 	define('AUTHORIZATION_DELAY', '29'); // days
 

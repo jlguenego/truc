@@ -84,9 +84,6 @@
 			case "set_locale":
 				action_set_locale();
 				break;
-			case "merge":
-				action_merge();
-				break;
 			case "manage":
 				action_manage();
 				break;
@@ -104,9 +101,15 @@
 			$type = $_GET["type"];
 			if (dd()->has_entity($type)) {
 				$e = dd()->get_entity($type);
-				if ($e->is_valid_action($_GET["action"])) {
+				if ($e->is_valid_action()) {
 					try {
-						$e->execute_action($_GET["action"]);
+						if ($e->is_global_action()) {
+							$e->execute_global_action($_GET["action"]);
+						} else if ($e->is_grouped_action()) {
+							$e->execute_grouped_action($_GET["action"]);
+						} else {
+							$e->execute_action($_GET["action"]);
+						}
 					} catch (Exception $ex) {
 						$g_error_msg = $ex->getMessage();
 					}
@@ -134,29 +137,6 @@
 		}
 		$g_display["type"] = $type;
 		$_SESSION["state"] = "record_manage";
-	}
-
-	function action_merge() {
-		switch ($_GET["type"]) {
-			case "guest_file":
-				action_guest_file_merge();
-				break;
-			default:
-				$_SESSION["state"] = "not_allowed";
-				break;
-		}
-	}
-
-	function action_guest_file_merge() {
-		// take the file content and create guest if not existing.
-		$event = Event::get_from_id($_SESSION["event_id"]);
-		$file = Form::get_file("guest_filename");
-		$event->import_guest($file);
-		if (TEST_MODE) {
-			action_guest_file_get_form();
-		} else {
-			redirect_to("?action=get_form&type=guest_file");
-		}
 	}
 
 	function action_promote_event() {
@@ -221,10 +201,6 @@
 				action_account_create();
 				break;
 			default:
-				if (dd()->has_entity($_GET["type"])) {
-					action_record_create();
-					break;
-				}
 				$_SESSION["state"] = "not_allowed";
 		}
 	}
@@ -271,10 +247,6 @@
 				break;
 			default:
 				debug("type=".$_GET["type"]);
-				if (dd()->has_entity($_GET["type"])) {
-					action_record_delete();
-					return;
-				}
 				$_SESSION["state"] = "not_allowed";
 		}
 	}
@@ -319,51 +291,6 @@
 		$event = Event::get_from_id($_SESSION["event_id"]);
 		$g_display["guests"] = $event->get_guests();
 		$_SESSION["state"] = "guest_file_form";
-	}
-
-	function action_record_create() {
-		global $g_info_msg;
-		global $g_error_msg;
-
-		debug(sprint_r($_GET));
-
-		try {
-			$record = Record::new_instance($_GET["type"]);
-			$record->check_form();
-			$record->id = create_id();
-			$record->hydrate_from_form();
-			$record->store();
-			$g_info_msg = _t("Record successfully created.");
-			if (TEST_MODE) {
-				action_manage();
-			} else {
-				redirect_to("?action=manage&type=".$_GET["type"]);
-			}
-		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
-		}
-	}
-
-	function action_record_delete() {
-		global $g_info_msg;
-		global $g_error_msg;
-
-		debug(sprint_r($_GET));
-		debug("Delete record");
-
-		try {
-			$record = Record::get_from_id($_GET["type"], $_GET["id"]);
-			debug("record=".sprint_r($record));
-			$record->delete();
-			$g_info_msg = _t("Record successfully deleted.");
-			if (TEST_MODE) {
-				action_manage();
-			} else {
-				redirect_to("?action=manage&type=".$_GET["type"]);
-			}
-		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
-		}
 	}
 
 	function action_account_create() {

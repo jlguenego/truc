@@ -23,6 +23,7 @@
 		public $fields = array();
 		public $actions = array();
 		public $global_actions = array();
+		public $grouped_actions = array();
 
 		public function __construct($name, $classname = null) {
 			$this->name = $name;
@@ -47,6 +48,10 @@
 			$this->global_actions[$action] = new Action($action, $label);
 		}
 
+		public function add_grouped_action($action, $label) {
+			$this->grouped_actions[$action] = new Action($action, $label);
+		}
+
 		public function get_fields() {
 			return $this->fields;
 		}
@@ -59,14 +64,30 @@
 			return $this->global_actions;
 		}
 
-		public function is_valid_action($action) {
+		public function get_grouped_actions() {
+			return $this->grouped_actions;
+		}
+
+		public function is_valid_action() {
+			$action = $_GET["action"];
 			debug("action=".$action);
 			debug("actions=".sprint_r($this->actions));
-			$result = array_key_exists($action, $this->actions);
-			if ($result == false) {
-				debug("is_valid_action=false");
-			}
-			debug("is_valid_action=".$result);
+			$result = array_key_exists($action, $this->actions) ||
+				array_key_exists($action, $this->global_actions) ||
+				array_key_exists($action, $this->grouped_actions);
+			return $result;
+		}
+
+		public function is_global_action() {
+			$action = $_GET["action"];
+			$result = array_key_exists($action, $this->global_actions);
+			return $result;
+		}
+
+		public function is_grouped_action() {
+			$action = $_GET["action"];
+			$result = array_key_exists($action, $this->grouped_actions)
+				&& isset($_GET["grouped"]);
 			return $result;
 		}
 
@@ -78,6 +99,16 @@
 				$record = new $this->classname();
 			}
 			$record->$action();
+		}
+
+		public function execute_global_action($action) {
+			$classname = $this->classname;
+			$classname::$action();
+		}
+
+		public function execute_grouped_action($action) {
+			$classname = $this->classname;
+			$classname::multi_action($action);
 		}
 	}
 

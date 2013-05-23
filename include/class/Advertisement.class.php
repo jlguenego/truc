@@ -15,7 +15,7 @@
 				$task->set_value("start_t", time());
 				$task->set_value("description", "");
 				$task->set_value("command", "mail_advertisement");
-				$task->set_value("parameters", $event->id.",".$guest->email.",".$this->id);
+				$task->set_value("parameters", $event->id.",".$guest->get_value("email").",".$this->id);
 				$task->set_value("status", TASK_STATUS_PENDING);
 				$task->set_value("error_msg", "");
 				$task->set_value("event_id", $_SESSION["event_id"]);
@@ -29,13 +29,13 @@
 			mail_advertise($_SESSION["event_id"], $user->email, $this->id);
 		}
 
-		public static function select_all($type) {
+		public static function select_all($type = "") {
 			global $g_pdo;
 
 			$event_id = $_SESSION["event_id"];
 
 			$request = <<<EOF
-SELECT * FROM $type
+SELECT * FROM advertisement
 WHERE id_event = :event_id
 ORDER BY id
 EOF;
@@ -51,12 +51,12 @@ EOF;
 		}
 
 		public function accept($action) {
-			if ($action->name == "delete") {
-				debug("value=".$this->get_field("status")->value);
-				if ($this->get_field("status")->value == ADVERTISEMENT_STATUS_SENT) {
-					return false;
-				}
-			}
+			//if ($action->name == "delete") {
+			//	debug("value=".$this->get_field("status")->value);
+			//	if ($this->get_field("status")->value == ADVERTISEMENT_STATUS_SENT) {
+			//		return false;
+			//	}
+			//}
 			return true;
 		}
 

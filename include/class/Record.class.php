@@ -84,6 +84,7 @@ EOF;
 			$result = <<<EOF
 <table class="evt_table inline">
 	<tr>
+		<th><input type="checkbox" class="check_all_record" /></th>
 		<th>Actions</th>
 EOF;
 			$columns = $classname::get_fields($type);
@@ -117,6 +118,7 @@ EOF;
 			</select>
 EOF;
 			$result .= <<<EOF
+		<td><input type="checkbox" name="$id" class="record" /></td>
 		<td>$html</td>
 EOF;
 				foreach ($columns as $field) {
@@ -164,9 +166,11 @@ EOF;
 			$this->get_field($name)->value = $value;
 		}
 
-		public static function select_all($type) {
+		public static function select_all($type = "") {
 			global $g_pdo;
-
+			if ($type == "") {
+				throw new Exception("Need a type");
+			}
 			$request = <<<EOF
 SELECT * FROM $type
 ORDER BY id
@@ -209,6 +213,7 @@ EOF;
 		}
 
 		public function hydrate() {
+			$this->id = create_id();
 			$this->created_t = time();
 			$this->mod_t = $this->created_t;
 			foreach (dd()->get_entity($this->type)->get_fields() as $field) {
@@ -221,7 +226,11 @@ EOF;
 			$this->mod_t = $this->created_t;
 			foreach (dd()->get_entity($this->type)->get_fields() as $field) {
 				if ($field->is_in_create_form) {
-					$field->value = $_GET[$field->name];
+					if ($field->type == "timestamp") {
+						$field->value = s2t($_GET[$field->name]);
+					} else {
+						$field->value = $_GET[$field->name];
+					}
 				} else {
 					switch ($field->type) {
 						case "int":
@@ -286,20 +295,81 @@ EOF;
 		}
 
 		public static function get_menu($type) {
-			$result = <<<EOF
-<a href="javascript:eb_create_record('$type');">New</a>
-EOF;
+			$a = array();
 			foreach (dd()->get_entity($type)->get_global_actions() as $action) {
-				$result .= <<<EOF
-&nbsp;|&nbsp;<a href="javascript:eb_execute_global_action('$type', '{$action->name}', '{$action->label}');">{$action->label}</a>
+				$a[] = <<<EOF
+<a href="javascript:eb_execute_global_action('$type', '{$action->name}', '{$action->label}');">{$action->label}</a>
 EOF;
 			}
-			return $result;
+			foreach (dd()->get_entity($type)->get_grouped_actions() as $action) {
+				$a[] = <<<EOF
+<a href="javascript:eb_execute_grouped_action('$type', '{$action->name}', '{$action->label}');">{$action->label}</a>
+EOF;
+			}
+			return join("&nbsp;|&nbsp;", $a);
 		}
 
 		public static function get_dialog_content($type) {
-			$result = "";
+			$result = <<<EOF
+<div id="dialog_create" style="display: none;" title="">
+	<form name="form_execute_global_action_create" action="?action=create&amp;type=$type" method="post">
+EOF;
+			foreach (dd()->get_entity($type)->get_fields() as $field) {
+				if (!$field->is_in_create_form) {
+					continue;
+				}
+				if ($field->is_foreign_key()) {
+					$session_fieldname = $_SESSION[$field->name];
+					$result .= <<<EOF
+		<input type="hidden" name="{$field->name}" value="$session_fieldname"/>
+EOF;
+				} else if ($field->type == "html") {
+					$result .= <<<EOF
+		<textarea name="{$field->name}" class="apply_tinymce" placeholder="{$field->label}"></textarea>
+EOF;
+				} else if ($field->type == "timestamp") {
+					$result .= <<<EOF
+		<input class="timestamp_date" type="text" name="{$field->name}" placeholder="{$field->label}" autocomplete="off"/>
+EOF;
+				} else {
+					$result .= <<<EOF
+		<input type="text" name="{$field->name}" placeholder="{$field->label}"/>
+EOF;
+				}
+			}
+			$result .= <<<EOF
+	</form>
+</div>
+EOF;
 			return $result;
+		}
+
+		public static function create() {
+			global $g_info_msg;
+			global $g_error_msg;
+
+			debug(sprint_r($_GET));
+
+			try {
+				$record = Record::new_instance($_GET["type"]);
+				$record->check_form();
+				$record->id = create_id();
+				$record->hydrate_from_form();
+				$record->store();
+				$g_info_msg = _t("Record successfully created.");
+			} catch (Exception $e) {
+				$g_error_msg = $e->getMessage();
+			}
+		}
+
+		public static function multi_action($action) {
+			$id_array = explode("_", $_GET["ids"]);
+			foreach ($id_array as $id) {
+				$record = Record::get_from_id($_GET["type"], $id);
+				if ($record != null) {
+					$record->$action();
+				}
+			}
 		}
 	}
 ?>

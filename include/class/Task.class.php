@@ -92,13 +92,13 @@ EOF;
 			$pst->execute($array);
 		}
 
-		public static function select_all($type) {
+		public static function select_all($type = "") {
 			global $g_pdo;
 
 			$event_id = $_SESSION["event_id"];
 
 			$request = <<<EOF
-SELECT * FROM $type
+SELECT * FROM task
 WHERE id_event = :event_id
 ORDER BY id
 EOF;

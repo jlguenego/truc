@@ -1,5 +1,8 @@
 <?php
 	class Guest extends Record {
+		public function __construct() {
+			$this->type = "guest";
+		}
 
 		public static function get_from_email($email) {
 			global $g_pdo;
@@ -47,7 +50,7 @@ EOF;
 			$this->link_to_event();
 		}
 
-		public static function select_all($type) {
+		public static function select_all($type = "") {
 			global $g_pdo;
 
 			$event_id = $_SESSION["event_id"];
@@ -116,6 +119,35 @@ EOF;
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(":id" => $this->id));
 			parent::delete();
+		}
+
+		public static function get_dialog_content($type) {
+			$result = parent::get_dialog_content($type);
+			$result .= <<<EOF
+<div id="dialog_import" style="display: none;" title="">
+	<form name="form_execute_global_action_import" action="?action=import&amp;type=$type" method="post" enctype="multipart/form-data">
+		<input type="file" name="guest_filename" placeholder="File with email address" />
+	</form>
+</div>
+EOF;
+			return $result;
+		}
+
+		public static function import() {
+			$event = Event::get_from_id($_SESSION["event_id"]);
+			$file = Form::get_file("guest_filename");
+			$guest_array = file($file, FILE_IGNORE_NEW_LINES);
+			debug('guest_array: '. sprint_r($guest_array));
+			foreach ($guest_array as $line) {
+				if (!Guest::valid_line($line)) {
+					continue;
+				}
+				$guest = new Guest();
+				$guest->hydrate();
+				$guest->set_value("email", $line);
+				$guest->store();
+				$guest->link_to_event($event->id);
+			}
 		}
 	}
 ?>

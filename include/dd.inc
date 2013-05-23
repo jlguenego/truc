@@ -1,5 +1,6 @@
 <?php
 	$g_dd = new DataDictionary();
+
 	$e = $g_dd->add_entity("advertisement");
 	$e->add_field("content_h", "{{Content}}", "html");
 	$e->add_field("name", "{{Name}}", "string");
@@ -13,6 +14,7 @@
 	$e->add_action("send", "{{Send}}");
 	$e->add_action("send_to_me", "{{Send to me only}}");
 	$e->add_action("delete", "{{Delete}}");
+	$e->add_global_action("create", "{{New}}");
 
 	$e = $g_dd->add_entity("task");
 	$e->add_field("start_t", "{{Start date}}", "timestamp");
@@ -32,12 +34,17 @@
 	$e->add_action("execute", "{{Execute}}");
 	$e->add_action("execute_now", "{{Execute now}}");
 	$e->add_action("delete", "{{Delete}}");
+	$e->add_grouped_action("execute", "{{Execute}}");
+	$e->add_grouped_action("execute_now", "{{Execute now}}");
+	$e->add_grouped_action("delete", "{{Delete}}");
 
 
 	$e = $g_dd->add_entity("guest");
 	$e->add_field("email", "{{Email}}", "mail");
 	$e->add_action("delete", "{{Delete}}");
+	$e->add_global_action("create", "{{New}}");
 	$e->add_global_action("import", "{{Import}}");
+	$e->add_grouped_action("delete", "{{Delete}}");
 
 	$e = $g_dd->add_entity("interaction");
 	$e->add_field("guest_id", "{{Guest Id}}", "guest");
@@ -45,4 +52,5 @@
 
 	$e = $g_dd->add_entity("event");
 	$e->add_field("title", "{{Title}}", "string");
+	$e->add_global_action("create", "{{New}}");
 ?>
