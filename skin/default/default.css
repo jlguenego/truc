@@ -252,6 +252,7 @@ div[data-message] {
 }
 
 #evt_menu p {
+	margin: 0px 0px 10px;
 	font: 15px 'Open Sans',sans-serif;
 	line-height: 25px;
 }
