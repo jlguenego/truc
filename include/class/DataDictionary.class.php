@@ -103,12 +103,12 @@
 
 		public function execute_global_action($action) {
 			$classname = $this->classname;
-			$classname::$action();
+			eval("$classname::$action();");
 		}
 
 		public function execute_grouped_action($action) {
 			$classname = $this->classname;
-			$classname::multi_action($action);
+			eval("$classname::multi_action($action);");
 		}
 	}
 
