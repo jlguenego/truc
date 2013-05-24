@@ -371,5 +371,38 @@ EOF;
 				}
 			}
 		}
+
+		public static function get_progression($type, $event_id) {
+			global $g_pdo;
+
+			$result = array();
+			$pending = TASK_STATUS_PENDING;
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM {$type}
+WHERE
+	status = $pending
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute();
+			$count = $pst->fetch(PDO::FETCH_NUM);
+			$result[] = $count[0];
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM {$type}
+WHERE
+	id_event = :id_event
+	AND status = $pending
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id_event" => $event_id,
+			);
+			$pst->execute($array);
+			$count = $pst->fetch(PDO::FETCH_NUM);
+			$result[] = $count[0];
+
+			return $result;
+		}
 	}
 ?>

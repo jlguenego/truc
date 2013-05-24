@@ -11,6 +11,7 @@
 <p>
 	Then define your <a href="?action=manage&type=advertisement">advertisement</a>. An advertisement is a mail template.
 	When you are ready, you can send the advertisement to all your guests.
+	To do that, just click on the send action in the advertisement table record.
 </p>
 <p>
 	This send operation generates one <a href="?action=manage&type=task">task</a> per mail sent to a guest.

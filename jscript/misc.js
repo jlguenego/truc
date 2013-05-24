@@ -225,3 +225,30 @@ function eb_execute_grouped_action(type, name, label) {
 	var id_list = id_array.join("_");
 	window.location = "?action=" + name + "&type=" + type + "&grouped=y&ids=" + id_list;
 }
+
+var response = '';
+function eb_execute_tasks(event_id) {
+	log("eb_execute_tasks");
+
+	$.ajax({
+		url:"task.php",
+		type:"POST",
+		data:{
+			event_id: event_id,
+		},
+		success:function(data) {
+			response = data;
+		},
+		error: function (xhr,status,error) {
+           log("Status: " + status);
+           log("Error: " + error);
+           log("xhr: " + xhr.readyState);
+        },
+		statusCode: {
+			404: function() {
+				log("page not found");
+			}
+		}
+	});
+	return response;
+}

@@ -41,6 +41,7 @@
 		"participation_list_nominative",
 		"guest_file_form",
 		"record_manage",
+		"task_run",
 	);
 
 	$g_event_states = array(

@@ -15,6 +15,7 @@
 	$e->add_action("send_to_me", "{{Send to me only}}");
 	$e->add_action("delete", "{{Delete}}");
 	$e->add_global_action("create", "{{New}}");
+	$e->add_grouped_action("delete", "{{Delete}}");
 
 	$e = $g_dd->add_entity("task");
 	$e->add_field("start_t", "{{Start date}}", "timestamp");

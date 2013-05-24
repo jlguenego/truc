@@ -87,12 +87,22 @@
 			case "manage":
 				action_manage();
 				break;
+			case "run_tasks":
+				action_run_tasks();
+				break;
 			case "none":
 				break;
 			default:
 				throw new Exception(_t("This action does not exists."));
 				break;
 		}
+	}
+
+	function action_run_tasks() {
+		global $g_display;
+
+		$g_display["type"] = "task";
+		$_SESSION["state"] = "task_run";
 	}
 
 	function action_entity_execute() {

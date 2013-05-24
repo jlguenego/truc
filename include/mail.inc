@@ -8,6 +8,9 @@
 		$msg_html = $ad->get_field("content_h")->value;
 
 		$msg = mail_build($msg_html, $guest_mail);
+		if (TEST_MODE) {
+			usleep(500 * 1000);
+		}
 		mail($guest_mail, $subject, $msg["content"], $msg["header"]);
 	}
 

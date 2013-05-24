@@ -5,9 +5,10 @@
 <br/><br/>
 <div class="evt_sidebar">
 	<ul>
-		<li><a href="?action=promote_event&amp;id=<?php echo $event->id ?>">{{Promote your event}}</a></li>
+		<li><a href="?action=promote_event&amp;id=<?php echo $event->id ?>">{{Help}}</a></li>
 		<li><a href="?action=manage&type=guest">Manage guests</a></li>
 		<li><a href="?action=manage&type=advertisement">Manage advertisements</a></li>
 		<li><a href="?action=manage&type=task">Manage tasks</a></li>
+		<li><a href="?action=run_tasks">Run tasks</a></li>
 	</ul>
 </div>
