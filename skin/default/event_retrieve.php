@@ -94,7 +94,9 @@
 		}
 ?>
 		<li>{{Organizer phone}}: <?php echo $event->phone; ?></li>
+		<!--
 		<li><a href="?action=promote_event&amp;id=<?php echo $event->id ?>">{{Promote your event}}</a></li>
+		-->
 <?php
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 ?>
