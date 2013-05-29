@@ -6,10 +6,10 @@
 <?php require($g_i18n->filename(SKIN_DIR."/sidebar_promote.php")); ?>
 <div>
 <?php
-	echo $classname::get_menu($type);
-	echo $classname::get_table($type);
-	echo $classname::get_menu($type);
-	echo $classname::get_dialog_content($type);
+	eval("echo $classname::get_menu('$type');");
+	eval("echo $classname::get_table('$type');");
+	eval("echo $classname::get_menu('$type');");
+	eval("echo $classname::get_dialog_content('$type');");
 ?>
 </div>
 <div id="dialog" style="display: none;" title="">
@@ -40,6 +40,7 @@
 ?>
 	</form>
 </div>
+<form name="grouped_action" method="post"></form>
 <script>
 	$( ".timestamp_date" ).datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
 	$("select.evt_record_actions").change(function() {

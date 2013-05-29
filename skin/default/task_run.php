@@ -5,7 +5,7 @@
 <div class="evt_title"><p>Task run</p></div>
 <?php
 	require($g_i18n->filename(SKIN_DIR."/sidebar_promote.php"));
-	$tasks_left = $classname::get_progression($type, $_SESSION["event_id"]);
+	eval('$tasks_left = '.$classname.'::get_progression($type, $_SESSION["event_id"]);');
 ?>
 <table class="evt_table">
 	<tr>

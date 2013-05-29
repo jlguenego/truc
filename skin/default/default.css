@@ -756,6 +756,36 @@ a.evt_button {
 
 
 /* RECORD MANAGEMENT */
+
+.evt_table_record_manage {
+	text-align: right;
+}
+
+.evt_table_record {
+	border: 1px solid black;
+	font:12px arial,sans-serif;
+	border-collapse: collapse;
+}
+
+.evt_table_record tr:nth-child(odd) {
+	background-color: #FFF0F0;
+	border: 1px solid black;
+}
+
+.evt_table_record th {
+	font-weight: bold;
+	background-color: #F4F4FF;
+	text-align: center;
+	padding: 5px;
+	border: 1px solid black;
+}
+
+.evt_table_record td {
+	padding: 0px 5px;
+	text-align: left;
+	border: 1px solid black;
+}
+
 .evt_record_actions {
 }
 

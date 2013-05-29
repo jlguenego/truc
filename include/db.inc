@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	function db_get_columns($table) {
 		global $g_pdo;
 

@@ -632,6 +632,5 @@ EOF;
 			}
 			return $result;
 		}
-
 	}
 ?>

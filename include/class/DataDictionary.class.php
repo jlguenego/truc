@@ -108,7 +108,7 @@
 
 		public function execute_grouped_action($action) {
 			$classname = $this->classname;
-			eval("$classname::multi_action($action);");
+			eval("$classname::multi_action('$action');");
 		}
 	}
 

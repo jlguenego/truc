@@ -222,8 +222,17 @@ function eb_execute_grouped_action(type, name, label) {
 	$("input.record:checked").each(function(){
 		id_array.push($(this).attr("name"));
 	});
-	var id_list = id_array.join("_");
-	window.location = "?action=" + name + "&type=" + type + "&grouped=y&ids=" + id_list;
+	$("form[name=grouped_action]").attr("action",
+		"?action=" + name + "&type=" + type + "&grouped=y");
+	var content = "";
+	for (var i = 0; i < id_array.length; i++) {
+		id = id_array[i];
+		content += '<input type="hidden" name="ids[]" value="' + id + '" />';
+	}
+	$("form[name=grouped_action]").html(content);
+	$("form[name=grouped_action]").submit();
+	//var id_list = id_array.join("_");
+	//window.location = "?action=" + name + "&type=" + type + "&grouped=y&ids=" + id_list;
 }
 
 var response = '';

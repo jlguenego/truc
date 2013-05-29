@@ -81,13 +81,34 @@ EOF;
 
 		public static function get_table($type) {
 			$classname = Record::get_classname($type);
+			$start = default_value("start", 0);
+			$qty = default_value("qty", 50);
+			eval('list($db_records, $start, $total) = '.$classname.'::select_range($type, $start, $qty);');
+			eval('$columns = '.$classname.'::get_fields($type);');
+			$min = $start + 1;
+			$max = $start + count($db_records);
+			$prev = "{{prev}}";
+			if ($min > 1) {
+				$prev_start = max(0, $start - $qty);
+				$prev = '<a href="?action=manage&amp;type='.$type.'&amp;start='.$prev_start.'#top_table">{{prev}}</a>';
+			}
+			$next = "{{next}}";
+			if ($max < $total) {
+				$next =  '<a href="?action=manage&amp;type='.$type.'&amp;start='.$max.'#top_table">{{next}}</a>';
+			}
+			$colspan = count($columns) + 2;
 			$result = <<<EOF
-<table class="evt_table inline">
+<table id="top_table" class="evt_table_record_manage">
+	<tr>
+		<td>$min - $max {{of}} $total $prev $next</td>
+	</tr>
+	<tr>
+		<td>
+<table class="evt_table_record">
 	<tr>
 		<th><input type="checkbox" class="check_all_record" /></th>
 		<th>Actions</th>
 EOF;
-			$columns = $classname::get_fields($type);
 			foreach ($columns as $field) {
 				$result .= <<<EOF
 		<th>{$field->label}</th>
@@ -96,7 +117,7 @@ EOF;
 			$result .= <<<EOF
 	</tr>
 EOF;
-			foreach ($classname::select_all($type) as $db_record) {
+			foreach ($db_records as $db_record) {
 				$record = Record::get_from_db_record($db_record, $type);
 				$result .= <<< EOF
 	<tr>
@@ -135,6 +156,12 @@ EOF;
 EOF;
 			}
 			$result .= <<<EOF
+</table>
+		</td>
+	</tr>
+	<tr>
+		<td>$min - $max {{of}} $total $prev $next</td>
+	</tr>
 </table>
 EOF;
 			return $result;
@@ -183,6 +210,35 @@ EOF;
 				$result[] = $record;
 			}
 			return $result;
+		}
+
+		public static function select_range($type = "", $start = 0, $qty = 50) {
+			global $g_pdo;
+			if ($type == "") {
+				throw new Exception("Need a type");
+			}
+
+			$request = <<<EOF
+SELECT COUNT(*) FROM $type
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute();
+			$r = $pst->fetch();
+			$total = $r[0];
+
+			$request = <<<EOF
+SELECT * FROM $type
+ORDER BY id
+LIMIT $start, $qty
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute();
+
+			$result = array();
+			while (($record = $pst->fetch(PDO::FETCH_ASSOC)) != null) {
+				$result[] = $record;
+			}
+			return array($result, $start, $total);
 		}
 
 		public static function format_value($value, $field, $id) {
@@ -363,7 +419,8 @@ EOF;
 		}
 
 		public static function multi_action($action) {
-			$id_array = explode("_", $_GET["ids"]);
+			//$id_array = explode("_", $_GET["ids"]);
+			$id_array = $_GET["ids"];
 			foreach ($id_array as $id) {
 				$record = Record::get_from_id($_GET["type"], $id);
 				if ($record != null) {

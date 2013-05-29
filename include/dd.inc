@@ -53,5 +53,4 @@
 
 	$e = $g_dd->add_entity("event");
 	$e->add_field("title", "{{Title}}", "string");
-	$e->add_global_action("create", "{{New}}");
 ?>

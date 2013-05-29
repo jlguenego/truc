@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	header("Content-Type: text/plain");
 	define("BASE_DIR", dirname(__FILE__));
 
@@ -12,6 +12,6 @@
 	Task::run(TASK_RUNNING_DURATION);
 	$type = "task";
 	$classname = Record::get_classname($type);
-	$remaining_tasks = $classname::get_progression($type, $_POST["event_id"]);
+	eval('$remaining_tasks = '.$classname.'::get_progression($type, $_POST["event_id"]);');
 	echo join(",", $remaining_tasks);
 ?>
