@@ -254,4 +254,31 @@ EOF;
 		global $g_dd;
 		return $g_dd;
 	}
+
+	function ls($dirname) {
+		$result = array();
+		 foreach(scandir($dirname) as $file) {
+			if ('.' === $file || '..' === $file) {
+				continue;
+			}
+			$result[] = $file;
+	    }
+		return $result;
+	}
+
+	function rmdir_recursive($dir) {
+	    foreach(scandir($dir) as $file) {
+			if ('.' === $file || '..' === $file) {
+				continue;
+			}
+			if (is_dir("$dir/$file")) {
+				rmdir_recursive("$dir/$file");
+			} else {
+				unlink("$dir/$file");
+			}
+	    }
+	    if (is_dir($dir)) {
+	    	rmdir($dir);
+	    }
+	}
 ?>
