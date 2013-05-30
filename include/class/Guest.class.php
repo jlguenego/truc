@@ -121,12 +121,41 @@ EOF;
 			parent::delete();
 		}
 
+		public static function delete_all() {
+			global $g_pdo;
+			$request = <<<EOF
+SELECT
+  id_guest
+FROM
+  event_guest
+WHERE
+  id_event = :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+
+			$array = array(":id" => $_SESSION["event_id"]);
+			debug("array=".sprint_r($array));
+			$pst->execute($array);
+
+			while(($record = $pst->fetch()) != null) {
+				$guest = new Guest();
+				$guest->id = $record["id_guest"];
+				$guest->delete();
+			}
+		}
+
 		public static function get_dialog_content($type) {
 			$result = parent::get_dialog_content($type);
 			$result .= <<<EOF
 <div id="dialog_import" style="display: none;" title="">
 	<form name="form_execute_global_action_import" action="?action=import&amp;type=$type" method="post" enctype="multipart/form-data">
 		<input type="file" name="guest_filename" placeholder="File with email address" />
+	</form>
+</div>
+<div id="dialog_delete_all" style="display: none;" title="">
+	{{Are you sure you want to delete all guests?}}
+	<form name="form_execute_global_action_delete_all" action="?action=delete_all&amp;type=$type" method="post">
 	</form>
 </div>
 EOF;

@@ -85,7 +85,7 @@ EOF;
 			$qty = default_value("qty", 50);
 			eval('list($db_records, $start, $total) = '.$classname.'::select_range($type, $start, $qty);');
 			eval('$columns = '.$classname.'::get_fields($type);');
-			$min = $start + 1;
+			$min = min($start + 1, $total);
 			$max = $start + count($db_records);
 			$prev = "{{prev}}";
 			if ($min > 1) {
