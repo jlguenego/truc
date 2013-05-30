@@ -50,4 +50,6 @@
 	define('ADVERTISEMENT_STATUS_SENT', 1);
 
 	define('SYNC_LOCK_FILE', '.evt_lock.txt');
+
+	define('INSTRUCTION_SEPARATOR', "\n---INSTRUCTION_SEPARATOR---\n");
 ?>

@@ -267,6 +267,12 @@ EOF;
 	}
 
 	function rmdir_recursive($dir) {
+		if (!is_dir($dir)) {
+			if (is_file($dir)) {
+				unlink("$dir");
+			}
+			return;
+		}
 	    foreach(scandir($dir) as $file) {
 			if ('.' === $file || '..' === $file) {
 				continue;

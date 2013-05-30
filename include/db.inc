@@ -34,11 +34,13 @@ EOF;
 		global $g_pdo;
 
 		$requests = file_get_contents($file);
-		if (!preg_match("#;#", $requests)) {
-			return;
+
+		foreach (explode(INSTRUCTION_SEPARATOR, $requests) as $request) {
+			if (!preg_match("#;#", $request)) {
+				return;
+			}
+			$g_pdo->exec($request);
 		}
-		echo nl2br($requests);
-		$g_pdo->exec($requests);
 	}
 
 	function db_set_constraints($bool) {

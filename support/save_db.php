@@ -32,9 +32,10 @@ EOF;
 				}
 			}
 			$value_list = join(",", $values);
-			$line = "INSERT INTO ${table} (${column_list}) VALUES (${value_list});\n";
+			$line = "INSERT INTO ${table} (${column_list}) VALUES (${value_list});".INSTRUCTION_SEPARATOR;
 			$content .= $line;
 		}
 		file_put_contents($dirname."/".$table.".sql", $content);
 	}
+	echo "SUCCESS";
 ?>

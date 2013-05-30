@@ -15,4 +15,5 @@
 		db_execute_file($dirname."/".$file);
 	}
 	db_set_constraints(true);
+	echo "SUCCESS";
 ?>

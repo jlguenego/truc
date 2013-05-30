@@ -943,13 +943,17 @@
 
 	function action_handle_forgotten_password() {
 		$_SESSION["state"] = "forgotten_password_mail_sent";
+		debug("handle fogotten password");
 		if (is_null_or_empty($_GET["email"])) {
 			return;
 		}
+		debug("email not null");
 		$user = User::get_from_email($_GET["email"]);
 		if ($user == NULL) {
+			debug("user is null");
 			return;
 		}
+		debug("Send mail");
 		$token = $user->set_reset_password_token();
 		mail_forgotten_password($user, $token);
 	}
