@@ -45,12 +45,15 @@
 			include($this->filename(BASE_DIR."/mail/footer.php"));
 			$result = ob_get_contents();
 			ob_end_clean();
+			debug("Mail=".$result);
 			return $this->parse($result);
 		}
 
 		public function filename($filename) {
-			$result = preg_replace("/([.].*?)$/", ".".$this->locale."$1", $filename);
+			$result = preg_replace("/([.][^.]*?)$/", ".".$this->locale."$1", $filename);
 			debug("looking for filename: ".$result);
+			debug("input=".$filename);
+			debug("output=".$result);
 			if (file_exists($result)) {
 				return $result;
 			}
