@@ -131,13 +131,13 @@ EOF;
 <div class="evt_title"><p>
 	{$this->title}
 EOF;
-				if ($this->cancel) {
-					$result .= <<<EOF
-<a class="{$this->css}_cancel" href="{$this->cancel_url}">{{Cancel}}</a>
-EOF;
-				}
 				$result .= <<<EOF
 </p></div>
+EOF;
+			}
+			if ($this->cancel) {
+				$result .= <<<EOF
+<div class="{$this->css}_cancel"><a href="{$this->cancel_url}">{{Cancel}}</a></div>
 EOF;
 			}
 			$result .= <<<EOF
@@ -223,10 +223,10 @@ EOF;
 					case "submit":
 						if ($this->cancel) {
 						$result .= <<<EOF
-<span class="{$this->css}_cancel"><input type="button" onclick="window.location='{$this->cancel_url}'" value="{{Cancel}}"/></span><span class="spacer"></span>
+<span class="{$this->css}_cancel"><input class="evt_button evt_btn_small evt_btn_cancel" type="button" onclick="window.location='{$this->cancel_url}'" value="{{Cancel}}"/></span><span class="spacer"></span>
 EOF;
 						}
-						$result .= "<input type=\"submit\" value=\"".$item->label."\"/>";
+						$result .= '<input class="evt_button evt_btn_small" type="submit" value="'.$item->label.'"/>';
 						break;
 					default:
 				}

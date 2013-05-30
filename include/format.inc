@@ -16,9 +16,9 @@
 	}
 
 	function format_participate_button($event) {
-		$participate = _t("Book tickets");
+		$participate = _t("Book tickets!");
 		if ($event->is_confirmed()) {
-			$participate = _t("Buy tickets");
+			$participate = _t("Buy tickets!");
 		}
 		return $participate;
 	}

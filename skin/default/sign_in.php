@@ -1,11 +1,12 @@
 <?php
 	$f = new Form();
-	$f->title = _t("Sign in")." | <a href=\"index.php?action=get_form&amp;type=account\">"._t("Create an account")."</a>";
+	$f->title = _t("Sign in");
 	$f->action = "?action=authenticate";
 	if (isset($_GET["redirect"])) {
 		$f->action .= "&amp;redirect=yes";
 	}
 	$f->method = "POST";
+	$f->add_raw_html('<div class="form_cancel">Not registered? Then <a href="index.php?action=get_form&amp;type=account">'._t("create an account").'</a>.</div>');
 	$f->add_text(_t("Email"), "email", default_value("email"), _t("Enter your email"));
 	$f->add_password(_t("Password"), "clear_password", _t("Enter your password"));
 	$f->add_hidden("password", "");

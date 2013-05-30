@@ -128,7 +128,7 @@
 ?>
 		<td class="evt_participate"rowspan="<?php echo (count($tickets)+2); ?>">
 			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
-				<button><?php echo format_participate_button($event); ?></button>
+				<button class="evt_button"><?php echo format_participate_button($event); ?></button>
 			</a>
 		</td>
 <?php
