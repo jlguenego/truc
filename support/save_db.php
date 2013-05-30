@@ -5,7 +5,7 @@
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/db.inc");
 
-	$dirname = str_replace("\\", "/", BASE_DIR."/support/backup");
+	$dirname = str_replace("\\", "/", BASE_DIR."/_backup");
 	rmdir_recursive($dirname);
 	mkdir($dirname, 0777, true);
 

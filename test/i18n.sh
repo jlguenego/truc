@@ -24,10 +24,13 @@ do
 	#echo "line=$line"
 	#L=`grep -F "$line" locale/fr/messages.php | wc -l | xargs`
 	if ! grep -q "${line}" locale/fr/messages.php; then
-		echo $line
+		echo "|$line|"
 	fi
 done
 
 rm -f test/f1.txt
 
-echo "Success"
+echo ""
+echo "#################"
+echo "#    Success    #"
+echo "#################"

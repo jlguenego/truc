@@ -45,7 +45,7 @@
 	$e->add_action("delete", "{{Delete}}");
 	$e->add_global_action("create", "{{New}}");
 	$e->add_global_action("import", "{{Import}}");
-	$e->add_global_action("delete_all", "{{Delete All}}");
+	$e->add_global_action("delete_all", "{{Delete all}}");
 	$e->add_grouped_action("delete", "{{Delete}}");
 
 	$e = $g_dd->add_entity("interaction");

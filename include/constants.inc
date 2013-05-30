@@ -1,6 +1,6 @@
 <?php
 	define('SITE_ROOT', ".");
-	define('SETTINGS_INI', "settings.ini");
+	define('SETTINGS_INI', "_settings.ini");
 	define('SKIN_DIR', "skin/default");
 
 	define('COMPANY_NAME', 'Eventual');
@@ -49,7 +49,7 @@
 	define('ADVERTISEMENT_STATUS_DEFAULT', 0);
 	define('ADVERTISEMENT_STATUS_SENT', 1);
 
-	define('SYNC_LOCK_FILE', '.evt_lock.txt');
+	define('SYNC_LOCK_FILE', '_evt_lock.txt');
 
 	define('INSTRUCTION_SEPARATOR', "\n---INSTRUCTION_SEPARATOR---\n");
 ?>

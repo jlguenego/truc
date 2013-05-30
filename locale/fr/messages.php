@@ -414,6 +414,44 @@ $this->array = array(
 	"Please enter a number for the amount of person" =>
 		"Veuillez entrer un nombre pour la quantité de personne",
 
+	"A valid text file that contains one email address per line." =>
+		"Un fichier texte valide qui contient une adresse email par ligne",
+	"Account successfully deleted" => "Compte effacé avec succès",
+	"Advertisement Id" => "ID de publicité",
+	"Are you sure you want to delete all guests?" =>
+		"Etes-vous sûr de vouloir effacer tout les prospects ?",
+	"Cannot load the guest with id=" => "Impossible de charger le prospect avec l'id=",
+	"Command" => "Commande",
+	"Content" => "Contenu",
+	"create an account" => "créer un compte",
+	"Created" => "Créé",
+	"Delete all" => "Tout effacer",
+	"Error message" => "Message d'erreur",
+	"Event Id" => "ID d'évènement",
+	"Execute" => "Executer",
+	"Execute now" => "Executer maintenant",
+	"File with email address" => "Fichier avec des adresses e-mail",
+	"Guest Id" => "ID de prospect",
+	"Guest management" => "Gestion de prospect",
+	"Help" => "Aide",
+	"Import" => "Importer",
+	"Last modified" => "Dernière modification",
+	"next" => "suivant",
+	"Not sent" => "Non envoyé",
+	"Page not existing." => "Page non existante",
+	"Parameters" => "Paramètres",
+	"Pending" => "En attente",
+	"prev" => "précédent",
+	"Promote your event" => "Faire la promotion de votre évènement",
+	"Record successfully created." => "Enregistrement créé avec succès.",
+	"Running" => "En cours",
+	"Send" => "Envoyer",
+	"Send to me only" => "Envoyer à moi seulement",
+	"Sent" => "Envoyé",
+	"Start date" => "Date de démarrage",
+	"Success" => "Succès",
+	"You cannot access to this event." => "Vous ne pouvez pas accéder à cet évènement.",
+
 //The End
 );
 ?>
