@@ -4,7 +4,7 @@
 
 		$event = Event::get_from_id($event_id);
 		$ad = Record::get_from_id("advertisement", $advertisement_id);
-		$subject = $ad->get_field("name")->value;
+		$subject = format_mail_subject($ad->get_field("name")->value);
 		$msg_html = $ad->get_field("content_h")->value;
 
 		$msg = mail_build($msg_html, $guest_mail);
@@ -17,7 +17,7 @@
 	function mail_notify_publication($event, $reason = "") {
   		global $g_display;
 
-		$subject = _t("Publication notification");
+		$subject = format_mail_subject(_t("Publication notification"));
 		$msg_html = "";
 		$event_owner = User::get_from_id($event->user_id);
 		$g_display["user"] = $event_owner;
@@ -39,7 +39,7 @@
 		global $g_i18n;
 
 		$g_display["event"] = $event;
-		$subject = _t("Publication request");
+		$subject = format_mail_subject(_t("Publication request"));
 		$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/publication_request.php");
 
 		$msg = mail_build($msg_html, CONTACT_MAIL);
@@ -48,18 +48,17 @@
 
 	function mail_payment($mail, $bill) {
 		global $g_display;
-		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
 		$user = User::get_from_id($bill->user_id);
-		$subject = _t("Payment authorization");
+		$subject = format_mail_subject(_t("Payment authorization"));
 		$g_display["user"] = $user;
 		$g_display["bill"] = $bill;
 		if ($bill->status == DEVIS_STATUS_CONFIRMED) {
-			$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/payment_authorization.php");
+			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_authorization.php");
 			$subject = _t("Payment confirmation and invoice");
 		} else if ($bill->status == DEVIS_STATUS_PLANNED) {
-			$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/payment_full.php");
+			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_full.php");
 		} else {
 			throw new Exception("Unexpected devis status.");
 		}
@@ -71,7 +70,7 @@
   	function mail_event_confirm($event_id) {
   		global $g_display;
 
-		$subject = _t("Event confirmation");
+		$subject = format_mail_subject(_t("Event confirmation"));
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
 		foreach ($devis_array as $devis) {
@@ -94,7 +93,7 @@
   	function mail_event_cancel($event_id) {
   		global $g_display;
 
-		$subject = _t("Event cancellation");
+		$subject = format_mail_subject(_t("Event cancellation"));
 		$event = Event::get_from_id($event_id);
 		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
 		foreach ($devis_array as $devis) {
@@ -113,13 +112,12 @@
 
   	function mail_inscription($user) {
   		global $g_display;
-  		global $g_i18n;
 
   		$g_display["user"] = $user;
-		$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/inscription.php");
+  		$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/inscription.php");
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = _t("Activate your account");
+		$subject = format_mail_subject(_t("Activate your account"));
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
@@ -129,22 +127,22 @@
 
 		$g_display["user"] = $user;
 		$g_display["token"] = $token;
-		$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/forgotten_password.php");
+		$i18n = $user->get_i18n();
+		$msg_html = $i18n->get_mail_html(BASE_DIR."/mail/forgotten_password.php");
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = _t("Forgotten password");
+		$subject = format_mail_subject($i18n->_t("Forgotten password"));
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 
   	function mail_password_changed($user) {
   		global $g_display;
-  		global $g_i18n;
 
   		$g_display["user"] = $user;
-		$msg_html = $g_i18n->get_mail_html(BASE_DIR."/mail/password_changed.php");
+		$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/password_changed.php");
 
 		$msg = mail_build($msg_html, $user->email);
-		$subject = _t("Password changed");
+		$subject = format_mail_subject($user->get_i18n()->_t("Password changed"));
 		mail($user->email, $subject, $msg["content"], $msg["header"]);
   	}
 

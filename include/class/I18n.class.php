@@ -17,15 +17,17 @@
 				}
 				$this->locale = $_SESSION["locale"];
 			}
+			debug("load with locale: ".$this->locale);
 			$this->load();
 		}
 
 		public function load() {
 			$filename = BASE_DIR."/locale/".$this->locale."/messages.php";
 			if (!file_exists($filename)) {
+				debug("Locale file does not exist.");
 				return;
 			}
-			require_once($filename);
+			require($filename);
 			debug("array=".sprint_r($this->array));
 		}
 
@@ -48,6 +50,7 @@
 
 		public function filename($filename) {
 			$result = preg_replace("/([.].*?)$/", ".".$this->locale."$1", $filename);
+			debug("looking for filename: ".$result);
 			if (file_exists($result)) {
 				return $result;
 			}

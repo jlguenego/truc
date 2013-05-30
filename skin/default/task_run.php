@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	$type = $g_display["type"];
 	$classname = Record::get_classname($type);
 ?>

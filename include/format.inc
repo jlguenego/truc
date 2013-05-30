@@ -30,4 +30,8 @@
 		}
 		return strftime("%A %#d %B %Y", $date);
 	}
+
+	function format_mail_subject($subject) {
+		return "=?UTF-8?B?".base64_encode($subject)."?=";
+	}
 ?>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	define("BASE_DIR", dirname(dirname(__FILE__)));
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/include/globals.inc");
