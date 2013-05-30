@@ -5,7 +5,7 @@
 	require_once(BASE_DIR . "/include/misc.inc");
 	require_once(BASE_DIR . "/include/db.inc");
 
-	$dirname = str_replace("\\", "/", BASE_DIR."/test/mydb");
+	$dirname = str_replace("\\", "/", BASE_DIR."/support/backup");
 
 	db_set_constraints(false);
 	foreach (ls($dirname) as $file) {
