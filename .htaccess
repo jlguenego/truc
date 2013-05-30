@@ -16,6 +16,6 @@ SetEnv PHP_VER 5
 # Activate URL rewriting
 RewriteEngine on
 
-RewriteRule ^event/([\d]+)   	index.php?action=retrieve&type=event&id=$1 [L]
+RewriteRule ^event/([\d]+)  	index.php?action=retrieve&type=event&id=$1 [L]
 RewriteRule ^events   			index.php?action=list&type=event [L]
 RewriteRule ^info/([\w]+)		index.php?action=display&page=$1 [L]

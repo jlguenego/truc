@@ -35,6 +35,7 @@
 			<li><a href=".">{{Home}}</a></li>
 			<li><a href="?action=get_form&amp;type=event">{{Declare an event}}</a></li>
 			<li><a href="events">{{Explore events}}</a></li>
+			<li><a href="info/pricing">{{Pricing}}</a></li>
 			<li><a href="info/contact">Contact</a></li>
 <?php
 		if (is_admin_logged()) {

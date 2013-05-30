@@ -14,6 +14,7 @@ $this->array = array(
 	"Sign out" => "Déconnexion",
 	"Account info" => "Afficher mon profil",
 	"Create account" => "S'inscrire",
+	"Pricing" => "Tarifs",
 
 //Root
 	"Declare an event" => "Déclarer un évènement",
@@ -319,7 +320,7 @@ $this->array = array(
 //Footer
 	"Event-Biller is a service provided by JLG-Consulting" => "Event-Biller est un service fourni par JLG-Consulting",
 	"This web site is hosted with" => "Ce site web est hébergé par",
-	"For more security, you can use it with its" => "Pour plus de sécurité, vous pouvez l'utiliser avec son",
+	"You can also use it with its" => "Vous pouvez aussi l'utiliser avec son",
 	"HTTPS access" => "accès HTTPS",
 	"Terms and Conditions" => "Conditions générales d'utilisation",
 	"Sales policies" => "Conditions générales de vente",
