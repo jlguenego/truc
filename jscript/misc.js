@@ -53,6 +53,11 @@ function eb_sync_amount() {
 	$(this).val(amount);
 
 	var id = $(this).attr('id');
+	var max_quantity = $(this).attr('max');
+	if (amount > max_quantity) {
+		amount = max_quantity;
+		$(this).val(max_quantity);
+	}
 	var unit_price = $('#unit_price_' + id).html();
 	var total_ht = amount * unit_price;
 	$('#total_ht_' + id).html(total_ht.toFixed(2));

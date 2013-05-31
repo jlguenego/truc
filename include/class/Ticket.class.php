@@ -185,7 +185,7 @@ EOF;
 
 			$request = <<<EOF
 SELECT
-  COUNT(*)
+  SUM(quantity)
 FROM
   item i,
   bill b

@@ -760,10 +760,11 @@
 				$item = new Item();
 
 				$item->event_name = $event->title;
-				$item->event_rate_name = $tickets[$i]["label"];
-				$item->event_rate_amount = $tickets[$i]["amount"];
-				$item->event_rate_tax = $tickets[$i]["tax_rate"];
+				$item->event_rate_name = $tickets[$i]->name;
+				$item->event_rate_amount = $tickets[$i]->amount;
+				$item->event_rate_tax = $tickets[$i]->tax_rate;
 				$item->quantity = $_GET["ticket_${i}"];
+				$item->ticket_id = $tickets[$i]->id;
 
 				$item->compute();
 

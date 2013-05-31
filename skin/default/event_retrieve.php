@@ -132,7 +132,13 @@
 			</a>
 		</td>
 <?php
-	}
+		} else if ($event->get_remaining_tickets_amount() <= 0) {
+?>
+		<td class="evt_participate" rowspan="<?php echo (count($tickets)+2); ?>">
+			{{Sorry, but all tickets were sold...}}
+		</td>
+<?php
+		}
 ?>
 	</tr>
 		<tr>
@@ -149,8 +155,8 @@
 		$amount_ht = curr($ticket->amount);
 		$amount_ttc = curr($amount_ht * (($tax/100) + 1));
 		$remaining = $ticket->get_remaining();
-		if ($remaining == null) {
-			$remaining = _t("Yes");
+		if ($remaining <= 0) {
+			$remaining = 0;
 		}
 ?>
 		<tr>

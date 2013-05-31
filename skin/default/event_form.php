@@ -199,10 +199,13 @@ EOF
 
 	eb_tiny_mce_on();
 
-	$('form').submit(function() {
+	$('input[name=event_type_checkbox]').change(function() {
+		log("checkbox changed");
 		if ($("input[name=event_type_checkbox]:checked").length > 0) {
+			log("checkbox is checked");
 			$("input[name=event_type]").attr("value", <?php echo EVENT_TYPE_NOMINATIVE; ?>);
 		} else {
+			log("checkbox is not checked");
 			$("input[name=event_type]").attr("value", <?php echo EVENT_TYPE_ANONYMOUS; ?>);
 		}
 	});

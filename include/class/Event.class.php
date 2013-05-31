@@ -307,7 +307,18 @@ EOF;
 			if ($this->is_inactivated()) {
 				return FALSE;
 			}
+			if ($this->get_remaining_tickets_amount() <= 0) {
+				return FALSE;
+			}
 			return TRUE;
+		}
+
+		public function get_remaining_tickets_amount() {
+			$ticket_remaining = 0;
+			foreach ($this->get_tickets() as $ticket) {
+				$ticket_remaining += $ticket->get_remaining();
+			}
+			return $ticket_remaining;
 		}
 
 		function add_funding_acquired($amount) {

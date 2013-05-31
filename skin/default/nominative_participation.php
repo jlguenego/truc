@@ -8,9 +8,10 @@
 	<tr>
 		<th>{{Event name}}</th>
 		<th>{{Categories}}</th>
-		<th>{{Rate}}</th>
+		<th>{{Remaining}}</th>
+		<th>{{Rate}} (€)</th>
 		<th>{{Tax}}</th>
-		<th>{{Total}}</th>
+		<th>{{Total}} (€)</th>
 	</tr>
 	<?php
 		$tax_array = array();
@@ -25,16 +26,22 @@
 				$tax_array[] = $tax_rate;
 			}
 			$amount_ttc = number_format($amount_ht * (($tax_rate/100) + 1), 2);
+			$disable = "";
+			$remaining = $ticket->get_remaining();
+			if ($remaining <= 0) {
+				$disable = "disabled";
+			}
 	?>
 	<tr>
 		<td><?php echo $event_title; ?></td>
 		<td><?php echo $label; ?></td>
+		<td id="<?php echo $ticket->id; ?>_remaining"><?php echo $remaining; ?></td>
 		<td class="evt_curr"><?php echo $amount_ht; ?></td>
 		<td class="evt_curr"><?php echo $tax_rate; ?>%</td>
 		<td class="evt_curr"><?php echo $amount_ttc; ?></td>
-		<td><button OnClick="add_ticket(<?php
+		<td><button id="add_btn_<?php echo $ticket->id; ?>" OnClick="add_ticket(<?php
 			echo "'$event_title_js', '$label', $amount_ht, $tax_rate, $ticket_id";
-			?>)">{{Add}}</button></td>
+			?>)" <?php echo $disable; ?>>{{Add}}</button></td>
 	</tr>
 	<?php
 		}
@@ -51,11 +58,11 @@
 		</tr>
 		<tr>
 			<th>{{Event}}</th>
-			<th>{{Rate}}</th>
-			<th>{{Unit price}}</th>
+			<th>{{Rate}} (€)</th>
+			<th>{{Unit price}} (€)</th>
 			<th>{{Tax rate}}</th>
-			<th>{{Tax amount}}</th>
-			<th>{{Due}}</th>
+			<th>{{Tax amount}} (€)</th>
+			<th>{{Due}} (€)</th>
 			<th>{{Title}}</th>
 			<th>{{Firstname}}</th>
 			<th>{{Lastname}}</th>
@@ -143,10 +150,12 @@
 	</table>
 	<input type="hidden" name="address" value=""/>
 	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>
-	<input type="submit" name="next" value="{{Next}}" disabled/>
-</form>
-<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
-	<input type="submit" value="{{Cancel}}"/>
+	<br/>
+	<span class="form_cancel">
+		<input type="button" class="evt_button evt_btn_small evt_btn_cancel" onclick="window.location='?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>'" value="{{Cancel}}" />
+	</span>
+	<span class="spacer"></span>
+	<input class="evt_button evt_btn_small" type="submit" name="next" value="{{Next}}" disabled/>
 </form>
 <script>
 	var taxes = new Array(
@@ -165,12 +174,40 @@
 		?>
 	);
 
+	var ticket_remaining = {};
+	<?php
+		foreach ($tickets as $ticket) {
+			$remaining = $ticket->get_remaining();
+			echo "ticket_remaining[{$ticket->id}] = ${remaining};";
+		}
+	?>
+
+	log(ticket_remaining);
+
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input').change(eb_sync_next_button);
 
 	var ticket_counter = 0;
 
+	function eb_sync_add_btn() {
+		for (ticket_id in ticket_remaining) {
+			log("remaining for " + ticket_id + ": " + ticket_remaining[ticket_id]);
+			$('#' + ticket_id + '_remaining').html(ticket_remaining[ticket_id]);
+
+			if (ticket_remaining[ticket_id] <= 0) {
+				log("disable ticket: " + ticket_id);
+				$("#add_btn_" + ticket_id).attr('disabled', '');
+			} else {
+				log("enable ticket: " + ticket_id);
+				$("#add_btn_" + ticket_id).removeAttr('disabled');
+			}
+		}
+	}
+
 	function add_ticket(event, label, amount_ht, tax, ticket_id) {
+		ticket_remaining[ticket_id]--;
+		eb_sync_add_btn();
+
 		ticket_counter++;
 		eb_display_tables();
 
@@ -197,7 +234,7 @@
 							"<td><input type=\"text\" name=\"titles[]\" placeholder=\"(optional) ex: Professor\" size=\"15\"/></td>" +
 							"<td><input type=\"text\" name=\"firstnames[]\" placeholder=\"mandatory\" value=\"<?php echo_default_value('firstname', $user->firstname); ?>\"/></td>" +
 							"<td><input type=\"text\" name=\"lastnames[]\" placeholder=\"mandatory\" value=\"<?php echo_default_value('lastname', $user->lastname); ?>\"/></td>" +
-							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "')\"/></td>" +
+							"<td><input type=\"button\" value=\"Remove\" onClick=\"eb_remove_ticket('ticket_" + id + "', " + ticket_id + ")\"/></td>" +
 						"</tr>";
 		$("#tickets").append(content);
 		eb_update_total();
@@ -211,9 +248,12 @@
 		$("#tickets").removeAttr("style");
 	}
 
-	function eb_remove_ticket(id) {
+	function eb_remove_ticket(id, ticket_id) {
 		ticket_counter--;
 		$("#" + id).remove();
+		ticket_remaining[ticket_id]++;
+		eb_sync_add_btn();
+
 		if (ticket_counter <= 0) {
 			$("#total").css("display", "none");
 			$("#tickets").css("display", "none");

@@ -25,6 +25,8 @@
 				$amount_ht = str_replace(",", "", curr($ticket->amount));
 				$label = $ticket->name;
 				$tax_rate = $ticket->tax_rate;
+				$ticket_id = $ticket->id;
+				$remaining = $ticket->get_remaining();
 				if (!in_array($tax_rate, $tax_array)) {
 					$tax_array[] = $tax_rate;
 				}
@@ -33,7 +35,10 @@
 			<td><?php echo $event_title; ?></td>
 			<td><?php echo $label; ?></td>
 			<td id="unit_price_<?php echo $i; ?>" class="evt_curr"><?php echo $amount_ht; ?></td>
-			<td><input id="<?php echo $i; ?>" type="number" name="ticket_<?php echo $i; ?>" value="<?php echo_default_value("ticket_${i}", 1) ?>"/></td>
+			<td>
+				<input id="<?php echo $i; ?>" type="number" min="1" max="<?php echo $remaining; ?>" name="ticket_<?php echo $i; ?>" value="<?php echo_default_value("ticket_${i}", 1); ?>"/><br/>
+				<span id="max_quantity_info_<?php echo $i; ?>" class="form_help">{{Max:}} <?php echo $remaining; ?></span>
+			</td>
 			<td id="total_ht_<?php echo $i; ?>" class="evt_curr">0.00</td>
 			<td id="tax_rate_<?php echo $i; ?>" class="evt_curr"><?php echo $tax_rate; ?></td>
 			<td id="tax_amount_<?php echo $i; ?>" class="evt_curr">0.00</td>
@@ -131,13 +136,15 @@
 		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>
-	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>
-	<input type="submit" name="next" value="{{Next}}" disabled/>
-</form>
-<form name="input" action="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>" method="POST">
-	<input type="submit" value="{{Cancel}}"/>
+	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/><br/>
+	<span class="form_cancel">
+		<input type="button" class="evt_button evt_btn_small evt_btn_cancel" onclick="window.location='?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>'" value="{{Cancel}}" />
+	</span>
+	<span class="spacer"></span>
+	<input class="evt_button evt_btn_small" type="submit" name="next" value="{{Next}}" disabled/>
 </form>
 <script>
+	var max_reached = "{{Max quantity reached}}";
 	var rate_nbr = <?php echo $i; ?>;
 	var tax_nbr = <?php echo $i2; ?>;
 	var taxes = new Array(

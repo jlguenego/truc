@@ -23,13 +23,17 @@
 				}
 			?>
 		</td>
-		<td>
+		<td align="center">
 			<?php
 				if ($event->can_participate()) {
 			?>
 			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
 				<button class="evt_button evt_btn_small"><?php echo format_participate_button($event); ?></button>
 			</a>
+			<?php
+				} else if($event->get_remaining_tickets_amount() <= 0) {
+			?>
+			{{Sold out}}
 			<?php
 				}
 			?>
