@@ -29,7 +29,9 @@
 		<td>19.6%</td>
 	</tr>
 </table>
-
+<p>
+	The money transfer charges are included in our rate. There is absolutely no unexpected fees.
+</p>
 <h1>Price list for other users</h1>
 <p>
 	Prices are indicated when booking or buying ticket. Ticket bought cannot be refunded by Event-Biller.com. Users can still check the organizer policies. Ticket payment, when booked are captured only when the event is confirmed by Event-Biller.com.

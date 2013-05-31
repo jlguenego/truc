@@ -29,7 +29,9 @@
 		<td>19.6%</td>
 	</tr>
 </table>
-
+<p>
+	Les frais de transfert bancaire sont inclus dans nos tarifs. Il n'y a absolument pas de frais inatendus.
+</p>
 <h1>Liste des tarifs pour les participants</h1>
 <p>
 	Les prix sont indiqués lors de la réservation ou de l'achat de billet.
