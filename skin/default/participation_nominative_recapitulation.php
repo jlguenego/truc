@@ -3,7 +3,7 @@
 	$devis = $g_display["devis"];
 	$event = $devis->get_event();
 ?>
-<div class="evt_title"><p><?php echo format_participate_button($event); ?> - {{Confirmation}}</p></div>
+<div class="evt_title"><p><?php echo format_participate_title($event); ?> - {{Confirmation}}</p></div>
 <?php
 	if ($event->is_confirmed()) {
 		echo _t("Invoice ID: ").$devis->label;

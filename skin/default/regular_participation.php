@@ -3,7 +3,7 @@
 	$tickets = $g_display["tickets"];
 	$user = $g_display["user"];
 ?>
-<div class="evt_title"><p><?php echo format_participate_button($event); ?></p></div>
+<div class="evt_title"><p><?php echo format_participate_title($event); ?></p></div>
 {{How many ticket do you want?}}
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table class="evt_table">
@@ -36,7 +36,7 @@
 			<td><?php echo $label; ?></td>
 			<td id="unit_price_<?php echo $i; ?>" class="evt_curr"><?php echo $amount_ht; ?></td>
 			<td>
-				<input id="<?php echo $i; ?>" type="number" min="1" max="<?php echo $remaining; ?>" name="ticket_<?php echo $i; ?>" value="<?php echo_default_value("ticket_${i}", 1); ?>"/><br/>
+				<input id="<?php echo $i; ?>_amount" type="number" min="1" max="<?php echo $remaining; ?>" name="ticket_<?php echo $i; ?>" value="<?php echo_default_value("ticket_${i}", 1); ?>" data-id="<?php echo $i; ?>" data-type="quantity"/><br/>
 				<span id="max_quantity_info_<?php echo $i; ?>" class="form_help">{{Max:}} <?php echo $remaining; ?></span>
 			</td>
 			<td id="total_ht_<?php echo $i; ?>" class="evt_curr">0.00</td>
@@ -162,9 +162,9 @@
 			}
 		?>
 	);
-	$('input').change(eb_sync_amount);
-	$('input').keyup(eb_sync_amount);
-	$('input[id]').each(eb_sync_amount);
+	$('input[data-type="quantity"]').change(eb_sync_amount);
+	$('input[data-type="quantity"]').keyup(eb_sync_amount);
+	$('input[data-type="quantity"]').each(eb_sync_amount);
 
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input[type=checkbox]').change(eb_sync_next_button);

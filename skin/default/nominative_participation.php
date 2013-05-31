@@ -3,7 +3,7 @@
 	$tickets = $g_display["tickets"];
 	$user = $g_display["user"];
 ?>
-<div class="evt_title"><p><?php echo format_participate_button($event); ?></p></div>
+<div class="evt_title"><p><?php echo format_participate_title($event); ?></p></div>
 <table class="evt_table">
 	<tr>
 		<th>{{Event name}}</th>

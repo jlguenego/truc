@@ -470,7 +470,7 @@ EOF;
 		public function display_status() {
 			switch ($this->status) {
 				case EVENT_STATUS_PLANNED:
-					return "Planned&nbsp;(not&nbsp;confirmed)";
+					return "Planned";
 					break;
 				case EVENT_STATUS_CONFIRMED:
 					return "Confirmed";

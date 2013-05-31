@@ -52,7 +52,7 @@ function eb_sync_amount() {
 	var amount = Math.abs($(this).val());
 	$(this).val(amount);
 
-	var id = $(this).attr('id');
+	var id = $(this).attr('data-id');
 	var max_quantity = $(this).attr('max');
 	if (amount > max_quantity) {
 		amount = max_quantity;

@@ -23,6 +23,14 @@
 		return $participate;
 	}
 
+	function format_participate_title($event) {
+		$participate = _t("Book tickets");
+		if ($event->is_confirmed()) {
+			$participate = _t("Buy tickets");
+		}
+		return $participate;
+	}
+
 	function format_date($date, $format = "%Y-%m-%d") {
 		setlocale(LC_ALL, I18n::get_os_locale());
 		if ($format != "timestamp") {

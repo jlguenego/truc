@@ -356,7 +356,11 @@
 					debug("password changed => mail send");
 					mail_password_changed($user);
 				}
-				action_account_retrieve();
+				if (TEST_MODE) {
+					action_account_retrieve();
+				} else {
+					redirect_to('?action=retrieve&type=account');
+				}
 			} else {
 				throw new Exception(_t("This user does not exists."));
 			}
@@ -1017,6 +1021,10 @@
 		$event = Event::get_from_id($_GET["id"]);
 		$event->set_ready_for_publication(true);
 		mail_publication_request($event);
-		action_event_retrieve();
+		if (TEST_MODE) {
+			action_event_retrieve();
+		} else {
+			redirect_to("?action=retrieve&type=event&id=".$event->id);
+		}
 	}
 ?>
