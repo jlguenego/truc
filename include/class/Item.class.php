@@ -12,6 +12,7 @@
 		public $attendee_lastname;
 		public $attendee_title;
 		public $bill_id;
+		public $ticket_id;
 
 		public function hydrate($record) {
 			foreach ($record as $key => $value) {
@@ -24,6 +25,7 @@
 				$this->$key = $value;
 			}
 			$this->bill_id = $record["id_bill"];
+			$this->ticket_id = $record["id_ticket"];
 		}
 
 		public function compute() {
@@ -32,11 +34,10 @@
 			$this->total_ttc = $this->total_ht + $this->total_tax;
 		}
 
-		public function store($id_bill) {
+		public function store() {
 			global $g_pdo;
 
 			$this->id = create_id();
-			$this->bill_id = $id_bill;
 
 			$request = <<<EOF
 INSERT INTO `item`
@@ -51,6 +52,7 @@ SET
 	`total_tax`= :total_tax,
 	`total_ttc`= :total_ttc,
 	`id_bill`= :id_bill,
+	`id_ticket`= :id_ticket,
 	`attendee_firstname`= :attendee_firstname,
 	`attendee_lastname`= :attendee_lastname,
 	`attendee_title`= :attendee_title;
@@ -67,6 +69,7 @@ EOF;
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
 				":id_bill" => $this->bill_id,
+				":id_ticket" => $this->ticket_id,
 				":attendee_firstname" => $this->attendee_firstname,
 				":attendee_lastname" => $this->attendee_lastname,
 				":attendee_title" => $this->attendee_title,

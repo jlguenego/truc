@@ -420,26 +420,6 @@ EOF;
 			$pst->execute($array);
 		}
 
-		public function get_bill() {
-			global $g_pdo;
-
-			$request = <<<EOF
-SELECT `id` FROM `bill`
-WHERE `id_event`= :id
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(":id" => $this->id));
-
-			$devis_array = array();
-			while (($record = $q->fetch()) != NULL) {
-				debug("record=".sprint_r($record));
-				$devis = Devis::get_from_id($record["id"]);
-				$devis_array[] = $devis;
-			}
-			return $devis_array;
-		}
-
 		public function get_devis($type = DEVIS_TYPE_AUTODETECT) {
 			global $g_pdo;
 			if ($type == DEVIS_TYPE_AUTODETECT) {

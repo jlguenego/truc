@@ -107,6 +107,7 @@ CREATE TABLE item(
         attendee_lastname  Varchar (255) ,
         attendee_title     Varchar (25) ,
         id_bill            Int NOT NULL ,
+        id_ticket          Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -169,6 +170,7 @@ ALTER TABLE ticket ADD CONSTRAINT FK_ticket_id_event FOREIGN KEY (id_event) REFE
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
+ALTER TABLE item ADD CONSTRAINT FK_item_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_advertisement FOREIGN KEY (id_advertisement) REFERENCES advertisement(id);
 ALTER TABLE advertisement ADD CONSTRAINT FK_advertisement_id_event FOREIGN KEY (id_event) REFERENCES event(id);

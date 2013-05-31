@@ -15,5 +15,13 @@
 		db_execute_file($dirname."/".$file);
 	}
 	db_set_constraints(true);
-	echo "SUCCESS";
 ?>
+<html>
+	<head>
+		<title>Restoration done</title>
+	</head>
+	<body>
+		Restoration success<br/>
+		<a href="../index.php">Go to index</a>
+	</body>
+<html>

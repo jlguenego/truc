@@ -122,11 +122,11 @@
 
 <table class="evt_rate_table">
 	<tr>
-		<td class="evt_rate_title" colspan="4">{{Tickets}}</td>
+		<td class="evt_rate_title" colspan="5">{{Tickets}}</td>
 <?php
 		if ($event->can_participate()) {
 ?>
-		<td class="evt_participate"rowspan="<?php echo (count($tickets)+2); ?>">
+		<td class="evt_participate" rowspan="<?php echo (count($tickets)+2); ?>">
 			<a href="?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>">
 				<button class="evt_button"><?php echo format_participate_button($event); ?></button>
 			</a>
@@ -140,6 +140,7 @@
 			<th>{{Unit price}}</th>
 			<th>{{Taxes}}</th>
 			<th>{{Total due}}</th>
+			<th>{{Remaining}}</th>
 		</tr>
 <?php
 	foreach ($tickets as $ticket) {
@@ -147,12 +148,17 @@
 		$label = $ticket->name;
 		$amount_ht = curr($ticket->amount);
 		$amount_ttc = curr($amount_ht * (($tax/100) + 1));
+		$remaining = $ticket->get_remaining();
+		if ($remaining == null) {
+			$remaining = _t("Yes");
+		}
 ?>
 		<tr>
 			<td class="evt_category"><?php echo $label ?></td>
 			<td class="evt_curr"><?php echo curr($amount_ht) ?>€</td>
 			<td class="evt_curr"><?php echo curr($tax) ?>%</td>
 			<td class="evt_curr"><?php echo curr($amount_ttc) ?>€</td>
+			<td class="evt_curr"><?php echo $remaining ?></td>
 		</tr>
 <?php
 	}

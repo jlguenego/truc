@@ -178,6 +178,7 @@ $this->array = array(
 	"Participation opening date" => "Date d'ouverture des participations",
 	"Event website" => "Site de l'évènement",
 	"This event is not yet published." => "Cet évènement n'est pas encore publié.",
+	"Remaining" => "Restant",
 
 //Event Delete
 	"Are you sure you want to delete this event?" =>

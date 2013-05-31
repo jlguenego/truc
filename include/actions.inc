@@ -810,6 +810,7 @@
 		$taxes = $_GET['taxes'];
 		$lastnames = $_GET['lastnames'];
 		$titles = $_GET['titles'];
+		$ticket_ids = $_GET['ticket_ids'];
 		$i = 0;
 		foreach ($_GET['firstnames'] as $firstname) {
 			$item = new Item();
@@ -822,6 +823,7 @@
 			$item->attendee_firstname = $firstname;
 			$item->attendee_lastname = $lastnames[$i];
 			$item->attendee_title = $titles[$i];
+			$item->ticket_id = $ticket_ids[$i];
 
 			$item->compute();
 

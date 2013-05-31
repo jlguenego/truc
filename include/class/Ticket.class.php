@@ -167,5 +167,45 @@ EOF;
 			}
 			return $count[0] > 0;
 		}
+
+		public function get_remaining() {
+			global $g_pdo;
+
+			$event = Event::get_from_id($this->event_id);
+			if ($event->is_cancelled()) {
+				return 0;
+			}
+
+			$type = DEVIS_TYPE_QUOTATION;
+			if ($event->is_confirmed()) {
+				$type = DEVIS_TYPE_INVOICE;
+			}
+
+			$result = $this->max_quantity;
+
+			$request = <<<EOF
+SELECT
+  COUNT(*)
+FROM
+  item i,
+  bill b
+WHERE
+  i.id_bill = b.id
+  AND b.type = :type
+  AND i.id_ticket = :id
+EOF;
+			debug($request);
+			$q = $g_pdo->prepare($request);
+			$array = array(
+				":type" => $type,
+				":id" => $this->id,
+			);
+			$q->execute($array);
+
+			$record = $q->fetch();
+			$count = $record[0];
+			$result = $result - $count;
+			return $result;
+		}
 	}
 ?>

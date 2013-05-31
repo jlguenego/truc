@@ -43,6 +43,7 @@ EOF;
 		<input type="hidden" name="confirm" value="yes"/>
 		<input type="submit" value="Submit"/>
 	</form>
+	<a href="support/save_db.php">Backup the database</a>
 </html>
 <?php
 	}

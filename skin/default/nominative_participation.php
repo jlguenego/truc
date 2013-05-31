@@ -20,6 +20,7 @@
 			$amount_ht = curr($ticket->amount);
 			$label = $ticket->name;
 			$tax_rate = $ticket->tax_rate;
+			$ticket_id = $ticket->id;
 			if (!in_array($tax_rate, $tax_array)) {
 				$tax_array[] = $tax_rate;
 			}
@@ -32,7 +33,7 @@
 		<td class="evt_curr"><?php echo $tax_rate; ?>%</td>
 		<td class="evt_curr"><?php echo $amount_ttc; ?></td>
 		<td><button OnClick="add_ticket(<?php
-			echo "'$event_title_js', '$label', $amount_ht, $tax_rate";
+			echo "'$event_title_js', '$label', $amount_ht, $tax_rate, $ticket_id";
 			?>)">{{Add}}</button></td>
 	</tr>
 	<?php
@@ -169,7 +170,7 @@
 
 	var ticket_counter = 0;
 
-	function add_ticket(event, label, amount_ht, tax) {
+	function add_ticket(event, label, amount_ht, tax, ticket_id) {
 		ticket_counter++;
 		eb_display_tables();
 
@@ -181,6 +182,7 @@
 							"<td>" +
 								label +
 								"<input type=\"hidden\" name=\"labels[]\" value=\"" + label + "\"/>" +
+								"<input type=\"hidden\" name=\"ticket_ids[]\" value=\"" + ticket_id + "\" />" +
 							"</td>" +
 							"<td class=\"evt_curr\" type=\"amount_ht\">" +
 								eb_curr(amount_ht) +

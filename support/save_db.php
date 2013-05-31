@@ -37,5 +37,13 @@ EOF;
 		}
 		file_put_contents($dirname."/".$table.".sql", $content);
 	}
-	echo "SUCCESS";
 ?>
+<html>
+	<head>
+		<title>Save done</title>
+	</head>
+	<body>
+		Save success<br/>
+		<a href="../index.php">Go to index</a>
+	</body>
+<html>

@@ -70,6 +70,8 @@ EOF;
 		<?php
 			echo $g_error_msg;
 		?>
+		<a href="support/restore_db.php">Restore the database</a><br/>
+		<br/>
 		Please enter the admin user info:<br/>
 		Profile: <span id="profile"></span>
 		<script>

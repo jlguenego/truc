@@ -108,7 +108,8 @@ EOF;
 			$event->add_funding_acquired($this->total_ttc);
 
 			foreach ($this->items as $item) {
-				$item->store($this->id);
+				$item->bill_id = $this->id;
+				$item->store();
 			}
 		}
 
