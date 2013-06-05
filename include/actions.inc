@@ -90,11 +90,63 @@
 			case "run_tasks":
 				action_run_tasks();
 				break;
+			case "confirm":
+				action_confirm();
+				break;
 			case "none":
 				break;
 			default:
 				throw new Exception(_t("This action does not exists."));
 				break;
+		}
+	}
+
+	function action_confirm() {
+		switch ($_GET['type']) {
+			case "bill":
+				action_bill_confirm();
+				break;
+		}
+	}
+
+	function action_bill_confirm() {
+		$user = need_authentication();
+		if (!is_admin_logged()) {
+			throw new Exception(_t("You are not the administrator."));
+		}
+		if (is_null_or_empty($_GET['id'])) {
+			throw new Exception(_t("No bill id given."));
+		}
+
+		$bill = Devis::get_from_id($_GET['id']);
+		$bill->payment_info = "Really paid";
+		$bill->update();
+		$client = User::get_from_id($bill->user_id);
+		mail_payment($client->email, $bill);
+		if (TEST_MODE) {
+			$_GET["id"] = $bill->event_id;
+			action_participation_list();
+		} else {
+			redirect_to('?action=list&type=participation&id='.$bill->event_id);
+		}
+	}
+
+	function action_bill_delete() {
+		$user = need_authentication();
+		if (!is_admin_logged()) {
+			throw new Exception(_t("You are not the administrator."));
+		}
+		if (is_null_or_empty($_GET['id'])) {
+			throw new Exception(_t("No bill id given."));
+		}
+
+		$bill = Devis::get_from_id($_GET['id']);
+		$bill->delete();
+		if (TEST_MODE) {
+			$_GET["id"] = $bill->event_id;
+			action_participation_list();
+		} else {
+			redirect_to('?action=list&type=participation&id='.$bill->event_id);
 		}
 	}
 
@@ -255,6 +307,9 @@
 			case "account":
 				action_account_delete();
 				break;
+			case "bill":
+				action_bill_delete();
+				break;
 			default:
 				debug("type=".$_GET["type"]);
 				$_SESSION["state"] = "not_allowed";
@@ -329,7 +384,11 @@
 	function action_account_retrieve() {
 		global $g_display;
 
-		$user = need_authentication();
+		if (is_admin_logged() && isset($_GET['id'])) {
+			$user = User::get_from_id($_GET['id']);
+		} else {
+			$user = need_authentication();
+		}
 		$g_display["user"] = $user;
 		$g_display["events_organized"] = $user->get_organized_events();
 		$_SESSION["state"] = "account_retrieve";
@@ -1010,7 +1069,7 @@
 		if ($event->type != EVENT_TYPE_NOMINATIVE) {
 			throw new Exception(_t("This event cannot have attendee list."));
 		}
-		$_SESSION["state"] = "participation_list_nominative";
+		$_SESSION["state"] = "participation_list";
 		$g_display["event"] = $event;
 		$g_display["participations"] = $event->get_participations();
 	}

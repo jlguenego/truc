@@ -16,5 +16,6 @@
 		<p>Do you want to proceed?</p>
 		<a href="../../index.php?action=payment_success&tx=2MN52113X7023<?php printf("%04d", rand(0, 9999)); ?>&st=<?php echo $payment_type; ?>&amt=<?php echo curr($_GET["amount"]); ?>&cc=<?php echo $_GET["currency_code"]; ?>&cm=&item_number=">Yes</a>
 		<a href="../../index.php?action=payment_cancel">No</a>
+		<a href="../../index.php">Good Bye</a>
 	</body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 	$event = $g_display["event"];
-	$author = $g_display["author"];
+	$organizer = $g_display["author"];
 
 	echo "<div class=\"evt_title\"><p>".$event->title."</p></div>";
 
@@ -36,6 +36,10 @@
 		Event Biller Admin
 	</div>
 	<div class="evt_administration_body">
+		<ul>
+			<li>Organizer: <a href="?action=retrieve&amp;type=account&amp;id=<?php echo $organizer->id; ?>"><?php echo $organizer->email; ?></a></li>
+		</ul><br/>
+		<br/>
 <?php
 		$publish_button_grey = "";
 		if ($event->status == EVENT_STATUS_INACTIVATED

@@ -38,7 +38,7 @@
 		"forgotten_password_mail_sent",
 		"reset_password_form",
 		"participation_list_regular",
-		"participation_list_nominative",
+		"participation_list",
 		"guest_file_form",
 		"record_manage",
 		"task_run",

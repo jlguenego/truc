@@ -485,9 +485,16 @@ EOF;
 		}
 
 		public function get_participations() {
+			$admin = false;
+			if (is_admin_logged()) {
+				$admin = true;
+			}
 			$devis_array = $this->get_devis();
 			$participations = array();
 			foreach ($devis_array as $devis) {
+				if (!$admin && !$devis->is_really_paid()) {
+					continue;
+				}
 				foreach ($devis->get_items() as $item) {
 					$participations[] = array($item, $devis);
 				}

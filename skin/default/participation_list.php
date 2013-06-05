@@ -17,7 +17,17 @@
 		list($item, $devis) = $participation;
 ?>
 	<tr>
+<?php
+	if (is_admin_logged()) {
+?>
+		<td><a href="<?php echo $devis->url(); ?>"><?php echo $devis->label; ?></a></td>
+<?php
+	} else {
+?>
 		<td><?php echo $devis->label; ?></td>
+<?php
+	}
+?>
 		<td><?php echo $item->event_rate_name; ?></td>
 		<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 		<td class="evt_curr"><?php echo $item->total_tax; ?>%</td>
@@ -25,6 +35,14 @@
 		<td><?php echo $item->attendee_title; ?></td>
 		<td><?php echo $item->attendee_firstname; ?></td>
 		<td><?php echo $item->attendee_lastname; ?></td>
+<?php
+	if (is_admin_logged() && !$devis->is_really_paid()) {
+?>
+		<td><a class="evt_button evt_btn_small" href="?action=confirm&amp;type=bill&amp;id=<?php echo $devis->id; ?>">{{Confirm}}</a></td>
+		<td><a class="evt_button evt_btn_small" href="?action=delete&amp;type=bill&amp;id=<?php echo $devis->id; ?>">{{Delete}}</a></td>
+<?php
+	}
+?>
 	</tr>
 <?php
 	}

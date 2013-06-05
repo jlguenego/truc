@@ -1,5 +1,6 @@
 <?php
 	class Item {
+		public $id;
 		public $event_name;
 		public $event_rate_name;
 		public $event_rate_amount;
@@ -75,6 +76,18 @@ EOF;
 				":attendee_title" => $this->attendee_title,
 			);
 			$pst->execute($array);
+		}
+
+		public function delete() {
+			global $g_pdo;
+
+			$request = <<<EOF
+DELETE FROM item
+WHERE `id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
 		}
 	}
 ?>

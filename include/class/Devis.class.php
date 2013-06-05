@@ -180,6 +180,22 @@ EOF;
 			));
 		}
 
+		public function delete() {
+			global $g_pdo;
+
+			foreach ($this->get_items() as $item) {
+				$item->delete();
+			}
+
+			$request = <<<EOF
+DELETE FROM bill
+WHERE `id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+		}
+
 		public function set_status($status) {
 			$this->status = $status;
 			$this->update();
@@ -239,6 +255,10 @@ EOF;
 
 		public function get_event() {
 			return Event::get_from_id($this->event_id);
+		}
+
+		public function is_really_paid() {
+			return !is_null_or_empty($this->payment_info);
 		}
 	}
 ?>
