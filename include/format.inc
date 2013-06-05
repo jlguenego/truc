@@ -1,10 +1,10 @@
 <?php
 	function format_ucfirst($array) {
-		return mb_ucfirst($array[1], "UTF-8");
+		return our_mb_ucfirst($array[1], "UTF-8");
 	}
 
 	function format_ucwords($str) {
-		return preg_replace_callback('/([\w]+)/iu', "format_ucfirst", $str);
+		return preg_replace_callback('/([\wçÇàÀéÉèÈêÊëËïÏ]+)/iu', "format_ucfirst", $str);
 	}
 
 	function format_firstname($firstname) {

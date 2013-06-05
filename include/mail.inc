@@ -54,10 +54,10 @@
 		$subject = format_mail_subject(_t("Payment authorization"));
 		$g_display["user"] = $user;
 		$g_display["bill"] = $bill;
-		if ($bill->status == DEVIS_STATUS_CONFIRMED) {
+		if ($bill->status == DEVIS_STATUS_PLANNED) {
 			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_authorization.php");
 			$subject = _t("Payment confirmation and invoice");
-		} else if ($bill->status == DEVIS_STATUS_PLANNED) {
+		} else if ($bill->status == DEVIS_STATUS_CONFIRMED) {
 			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_full.php");
 		} else {
 			throw new Exception("Unexpected devis status.");

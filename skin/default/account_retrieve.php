@@ -9,11 +9,11 @@
 		</tr>
 		<tr>
 			<th class="th_left">{{Firstname}}</th>
-			<td><?php echo $user->firstname ?></td>
+			<td><?php echo format_firstname($user->firstname) ?></td>
 		</tr>
 		<tr>
 			<th class="th_left">{{Lastname}}</th>
-			<td><?php echo $user->lastname ?></td>
+			<td><?php echo format_lastname($user->lastname) ?></td>
 		</tr>
 		<tr>
 			<th class="th_left">{{Postal address}}</th>

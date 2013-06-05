@@ -8,9 +8,9 @@
 	$f->action = "?action=update&amp;type=account";
 	$f->method = "POST";
 	$f->add_text(_t("Firstname"), "firstname",
-		default_value("firstname", $user->firstname), _t("Your Firstname."));
+		default_value("firstname", format_firstname($user->firstname)), _t("Your Firstname."));
 	$f->add_text(_t("Lastname"), "lastname",
-		default_value("lastname", $user->lastname), _t("Your Lastname."));
+		default_value("lastname", format_lastname($user->lastname)), _t("Your Lastname."));
 	$f->add_email(_t("Email"), "email",
 		default_value("email", $user->email),
 		_t("A valid Email you want to associate to your account."));
