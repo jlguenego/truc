@@ -163,7 +163,7 @@ function eb_tiny_mce_on() {
 	        plugins : "lists,spellchecker,advhr,preview",
 
 	        // Theme options
-	        theme_advanced_buttons1 : "fontsizeselect,|,bold,italic,underline,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,copy,cut,paste,|,code,|,preview,",
+	        theme_advanced_buttons1 : "fontsizeselect,|,bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,image,|,copy,cut,paste,|,code,|,preview,",
 	        theme_advanced_toolbar_location : "top",
 	        theme_advanced_toolbar_align : "left",
 	        theme_advanced_statusbar_location : "bottom",
