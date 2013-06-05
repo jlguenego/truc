@@ -40,7 +40,7 @@
 <?php
 		if (is_admin_logged()) {
 ?>
-			<li><a href="uninstall.php">Uninstall</a></li>
+			<li><a href="uninstall.php">Admin</a></li>
 <?php
 		}
 ?>

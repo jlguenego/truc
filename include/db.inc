@@ -39,6 +39,7 @@ EOF;
 			if (!preg_match("#;#", $request)) {
 				return;
 			}
+			//echo $request;
 			$g_pdo->exec($request);
 		}
 	}

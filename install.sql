@@ -77,8 +77,10 @@ CREATE TABLE sequence(
 CREATE TABLE bill(
         id           Int NOT NULL ,
         created_t    Varchar (25) NOT NULL ,
+        mod_t        Varchar (25) NOT NULL ,
+        flags        Int ,
         label        Varchar (255) NOT NULL ,
-        payment_info Varchar (255) ,
+        payment_info Text ,
         total_ht     Decimal (25,2) NOT NULL ,
         total_tax    Decimal (25,2) NOT NULL ,
         total_ttc    Decimal (25,2) NOT NULL ,

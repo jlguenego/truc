@@ -42,11 +42,17 @@
 			</div>
 			<?php layout_trace(); ?>
 		</div>
+<?php
+		if (isset($_SESSION['event_id'])) {
+?>
 		<script>
 			var task_page = "<?php echo HOST; ?>/task.php";
 			$(document).ready(function() {
 				eb_execute_tasks(<?php echo $_SESSION["event_id"]; ?>);
 			});
 		</script>
+<?php
+		}
+?>
 	</body>
 </html>

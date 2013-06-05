@@ -777,6 +777,7 @@
 			$i++;
 		}
 		$devis->compute();
+		$devis->store();
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
 		$g_display["event"] = $event;
@@ -837,7 +838,7 @@
 		}
 
 		$devis->compute();
-
+		$devis->store();
 		$g_display["devis"] = $devis;
 		$_SESSION["devis"] = $devis;
 		debug("devis=".sprint_r($devis));
@@ -878,7 +879,7 @@
 			}
 			$devis = $_SESSION['devis'];
 			$devis->payment_info = $_SERVER["QUERY_STRING"];
-			$devis->store();
+			$devis->update();
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {

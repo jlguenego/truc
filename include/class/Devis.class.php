@@ -2,6 +2,8 @@
 	class Devis {
 		public $id;
 		public $created_t;
+		public $mod_t;
+		public $flags = 0;
 		public $items = array();
 		public $total_ht;
 		public $total_tax;
@@ -66,12 +68,15 @@ EOF;
 			}
 			$this->id = create_id();
 			$this->created_t = time();
+			$this->mod_t = $this->created_t;
 
 			$request = <<<EOF
 INSERT INTO `bill`
 SET
 	`id`= :id,
 	`created_t`= :created_t,
+	`mod_t`= :mod_t,
+	`flags`= :flags,
 	`total_ht`= :total_ht,
 	`total_tax`= :total_tax,
 	`total_ttc`= :total_ttc,
@@ -89,6 +94,8 @@ EOF;
 			$array = array(
 				":id" => $this->id,
 				":created_t" => $this->created_t,
+				":mod_t" => $this->mod_t,
+				":flags" => $this->flags,
 				":total_ht" => $this->total_ht,
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
@@ -153,20 +160,33 @@ EOF;
 		public function update() {
 			global $g_pdo;
 
+			$this->mod_t = time();
 			$request = <<<EOF
 UPDATE `bill`
-SET `status`= :status
-WHERE `label`= :label;
+SET
+	`mod_t`= :mod_t,
+	`flags`= :flags,
+	`payment_info`= :payment_info,
+	`status`= :status
+WHERE `id`= :id;
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(
+				":mod_t" => $this->mod_t,
+				":flags" => $this->flags,
+				":payment_info" => $this->payment_info,
 				":status" => $this->status,
-				":label" => $this->label,
+				":id" => $this->id,
 			));
 		}
 
 		public function set_status($status) {
 			$this->status = $status;
+			$this->update();
+		}
+
+		public function set_flags($flags) {
+			$this->flags = $flags;
 			$this->update();
 		}
 
