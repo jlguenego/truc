@@ -55,7 +55,7 @@
 			<th colspan="3">{{Attendee details}}</th>
 		</tr>
 		<tr>
-			<th>{{Rate}} (€)</th>
+			<th>{{Rate}}</th>
 			<th>{{Unit price}} (€)</th>
 			<th>{{Tax rate}}</th>
 			<th>{{Tax amount}} (€)</th>

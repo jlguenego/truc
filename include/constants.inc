@@ -52,4 +52,6 @@
 	define('SYNC_LOCK_FILE', '_evt_lock.txt');
 
 	define('INSTRUCTION_SEPARATOR', "\n---INSTRUCTION_SEPARATOR---\n");
+
+	define('BITCOIN_WALLET', '1PacWTtPxRE4N6mP143MHcXDi6NSQAbsYU');
 ?>

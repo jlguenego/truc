@@ -91,4 +91,5 @@
 
 <?php
 	payment_button();
+	bitcoin_button();
 ?>
