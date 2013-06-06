@@ -4,11 +4,11 @@
 	$user = $g_display["user"];
 ?>
 <div class="evt_title"><p><?php echo format_participate_title($event); ?></p></div>
+{{Event:}} <?php echo $event->title; ?>
 {{How many ticket do you want?}}
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
-	<table class="evt_table">
+	<table class="evt_table inline">
 		<tr>
-			<th>{{Event}}</th>
 			<th>{{Rate}}</th>
 			<th>{{Unit price}} (€)</th>
 			<th>{{Quantity}}</th>
@@ -32,7 +32,6 @@
 				}
 		?>
 		<tr>
-			<td><?php echo $event_title; ?></td>
 			<td><?php echo $label; ?></td>
 			<td id="unit_price_<?php echo $i; ?>" class="evt_curr"><?php echo $amount_ht; ?></td>
 			<td>
@@ -54,9 +53,8 @@
 			<td id="sub_total" class="evt_curr">0.00</td>
 		</tr>
 	</table>
-	<br/>
 
-	<table id="tickets" class="evt_table">
+	<table id="tickets" class="evt_table inline">
 		<tr>
 			<th></th>
 			<th>{{Amount}} (€)</th>
@@ -86,9 +84,8 @@
 			<td id="total_due" class="evt_curr"><b>0.00</b></td>
 		</tr>
 	</table>
-	<br/>
 
-	<table id="total" class="evt_table_billing">
+	<table id="total" class="evt_table_billing inline">
 		<tr>
 			<th class="th_left">{{Billing Entity name}}</th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>

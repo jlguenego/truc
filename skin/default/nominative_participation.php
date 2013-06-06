@@ -4,9 +4,9 @@
 	$user = $g_display["user"];
 ?>
 <div class="evt_title"><p><?php echo format_participate_title($event); ?></p></div>
-<table class="evt_table">
+{{Event:}} <?php echo $event->title; ?>
+<table class="evt_table inline">
 	<tr>
-		<th>{{Event name}}</th>
 		<th>{{Categories}}</th>
 		<th>{{Remaining}}</th>
 		<th>{{Rate}} (€)</th>
@@ -33,7 +33,6 @@
 			}
 	?>
 	<tr>
-		<td><?php echo $event_title; ?></td>
 		<td><?php echo $label; ?></td>
 		<td id="<?php echo $ticket->id; ?>_remaining"><?php echo $remaining; ?></td>
 		<td class="evt_curr"><?php echo $amount_ht; ?></td>
@@ -49,15 +48,13 @@
 		debug(sprint_r($tax_array));
 	?>
 </table>
-<br/>
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
 	<table id="tickets" style="display:none;" class="evt_table inline">
 		<tr>
-			<th colspan="6">{{Event details}}</th>
+			<th colspan="5">{{Event details}}</th>
 			<th colspan="3">{{Attendee details}}</th>
 		</tr>
 		<tr>
-			<th>{{Event}}</th>
 			<th>{{Rate}} (€)</th>
 			<th>{{Unit price}} (€)</th>
 			<th>{{Tax rate}}</th>
@@ -68,9 +65,8 @@
 			<th>{{Lastname}}</th>
 		</tr>
 	</table>
-	<br/>
 
-	<table id="total" style="display:none;" class="evt_table">
+	<table id="total" style="display:none;" class="evt_table inline">
 		<tr>
 			<th>&nbsp;</th>
 			<th>{{Amount}} (€)</th>
@@ -99,9 +95,8 @@
 			<td class="evt_curr" id="total_due"><b>0.00</b></td>
 		</tr>
 	</table>
-	<br/>
 
-	<table class="evt_table_billing">
+	<table class="evt_table_billing inline">
 		<tr>
 			<th class="th_left">{{Billing Entity name}}</th>
 			<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
@@ -215,7 +210,6 @@
 		var amount_ttc = amount_ht + tax_amount;
 		var id = new Date().getTime();
 		var content = 	"<tr id=\"ticket_" + id + "\">" +
-							"<td>" + event + "</td>" +
 							"<td>" +
 								label +
 								"<input type=\"hidden\" name=\"labels[]\" value=\"" + label + "\"/>" +
