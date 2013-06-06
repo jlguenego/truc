@@ -14,6 +14,7 @@
 	require_once(BASE_DIR . "/include/format.inc");
 	require_once(BASE_DIR . "/include/print.inc");
 	require_once(BASE_DIR . "/include/dd.inc");
+	require_once(BASE_DIR . "/include/openid.inc");
 
 	if (isset($_SERVER["HTTPS"])) {
 		$base_url = HTTPS_ACCESS ."/";
@@ -67,6 +68,7 @@
 	} catch (Exception $e) {
 		$_SESSION["state"] = "error";
 		$g_error_msg = $e->getMessage();
+		debug(sprint_r($e->getTrace()));
 	}
 
 	if (!in_array($_SESSION["state"], $g_states)) {

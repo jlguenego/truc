@@ -3,7 +3,7 @@
 	define('SETTINGS_INI', "_settings.ini");
 	define('SKIN_DIR', "skin/default");
 
-	define('COMPANY_NAME', 'Eventual');
+	define('COMPANY_NAME', 'Event-Biller');
 
 	define('ALLOWED_TAGS', "<br><div><p><img><ul><ol><li><span><a><b><i><strong><table><tr><th><td>");
 

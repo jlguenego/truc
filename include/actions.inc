@@ -39,6 +39,9 @@
 						break;
 				}
 				break;
+			case "openid_authenticate":
+				action_openid_authenticate();
+				break;
 			case "participate":
 				action_participate();
 				break;
@@ -785,6 +788,36 @@
 			}
 		}
 		debug("END Action_Authenticate");
+	}
+
+	function action_openid_authenticate() {
+		global $g_error_msg;
+
+		try {
+			$url = '';
+			if (isset($_GET['url'])) {
+				$url = trim($_GET['url']);
+			}
+			$user = openid_authenticate($url);
+			if ($user == NULL) {
+				return;
+			}
+			debug("user=".sprint_r($user));
+			$_SESSION['user_id'] = $user->id;
+			if (isset($_GET["redirect"])) {
+				if (is_null_or_empty($_SESSION["url"])) {
+					redirect_to("index.php");
+				} else {
+					$url = $_SESSION["url"];
+					unset($_SESSION["url"]);
+					redirect_to($url);
+				}
+			} else {
+				redirect_to("index.php");
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+		}
 	}
 
 	function action_participate_regular() {

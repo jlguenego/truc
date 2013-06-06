@@ -15,10 +15,6 @@ a {
 	color: #0000FF;
 }
 
-a:visited {
-	color: #0000FF;
-}
-
 [type=checkbox] {
 	margin-right: 5px;
 }
@@ -815,6 +811,50 @@ a.evt_button {
 
 .evt_record_actions {
 }
+
+/* OPENID */
+#openid_form #providers {
+	margin: 10px 0px;
+	padding: 0px;
+}
+
+#openid_form #providers li {
+	display: inline-block;
+}
+
+.openid_logo {
+	color: #F7931E;
+	padding: 6px 0px 8px 28px;
+	background: url(https://bitminter.com/images/openid/openidico.png) no-repeat;
+}
+
+.evt_sign_in_table {
+	width: 100%;
+}
+
+.evt_sign_in_table table {
+}
+
+.evt_sign_in_table table td {
+	vertical-align: middle;
+}
+
+#openid_identifier_visible {
+	width: 200px;
+}
+
+.evt_sign_in_table td {
+	vertical-align: top;
+}
+
+.evt_sign_in_form {
+	padding: 20px;
+	background-color: #F4F4F4;
+}
+.evt_sign_in_table_title {
+	margin-bottom: 20px;
+}
+
 
 /* PHP */
 .xdebug-error, .xe-notice {
