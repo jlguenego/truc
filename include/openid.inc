@@ -27,8 +27,6 @@
 	    		throw new Exception(_t('You have cancelled authentication!'));
 	    	}
 	    	debug('connection valid');
-	    	$openid->identity;
-			print_r($openid->getAttributes());
 			$attributes = $openid->getAttributes();
 			$email = $attributes['contact/email'];
 			$user = User::get_from_email($email);
