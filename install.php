@@ -82,6 +82,10 @@ EOF;
 					<td><input type="text" name="merchant_id"></td>
 				</tr>
 				<tr>
+					<td>Bitcoin address: </td>
+					<td><input type="text" name="bitcoin_address"></td>
+				</tr>
+				<tr>
 					<td>Payment type:</td>
 					<td>
 						<select name="payment_type">
@@ -133,6 +137,7 @@ EOF;
 				$("input[name=captcha_priv_key]").val(profile_array[i].captcha_priv_key);
 				$("input[name=merchant_id]").val(profile_array[i].merchant_id);
 				$("input[name=https_access]").val(profile_array[i].https_access);
+				$("input[name=bitcoin_address]").val(profile_array[i].bitcoin_address);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);

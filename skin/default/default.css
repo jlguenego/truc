@@ -105,7 +105,6 @@ body {
 	padding-bottom: 120px;
 
 	background-color: white;
-/*	background-image: url('images/headband.jpg'); */
 	background-repeat: no-repeat;
 }
 
@@ -138,7 +137,8 @@ div[data-message] {
 }
 
 #evt_root {
-	padding-bottom: 100px;
+	padding-bottom: 0px;
+	height: 610px;
 	background-image: url('images/crowdsurf_2.jpg');
 	background-repeat: no-repeat;
 	background-color: #869C86; /* iphone */
@@ -261,10 +261,7 @@ div[data-message] {
 }
 
 #evt_footer {
-	position: absolute;
-	bottom: 0px;
 	width: 100%;
-	height: 50px;
 
 	border-top: 1px solid #D4D4D4;
 	padding-bottom: 30px;
@@ -278,6 +275,11 @@ div[data-message] {
 #evt_footer a {
 	text-decoration: none;
 	color: #AAAAAA;
+}
+
+#evt_footer #evt_logo {
+	display: block;
+	text-align: center;
 }
 
 /* FORMS */
@@ -855,9 +857,68 @@ a.evt_button {
 	margin-bottom: 20px;
 }
 
+/* BITCOIN */
+.evt_bitcoin_payment_info {
+	margin: 0px;
+	padding: 10px;
+	width: 450px;
+
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+	text-align: center;
+
+	border-color: rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25);
+	background-color: #F3F3F3;
+}
+
+.evt_bitcoin_button {
+	display: inline-block;
+	padding: 2px 20px;
+	margin: 0px 10px;
+	font-style: italic;
+
+	cursor: pointer;
+	text-align: center;
+	vertical-align: middle;
+
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	border: 1px solid #CCCCCC;
+
+	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.05);
+
+	border-color: rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25);
+
+	background-image: linear-gradient(to bottom, #FEFB8D, #FDF006);
+
+	text-decoration: none;
+
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #00A1D8;
+	color: #000000;
+}
+
+.evt_bitcoin_button:hover {
+	background-image: linear-gradient(to top, #FEFB8D, #FDF006);
+}
+
+.evt_bitcoin_button:active {
+	position:relative;
+	top:1px;
+}
+
 
 /* PHP */
 .xdebug-error, .xe-notice {
 	position: relative;
 	z-index: 99;
+}
+
+/* PAYMENT */
+.evt_payment {
+	width: 100%;
 }

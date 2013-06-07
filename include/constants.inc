@@ -49,9 +49,11 @@
 	define('ADVERTISEMENT_STATUS_DEFAULT', 0);
 	define('ADVERTISEMENT_STATUS_SENT', 1);
 
-	define('SYNC_LOCK_FILE', '_evt_lock.txt');
+	define('SYNC_LOCK_FILE', '_tmp/_evt_lock.txt');
 
 	define('INSTRUCTION_SEPARATOR', "\n---INSTRUCTION_SEPARATOR---\n");
 
-	define('BITCOIN_WALLET', '1PacWTtPxRE4N6mP143MHcXDi6NSQAbsYU');
+	define('BITCOIN_FILENAME', '_tmp/bitcoin_curr.txt');
+
+	define('QRCODE_CACHE_DIR', '_tmp/qrcode');
 ?>

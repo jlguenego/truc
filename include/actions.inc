@@ -54,6 +54,9 @@
 			case "payment_success":
 				action_payment_success();
 				break;
+			case "bitcoin_payment":
+				action_bitcoin_payment();
+				break;
 			case "supervision" :
 				action_supervision();
 				break;
@@ -958,6 +961,28 @@
 			$_SESSION["state"] = "nominative_participation";
 		} else {
 			$_SESSION["state"] = "regular_participation";
+		}
+	}
+
+	function action_bitcoin_payment() {
+		global $g_error_msg;
+		global $g_display;
+		$user = need_authentication();
+		try {
+			if (!isset($_GET['id'])) {
+				throw new Exception('No id given.');
+			}
+			$bill = Devis::get_from_id($_GET['id']);
+			if ($user->id != $bill->user_id) {
+				throw new Exception('This is not your bill');
+			}
+			$g_display['bill'] = $bill;
+			$g_display['event'] = Event::get_from_id($bill->event_id);
+			$g_display['bitcoin_uri'] = bitcoin_uri($bill->total_ttc, $bill->label);
+			$_SESSION['state'] = "bitcoin_payment";
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
+			$_SESSION["state"] = "error";
 		}
 	}
 

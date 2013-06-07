@@ -3,7 +3,7 @@
 	$devis = $g_display["devis"];
 	$event = $devis->get_event();
 ?>
-<div class="evt_title"><p><?php echo format_participate_title($event); ?> - {{Confirmation}}</p></div>
+<div class="evt_title inline"><p><?php echo format_participate_title($event); ?> - {{Confirmation}}</p></div>
 <?php
 	if ($event->is_confirmed()) {
 		echo _t("Invoice ID: ").$devis->label;
@@ -11,7 +11,7 @@
 		echo _t("Quotation ID: ").$devis->label;
 	}
 ?>
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
 		<th>{{Event}}</th>
 		<th>{{Rate name}}</th>
@@ -51,7 +51,7 @@
 	}
 ?>
 </table>
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
 		<th class="th_left">{{Total}} (€)</th>
 		<td class="evt_curr"><?php echo curr($devis->total_ht); ?></td>
@@ -65,9 +65,8 @@
 		<td class="evt_curr"><?php echo curr($devis->total_ttc); ?></td>
 	</tr>
 </table>
-<br/>
 
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
 		<th class="th_left">{{Billing Entity name}}</th>
 		<td><?php echo $devis->username; ?></td>
@@ -88,8 +87,9 @@
 ?>
 </table>
 <br/>
-
-<?php
-	payment_button();
-	bitcoin_button();
-?>
+<table class="evt_payment">
+	<tr>
+		<td><?php payment_button(); ?></td>
+		<td align="right"><?php bitcoin_button(); ?></td>
+</tr>
+</table>

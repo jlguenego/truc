@@ -90,8 +90,11 @@
 ?>
 </table>
 <br/>
-
-<?php
-	payment_button();
-	bitcoin_button();
-?>
+</table>
+<br/>
+<table class="evt_payment">
+	<tr>
+		<td><?php payment_button(); ?></td>
+		<td align="right"><?php bitcoin_button(); ?></td>
+</tr>
+</table>

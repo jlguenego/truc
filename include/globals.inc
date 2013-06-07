@@ -42,6 +42,7 @@
 		"guest_file_form",
 		"record_manage",
 		"task_run",
+		"bitcoin_payment",
 	);
 
 	$g_event_states = array(

@@ -35,6 +35,7 @@ EOF;
 			$escape_quote = (isset($_POST["escape_quote"])) ? "true" : "false";
 			$merchant_id = $_POST["merchant_id"];
 			$https_access = $_POST["https_access"];
+			$bitcoin_address = $_POST["bitcoin_address"];
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -56,6 +57,8 @@ EOF;
 	define('CAPTCHA_PRIV_KEY', '$captcha_priv_key');
 
 	define('HTTPS_ACCESS', '$https_access');
+
+	define('BITCOIN_ADDRESS', '$bitcoin_address');
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
