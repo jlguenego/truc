@@ -89,7 +89,8 @@
 <br/>
 <table class="evt_payment">
 	<tr>
-		<td><?php payment_button(); ?></td>
-		<td align="right"><?php bitcoin_button(); ?></td>
+		<td class="evt_pay" width="500"><?php payment_button(); ?></td>
+		<td width="200">&nbsp;</td>
+		<td align="right" class="evt_pay"><?php bitcoin_button(); ?></td>
 </tr>
 </table>

@@ -922,3 +922,8 @@ a.evt_button {
 .evt_payment {
 	width: 100%;
 }
+
+.evt_pay {
+	padding: 10px;
+	border: 1px solid #EEEEEE;
+}

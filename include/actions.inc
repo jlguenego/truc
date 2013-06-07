@@ -877,12 +877,22 @@
 		$_SESSION["devis"] = $devis;
 		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
-		$_SESSION["state"] = "participation_recapitulation";
+		$_SESSION["state"] = "participation_regular_recapitulation";
+	}
+
+	function action_participate_regular_recapitulation() {
+		global $g_display;
+
+		$devis = $_SESSION['devis'];
+		$event = Event::get_from_id($_GET["event_id"]);
+		$g_display["devis"] = $devis;
+		$g_display["event"] = $event;
+		$g_display["event_confirmed"] = $event->is_confirmed();
+		$_SESSION["state"] = "participation_regular_recapitulation";
 	}
 
 	function action_participate_nominative() {
 		global $g_display;
-
 		if (!isset($_GET['confirm'])) {
 			throw new Exception(_t("You must read and accept the policies."));
 		}
@@ -892,6 +902,9 @@
 		$devis->vat = $_GET["vat"];
 		$devis->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
+		if ($event == NULL) {
+			throw new Exception(_t("Event is null."));
+		}
 		$label = "Event-Biller-";
 		if ($event->is_confirmed()) {
 			$devis->status = DEVIS_STATUS_CONFIRMED;
@@ -942,6 +955,18 @@
 		$_SESSION["state"] = "participation_nominative_recapitulation";
 	}
 
+	function action_participate_nominative_recapitulation() {
+		global $g_display;
+
+		$devis = $_SESSION["devis"];
+		$event = Event::get_from_id($_GET["event_id"]);
+		debug('action_participate_nominative_recapitulation');
+		$g_display["devis"] = $devis;
+		$g_display["event_confirmed"] = $event->is_confirmed();
+		$g_display["event"] = $event;
+		$_SESSION["state"] = "participation_nominative_recapitulation";
+	}
+
 	function action_participation_get_form() {
 		global $g_display;
 		global $g_error_msg;
@@ -958,9 +983,9 @@
 		$g_display["event"] = $event;
 		$g_display["tickets"] = $event->get_tickets();
 		if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
-			$_SESSION["state"] = "nominative_participation";
+			$_SESSION["state"] = "participation_nominative";
 		} else {
-			$_SESSION["state"] = "regular_participation";
+			$_SESSION["state"] = "participation_regular";
 		}
 	}
 
@@ -1026,24 +1051,28 @@
 			if ($user->has_no_address()) {
 				$user->fill_address_from_participation();
 			}
-			if ($_SESSION["state"] == "nominative_participation"
-				|| $_SESSION["state"] == "participation_nominative_recapitulation") {
-				debug("nominative_participation");
+			if ($_SESSION["state"] == "participation_nominative") {
 				action_participate_nominative();
-			} else {
-				debug("regular_participation");
+			} else if ($_SESSION["state"] == "participation_regular_recapitulation") {
+				action_participate_regular_recapitulation();
+			} else if ($_SESSION["state"] == "participation_regular") {
 				action_participate_regular();
+			} else if ($_SESSION["state"] == "participation_nominative_recapitulation") {
+				action_participate_nominative_recapitulation();
+			} else {
+				$_SESSION["state"] = "error";
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
+			$_SESSION["state"] = "error";
 			$g_display["user"] = $user;
 			$event = Event::get_from_id($_GET["event_id"]);
 			$g_display["event"] = $event;
 			$g_display["tickets"] = $event->get_tickets();
 			if ($event->type == EVENT_TYPE_NOMINATIVE) {
-				$_SESSION["state"] = "nominative_participation";
+				$_SESSION["state"] = "error";
 			} else {
-				$_SESSION["state"] = "regular_participation";
+				$_SESSION["state"] = "error";
 			}
 		}
 	}

@@ -456,7 +456,7 @@ $this->array = array(
 	"Start date" => "Date de démarrage",
 	"Success" => "Succès",
 	"You cannot access to this event." => "Vous ne pouvez pas accéder à cet évènement.",
-	"Buy with" => "Acheter avec",
+	"Buy with" => "Payer en",
 	"Buyer Informations" => "Informations Client",
 	"Easy connect with" => "Connection rapide avec",
 	"event page" => "page de l'évènement",
@@ -477,6 +477,12 @@ $this->array = array(
 	"Sorry, but all tickets were sold..." => "Désolé, mais tout les tickets ont été vendu...",
 	"You are not the administrator." => "Vous n'êtes pas l'administrateur.",
 	"Not registered? Then" => "Non enregistré ? Alors",
+	"payment_authorization_disclaimer" => "<b>Note: Cet évènement est prévu.</b><br/>
+			Votre autorisation de paiement ne sera pas prélevée tant que cet évènement ne sera pas confirmé.<br/>
+			Si l'évènement venait à être annulé, votre autorisation de paiement le serait aussi.<br/>
+			Dans tout les cas, vous serez averti par mail.<br/>
+			La date d'annulation ou de confirmation est avant le ",
+	"at midnight" => "à minuit",
 
 //The End
 );
