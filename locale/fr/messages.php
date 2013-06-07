@@ -15,6 +15,7 @@ $this->array = array(
 	"Account info" => "Afficher mon profil",
 	"Create account" => "S'inscrire",
 	"Pricing" => "Tarifs",
+	"Languages:" => "Langues :",
 
 //Root
 	"Declare an event" => "Déclarer un évènement",
@@ -455,6 +456,27 @@ $this->array = array(
 	"Start date" => "Date de démarrage",
 	"Success" => "Succès",
 	"You cannot access to this event." => "Vous ne pouvez pas accéder à cet évènement.",
+	"Buy with" => "Acheter avec",
+	"Buyer Informations" => "Informations Client",
+	"Easy connect with" => "Connection rapide avec",
+	"event page" => "page de l'évènement",
+	"Event:" => "Evènement :",
+	"Exchange rate:" => "Taux de change",
+	"Login" => "Identifiant",
+	"Max quantity reached" => "Quantité maximum atteinte",
+	"Max:" => "Maimum :",
+	"No bill id given." => "Aucun id de facture donné.",
+	"Order Information" => "Information de la Commande",
+	"Password connect" => "Connection avec mot de passe",
+	"Pay with bitcoins" => "Payer en bitcoins",
+	"Payment with bitcoin currently not available." =>
+		"Paiement par bitcoin actuellement indisponible",
+	"Please insert a correct OpenId" => "Veuillez renseigner un OpenID valide",
+	"Send payment to" => "Envoyer le paiement à",
+	"Sold out" => "Rupture",
+	"Sorry, but all tickets were sold..." => "Désolé, mais tout les tickets ont été vendu...",
+	"You are not the administrator." => "Vous n'êtes pas l'administrateur.",
+	"Not registered? Then" => "Non enregistré ? Alors",
 
 //The End
 );

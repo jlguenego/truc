@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	class A {
 		public $x;
 		public $y;

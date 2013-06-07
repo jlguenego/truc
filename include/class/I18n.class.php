@@ -114,17 +114,14 @@
 
 		public static function menu() {
 			global $g_locales, $g_default_locale;
+			$images_dir = SKIN_DIR . '/images';
 			$array_link = array();
 			foreach ($g_locales as $locale) {
-				if ($locale == $_SESSION["locale"]) {
-					$array_link[] = "$locale";
-				} else {
-					$array_link[] = <<<EOF
-<a href="?action=set_locale&amp;locale=$locale">$locale</a>
+				$array_link[] = <<<EOF
+<a href="?action=set_locale&amp;locale=$locale"><img src="${images_dir}/${locale}.png" /></a>
 EOF;
-				}
 			}
-			$array_locale = "[&nbsp;" . strtolower(join("&nbsp;|&nbsp;", $array_link)) . "&nbsp;]";
+			$array_locale = '<small>{{Languages:}}</small>&nbsp;&nbsp;&nbsp;&nbsp;'.join("&nbsp;&nbsp;&nbsp;&nbsp;", $array_link);
 			$result = <<<EOF
 $array_locale
 EOF;

@@ -1,4 +1,5 @@
-﻿#!/bin/bash
+#!/usr/bin/bash
+#tree -if | grep -v '^./_ext' | xargs -i test/unbom.sh {}
 for F in $1
 do
 	echo "Processing $F"

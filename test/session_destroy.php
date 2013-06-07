@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Initialisation de la session.
 // Si vous utilisez un autre nom
 // session_name("autrenom")

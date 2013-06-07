@@ -32,7 +32,7 @@ evt_convert() {
 
 try
 	LIST=`find $PROJECT_DIR -type f |\
-		grep -v '^\.\./ext' |\
+		grep -v '^\.\./_' |\
 		grep -v '^\.\./\.git' |\
 		grep -v '^\.\./test'`
 

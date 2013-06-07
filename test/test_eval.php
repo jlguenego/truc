@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	function crash() {
 		echo "Mayday\n";
 		throw new Exception("Crash!");

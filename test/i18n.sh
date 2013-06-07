@@ -10,7 +10,7 @@ grep -rn "_t[(][\"]" * |\
 	sort -u > test/f1.txt
 
 grep -rn "[{][{]" * |\
-	grep -v "^ext" |\
+	grep -v "^_ext" |\
 	perl -pe 's#^.*[{][{](.*?)[}][}].*$#\1#g' |\
 	grep -v "<?php" |\
 	grep -v "^Binary file" |\
@@ -24,7 +24,7 @@ do
 	#echo "line=$line"
 	#L=`grep -F "$line" locale/fr/messages.php | wc -l | xargs`
 	if ! grep -q "${line}" locale/fr/messages.php; then
-		echo "|$line|"
+		echo "$line"
 	fi
 done
 

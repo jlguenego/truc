@@ -9,70 +9,71 @@
 	if (isset($_GET["redirect"])) {
 		$redirect = "&amp;redirect=yes";
 	}
+	$images_dir = SKIN_DIR.'/images/openid';
 ?>
 <form id="openid_form" method="post" action="?action=openid_authenticate<?php echo $redirect; ?>" class="openid">
 	<div>
 		<ul id="providers" class="providers" style="">
 			<li id="openid" title="OpenID" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/openidW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/openidW.png">
 				<span class="url" style="display: none;"> <strong width="300">http://</strong> </span>
 				<span class="label" style="display: none;">Enter your <a href="http://openid.net/" class="openid_logo" target="_blank">OpenId</a></span>
 			</li>
 			<li id="google" title="Google" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/googleW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/googleW.png">
 				<span class="url" style="display: none;">https://www.google.com/accounts/o8/id</span>
 			</li>
 			<li id="yahoo" title="Yahoo" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/yahooW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/yahooW.png">
 				<span class="url" style="display: none;">http://me.yahoo.com/</span>
 			</li>
 			<li id="aol" title="AOL" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/aolW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/aolW.png">
 				<span class="url" style="display: none;">http://openid.aol.com/<strong>username</strong></span>
 				<span class="label" style="display: none;">Enter your AOL screen name</span>
 			</li>
 			<li id="myopen" title="MyOpenID" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/myopenid.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/myopenid.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.myopenid.com/</span>
 				<span class="label" style="display: none;">Enter your MyOpenID user name</span>
 			</li>
 			<li id="flikr" title="Flickr" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/flickr.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/flickr.png">
 				<span class="url" style="display: none;">http://flickr.com/<strong>username</strong>/</span>
 				<span class="label" style="display: none;">Enter your Flickr user name</span>
 			</li>
 			<li id="thechnorati" title="Technorati" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/technorati.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/technorati.png">
 				<span class="url" style="display: none;">http://technorati.com/people/technorati/<strong>username</strong>/</span>
 				<span class="label" style="display: none;">Enter your Technorati user name</span>
 			</li>
 			<li id="wordpress" title="Wordpress" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/wordpress.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/wordpress.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.wordpress.com</span>
 				<span class="label" style="display: none;">Enter your Wordpress blog name</span>
 			</li>
 			<li id="blogger" title="Blogger" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/blogger.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/blogger.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.blogspot.com/</span>
 				<span class="label" style="display: none;">Enter your Blogger blog name</span>
 			</li>
 			<li title="LiveJournal" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/livejournal.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/livejournal.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.livejournal.com</span>
 				<span class="label" style="display: none;">Enter your LiveJournal blog name</span>
 			</li>
 			<li id="claimid" title="ClaimID" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/claimid.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/claimid.png">
 				<span class="url" style="display: none;">http://claimid.com/<strong>username</strong></span>
 				<span class="label" style="display: none;">Enter your ClaimID user name</span>
 			</li>
 			<li id="vidoop" title="Vidoop" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/vidoop.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/vidoop.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.myvidoop.com/</span>
 				<span class="label" style="display: none;">Enter your Vidoop user name</span>
 			</li>
 			<li id="verisign" title="Verisign" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="https://bitminter.com/images/openid/verisign.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/verisign.png">
 				<span class="url" style="display: none;">http://<strong>username</strong>.pip.verisignlabs.com/</span>
 				<span class="label" style="display: none;">Enter your Verisign user name</span>
 			</li>
@@ -121,7 +122,7 @@
 ?>
 <br/>
 <br/>
-<div class="form_cancel">Not registered? Then <a href="index.php?action=get_form&amp;type=account">{{create an account}}</a></div>
+<div class="form_cancel">{{Not registered? Then}} <a href="index.php?action=get_form&amp;type=account">{{create an account}}</a></div>
 <a href="?action=get_form&type=forgotten_password">{{Forgot your password?}}</a><br/>
 		</td>
 	</tr>
