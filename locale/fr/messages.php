@@ -473,7 +473,7 @@ $this->array = array(
 		"Paiement par bitcoin actuellement indisponible",
 	"Please insert a correct OpenId" => "Veuillez renseigner un OpenID valide",
 	"Send payment to" => "Envoyer le paiement à",
-	"Sold out" => "Rupture",
+	"Sold out" => "Complet",
 	"Sorry, but all tickets were sold..." => "Désolé, mais tout les tickets ont été vendu...",
 	"You are not the administrator." => "Vous n'êtes pas l'administrateur.",
 	"Not registered? Then" => "Non enregistré ? Alors",

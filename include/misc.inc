@@ -99,6 +99,7 @@ EOF;
 	function redirect_to($path) {
 		header('Location: ' . $path);
 		header('Cache-Control: no-cache');
+		exit(0);
 	}
 
 	function is_number($var) {

@@ -6,9 +6,6 @@
 		<div class="evt_sign_in_table_title">{{Easy connect with}}</div>
 <?php
 	$redirect = '';
-	if (isset($_GET["redirect"])) {
-		$redirect = "&amp;redirect=yes";
-	}
 	$images_dir = SKIN_DIR.'/images/openid';
 ?>
 <form id="openid_form" method="post" action="?action=openid_authenticate<?php echo $redirect; ?>" class="openid">
@@ -109,9 +106,6 @@
 <?php
 	$f = new Form();
 	$f->action = "?action=authenticate";
-	if (isset($_GET["redirect"])) {
-		$f->action .= "&amp;redirect=yes";
-	}
 	$f->other_attrs = 'id="sign_in"';
 	$f->method = "POST";
 	$f->add_text(_t("Email"), "email", default_value("email"), _t("Enter your email"));

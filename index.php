@@ -98,5 +98,9 @@
 	//$g_info_msg = "This is an info message.";
 	//$g_error_msg = "This is an error message.";
 
+	if (isset($_SESSION['info_msg'])) {
+		$g_info_msg = $_SESSION['info_msg'];
+		unset($_SESSION['info_msg']);
+	}
 	layout_i18n(SKIN_DIR."/layout.php");
 ?>

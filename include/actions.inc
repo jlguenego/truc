@@ -381,7 +381,15 @@
 			$user->generate_activation_key();
 			$user->store();
 			$g_info_msg = _t("Account successfully created. Check your email for activation.");
-			$_SESSION["state"] = "root";
+			$_SESSION['info_msg'] = $g_info_msg;
+			if (is_null_or_empty($_SESSION["url"])) {
+				redirect_to("index.php");
+			} else {
+				$_SESSION['user_id'] = $user->id;
+				$url = $_SESSION["url"];
+				unset($_SESSION["url"]);
+				redirect_to($url);
+			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
 		}
@@ -772,16 +780,12 @@
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
 					$_SESSION['user_id'] = $user->id;
-					if (isset($_GET["redirect"])) {
-						if (is_null_or_empty($_SESSION["url"])) {
-							redirect_to("index.php");
-						} else {
-							$url = $_SESSION["url"];
-							unset($_SESSION["url"]);
-							redirect_to($url);
-						}
-					} else {
+					if (is_null_or_empty($_SESSION["url"])) {
 						redirect_to("index.php");
+					} else {
+						$url = $_SESSION["url"];
+						unset($_SESSION["url"]);
+						redirect_to($url);
 					}
 				} else {
 					$g_error_msg = _t("Your account is not activated");
@@ -807,16 +811,13 @@
 			}
 			debug("user=".sprint_r($user));
 			$_SESSION['user_id'] = $user->id;
-			if (isset($_GET["redirect"])) {
-				if (is_null_or_empty($_SESSION["url"])) {
-					redirect_to("index.php");
-				} else {
-					$url = $_SESSION["url"];
-					unset($_SESSION["url"]);
-					redirect_to($url);
-				}
-			} else {
+
+			if (is_null_or_empty($_SESSION["url"])) {
 				redirect_to("index.php");
+			} else {
+				$url = $_SESSION["url"];
+				unset($_SESSION["url"]);
+				redirect_to($url);
 			}
 		} catch (Exception $e) {
 			$g_error_msg = $e->getMessage();
