@@ -82,8 +82,8 @@
 	if (file_exists(BASE_DIR . "/" . SETTINGS_INI)) {
 		require_once(BASE_DIR . "/" . SETTINGS_INI);
 		$g_debug = TEST_MODE;
-		//$g_use_recaptcha = (!TEST_MODE) || ($_SERVER["HTTP_HOST"] == "localhost");
-		$g_use_recaptcha = false;
+		$g_use_recaptcha = (!TEST_MODE) || ($_SERVER["HTTP_HOST"] == "localhost");
+		$g_use_recaptcha = $g_use_recaptcha && USE_CAPTCHA;
 		try {
 			$g_pdo = new PDO('mysql:host='.MYSQL_HOST.';dbname='.MYSQL_DBNAME.';charset=UTF-8', MYSQL_USER, MYSQL_PASSWORD);
 			$g_pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

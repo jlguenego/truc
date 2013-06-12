@@ -36,6 +36,7 @@ EOF;
 			$merchant_id = $_POST["merchant_id"];
 			$https_access = $_POST["https_access"];
 			$bitcoin_address = $_POST["bitcoin_address"];
+			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -46,6 +47,8 @@ EOF;
 	define("CONTACT_MAIL", "$contact_email");
 
 	define('TEST_MODE', $test_mode);
+
+	define('USE_CAPTCHA', $use_captcha);
 
 	define('MERCHANT_ID', '$merchant_id');
 	define('PAYMENT_PROVIDER', "$payment_type");
