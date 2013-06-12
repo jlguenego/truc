@@ -927,3 +927,37 @@ a.evt_button {
 	padding: 10px;
 	border: 1px solid #EEEEEE;
 }
+
+/* FIXED */
+.evt_fixed_top_left {
+	position: fixed;
+	left: 0;
+	top: 155px;
+}
+
+.evt_social {
+	position: relative;
+	left: -8px;
+	display: block;
+	width: 40px;
+	height: 32px;
+	text-indent: -9999px;
+	overflow: hidden;
+	margin: 2px 0px;
+}
+
+.evt_social:hover {
+	left: 0px;
+}
+
+#evt_fb {
+	background: url(images/social.png) 100% 50% no-repeat;
+}
+
+#evt_gp {
+	background: url(images/social.png) 100% 0 no-repeat;
+}
+
+#evt_tw {
+	background: url(images/social.png) 100% 100% no-repeat;
+}

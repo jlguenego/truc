@@ -5,10 +5,9 @@
 		<td class="evt_sign_in_form" width="450">
 		<div class="evt_sign_in_table_title">{{Easy connect with}}</div>
 <?php
-	$redirect = '';
 	$images_dir = SKIN_DIR.'/images/openid';
 ?>
-<form id="openid_form" method="post" action="?action=openid_authenticate<?php echo $redirect; ?>" class="openid">
+<form id="openid_form" method="post" action="?action=auto_authenticate" class="openid">
 	<div>
 		<ul id="providers" class="providers" style="">
 			<li id="openid" title="OpenID" class="provider" style="line-height: 0; cursor: pointer;">
@@ -97,6 +96,10 @@
 		</tr>
 	</table>
 </form>
+<div id="facebook" title="Facebook" class="provider" data-techno="facebook" style="line-height: 0; cursor: pointer;">
+	<img alt="icon" id="facebook" src="<?php echo $images_dir; ?>/../login_fb.png">
+	<span class="url" style="display: none;"> <strong width="300">http://</strong> </span>
+</div>
 		</td>
 		<td width="200" align="center">
 			&nbsp;
@@ -134,12 +137,19 @@
 	//OPENID
 	$('.provider').click(function() {
 		log('click');
-		var direct_list = ['google', 'yahoo'];
+		var direct_list = ['google', 'yahoo', 'facebook'];
 		var direct = ($.inArray($(this).attr('id'), direct_list) != -1);
 		if (direct) {
 			log('direct');
 			$('#url').val($(this).find('.url').html());
 			log($('#url').val());
+			var techno = $(this).attr('data-techno');
+			log("techno="+techno);
+			if (!techno) {
+				techno = 'openid';
+			}
+			var action = $('#openid_form').attr('action');
+			$('#openid_form').attr('action', action + '&techno=' + techno);
 			$('#openid_form').submit();
 			return;
 		}
@@ -170,6 +180,8 @@
 		url = $.trim(url);
 		$('#url').val(url);
 		log($('#url').val());
+		var action = $('#openid_form').attr('action');
+		$('#openid_form').attr('action', action + '&techno=openid');
 		$('#openid_form').submit();
 		return;
 	});

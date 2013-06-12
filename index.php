@@ -15,6 +15,7 @@
 	require_once(BASE_DIR . "/include/print.inc");
 	require_once(BASE_DIR . "/include/dd.inc");
 	require_once(BASE_DIR . "/include/openid.inc");
+	require_once(BASE_DIR . "/include/facebook.inc");
 	require_once(BASE_DIR . "/include/bitcoin.inc");
 
 	if (isset($_SERVER["HTTPS"])) {

@@ -16,8 +16,7 @@
             	'namePerson/last',
             );
             $openid->optional = array('namePerson', 'namePerson/friendly');
-            header('Location: ' . $openid->authUrl());
-			return NULL;
+            redirect_to($openid->authUrl());
 	    } elseif($openid->mode == 'cancel') {
 	    	debug('cancel');
 			throw new Exception(_t('You have cancelled authentication!'));

@@ -11,6 +11,10 @@
 		print($g_i18n->parse($layout));
 	}
 
+	function layout_fixed() {
+		require_once(BASE_DIR . "/" . SKIN_DIR."/fixed.inc");
+	}
+
 	function layout_header() {
 		require_once(BASE_DIR . "/" . SKIN_DIR."/header.inc");
 	}

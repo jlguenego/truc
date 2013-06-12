@@ -36,6 +36,8 @@ EOF;
 			$merchant_id = $_POST["merchant_id"];
 			$https_access = $_POST["https_access"];
 			$bitcoin_address = $_POST["bitcoin_address"];
+			$fb_app_id = $_POST["fb_app_id"];
+			$fb_secret_key = $_POST["fb_secret_key"];
 			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
 			$content = <<<EOF
 <?php
@@ -62,6 +64,9 @@ EOF;
 	define('HTTPS_ACCESS', '$https_access');
 
 	define('BITCOIN_ADDRESS', '$bitcoin_address');
+
+	define('FB_APP_ID', '$fb_app_id');
+	define('FB_SECRET_KEY', '$fb_secret_key');
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

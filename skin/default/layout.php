@@ -38,6 +38,7 @@
 </div>
 <?php
 	layout_footer();
+	layout_fixed();
 ?>
 			</div>
 			<?php layout_trace(); ?>
