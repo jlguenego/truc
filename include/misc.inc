@@ -26,6 +26,9 @@
 	}
 
 	function is_installed() {
+		if (!file_exists(TEMP_DIR)) {
+			mkdir(TEMP_DIR);
+		}
 		if (!file_exists(SETTINGS_INI)) {
 			return false;
 		}

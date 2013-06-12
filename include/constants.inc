@@ -49,7 +49,9 @@
 	define('ADVERTISEMENT_STATUS_DEFAULT', 0);
 	define('ADVERTISEMENT_STATUS_SENT', 1);
 
-	define('SYNC_LOCK_FILE', '_tmp/_evt_lock.txt');
+	define('TEMP_DIR', '_tmp');
+	define('SYNC_LOCK_FILE', TEMP_DIR.'/_evt_lock.txt');
+
 
 	define('INSTRUCTION_SEPARATOR', "\n---INSTRUCTION_SEPARATOR---\n");
 
