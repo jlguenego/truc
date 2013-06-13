@@ -820,8 +820,25 @@ a.evt_button {
 	padding: 0px;
 }
 
+#openid_form #providers img {
+	border: 1px solid #E1E1E1;
+
+	border-radius: 3px;
+	overflow: hidden;
+}
+
+#openid_form #providers img:hover {
+	border: 1px solid #C4C4C4;
+}
+
+#openid_form #providers img:active {
+	position: relative;
+	top: 1px;
+}
+
 #openid_form #providers li {
 	display: inline-block;
+	margin: 0px 3px;
 }
 
 .openid_logo {

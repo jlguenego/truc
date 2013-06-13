@@ -53,6 +53,7 @@
 			$user->locale = $locale;
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
+				$user->clean_format();
 			$user->store();
 		}
 		$facebook->destroySession();

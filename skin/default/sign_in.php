@@ -2,41 +2,54 @@
 
 <table class="evt_sign_in_table">
 	<tr>
-		<td class="evt_sign_in_form" width="450">
-		<div class="evt_sign_in_table_title">{{Easy connect with}}</div>
+		<td class="evt_sign_in_form" width="500">
+			<div class="evt_sign_in_table_title">{{Easy connect with}}</div>
 <?php
 	$images_dir = SKIN_DIR.'/images/openid';
 ?>
 <form id="openid_form" method="post" action="?action=auto_authenticate" class="openid">
 	<div>
 		<ul id="providers" class="providers" style="">
-			<li id="openid" title="OpenID" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="<?php echo $images_dir; ?>/openidW.png">
-				<span class="url" style="display: none;"> <strong width="300">http://</strong> </span>
-				<span class="label" style="display: none;">Enter your <a href="http://openid.net/" class="openid_logo" target="_blank">OpenId</a></span>
-			</li>
 			<li id="google" title="Google" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="<?php echo $images_dir; ?>/googleW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/google.png">
 				<span class="url" style="display: none;">https://www.google.com/accounts/o8/id</span>
 			</li>
+			<li id="facebook" title="Facebook" class="provider" data-techno="facebook" style="line-height: 0; cursor: pointer;">
+				<img alt="icon" id="facebook" src="<?php echo $images_dir; ?>/facebook.png">
+			</li>
+			<li id="linkedin" title="LinkedIn" class="provider" data-techno="linkedin" style="line-height: 0; cursor: pointer;">
+				<img alt="icon" id="facebook" src="<?php echo $images_dir; ?>/linkedin.png">
+			</li>
 			<li id="yahoo" title="Yahoo" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="<?php echo $images_dir; ?>/yahooW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/yahoo.png">
 				<span class="url" style="display: none;">http://me.yahoo.com/</span>
 			</li>
 			<li id="aol" title="AOL" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="<?php echo $images_dir; ?>/aolW.png">
+				<img alt="icon" src="<?php echo $images_dir; ?>/aol.png">
 				<span class="url" style="display: none;">http://openid.aol.com/<strong>username</strong></span>
 				<span class="label" style="display: none;">Enter your AOL screen name</span>
 			</li>
-			<li id="myopen" title="MyOpenID" class="provider" style="line-height: 0; cursor: pointer;">
-				<img alt="icon" src="<?php echo $images_dir; ?>/myopenid.png">
-				<span class="url" style="display: none;">http://<strong>username</strong>.myopenid.com/</span>
-				<span class="label" style="display: none;">Enter your MyOpenID user name</span>
+			<li id="orange" title="Orange" class="provider" style="line-height: 0; cursor: pointer;">
+				<img alt="icon" src="<?php echo $images_dir; ?>/orange.png">
+				<span class="url" style="display: none;">http://openid.orange.fr</span>
+				<span class="label" style="display: none;">Enter your AOL screen name</span>
+			</li>
+		</ul>
+		<ul id="providers" class="providers" style="">
+			<li id="openid" title="OpenID" class="provider" style="line-height: 0; cursor: pointer;" data-x="0" data-y="20">
+				<img alt="icon" src="<?php echo $images_dir; ?>/openid.png">
+				<span class="url" style="display: none;"> <strong width="300">http://</strong> </span>
+				<span class="label" style="display: none;">Enter your <a href="http://openid.net/" class="openid_logo" target="_blank">OpenId</a></span>
 			</li>
 			<li id="flikr" title="Flickr" class="provider" style="line-height: 0; cursor: pointer;">
 				<img alt="icon" src="<?php echo $images_dir; ?>/flickr.png">
 				<span class="url" style="display: none;">http://flickr.com/<strong>username</strong>/</span>
 				<span class="label" style="display: none;">Enter your Flickr user name</span>
+			</li>
+			<li id="myopen" title="MyOpenID" class="provider" style="line-height: 0; cursor: pointer;">
+				<img alt="icon" src="<?php echo $images_dir; ?>/myopenid.png">
+				<span class="url" style="display: none;">http://<strong>username</strong>.myopenid.com/</span>
+				<span class="label" style="display: none;">Enter your MyOpenID user name</span>
 			</li>
 			<li id="thechnorati" title="Technorati" class="provider" style="line-height: 0; cursor: pointer;">
 				<img alt="icon" src="<?php echo $images_dir; ?>/technorati.png">
@@ -75,7 +88,7 @@
 			</li>
 		</ul>
 	</div>
-	<table id="openid_url" width="500">
+	<table id="openid_url" width="500px" style="display: none;">
 		<tr>
 			<td colspan="2">
 				<label for="openid_identifier"></label>
@@ -96,15 +109,11 @@
 		</tr>
 	</table>
 </form>
-<div id="facebook" title="Facebook" class="provider" data-techno="facebook" style="line-height: 0; cursor: pointer;">
-	<img alt="icon" id="facebook" src="<?php echo $images_dir; ?>/../login_fb.png">
-	<span class="url" style="display: none;"> <strong width="300">http://</strong> </span>
-</div>
 		</td>
-		<td width="200" align="center">
+		<td width="100" align="center">
 			&nbsp;
 		</td>
-		<td class="evt_sign_in_form">
+		<td width="300" class="evt_sign_in_form">
 <div class="evt_sign_in_table_title">{{Password connect}}</div>
 <?php
 	$f = new Form();
@@ -128,7 +137,6 @@
 	var hash_salt = "<?php echo RANDOM_SALT ?>";
 	$(document).ready(function() {
 		eb_sync_hash('clear_password', 'password');
-		$('#openid').click();
 	});
 	$("#sign_in").submit(function() {
 		$('input[type=password]').attr('name', '');
@@ -137,7 +145,7 @@
 	//OPENID
 	$('.provider').click(function() {
 		log('click');
-		var direct_list = ['google', 'yahoo', 'facebook'];
+		var direct_list = ['google', 'yahoo', 'facebook', 'linkedin', 'orange'];
 		var direct = ($.inArray($(this).attr('id'), direct_list) != -1);
 		if (direct) {
 			log('direct');
@@ -153,6 +161,7 @@
 			$('#openid_form').submit();
 			return;
 		}
+		$('#openid_url').show();
 		$('label[for=openid_identifier]').html($(this).find('.label').html());
 		var url = $(this).find('.url');
 

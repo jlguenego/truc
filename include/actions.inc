@@ -805,8 +805,34 @@
 			case "facebook":
 				action_facebook_authenticate();
 				break;
+			case "linkedin":
+				action_linkedin_authenticate();
+				break;
 			default:
 				throw new Exception('Technology not recognized.');
+		}
+	}
+
+	function action_linkedin_authenticate() {
+		global $g_error_msg;
+
+		try {
+			$user = linkedin_authenticate();
+			if ($user == NULL) {
+				return;
+			}
+			debug("user=".sprint_r($user));
+			$_SESSION['user_id'] = $user->id;
+
+			if (is_null_or_empty($_SESSION["url"])) {
+				redirect_to("index.php");
+			} else {
+				$url = $_SESSION["url"];
+				unset($_SESSION["url"]);
+				redirect_to($url);
+			}
+		} catch (Exception $e) {
+			$g_error_msg = $e->getMessage();
 		}
 	}
 
