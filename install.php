@@ -102,6 +102,8 @@ EOF;
 					<td><input type="checkbox" name="escape_quote" value="true"/>Escape Quote</td>
 				</tr>
 				<tr>
+					<td><input type="checkbox" name="no_db_creation" value="true"/>Do not create database</td>
+				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>
 				<input type="hidden" name="https_access"/>

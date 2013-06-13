@@ -1,5 +1,5 @@
 <?php
-	define('REDIRECT_URI', 'http://localhost/truc/?action=auto_authenticate&techno=linkedin');
+	define('REDIRECT_URI', '?action=auto_authenticate&techno=linkedin');
 	define('SCOPE', 'r_fullprofile r_emailaddress rw_nus');
 
 	function linkedin_authenticate() {
@@ -60,7 +60,7 @@
 			'client_id' => LINKEDIN_API_KEY,
 			'scope' => SCOPE,
 			'state' => uniqid('', true), // unique long string
-			'redirect_uri' => REDIRECT_URI,
+			'redirect_uri' => HOST.REDIRECT_URI,
     	);
 
 	    // Authentication request
@@ -79,7 +79,7 @@ function getAccessToken() {
 		'client_id' => LINKEDIN_API_KEY,
 		'client_secret' => LINKEDIN_API_SECRET,
 		'code' => $_GET['code'],
-		'redirect_uri' => REDIRECT_URI
+		'redirect_uri' => HOST.REDIRECT_URI
 	);
 
     // Access Token request

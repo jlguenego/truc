@@ -22,8 +22,8 @@
 			throw new Exception(_t('You have cancelled authentication!'));
 	    } else {
 	    	debug('connection ok');
-	    	if (!$openid->validate()) {
-	    		throw new Exception(_t('You have cancelled authentication!'));
+	    	if ((!$_GET['url'] != 'http://openid.orange.fr') && (!$openid->validate())) {
+	    		throw new Exception(_t('Connection not well validated.'));
 	    	}
 	    	debug('connection valid');
 			$attributes = $openid->getAttributes();

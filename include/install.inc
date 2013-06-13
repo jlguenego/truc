@@ -76,16 +76,17 @@ EOF;
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
 			chmod(SETTINGS_INI, 0400);
-			$requests = file_get_contents("install.sql");
-			$requests = str_replace("ENGINE=InnoDB", "", $requests);
+			if (!isset($_POST['no_db_creation'])) {
+				$requests = file_get_contents("install.sql");
+				$requests = str_replace("ENGINE=InnoDB", "", $requests);
 
-			$st = $db->prepare($requests,
-				array(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE));
-			if ($st->execute() === FALSE) {
-				echo($requests.'<br/>');
-				throw new Exception("Table creation: ".sprint_r($db->errorInfo())." InnoDB?");
-			};
-
+				$st = $db->prepare($requests,
+					array(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE));
+				if ($st->execute() === FALSE) {
+					echo($requests.'<br/>');
+					throw new Exception("Table creation: ".sprint_r($db->errorInfo())." InnoDB?");
+				}
+			}
 			if ($test_mode == "false") {
 				$content = <<<EOF
 Order Deny,Allow
