@@ -30,7 +30,7 @@
 	</tr>
 </table>
 <p>
-	Les frais de transfert bancaire sont inclus dans nos tarifs. Il n'y a absolument pas de frais inatendus.
+	Les frais de transfert bancaire sont inclus dans nos tarifs. Il n'y a absolument pas de frais inattendus.
 </p>
 <h1>Liste des tarifs pour les participants</h1>
 <p>
