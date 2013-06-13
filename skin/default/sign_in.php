@@ -115,6 +115,7 @@
 		</td>
 		<td width="300" class="evt_sign_in_form">
 <div class="evt_sign_in_table_title">{{Password connect}}</div>
+<div class="form_cancel"><small>{{Not registered? Then}} <a href="index.php?action=get_form&amp;type=account">{{create an account}}</a></small></div>
 <?php
 	$f = new Form();
 	$f->action = "?action=authenticate";
@@ -128,7 +129,6 @@
 ?>
 <br/>
 <br/>
-<div class="form_cancel">{{Not registered? Then}} <a href="index.php?action=get_form&amp;type=account">{{create an account}}</a></div>
 <a href="?action=get_form&type=forgotten_password">{{Forgot your password?}}</a><br/>
 		</td>
 	</tr>

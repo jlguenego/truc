@@ -106,8 +106,10 @@ EOF;
 				</tr>
 				<input type="hidden" name="https_access"/>
 				<input type="hidden" name="profile"/>
-				<input type="hidden" name="fb_app_id"/>
-				<input type="hidden" name="fb_secret_key"/>
+				<input type="hidden" name="facebook_app_id"/>
+				<input type="hidden" name="facebook_secret_key"/>
+				<input type="hidden" name="linkedin_api_key"/>
+				<input type="hidden" name="linkedin_api_secret"/>
 			</table>
 		</form>
 		<script>
@@ -140,8 +142,10 @@ EOF;
 				$("input[name=merchant_id]").val(profile_array[i].merchant_id);
 				$("input[name=https_access]").val(profile_array[i].https_access);
 				$("input[name=bitcoin_address]").val(profile_array[i].bitcoin_address);
-				$("input[name=fb_app_id]").val(profile_array[i].fb_app_id);
-				$("input[name=fb_secret_key]").val(profile_array[i].fb_secret_key);
+				$("input[name=facebook_app_id]").val(profile_array[i].facebook_app_id);
+				$("input[name=facebook_secret_key]").val(profile_array[i].facebook_secret_key);
+				$("input[name=linkedin_api_key]").val(profile_array[i].linkedin_api_key);
+				$("input[name=linkedin_api_secret]").val(profile_array[i].linkedin_api_secret);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);

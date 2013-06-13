@@ -1,6 +1,4 @@
 <?php
-	define('API_KEY', 'our5evn1ypmf');
-	define('API_SECRET', 'ViMhftQVp1Ue9iJQ');
 	define('REDIRECT_URI', 'http://localhost/truc/?action=auto_authenticate&techno=linkedin');
 	define('SCOPE', 'r_fullprofile r_emailaddress rw_nus');
 
@@ -59,7 +57,7 @@
 	function getAuthorizationCode() {
 	    $params = array(
 			'response_type' => 'code',
-			'client_id' => API_KEY,
+			'client_id' => LINKEDIN_API_KEY,
 			'scope' => SCOPE,
 			'state' => uniqid('', true), // unique long string
 			'redirect_uri' => REDIRECT_URI,
@@ -78,8 +76,8 @@
 function getAccessToken() {
     $params = array(
 		'grant_type' => 'authorization_code',
-		'client_id' => API_KEY,
-		'client_secret' => API_SECRET,
+		'client_id' => LINKEDIN_API_KEY,
+		'client_secret' => LINKEDIN_API_SECRET,
 		'code' => $_GET['code'],
 		'redirect_uri' => REDIRECT_URI
 	);

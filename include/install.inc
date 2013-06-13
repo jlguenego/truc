@@ -36,8 +36,10 @@ EOF;
 			$merchant_id = $_POST["merchant_id"];
 			$https_access = $_POST["https_access"];
 			$bitcoin_address = $_POST["bitcoin_address"];
-			$fb_app_id = $_POST["fb_app_id"];
-			$fb_secret_key = $_POST["fb_secret_key"];
+			$facebook_app_id = $_POST["facebook_app_id"];
+			$facebook_secret_key = $_POST["facebook_secret_key"];
+			$linkedin_api_key = $_POST["linkedin_api_key"];
+			$linkedin_api_secret = $_POST["linkedin_api_secret"];
 			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
 			$content = <<<EOF
 <?php
@@ -65,8 +67,11 @@ EOF;
 
 	define('BITCOIN_ADDRESS', '$bitcoin_address');
 
-	define('FB_APP_ID', '$fb_app_id');
-	define('FB_SECRET_KEY', '$fb_secret_key');
+	define('FACEBOOK_APP_ID', '$facebook_app_id');
+	define('FACEBOOK_SECRET_KEY', '$facebook_secret_key');
+
+	define('LINKEDIN_API_KEY', '$linkedin_api_key');
+	define('LINKEDIN_API_SECRET', '$linkedin_api_secret');
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

@@ -3,8 +3,8 @@
 
 	function facebook_authenticate() {
 		$facebook = new Facebook(array(
-			'appId'  => FB_APP_ID,
-			'secret' => FB_SECRET_KEY,
+			'appId'  => FACEBOOK_APP_ID,
+			'secret' => FACEBOOK_SECRET_KEY,
 		));
 
 		$user = $facebook->getUser();
