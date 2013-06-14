@@ -1,7 +1,7 @@
 <div class="evt_title"><p>{{Attendee list}}</p></div>
 {{Event name}}: <?php echo "<a href=\"?action=retrieve&amp;type=event&amp;id=".$g_display["event"]->id."\">".$g_display["event"]->title."</a>"; ?><br/>
 {{Organizer}}: <?php echo $g_display["event"]->organizer_name; ?>
-<table class="evt_table">
+<table class="evt_table inline">
 	<tr>
 		<th>{{Label}}</th>
 		<th>{{Ticket name}}</th>

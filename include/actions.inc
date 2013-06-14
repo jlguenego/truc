@@ -129,12 +129,7 @@
 		$bill->update();
 		$client = User::get_from_id($bill->user_id);
 		mail_payment($client->email, $bill);
-		if (TEST_MODE) {
-			$_GET["id"] = $bill->event_id;
-			action_participation_list();
-		} else {
-			redirect_to('?action=list&type=participation&id='.$bill->event_id);
-		}
+		redirect_action('?action=list&type=participation&id='.$bill->event_id);
 	}
 
 	function action_bill_delete() {
@@ -148,12 +143,7 @@
 
 		$bill = Devis::get_from_id($_GET['id']);
 		$bill->delete();
-		if (TEST_MODE) {
-			$_GET["id"] = $bill->event_id;
-			action_participation_list();
-		} else {
-			redirect_to('?action=list&type=participation&id='.$bill->event_id);
-		}
+		redirect_action('?action=list&type=participation&id='.$bill->event_id);
 	}
 
 	function action_run_tasks() {
@@ -181,11 +171,7 @@
 					} catch (Exception $ex) {
 						message_set_error($ex->getMessage());
 					}
-					if (TEST_MODE) {
-						action_manage();
-					} else {
-						redirect_to("?action=manage&type=".$_GET["type"]);
-					}
+					redirect_action("?action=manage&type=".$_GET["type"]);
 					return true;
 				}
 			}
@@ -422,11 +408,7 @@
 					mail_password_changed($user);
 				}
 				message_set_info($info);
-				if (TEST_MODE) {
-					action_account_retrieve();
-				} else {
-					redirect_to('?action=retrieve&type=account');
-				}
+				redirect_action('?action=retrieve&type=account');
 			} else {
 				throw new Exception(_t("This user does not exists."));
 			}
@@ -507,12 +489,7 @@
 				$ticket->store();
 				$i++;
 			}
-			$_GET["id"] = $event->id;
-			if (TEST_MODE) {
-				action_event_retrieve();
-			} else {
-				redirect_to("?action=retrieve&type=event&id=".$event->id);
-			}
+			redirect_action("?action=retrieve&type=event&id=".$event->id);
 		} catch (Exception $e) {
 			message_set_error($e->getMessage());
 			action_event_get_form();
@@ -576,11 +553,7 @@
 						$i++;
 					}
 					$event->delete_unused_tickets($_GET['ticket_name_a']);
-					if (TEST_MODE) {
-						action_event_retrieve();
-					} else {
-						redirect_to("?action=retrieve&type=event&id=".$event->id);
-					}
+					redirect_action("?action=retrieve&type=event&id=".$event->id);
 				} else {
 					action_event_create();
 				}
@@ -673,11 +646,7 @@
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_YES);
 		mail_notify_publication($event);
-		if (TEST_MODE) {
-			action_supervision();
-		} else {
-			redirect_to("?action=supervision");
-		}
+		redirect_action("?action=supervision");
 	}
 
 	function action_event_unpublish() {
@@ -691,11 +660,7 @@
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_publish_flag(EVENT_PUBLISH_FLAG_NO);
 		mail_notify_publication($event, $_GET["reason"]);
-		if (TEST_MODE) {
-			action_supervision();
-		} else {
-			redirect_to("?action=supervision");
-		}
+		redirect_action("?action=supervision");
 	}
 
 	function action_event_confirm() {
@@ -1192,10 +1157,6 @@
 		$event = Event::get_from_id($_GET["id"]);
 		$event->set_ready_for_publication(true);
 		mail_publication_request($event);
-		if (TEST_MODE) {
-			action_event_retrieve();
-		} else {
-			redirect_to("?action=retrieve&type=event&id=".$event->id);
-		}
+		redirect_action("?action=retrieve&type=event&id=".$event->id);
 	}
 ?>

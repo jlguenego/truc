@@ -102,6 +102,17 @@ EOF;
 		exit(0);
 	}
 
+	function redirect_action($url) {
+		if (TEST_MODE) {
+			$array = parse_url($url);
+			$query_string = $array['query'];
+			parse_str($query_string, $_GET);
+			action();
+		} else {
+			redirect_to($url);
+		}
+	}
+
 	function is_number($var) {
 		return preg_match("#^[\d]+[\.,]?[\d]*$#", $var);
 	}

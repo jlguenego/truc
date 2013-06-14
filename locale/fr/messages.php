@@ -485,6 +485,8 @@ $this->array = array(
 	"at midnight" => "à minuit",
 	"PayPal How does it work?" => "Paypal Comment ça marche ?",
 	"Event is null." => "L'évènement est null.",
+	"Mr" => "Mr",
+	"Ms" => "Mme",
 
 //The End
 );

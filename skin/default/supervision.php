@@ -23,7 +23,7 @@
 		<td><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $event->title ?></a></td>
 		<td class="evt_date"><?php echo $event->happening_t; ?></td>
 		<td class="evt_date"><?php echo $event->get_confirmation_date(); ?></td>
-		<td><?php echo $event->display_status(); ?></td>
+		<td>{{<?php echo $event->display_status(); ?>}}</td>
 		<td><?php echo _t($publish_flag); ?></td>
 <?php
 			$confirm_button_grey = "";
