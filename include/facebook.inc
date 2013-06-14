@@ -21,7 +21,7 @@
 		if ($user == null) {
 			$params = array(
 				'scope' => 'email',
-				'redirect_uri' => HOST.'?action=auto_authenticate&techno=facebook',
+				'redirect_uri' => FACEBOOK_REDIRECT_URI.'?action=auto_authenticate&techno=facebook',
 			);
 			$loginUrl = $facebook->getLoginUrl($params);
 			redirect_to($loginUrl);

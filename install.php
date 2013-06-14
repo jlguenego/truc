@@ -102,7 +102,7 @@ EOF;
 					<td><input type="checkbox" name="escape_quote" value="true"/>Escape Quote</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="no_db_creation" value="true"/>Do not create database</td>
+					<td><input type="checkbox" name="db_creation" value="true"/>Recreate database?</td>
 				<tr>
 					<td><input type="submit" value="Submit"></td>
 				</tr>
@@ -110,6 +110,7 @@ EOF;
 				<input type="hidden" name="profile"/>
 				<input type="hidden" name="facebook_app_id"/>
 				<input type="hidden" name="facebook_secret_key"/>
+				<input type="hidden" name="facebook_redirect_uri"/>
 				<input type="hidden" name="linkedin_api_key"/>
 				<input type="hidden" name="linkedin_api_secret"/>
 			</table>
@@ -146,6 +147,7 @@ EOF;
 				$("input[name=bitcoin_address]").val(profile_array[i].bitcoin_address);
 				$("input[name=facebook_app_id]").val(profile_array[i].facebook_app_id);
 				$("input[name=facebook_secret_key]").val(profile_array[i].facebook_secret_key);
+				$("input[name=facebook_redirect_uri]").val(profile_array[i].facebook_redirect_uri);
 				$("input[name=linkedin_api_key]").val(profile_array[i].linkedin_api_key);
 				$("input[name=linkedin_api_secret]").val(profile_array[i].linkedin_api_secret);
 				if (profile_array[i].TEST_MODE) {

@@ -38,6 +38,7 @@ EOF;
 			$bitcoin_address = $_POST["bitcoin_address"];
 			$facebook_app_id = $_POST["facebook_app_id"];
 			$facebook_secret_key = $_POST["facebook_secret_key"];
+			$facebook_redirect_uri = $_POST["facebook_redirect_uri"];
 			$linkedin_api_key = $_POST["linkedin_api_key"];
 			$linkedin_api_secret = $_POST["linkedin_api_secret"];
 			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
@@ -69,6 +70,7 @@ EOF;
 
 	define('FACEBOOK_APP_ID', '$facebook_app_id');
 	define('FACEBOOK_SECRET_KEY', '$facebook_secret_key');
+	define('FACEBOOK_REDIRECT_URI', '$facebook_redirect_uri');
 
 	define('LINKEDIN_API_KEY', '$linkedin_api_key');
 	define('LINKEDIN_API_SECRET', '$linkedin_api_secret');
@@ -76,7 +78,7 @@ EOF;
 EOF;
 			file_put_contents(SETTINGS_INI, $content);
 			chmod(SETTINGS_INI, 0400);
-			if (!isset($_POST['no_db_creation'])) {
+			if (isset($_POST['db_creation'])) {
 				$requests = file_get_contents("install.sql");
 				$requests = str_replace("ENGINE=InnoDB", "", $requests);
 
