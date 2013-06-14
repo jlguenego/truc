@@ -23,6 +23,10 @@
 		return $participate;
 	}
 
+	function format_partner($name) {
+		return format_ucwords(mb_strtolower($name, "UTF-8"));
+	}
+
 	function format_participate_title($event) {
 		$participate = _t("Book tickets");
 		if ($event->is_confirmed()) {

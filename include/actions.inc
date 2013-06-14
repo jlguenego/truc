@@ -739,6 +739,9 @@
 	}
 
 	function action_auto_authenticate() {
+		if (isset($_GET['partner'])) {
+			$_SESSION['partner'] = $_GET['partner'];
+		}
 		switch ($_GET['techno']) {
 			case "openid":
 				action_openid_authenticate();

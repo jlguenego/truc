@@ -20,8 +20,16 @@
 			throw new Exception(_t('You have cancelled authentication!'));
 	    } else {
 	    	debug('connection ok');
-	    	if ((!$_GET['url'] != 'http://openid.orange.fr') && (!$openid->validate())) {
-	    		throw new Exception(_t('Connection not well validated.'));
+	    	$b_validate = true;
+	    	if (isset($_GET['url'])) {
+				if ($_GET['url'] == 'http://openid.orange.fr') {
+					$b_validate = false;
+				}
+	    	}
+	    	if ($b_validate) {
+	    		if (!$openid->validate()) {
+	    			throw new Exception(_t('Connection not well validated.'));
+	    		}
 	    	}
 	    	debug('connection valid');
 			$attributes = $openid->getAttributes();
@@ -37,17 +45,8 @@
 				if (isset($attributes['namePerson/last'])) {
 					$lastname = $attributes['namePerson/last'];
 				}
-				$user = new User();
-				$user->id = create_id();
-				$user->email = $email;
-				$user->firstname = $firstname;
-				$user->lastname = $lastname;
-				$user->password = 'openid';
-				$user->locale = $_SESSION["locale"];
-				$user->role = ROLE_USER;
-				$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
-				$user->clean_format();
-				$user->store();
+				$locale = $_SESSION['locale'];
+				$user = User::create_from_partner($email, $lastname, $firstname, $locale);
 			}
 
 			return $user;

@@ -44,17 +44,7 @@
 			if (isset($user_profile['locale'])) {
 				$locale = $user_profile['locale'];
 			}
-			$user = new User();
-			$user->id = create_id();
-			$user->email = $email;
-			$user->firstname = $firstname;
-			$user->lastname = $lastname;
-			$user->password = 'facebook';
-			$user->locale = $locale;
-			$user->role = ROLE_USER;
-			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
-				$user->clean_format();
-			$user->store();
+			$user = User::create_from_partner($email, $lastname, $firstname, $locale);
 		}
 		$facebook->destroySession();
 		return $user;

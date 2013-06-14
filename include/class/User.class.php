@@ -558,5 +558,23 @@ EOF;
 			$result->init($this->locale);
 			return $result;
 		}
+
+		public static function create_from_partner($email, $lastname, $firstname, $locale) {
+			$user = new User();
+			$user->id = create_id();
+			$user->email = $email;
+			$user->firstname = $firstname;
+			$user->lastname = $lastname;
+			$user->password = $_SESSION['partner'];
+			$user->locale = $locale;
+			$user->role = ROLE_USER;
+			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
+			$user->clean_format();
+			$user->store();
+			message_set_info(_t('An account has been created based on the information given by '.
+					format_partner($_SESSION['partner'])));
+			unset($_SESSION['partner']);
+			return $user;
+		}
 	}
 ?>

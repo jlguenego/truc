@@ -487,6 +487,8 @@ $this->array = array(
 	"Event is null." => "L'évènement est null.",
 	"Mr" => "Mr",
 	"Ms" => "Mme",
+	"An account has been created based on the information given by " =>
+			"Un compte a été créé, basé sur les informations données par ",
 
 //The End
 );

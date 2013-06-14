@@ -101,6 +101,7 @@
 					<input id="openid_identifier_visible" placeholder="" name="openid_identifier_visible" type="text">
 					<span id="url_suffix"></span>
 					<input id="url" name="url" type="hidden">
+					<input id="partner" name="partner" type="hidden">
 				</div>
 			</td>
 			<td width="100">
@@ -147,6 +148,7 @@
 		log('click');
 		var direct_list = ['google', 'yahoo', 'facebook', 'linkedin', 'orange'];
 		var direct = ($.inArray($(this).attr('id'), direct_list) != -1);
+		$('#partner').val($(this).attr('title'));
 		if (direct) {
 			log('direct');
 			$('#url').val($(this).find('.url').html());

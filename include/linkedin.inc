@@ -38,17 +38,8 @@
 			if (isset($user_profile->lastName)) {
 				$lastname = $user_profile->lastName;
 			}
-			$user = new User();
-			$user->id = create_id();
-			$user->email = $email;
-			$user->firstname = $firstname;
-			$user->lastname = $lastname;
-			$user->password = 'linkedin';
-			$user->locale = $_SESSION["locale"];
-			$user->role = ROLE_USER;
-			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
-			$user->clean_format();
-			$user->store();
+			$locale = $_SESSION['locale'];
+			$user = User::create_from_partner($email, $lastname, $firstname, $locale);
 		}
 		unset($_SESSION['access_token']);
 		return $user;
