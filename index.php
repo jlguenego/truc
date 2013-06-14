@@ -4,6 +4,7 @@
 	require_once(BASE_DIR . "/include/constants.inc");
 	require_once(BASE_DIR . "/include/globals.inc");
 	require_once(BASE_DIR . "/include/misc.inc");
+	require_once(BASE_DIR . "/include/message.inc");
 	require_once(BASE_DIR . "/include/layout.inc");
 	require_once(BASE_DIR . "/include/authentication.inc");
 	require_once(BASE_DIR . "/include/actions.inc");
@@ -70,12 +71,12 @@
 		action();
 	} catch (Exception $e) {
 		$_SESSION["state"] = "error";
-		$g_error_msg = $e->getMessage();
+		message_set_error($e->getMessage());
 		debug(sprint_r($e->getTrace()));
 	}
 
 	if (!in_array($_SESSION["state"], $g_states)) {
-		$g_error_msg = "Undeclared state: ".$_SESSION["state"].".";
+		message_set_error("Undeclared state: ".$_SESSION["state"].".");
 		$_SESSION["state"] = "error";
 	}
 	debug("SESSION['state']=".$_SESSION["state"]);
@@ -94,15 +95,12 @@
 
 	if (!file_exists($g_page)) {
 		$g_page = SKIN_DIR."/error.php";
-		$g_error_msg = _t("Page not existing.");
+		message_set_error(_t("Page not existing."));
 	}
 	debug("Session after: ".$_SESSION["state"]);
-	//$g_info_msg = "This is an info message.";
-	//$g_error_msg = "This is an error message.";
+	//message_set_info("This is an info message.");
+	//message_set_error("This is an error message.");
 
-	if (isset($_SESSION['info_msg'])) {
-		$g_info_msg = $_SESSION['info_msg'];
-		unset($_SESSION['info_msg']);
-	}
+	message_process();
 	layout_i18n(SKIN_DIR."/layout.php");
 ?>

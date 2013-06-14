@@ -24,19 +24,14 @@
 	}
 
 	function layout_message() {
-		global $g_info_msg;
-		global $g_error_msg;
-
-		//$g_info_msg .= "DEBUG";
-
-		if (!is_null_or_empty($g_info_msg)) {
+		if (message_has_info()) {
 ?>
-		<div data-message="evt_info" class="evt_message evt_shadowed">{{Info:}} <?php echo $g_info_msg; ?></div>
+		<div data-message="evt_info" class="evt_message evt_shadowed">{{Info:}} <?php echo message_get_info(); ?></div>
 <?php
 		}
-		if (!is_null_or_empty($g_error_msg)) {
+		if (message_has_error()) {
 ?>
-		<div data-message="evt_error" class="evt_message evt_shadowed">{{Error:}} <?php echo $g_error_msg; ?></div>
+		<div data-message="evt_error" class="evt_message evt_shadowed">{{Error:}} <?php echo message_get_error(); ?></div>
 <?php
 		}
 	}

@@ -35,7 +35,7 @@
 						break;
 					default:
 						$_SESSION["state"] = "not_allowed";
-						$g_error_msg = _t("Action not permitted from the state we are.");
+						message_set_error(_t("Action not permitted from the state we are."));
 						break;
 				}
 				break;
@@ -164,7 +164,6 @@
 	}
 
 	function action_entity_execute() {
-		global $g_error_msg;
 		if (isset($_GET["type"])) {
 			$type = $_GET["type"];
 			if (dd()->has_entity($type)) {
@@ -180,7 +179,7 @@
 							$e->execute_action($_GET["action"]);
 						}
 					} catch (Exception $ex) {
-						$g_error_msg = $ex->getMessage();
+						message_set_error($ex->getMessage());
 					}
 					if (TEST_MODE) {
 						action_manage();
@@ -210,7 +209,6 @@
 
 	function action_promote_event() {
 		global $g_display;
-		global $g_error_msg;
 
 		$user = need_authentication();
 		if (is_null_or_empty($_GET["id"])) {
@@ -231,7 +229,7 @@
 	}
 
 	function action_set_locale() {
-		global $g_info_msg, $g_locales;
+		global $g_locales;
 		if (!in_array($_GET["locale"], $g_locales)) {
 			throw new Exception(_t("unknown locale: ").$_GET["locale"]);
 		}
@@ -365,9 +363,6 @@
 	}
 
 	function action_account_create() {
-		global $g_info_msg;
-		global $g_error_msg;
-
 		debug(sprint_r($_GET));
 
 		try {
@@ -380,8 +375,7 @@
 			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
 			$user->store();
-			$g_info_msg = _t("Account successfully created. Check your email for activation.");
-			$_SESSION['info_msg'] = $g_info_msg;
+			message_set_info(_t("Account successfully created. Check your email for activation."));
 			if (is_null_or_empty($_SESSION["url"])) {
 				redirect_to("index.php");
 			} else {
@@ -391,7 +385,7 @@
 				redirect_to($url);
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
@@ -410,8 +404,6 @@
 
 	function action_account_update() {
 		global $g_display;
-		global $g_error_msg;
-		global $g_info_msg;
 		try {
 			need_authentication();
 			if (is_null_or_empty($_GET["id"])) {
@@ -423,12 +415,13 @@
 				$user->locale = $_SESSION["locale"];
 				$user->update();
 
-				$g_info_msg = _t("Your personal informations has been changed.");
+				$info = _t("Your personal informations has been changed.");
 				if (!is_null_or_empty($_GET["new_pass"])) {
-					$g_info_msg .= _t(" Your password has changed. We just sent you a mail for information.");
+					$info .= _t(" Your password has changed. We just sent you a mail for information.");
 					debug("password changed => mail send");
 					mail_password_changed($user);
 				}
+				message_set_info($info);
 				if (TEST_MODE) {
 					action_account_retrieve();
 				} else {
@@ -438,7 +431,7 @@
 				throw new Exception(_t("This user does not exists."));
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			$g_display["user"] = $user;
 			$_SESSION["state"] = "account_update";
 		}
@@ -446,8 +439,6 @@
 
 	function action_account_delete() {
 		global $g_display;
-		global $g_error_msg;
-		global $g_info_msg;
 
 		$user = User::get_from_id($_GET["id"]);
 		$g_display["user"] = $user;
@@ -473,11 +464,11 @@
 					$user->delete_try();
 				}
 			}
-			$g_info_msg = _t("Account successfully deleted");
+			message_set_info(_t("Account successfully deleted"));
 			action_signout();
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
@@ -494,8 +485,6 @@
 	}
 
 	function action_event_create() {
-		global $g_error_msg;
-
 		$user = need_authentication();
 		try {
 			debug("Tax_rate array: ".sprint_r($_GET['ticket_tax_a']));
@@ -525,14 +514,13 @@
 				redirect_to("?action=retrieve&type=event&id=".$event->id);
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			action_event_get_form();
 		}
 	}
 
 	function action_event_retrieve() {
 		global $g_display;
-		global $g_error_msg;
 
 		if (is_null_or_empty($_GET["id"])) {
 			throw new Exception(_t("No event selected."));
@@ -556,7 +544,6 @@
 
 	function action_event_update() {
 		global $g_display;
-		global $g_error_msg;
 
 		try {
 			$user = need_authentication();
@@ -601,15 +588,13 @@
 				throw new Exception(_t("No event selected."));
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			action_event_get_form();
 		}
 	}
 
 	function action_event_delete() {
 		global $g_display;
-		global $g_error_msg;
-		global $g_info_msg;
 
 		$user = need_authentication();
 
@@ -625,7 +610,7 @@
 		try {
 			if (!isset($_GET['confirm']) || $_GET['confirm'] != "yes") {
 				$_SESSION["state"] = "root";
-				$g_info_msg = _t("Event not deleted.");
+				message_set_info(_t("Event not deleted."));
 				return;
 			}
 			if (is_null_or_empty($_GET['id'])) {
@@ -642,10 +627,10 @@
 			}
 			$event->delete_try();
 			$_SESSION["state"] = "root";
-			$g_info_msg = _t("Event succesfully deleted.");
+			message_set_info(_t("Event succesfully deleted."));
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
@@ -678,8 +663,6 @@
 	}
 
 	function action_event_publish() {
-		global $g_error_msg;
-
 		$user = need_authentication();
 		if (!is_admin_logged()) {
 			throw new Exception(_t("You are not admin."));
@@ -698,8 +681,6 @@
 	}
 
 	function action_event_unpublish() {
-		global $g_error_msg;
-
 		$user = need_authentication();
 		if (!is_admin_logged()) {
 			throw new Exception(_t("You are not admin."));
@@ -718,8 +699,6 @@
 	}
 
 	function action_event_confirm() {
-		global $g_error_msg;
-
 		need_authentication();
 		if (!isset($_GET['id'])) {
 			throw new Exception(_t("No event selected."));
@@ -739,8 +718,6 @@
 	}
 
 	function action_event_cancel() {
-		global $g_error_msg;
-
 		need_authentication();
 		if (!isset($_GET['id'])) {
 			throw new Exception(_t("No event selected."));
@@ -773,7 +750,6 @@
 	}
 
 	function action_authenticate() {
-		global $g_error_msg;
 		if (isset($_GET['email']) && isset($_GET['password'])) {
 			if (User::authenticate($_GET['email'], $_GET['password'])) {
 				$user = User::get_from_email($_GET['email']);
@@ -788,10 +764,10 @@
 						redirect_to($url);
 					}
 				} else {
-					$g_error_msg = _t("Your account is not activated");
+					message_set_error(_t("Your account is not activated"));
 				}
 			} else {
-				$g_error_msg = _t("Wrong email or password");
+				message_set_error(_t("Wrong email or password"));
 			}
 		}
 		debug("END Action_Authenticate");
@@ -814,8 +790,6 @@
 	}
 
 	function action_linkedin_authenticate() {
-		global $g_error_msg;
-
 		try {
 			$user = linkedin_authenticate();
 			if ($user == NULL) {
@@ -832,13 +806,11 @@
 				redirect_to($url);
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
 	function action_facebook_authenticate() {
-		global $g_error_msg;
-
 		try {
 			$user = facebook_authenticate();
 			if ($user == NULL) {
@@ -855,13 +827,11 @@
 				redirect_to($url);
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
 	function action_openid_authenticate() {
-		global $g_error_msg;
-
 		try {
 			$url = '';
 			if (isset($_GET['url'])) {
@@ -882,7 +852,7 @@
 				redirect_to($url);
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 		}
 	}
 
@@ -1032,7 +1002,6 @@
 
 	function action_participation_get_form() {
 		global $g_display;
-		global $g_error_msg;
 
 		$user = need_authentication();
 		if (is_null_or_empty($_GET["event_id"])) {
@@ -1053,7 +1022,6 @@
 	}
 
 	function action_bitcoin_payment() {
-		global $g_error_msg;
 		global $g_display;
 		$user = need_authentication();
 		try {
@@ -1069,13 +1037,12 @@
 			$g_display['bitcoin_uri'] = bitcoin_uri($bill->total_ttc, $bill->label);
 			$_SESSION['state'] = "bitcoin_payment";
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 		}
 	}
 
 	function action_payment_success() {
-		global $g_error_msg;
 		$user = need_authentication();
 		debug($user->email);
 		try {
@@ -1088,7 +1055,7 @@
 			mail_payment($user->email, $devis);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 		}
 	}
@@ -1107,7 +1074,6 @@
 
 	function action_participate() {
 		global $g_display;
-		global $g_error_msg;
 
 		$user = need_authentication();
 		try {
@@ -1126,7 +1092,7 @@
 				$_SESSION["state"] = "error";
 			}
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 			$g_display["user"] = $user;
 			$event = Event::get_from_id($_GET["event_id"]);
@@ -1141,15 +1107,13 @@
 	}
 
 	function action_activation() {
-		global $g_info_msg;
-		global $g_error_msg;
 		try {
 			$user = User::activate($_GET["key"]);
-			$g_info_msg = _t("Account successfully activated");
+			message_set_info(_t("Account successfully activated"));
 			$_GET["email"] = $user->email;
 			$_SESSION["state"] = "sign_in";
 		} catch (Exception $e) {
-			$g_error_msg = $e->getMessage();
+			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 		}
 	}
@@ -1176,16 +1140,13 @@
 	}
 
 	function action_handle_reset_password() {
-		global $g_error_msg;
-		global $g_info_msg;
-
 		if (is_null_or_empty($_GET["password1"]) || is_null_or_empty($_GET["password2"])) {
-			$g_error_msg = _t("Please fill all field.");
+			message_set_error(_t("Please fill all field."));
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
 		if ($_GET["password1"] != $_GET["password2"]) {
-			$g_error_msg = _t("Passwords are different.");
+			message_set_error(_t("Passwords are different."));
 			$_SESSION["state"] = "reset_password_form";
 			return;
 		}
@@ -1194,7 +1155,7 @@
 		$user->update();
 		$user->force_activation();
 		$user->reset_token();
-		$g_info_msg = _t("Your password has been updated.");
+		message_set_info(_t("Your password has been updated."));
 		$_SESSION["state"] = "root";
 	}
 

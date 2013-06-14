@@ -2,8 +2,6 @@
 	require_once(BASE_DIR . '/_ext/lightopenid/openid.php');
 
 	function openid_authenticate($url) {
-		global $g_error_msg;
-
 		$openid = new LightOpenID(HOST);
 	    if(!$openid->mode) {
 	    	debug('No mode');

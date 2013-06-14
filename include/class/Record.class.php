@@ -401,9 +401,6 @@ EOF;
 		}
 
 		public static function create() {
-			global $g_info_msg;
-			global $g_error_msg;
-
 			debug(sprint_r($_GET));
 
 			try {
@@ -412,9 +409,9 @@ EOF;
 				$record->id = create_id();
 				$record->hydrate_from_form();
 				$record->store();
-				$g_info_msg = _t("Record successfully created.");
+				message_set_info(_t("Record successfully created."));
 			} catch (Exception $e) {
-				$g_error_msg = $e->getMessage();
+				message_set_error($e->getMessage());
 			}
 		}
 

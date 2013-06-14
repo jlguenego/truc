@@ -483,6 +483,8 @@ $this->array = array(
 			Dans tout les cas, vous serez averti par mail.<br/>
 			La date d'annulation ou de confirmation est avant le ",
 	"at midnight" => "à minuit",
+	"PayPal How does it work?" => "Paypal Comment ça marche ?",
+	"Event is null." => "L'évènement est null.",
 
 //The End
 );
