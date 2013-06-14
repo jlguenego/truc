@@ -48,4 +48,10 @@
 			echo '</div>';
 		}
 	}
+
+	function layout_google_analytics() {
+		if (USE_GOOGLE_ANALYTICS) {
+			require_once(BASE_DIR . "/" . SKIN_DIR."/google_analytics.inc");
+		}
+	}
 ?>

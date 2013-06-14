@@ -41,6 +41,7 @@ EOF;
 			$facebook_redirect_uri = $_POST["facebook_redirect_uri"];
 			$linkedin_api_key = $_POST["linkedin_api_key"];
 			$linkedin_api_secret = $_POST["linkedin_api_secret"];
+			$google_analytics = $_POST["google_analytics"];
 			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
 			$content = <<<EOF
 <?php
@@ -74,6 +75,8 @@ EOF;
 
 	define('LINKEDIN_API_KEY', '$linkedin_api_key');
 	define('LINKEDIN_API_SECRET', '$linkedin_api_secret');
+
+	define('USE_GOOGLE_ANALYTICS', $google_analytics);
 ?>
 EOF;
 			file_put_contents(SETTINGS_INI, $content);

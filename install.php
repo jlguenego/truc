@@ -113,6 +113,7 @@ EOF;
 				<input type="hidden" name="facebook_redirect_uri"/>
 				<input type="hidden" name="linkedin_api_key"/>
 				<input type="hidden" name="linkedin_api_secret"/>
+				<input type="hidden" name="google_analytics"/>
 			</table>
 		</form>
 		<script>
@@ -150,6 +151,7 @@ EOF;
 				$("input[name=facebook_redirect_uri]").val(profile_array[i].facebook_redirect_uri);
 				$("input[name=linkedin_api_key]").val(profile_array[i].linkedin_api_key);
 				$("input[name=linkedin_api_secret]").val(profile_array[i].linkedin_api_secret);
+				$("input[name=google_analytics]").val(profile_array[i].google_analytics);
 				if (profile_array[i].TEST_MODE) {
 					log("Test Mode ON");
 					$("input[name=test_mode]").prop('checked', true);
