@@ -23,7 +23,7 @@
 		<script src="_ext/sha1.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
 
-		<?php layout_google_analytics(); ?>
+		<?php google_analytics(); ?>
 	</head>
 	<body>
 		<div id="global_frame">

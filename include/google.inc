@@ -1,3 +1,7 @@
+<?php
+	function google_analytics() {
+		if (USE_GOOGLE_ANALYTICS) {
+?>
 <!-- GOOGLE ANALYTICS START -->
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -9,3 +13,7 @@
 		ga('send', 'pageview');
 	</script>
 <!-- GOOGLE ANALYTICS END -->
+<?php
+		}
+	}
+?>
