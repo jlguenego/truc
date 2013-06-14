@@ -6,7 +6,7 @@
 		public $happening_t;
 		public $confirmation_t = "";
 		public $funding_needed;
-		public $funding_authorized;
+		public $funding_acquired;
 		public $location;
 		public $link;
 		public $phone;
@@ -49,7 +49,7 @@ EOF;
 			$this->happening_t = "";
 			$this->confirmation_t = "";
 			$this->funding_needed = 0.00;
-			$this->funding_authorized = 0;
+			$this->funding_acquired = 0;
 			$this->location = "";
 			$this->link = "http://";
 			$this->short_description = file_get_contents($g_i18n->filename(BASE_DIR . "/etc/short_description.html"));
