@@ -42,7 +42,7 @@ EOF;
 			$linkedin_api_key = $_POST["linkedin_api_key"];
 			$linkedin_api_secret = $_POST["linkedin_api_secret"];
 			$google_analytics = $_POST["google_analytics"];
-			$use_captcha = (isset($_POST["test_mode"])) ? "false" : "true";
+			$use_recaptcha = (isset($_POST["test_mode"])) ? "false" : "true";
 			$content = <<<EOF
 <?php
 	define("MYSQL_USER", "$login");
@@ -54,7 +54,7 @@ EOF;
 
 	define('TEST_MODE', $test_mode);
 
-	define('USE_CAPTCHA', $use_captcha);
+	define('USE_RECAPTCHA', $use_recaptcha);
 
 	define('MERCHANT_ID', '$merchant_id');
 	define('PAYMENT_PROVIDER', "$payment_type");
