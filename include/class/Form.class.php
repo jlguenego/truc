@@ -100,6 +100,7 @@
 			$item = new FormItem();
 			$item->label = $label;
 			$item->type = "submit";
+			$item->name = "form_submit_button";
 			$this->elements[] = $item;
 			return $item;
 		}
@@ -122,7 +123,6 @@
 		}
 
 		public function html() {
-
 			$result = <<<EOF
 <div class="{$this->css}">
 EOF;
@@ -145,91 +145,7 @@ EOF;
 EOF;
 			$autofocus = "autofocus";
 			foreach ($this->elements as $item) {
-				switch ($item->type) {
-					case "raw_html":
-						$result .= $item->html_spec;
-						break;
-					case "hidden":
-						$name = _a($item->name);
-						$default = _a($item->default);
-						$result .= <<<EOF
-<input type="hidden" name="$name" value="$default"/>
-EOF;
-						break;
-					case "text":
-						$name = _a($item->name);
-						$default = _a($item->default);
-						$result .= <<<EOF
-<input type="text" id="$name" name="$name" value="$default" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-					case "file":
-						$name = _a($item->name);
-						$result .= <<<EOF
-<input type="file" id="$name" name="$name" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-
-					case "email":
-						$result .= <<<EOF
-<input type="email" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}"/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-					case "number":
-						$result .= <<<EOF
-<input type="number" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}" {$item->other_attr}/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-
-					case "password":
-						$result .= <<<EOF
-<input type="password" name="{$item->name}" {$item->other_attr} placeholder="{$item->label}"/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-					case "textarea":
-						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<textarea name="{$item->name}" maxlength="{$item->maxlength}" title="Up to {$item->maxlength} characters" {$item->other_attr}>{$item->default}</textarea>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-					case "select":
-						$result .= <<<EOF
-<div class="{$this->css}_label">{$item->label}</div>
-<select name="{$item->name}">
-{$item->html_spec}
-</select>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-					case "checkbox":
-						$result .= <<<EOF
-<input type="checkbox" name="{$item->name}" {$item->html_spec}/>{$item->label}<br/>
-<div class="{$this->css}_help">{$item->help}</div>
-EOF;
-						break;
-
-					case "radio":
-						$result .= <<<EOF
-<input type="radio" name="{$item->name}" value="{$item->default}" {$item->html_spec} />{$item->label}<br/>
-EOF;
-						break;
-
-					case "submit":
-						if ($this->cancel) {
-						$result .= <<<EOF
-<span class="{$this->css}_cancel"><input class="evt_button evt_btn_small evt_btn_cancel" type="button" onclick="window.location='{$this->cancel_url}'" value="{{Cancel}}"/></span><span class="spacer"></span>
-EOF;
-						}
-						$result .= '<input class="evt_button evt_btn_small" type="submit" value="'.$item->label.'"/>';
-						break;
-					default:
-				}
+				$result .= $this->get_element_html($item, $autofocus);
 				$autofocus = "";
 			}
 			$result .= "</form></div>";
@@ -238,9 +154,13 @@ EOF;
 		}
 
 		public function get_label($name) {
+			return $this->get_item($name)->label;
+		}
+
+		public function get_item($name) {
 			foreach ($this->elements as $item) {
 				if ($item->name == $name) {
-					return $item->label;
+					return $item;
 				}
 			}
 			throw new Exception(_t("Item not found: ").$name);
@@ -276,6 +196,106 @@ EOF;
 				throw new Exception("Error, cannot find the uploaded file.");
 			}
 			return $file;
+		}
+
+		public function get_element($name) {
+			$item = $this->get_item($name);;
+			return $this->get_element_html($item);
+		}
+
+		public function get_element_html($item, $autofocus = "") {
+			$result = "";
+			switch ($item->type) {
+				case "raw_html":
+					$result .= $item->html_spec;
+					break;
+				case "hidden":
+					$name = _a($item->name);
+					$default = _a($item->default);
+					$result .= <<<EOF
+<input type="hidden" name="$name" value="$default"/>
+EOF;
+					break;
+
+				case "text":
+					$name = _a($item->name);
+					$default = _a($item->default);
+					$result .= <<<EOF
+<input type="text" id="$name" name="$name" value="$default" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "file":
+					$name = _a($item->name);
+					$result .= <<<EOF
+<input type="file" id="$name" name="$name" {$item->other_attr} placeholder="{$item->label}" $autofocus/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "email":
+					$result .= <<<EOF
+<input type="email" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}"/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "number":
+					$result .= <<<EOF
+<input type="number" name="{$item->name}" value="{$item->default}" placeholder="{$item->label}" {$item->other_attr}/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "password":
+					$result .= <<<EOF
+<input type="password" name="{$item->name}" {$item->other_attr} placeholder="{$item->label}"/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "textarea":
+					$result .= <<<EOF
+<div class="{$this->css}_label">{$item->label}</div>
+<textarea name="{$item->name}" maxlength="{$item->maxlength}" title="Up to {$item->maxlength} characters" {$item->other_attr}>{$item->default}</textarea>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "select":
+					$result .= <<<EOF
+<div class="{$this->css}_label">{$item->label}</div>
+<select name="{$item->name}">
+{$item->html_spec}
+</select>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+				case "checkbox":
+					$result .= <<<EOF
+<input type="checkbox" name="{$item->name}" {$item->html_spec}/>{$item->label}<br/>
+<div class="{$this->css}_help">{$item->help}</div>
+EOF;
+					break;
+
+				case "radio":
+					$result .= <<<EOF
+<input type="radio" name="{$item->name}" value="{$item->default}" {$item->html_spec} />{$item->label}<br/>
+EOF;
+					break;
+
+				case "submit":
+					if ($this->cancel) {
+					$result .= <<<EOF
+<span class="{$this->css}_cancel"><input class="evt_button evt_btn_small evt_btn_cancel" type="button" onclick="window.location='{$this->cancel_url}'" value="{{Cancel}}"/></span><span class="spacer"></span>
+EOF;
+					}
+					$result .= '<input class="evt_button evt_btn_small" type="submit" value="'.$item->label.'"/>';
+					break;
+				default:
+			}
+			return $result;
 		}
 	}
 

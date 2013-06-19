@@ -8,13 +8,14 @@
 		<th>{{Ticket amount}}</th>
 		<th>{{Tax}}</th>
 		<th>{{Ticket total due}}</th>
-		<th>{{Title}}</th>
-		<th>{{Firstname}}</th>
 		<th>{{Lastname}}</th>
+		<th>{{Firstname}}</th>
+		<th>{{Email}}</th>
 	</tr>
 <?php
 	foreach ($g_display["participations"] as $participation) {
 		list($item, $devis) = $participation;
+		$user = User::get_from_id($devis->user_id);
 ?>
 	<tr>
 <?php
@@ -32,9 +33,9 @@
 		<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 		<td class="evt_curr"><?php echo $item->total_tax; ?>%</td>
 		<td class="evt_curr"><?php echo $item->total_ttc; ?>€</td>
-		<td><?php echo $item->attendee_title; ?></td>
-		<td><?php echo $item->attendee_firstname; ?></td>
 		<td><?php echo $item->attendee_lastname; ?></td>
+		<td><?php echo $item->attendee_firstname; ?></td>
+		<td><?php echo $user->email; ?></td>
 <?php
 	if (is_admin_logged() && !$devis->is_really_paid()) {
 ?>

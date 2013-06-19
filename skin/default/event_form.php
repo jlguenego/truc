@@ -11,13 +11,10 @@
 	$f->cancel = true;
 	if ($scenario == "create") {
 		$f->cancel_url = ""; // Main menu
-	} else {
-		$f->cancel_url = "?action=retrieve&amp;type=event&amp;id=".$event->id;
-	}
-	if ($scenario == "create") {
 		$button_text = _t("Create");
 		$f->title = _t("Event creation");
 	} else {
+		$f->cancel_url = "?action=retrieve&amp;type=event&amp;id=".$event->id;
 		$button_text = _t("Update");
 		$f->title = _t("Event edition");
 	}
@@ -104,8 +101,63 @@ EOF
 EOF
 );
 	$f->add_submit($button_text);
-	echo $f->html();
+	$_SESSION["form"] = $f;
+	//echo $f->html();
 ?>
+
+<form class="form" action="<?php echo $g_display["form_action"]; ?>" method="POST">
+	<div class="evt_title"><p><?php echo $f->title; ?></p></div>
+	<h1>{{Define your event}}</h1>
+	<div class="form_section">
+		<table width="700" style="margin: 0px auto;">
+			<tr>
+				<td><?php echo $f->get_element('title'); ?></td>
+				<td width="700">&nbsp;</td>
+				<td><?php echo $f->get_element('organizer_name'); ?></td>
+			</tr>
+			<tr>
+				<td><?php echo $f->get_element('happening_t'); ?></td>
+				<td>&nbsp;</td>
+				<td><?php echo $f->get_element('location'); ?></td>
+			</tr>
+			<tr>
+				<td><?php echo $f->get_element('is_confirmed'); ?></td>
+				<td>&nbsp;</td>
+				<td><?php echo $f->get_element('confirmation_t'); ?></td>
+			</tr>
+			<tr>
+				<td><?php echo $f->get_element('funding_needed'); ?></td>
+				<td>&nbsp;</td>
+				<td><?php echo $f->get_element('phone'); ?></td>
+			</tr>
+			<tr>
+				<td><?php echo $f->get_element('link'); ?></td>
+			</tr>
+		</table>
+	</div>
+	<h1>{{Detail your event}}</h1>
+	<div class="form_section">
+	<?php
+		echo $f->get_element('short_description');
+		echo $f->get_element('long_description');
+		echo $f->get_element('id');
+		echo $f->get_element('event_type');
+	?>
+	</div>
+	<h1>{{Create tickets and define their price}}</h1>
+	<div class="form_section">
+		<table id="tickets" class="evt_rate">
+		</table>
+		<a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>
+	</div>
+	<?php
+		if ($scenario == "create") {
+			echo $f->get_element('confirm');
+		}
+	?>
+	<?php echo $f->get_element('form_submit_button');?>
+</form>
+
 <script>
 	function manage_submit() {
 		var test = true;

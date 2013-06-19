@@ -1,6 +1,6 @@
 <?php
 $this->array = array(
-	"help_checkbox_confirmation" => "Check this box if you engage yourself that the event will happen.<br/>".
+	"help_checkbox_confirmation" =>
 			"If you cannot be sure that the event will happen, DO NOT CHECK THIS.",
 	"payment_authorization_disclaimer" => "<b>Note: This event is not yet confirmed.</b><br/>
 			Your payment authorization will not be captured until the event is confirmed.<br/>

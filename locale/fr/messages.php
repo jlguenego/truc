@@ -209,7 +209,7 @@ $this->array = array(
 	"Date at which starts the event (Format: YYYY-MM-DD)." =>
 		"Date à laquelle démarre l'évènement (Format => AAAA-MM-JJ).",
 	"This event is confirmed." => "Cet évènement est confirmé, il aura bien lieu.",
-	"help_checkbox_confirmation" => "Cochez cette case si vous vous engagez à réaliser l'évènement.<br/>".
+	"help_checkbox_confirmation" =>
 			"Si vous ne pouvez être sûr que l'évènement aura lieu, NE LA COCHEZ PAS.",
 	"Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)." =>
 		"Date maximum à laquelle l'évènement sera confirmé ou annulé (Format : AAAA-MM-JJ).",

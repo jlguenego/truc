@@ -38,6 +38,7 @@ function removeRate(el, parent) {
 	if (counter > 1) {
 		counter--;
 		removeElement(el, parent);
+		removeElement("advanced_" + el, parent);
 		sync_remove_button(parent);
 	} else {
 		alert("You have to set at least one rate");

@@ -10,6 +10,9 @@
 <br/>
 <br/>
 <p>
+	This invoice acts as your ticket.
+</p>
+<p>
 	This invoice is compliant with the French Republic law (article L441-3 du Code du Commerce).<br/>
 	You can access to this invoice via this permalink: <a href="<?php echo $bill->url(); ?>"><?php echo $bill->url(); ?></a>
 </p>

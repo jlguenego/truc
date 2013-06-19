@@ -296,6 +296,10 @@ div[data-message] {
 	counter-increment: counter_h1;
 }
 
+.form_section td {
+	vertical-align: top;
+}
+
 .form_section {
 	margin-left: 10px;
 }
