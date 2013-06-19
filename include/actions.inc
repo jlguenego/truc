@@ -307,6 +307,10 @@
 	}
 
 	function action_signin() {
+		global $g_display;
+
+		$nonce = get_nonce();
+		$g_display['nonce'] = $nonce;
 		$_SESSION["state"] = "sign_in";
 	}
 
@@ -715,8 +719,10 @@
 	}
 
 	function action_authenticate() {
-		if (isset($_GET['email']) && isset($_GET['password'])) {
-			if (User::authenticate($_GET['email'], $_GET['password'])) {
+		global $g_display;
+
+		if (isset($_GET['email']) && isset($_GET['password']) && isset($_GET['cnonce'])) {
+			if (User::authenticate($_GET['email'], $_GET['password'], $_GET['cnonce'])) {
 				$user = User::get_from_email($_GET['email']);
 				debug("user=".sprint_r($user));
 				if ($user->is_activated()) {
@@ -733,6 +739,7 @@
 				}
 			} else {
 				message_set_error(_t("Wrong email or password"));
+				$g_display['nonce'] = get_nonce();
 			}
 		}
 		debug("END Action_Authenticate");

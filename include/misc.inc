@@ -315,4 +315,10 @@ EOF;
 		$str = $first_letter . $str_end;
 		return $str;
 	}
+
+	function get_nonce() {
+		$nonce = sha1(rand() * time());
+		$_SESSION["nonce"] = $nonce;
+		return $nonce;
+	}
 ?>

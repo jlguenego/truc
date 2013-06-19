@@ -125,11 +125,20 @@ function eb_sync_hash(txt_field_name, hidden_field_name) {
 
 function eb_handle_sync_hash(txt_field_name, hidden_field_name) {
 	if ($('input[name='+txt_field_name+']').val().length > 0) {
-		var hash = CryptoJS.SHA1($('input[name='+txt_field_name+']').val() + hash_salt);
-		$('input[name='+hidden_field_name+']').val(""+hash);
+		var h = eb_hash($('input[name='+txt_field_name+']').val() + hash_salt);
+		$('input[name='+hidden_field_name+']').val(""+h);
 	} else {
 		$('input[name='+hidden_field_name+']').val(null);
 	}
+}
+
+function eb_hash(obj) {
+	return CryptoJS.SHA1(obj);
+}
+
+function eb_get_cnonce() {
+	var timestamp = new Date().getTime()
+	return eb_hash(""+Math.random()+timestamp);
 }
 
 function eb_unpublish() {

@@ -417,24 +417,15 @@ EOF;
 		}
 
 		// Check if the user has entered correct email and password
-		public static function authenticate($email, $password) {
-			global $g_pdo;
-
-			$request = <<<EOF
-SELECT COUNT(*) FROM `user`
-WHERE `email`= :email AND `password`= :password
-EOF;
-			$pst = $g_pdo->prepare($request);
+		public static function authenticate($email, $client_pwd, $cnonce) {
 			$user = User::get_from_email($email);
 			if ($user == null) {
 				return false;
 			}
-			$pst->execute(array(
-				":email" => $email,
-				":password" => $password,
-			));
-			$count = $pst->fetch();
-			return $count[0] > 0;
+			$nonce = $_SESSION['nonce'];
+			$server_pwd = sha1($user->password.$nonce.$cnonce);
+
+			return $server_pwd == $client_pwd;
 		}
 
 		public static function get_id_from_account() {

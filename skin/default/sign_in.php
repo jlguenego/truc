@@ -125,6 +125,7 @@
 	$f->add_text(_t("Email"), "email", default_value("email"), _t("Enter your email"));
 	$f->add_password(_t("Password"), "clear_password", _t("Enter your password"));
 	$f->add_hidden("password", "");
+	$f->add_hidden("cnonce", "");
 	$f->add_submit(_t("Sign in"));
 	echo $f->html();
 ?>
@@ -136,10 +137,18 @@
 </table>
 <script>
 	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	var nonce = "<?php echo $g_display['nonce']; ?>";
+
 	$(document).ready(function() {
 		eb_sync_hash('clear_password', 'password');
 	});
-	$("#sign_in").submit(function() {
+
+	$("#sign_in").submit(function(e) {
+		var cnonce = eb_get_cnonce();
+		var password = $('input[name=password]').val();
+		var password_send = eb_hash(password + nonce + cnonce);
+		$('input[name=password]').val(password_send);
+		$('input[name=cnonce]').val(cnonce);
 		$('input[type=password]').attr('name', '');
 	});
 
