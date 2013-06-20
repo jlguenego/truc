@@ -26,6 +26,7 @@
 		<?php google_analytics(); ?>
 	</head>
 	<body>
+		<?php echo facebook_jscript_reference(); ?>
 		<div id="global_frame">
 			<div id="body">
 <?php

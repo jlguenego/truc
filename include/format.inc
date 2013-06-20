@@ -46,4 +46,47 @@
 	function format_mail_subject($subject) {
 		return "=?UTF-8?B?".base64_encode($subject)."?=";
 	}
+
+	function format_columns($blocks) {
+		$result = <<<EOF
+<div id="eb_two_column">
+EOF;
+		$left_column = array();
+		$right_column = array();
+		foreach($blocks as $block) {
+			$side = $block->side;
+			if ($side == 'left') {
+				$left_column[] = $block;
+			} else {
+				$right_column[] = $block;
+			}
+		}
+
+		$left_column_blocks = format_blocks($left_column);
+		$right_column_blocks = format_blocks($right_column);
+
+		$result .= <<<EOF
+	<div class="eb_column eb_left_column">
+		${left_column_blocks}
+	</div>
+	<div class="eb_column eb_right_column">
+		${right_column_blocks}
+	</div>
+</div>
+EOF;
+		return $result;
+	}
+
+	function format_blocks($array) {
+		$result = '';
+		foreach ($array as $block) {
+			$result .= <<<EOF
+		<div class="eb_block {$block->css_class}">
+			<div class="eb_block_title">{{{$block->title}}}</div>
+			<div class="eb_block_content">{$block->content}</div>
+		</div>
+EOF;
+		}
+		return $result;
+	}
 ?>

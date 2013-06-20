@@ -71,7 +71,7 @@ th {
 html, body {
 	height: 100%;
 	background-color: #F5F5F5;
-	font: 15px 'Open Sans',sans-serif;
+	font: 12px 'Open Sans',sans-serif;
 
 	margin: 0;
 	padding: 0;
@@ -102,18 +102,23 @@ body {
 	margin: 0px;
 	padding-left: 40px;
 	padding-right: 40px;
-	padding-bottom: 120px;
+	padding-bottom: 50px;
 
 	background-color: white;
 	background-repeat: no-repeat;
 }
 
 .evt_main p {
-	margin: 20px 0px;
+	margin: 10px 0px;
 }
 
-.evt_main ul, .evt_main ol {
-	padding-left: 40px;
+.evt_main ul {
+	padding-left: 20px;
+	list-style-type: none;
+}
+
+.evt_main li {
+	list-style: url(images/icon_checked.gif);
 }
 
 div[data-message] {
@@ -261,6 +266,7 @@ div[data-message] {
 }
 
 #evt_footer {
+	clear: both;
 	width: 100%;
 
 	border-top: 1px solid #D4D4D4;
@@ -498,14 +504,6 @@ div[data-message] {
 	width: 100%;
 	text-align: left;
 	color: #999999;
-}
-
-#evt_administration {
-	position: relative;
-	display: block;
-	margin-bottom: 20px;
-	padding: 25px;
-	border: 1px solid #DDDDDD;
 }
 
 
@@ -981,4 +979,72 @@ a.evt_button {
 
 #evt_tw {
 	background: url(images/social.png) 100% 100% no-repeat;
+}
+
+/* EVENT RETRIEVE TWO COLUMN */
+#eb_two_column {
+	width: 100%;
+}
+
+.eb_column {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0px;
+	padding: 0px;
+}
+
+.eb_left_column {
+	float: left;
+	width: 300px;
+}
+
+.eb_right_column {
+	float: right;
+	width: 700px;
+}
+
+.eb_block {
+	position: relative;
+	border: 1px solid #DDDDDD;
+	margin: 40px 0px;
+	padding: 10px;
+	background-color: white;
+}
+
+.evt_administration {
+}
+
+.evt_administration .eb_block_title {
+	background-color: #FF1717;
+}
+
+.eb_block .evt_rate_table {
+	width: 100%;
+}
+
+.eb_block_title {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	height: 25px;
+	width: 100%;
+
+	padding-top: 5px;
+	text-indent: 10px;
+	border-bottom: 1px solid #DDDDDD;
+
+	vertical-align: middle;
+
+	background-color: #838383;
+	color: white;
+	font-weight: bold;
+}
+
+.eb_block_content {
+	margin-top: 30px;
+}
+
+#evt_event_retrieve {
+	background-color: #F4F4F4;
+	height: 100%;
 }

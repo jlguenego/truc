@@ -118,13 +118,29 @@ EOF
 			<tr>
 				<td><?php echo $f->get_element('happening_t'); ?></td>
 				<td>&nbsp;</td>
-				<td><?php echo $f->get_element('location'); ?></td>
+				<td>
+					<?php echo $f->get_element('location'); ?>
+<?php
+				if (!$event->is_confirmed()) {
+?>
+				</td>
 			</tr>
 			<tr>
-				<td><?php echo $f->get_element('is_confirmed'); ?></td>
+				<td>
+					<?php echo $f->get_element('is_confirmed'); ?>
+				</td>
 				<td>&nbsp;</td>
 				<td><?php echo $f->get_element('confirmation_t'); ?></td>
 			</tr>
+<?php
+				} else {
+?>
+					<input type="hidden" name="is_confirmed" value="" />
+				</td>
+			</tr>
+<?php
+				}
+?>
 			<tr>
 				<td><?php echo $f->get_element('funding_needed'); ?></td>
 				<td>&nbsp;</td>
