@@ -13,7 +13,7 @@
 			} else {
 ?>
 	<tr>
-		<td><a href="event/<?php echo $event->id."/".str_replace("+", "-", urlencode($event->title)) ?>"><?php echo $event->title ?></a></td>
+		<td><a href="<?php echo $event->get_url(); ?>"><?php echo $event->title ?></a></td>
 		<td><?php echo format_date($event->happening_t); ?></td>
 		<td>
 			<?php

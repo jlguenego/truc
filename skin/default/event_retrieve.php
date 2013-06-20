@@ -153,12 +153,13 @@ EOF;
 	$block->content = $ticket_table;
 	$blocks[] = $block;
 
-	$url = '/event/'.$event->id.'/'.str_replace("+", "-", urlencode($event->title));
-	$block = new Block();
-	$block->side = 'right';
-	$block->title = 'Comment on Facebook';
-	$block->content = facebook_comment($url);
-	$blocks[] = $block;
+	if ($event->is_published()) {
+		$block = new Block();
+		$block->side = 'right';
+		$block->title = 'Comment on Facebook';
+		$block->content = facebook_comment($event->get_url());
+		$blocks[] = $block;
+	}
 
 	$confirmation_date = format_date($event->get_confirmation_date());
 	$happening_t = format_date($event->happening_t);

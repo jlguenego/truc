@@ -630,5 +630,9 @@ EOF;
 			}
 			return $result;
 		}
+
+		public function get_url() {
+			return HOST.'event/'.$this->id."/".str_replace("+", "-", urlencode($this->title));
+		}
 	}
 ?>

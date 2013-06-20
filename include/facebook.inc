@@ -84,7 +84,7 @@ EOF;
 	function facebook_comment($url = '') {
 		$nbr_displayed_post = 10;
 		$width = 680;
-		$href = HOST.$url;
+		$href = $url;
 		$content = <<<EOF
 <div class="fb-comments" data-href="${href}" data-width="${width}" data-num-posts="${nbr_displayed_post}"></div>
 EOF;
