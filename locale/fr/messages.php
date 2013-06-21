@@ -500,6 +500,12 @@ $this->array = array(
 	"request its publication to our support." =>
 			"effectuer la requête de publication à notre support",
 	"Social Networking" => "Réseaux Sociaux",
+	"Declare this event on Facebook" => "Déclarer cet évènement sur Facebook",
+	"Define your event" => "Définir votre évènement",
+	"Detail your event" => "Détailler votre évènement",
+	"Facebook Event" => "Evènement Facebook",
+	"More informations at" => "Plus d'information sur",
+	"See your event on Facebook" => "Voir votre évènement sur Facebook",
 
 //The End
 );

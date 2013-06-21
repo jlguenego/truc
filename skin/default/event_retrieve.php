@@ -47,35 +47,35 @@ EOF;
 		$blocks[] = $block;
 	}
 
-	if ($event->can_be_administrated() && !$event->is_inactivated()) {
-		if ($event->is_published()) {
-			$img_uri = HOST.'/'.SKIN_DIR.'/images/FacebookLogo.png';
-			$content = <<<EOF
+	if ($event->is_organized_by() && $event->is_published()) {
+		$img_uri = HOST.'/'.SKIN_DIR.'/images/FacebookLogo.png';
+		$content = <<<EOF
 <ul>
 	<li>
 		<img src="${img_uri}" alt="Facebook logo"/>&nbsp;&nbsp;
 EOF;
-			if (!$event->has_flag(EVENT_FLAG_FACEBOOK_EVENT_CREATED)) {
-				$content .= <<<EOF
-<a href="?action=create&amp;type=facebook_event&amp;id={$event->id}">{{Create a Fabook event}}</a>
+		if (!$event->has_flag(EVENT_FLAG_FACEBOOK_EVENT_CREATED)) {
+			$content .= <<<EOF
+<a href="?action=create&amp;type=facebook_event&amp;id={$event->id}">{{Declare this event on Facebook}}</a>
 EOF;
-			} else {
-				$content .= <<<EOF
+		} else {
+			$content .= <<<EOF
 <a href="https://www.facebook.com/events/{$event->facebook_event_id}" target="_blank">{{See your event on Facebook}}</a>
 EOF;
-			}
-			$content .= <<<EOF
+		}
+		$content .= <<<EOF
 	</li>
 </ul>
 EOF;
-			$block = new Block();
-			$block->side = 'left';
-			$block->title = 'Social Networking';
-			$block->content = $content;
-			$block->css_class = 'evt_administration';
-			$blocks[] = $block;
-		}
+		$block = new Block();
+		$block->side = 'left';
+		$block->title = 'Social Networking';
+		$block->content = $content;
+		$block->css_class = 'evt_administration';
+		$blocks[] = $block;
+	}
 
+	if ($event->can_be_administrated() && !$event->is_inactivated()) {
 		$content = "";
 		if ($event->is_inactivated()) {
 			$content .= <<<EOF

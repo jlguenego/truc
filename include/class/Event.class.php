@@ -617,6 +617,13 @@ EOF;
 			return $result;
 		}
 
+		public function is_organized_by($user_id = null) {
+			if (!$user_id) {
+				$user_id = User::get_id_from_account();
+			}
+			return $this->user_id == $user_id;
+		}
+
 		public function can_be_administrated() {
 			if (is_admin_logged() || $this->user_id == User::get_id_from_account()) {
 				debug("Can administrate.");

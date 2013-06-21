@@ -109,7 +109,7 @@ EOF;
 		// We'll need create_event permission for this.
 		$event_id = $event->id;
 		$event_name = $event->title;
-		$event_start = $event->happening_t.'T19:00:00-0700';    // We'll just start the event now.
+		$event_start = $event->happening_t;    // We'll just start the event now.
 		$event_privacy = "SECRET"; // We'll make it secret so we don't annoy folks.
 
 		if (!$user_id) {
