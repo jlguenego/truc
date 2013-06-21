@@ -22,6 +22,7 @@ CREATE TABLE event(
         status            Int NOT NULL ,
         publish_flag      Int NOT NULL ,
         flags             Int ,
+        facebook_event_id Varchar (255) ,
         id_user           Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;

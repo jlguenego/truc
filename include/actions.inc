@@ -252,6 +252,9 @@
 			case "account":
 				action_account_create();
 				break;
+			case "facebook_event":
+				action_facebook_event_create();
+				break;
 			default:
 				$_SESSION["state"] = "not_allowed";
 		}
@@ -304,6 +307,23 @@
 				debug("type=".$_GET["type"]);
 				$_SESSION["state"] = "not_allowed";
 		}
+	}
+
+	function action_facebook_event_create() {
+		debug('Facebook create event');
+		if (!isset($_GET['id'])) {
+			throw new Exception(_t('No event given'));
+		}
+		$event = Event::get_from_id($_GET['id']);
+		if ($event == null) {
+			throw new Exception(_t('This event does not exists.'));
+		}
+		if (!facebook_create_event($event)) {
+			message_set_error(_t('An error has occured while creating the Facebook event.'));
+		} else {
+			message_set_info(_t('Facebook event succesfully created.'));
+		}
+		redirect_action('?action=retrieve&type=event&id='.$event->id);
 	}
 
 	function action_signin() {
@@ -1166,6 +1186,7 @@
 		}
 		$event = Event::get_from_id($_GET["id"]);
 		$event->set_ready_for_publication(true);
+		$event->update();
 		mail_publication_request($event);
 		redirect_action("?action=retrieve&type=event&id=".$event->id);
 	}

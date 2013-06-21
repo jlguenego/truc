@@ -23,6 +23,9 @@
 		<script src="_ext/sha1.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
 
+		<!-- AddThisEvent -->
+		<script type="text/javascript" src="http://js.addthisevent.com/atemay.js"></script>
+
 		<?php google_analytics(); ?>
 	</head>
 	<body>
@@ -58,5 +61,19 @@
 <?php
 		}
 ?>
+<!-- AddThisEvent Settings -->
+<script type="text/javascript">
+addthisevent.settings({
+    mouse     : false,
+    css       : true,
+    outlook   : {show:true, text:"{{Outlook Calendar}}"},
+    google    : {show:true, text:"{{Google Calendar}}"},
+    yahoo     : {show:true, text:"{{Yahoo Calendar}}"},
+    hotmail   : {show:true, text:"{{Hotmail Calendar}}"},
+    ical      : {show:true, text:"{{iCal Calendar}}"},
+    facebook  : {show:true, text:"{{Facebook Event}}"},
+    callback  : ""
+});
+</script>
 	</body>
 </html>

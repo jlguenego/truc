@@ -16,6 +16,7 @@
 		public $status = EVENT_STATUS_PLANNED;
 		public $flags;
 		public $publish_flag;
+		public $facebook_event_id;
 		public $user_id;
 		public $tickets = array();
 
@@ -152,7 +153,8 @@ SET
 	`funding_needed`= :funding_needed,
 	`flags`= :flags,
 	`type`= :type,
-	`phone`= :phone
+	`phone`= :phone,
+	`facebook_event_id`= :facebook_event_id
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -172,6 +174,7 @@ EOF;
 				":flags" => $this->flags,
 				":type" => $this->type,
 				":phone" => $this->phone,
+				":facebook_event_id" => $this->facebook_event_id,
 			);
 			$pst->execute($array);
 		}
@@ -268,13 +271,16 @@ EOF;
 			return s2t($this->happening_t) > time();
 		}
 
-		public function set_ready_for_publication($bool) {
-			if ($bool) {
-				$this->flags |= EVENT_FLAG_READY_FOR_PUBLICATION;
-			} else {
-				$this->flags &= ~EVENT_FLAG_READY_FOR_PUBLICATION;
-			}
-			$this->update();
+		public function add_flag($flag) {
+			$this->flags |= $flag;
+		}
+
+		public function remove_flag($flag) {
+			$this->flags &= ~$flag;
+		}
+
+		public function has_flag($flag) {
+			return ($this->flags & $flag) != 0;
 		}
 
 		public function check_owner() {

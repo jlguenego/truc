@@ -48,11 +48,72 @@ EOF;
 	}
 
 	if ($event->can_be_administrated() && !$event->is_inactivated()) {
-		$content = <<<EOF
+		if ($event->is_published()) {
+			$img_uri = HOST.'/'.SKIN_DIR.'/images/FacebookLogo.png';
+			$content = <<<EOF
+<ul>
+	<li>
+		<img src="${img_uri}" alt="Facebook logo"/>&nbsp;&nbsp;
+EOF;
+			if (!$event->has_flag(EVENT_FLAG_FACEBOOK_EVENT_CREATED)) {
+				$content .= <<<EOF
+<a href="?action=create&amp;type=facebook_event&amp;id={$event->id}">{{Create a Fabook event}}</a>
+EOF;
+			} else {
+				$content .= <<<EOF
+<a href="https://www.facebook.com/events/{$event->facebook_event_id}" target="_blank">{{See your event on Facebook}}</a>
+EOF;
+			}
+			$content .= <<<EOF
+	</li>
+</ul>
+EOF;
+			$block = new Block();
+			$block->side = 'left';
+			$block->title = 'Social Networking';
+			$block->content = $content;
+			$block->css_class = 'evt_administration';
+			$blocks[] = $block;
+		}
+
+		$content = "";
+		if ($event->is_inactivated()) {
+			$content .= <<<EOF
+<div id="evt_retrieve_publish" class="evt_shadowed">
+	{{This event is inactivated}}
+</div>
+EOF;
+		}
+		if (!$event->is_published() && !$event->is_inactivated()) {
+			$content .= <<<EOF
+<div id="evt_retrieve_publish" class="evt_shadowed">
+	{{Your event is not published.}}
+EOF;
+			if (!$event->is_ready_for_publication()) {
+			$content .= <<<EOF
+	<br/>
+	{{When ready, please}}
+	<a href="?action=request_for_publication&amp;id={$event->id}">
+		{{request its publication to our support.}}
+	</a>
+EOF;
+			} else {
+				$content .= <<<EOF
+	<br/>
+	{{A request for publication has been done. Our support team is going to process it very soon.}}
+EOF;
+			}
+		$content .= <<<EOF
+</div>
+EOF;
+		}
+		$content .= <<<EOF
 <ul>
 EOF;
 		if ($event->is_published()) {
-			$content .= '<li>{{This event is published.}}</li>';
+			$content .= <<<EOF
+	<li>{{This event is published.}}</li>
+EOF;
 		} else {
 			$content .= '<li>{{This event is not published.}}</li>';
 		}
@@ -68,7 +129,6 @@ EOF;
 		$phone = $event->phone;
 		$content .= <<<EOF
 	<li>{{Organizer phone}}: ${phone}</li>
-	<li><a href="?action=promote_event&amp;id=${id}">{{Promote your event}}</a></li>
 EOF;
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$content .= '<li><a href="?action=list&amp;type=participation&amp;id='.$id.'">{{View registrations}}</a></li>';
@@ -163,18 +223,17 @@ EOF;
 
 	$confirmation_date = format_date($event->get_confirmation_date());
 	$happening_t = format_date($event->happening_t);
-	$general_info = <<<EOF
+	$generale_info = <<<EOF
 <ul>
 	<li><b>{{Organizer}}<br/></b>{$event->organizer_name}</li>
-	<li><b>{{Happening date}}<br/></b>${happening_t}</li>
 	<li><b>{{Confirmation date}}<br/></b>${confirmation_date}</li>
-	<li><b>{{Event website}}<br/></b><a href="{$event->link}">{$event->link}</a></li>
+	<li><b>{{Event website}}<br/></b><a href="{$event->link}" target="_blank">{$event->link}</a></li>
 </ul>
 EOF;
 	$block = new Block();
 	$block->side = 'left';
 	$block->title = 'General informations';
-	$block->content = $general_info;
+	$block->content = $generale_info;
 	$blocks[] = $block;
 
 	$address = $event->location;
@@ -207,6 +266,31 @@ EOF;
 	$block->content = $location;
 	$blocks[] = $block;
 
+	$happening = format_date($event->happening_t);
+	$happening_t = date("d-m-Y", s2t($event->happening_t));
+	$event_url = urlencode($event->get_url());
+	$date_content = <<<EOF
+${happening}<br/>
+<br/>
+<a href="${event_url}" title="Add to Calendar" class="addthisevent">
+    {{Add to Calendar}}
+    <span class="_start">${happening_t} 00:00:00</span>
+    <span class="_end">${happening_t} 23:59:59</span>
+    <span class="_zonecode">40</span>
+    <span class="_summary">{$event->title}</span>
+    <span class="_description">{{More informations at}} ${event_url}</span>
+    <span class="_location">{$event->location}</span>
+    <span class="_organizer">{$event->organizer_name}</span>
+    <span class="_all_day_event">true</span>
+    <span class="_date_format">DD/MM/YYYY</span>
+</a>
+EOF;
+	$block = new Block();
+	$block->side = 'left';
+	$block->title = 'Happening date';
+	$block->content = $date_content;
+	$blocks[] = $block;
+
 	$block = new Block();
 	$block->side = 'right';
 	$block->title = 'Long description';
@@ -217,31 +301,6 @@ EOF;
 <div class="evt_title"><p><?php echo $event->title; ?></p></div>
 
 <?php
-	if ($event->is_inactivated()) {
-?>
-<div id="evt_retrieve_publish" class="evt_shadowed">
-	{{This event is inactivated.}}
-</div>
-<?php
-	}
-	if (!$event->is_published() && !$event->is_inactivated()) {
-?>
-<div id="evt_retrieve_publish" class="evt_shadowed">
-	{{Your event is not published.}}
-<?php
-		if (!$event->is_ready_for_publication()) {
-?>
-	<br/>{{Please click}} <a href="?action=request_for_publication&amp;id=<?php echo $event->id; ?>">{{here}}</a> {{to request its publication to our support.}}
-<?php
-		} else {
-?>
-	<br/>{{A request for publication has been done. Our support team is going to process it very soon.}}
-<?php
-		}
-?>
-</div>
-<?php
-	}
 	echo format_columns($blocks)
 ?>
 <div style="clear: both;"></div>

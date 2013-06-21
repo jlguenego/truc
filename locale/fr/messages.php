@@ -489,6 +489,17 @@ $this->array = array(
 	"Ms" => "Mme",
 	"An account has been created based on the information given by " =>
 			"Un compte a été créé, basé sur les informations données par ",
+	"Add to Calendar" => "Ajouter à mon agenda",
+	"Outlook Calendar" => "Calendrier Outlook",
+	"Google Calendar" => "Calendrier Google",
+	"Yahoo Calendar" => "Calendrier Yahoo",
+	"Hotmail Calendar" => "Calendrier Hotmail",
+	"iCal Calendar" => "Calendrier iCal",
+	"Facebook Calendar" => "Calendrier Facebook",
+	"When ready, please" => "Quand vous êtes prêt, veuillez",
+	"request its publication to our support." =>
+			"effectuer la requête de publication à notre support",
+	"Social Networking" => "Réseaux Sociaux",
 
 //The End
 );

@@ -89,4 +89,10 @@ EOF;
 		}
 		return $result;
 	}
+
+	function format_html2text($html) {
+		$text = strip_tags($html);
+		$text = html_entity_decode($text, ENT_QUOTES, 'UTF-8');
+		return $text;
+	}
 ?>

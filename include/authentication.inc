@@ -18,7 +18,7 @@
 		if (!is_logged()) {
 			debug("\$_SERVER[\"REQUEST_URI\"]=".$_SERVER["REQUEST_URI"]);
 			$_SESSION["url"] = $_SERVER["REQUEST_URI"];
-			redirect_to("?action=sign_in");
+			redirect_to(HOST."?action=sign_in");
 		} else {
 			return User::get_from_session();
 		}
