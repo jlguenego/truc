@@ -1185,7 +1185,7 @@
 			throw new Exception(_t("No event selected"));
 		}
 		$event = Event::get_from_id($_GET["id"]);
-		$event->set_ready_for_publication(true);
+		$event->add_flag(EVENT_FLAG_READY_FOR_PUBLICATION);
 		$event->update();
 		mail_publication_request($event);
 		redirect_action("?action=retrieve&type=event&id=".$event->id);
