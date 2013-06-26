@@ -99,12 +99,43 @@
 			case "confirm":
 				action_confirm();
 				break;
+			case "generate":
+				action_generate();
+				break;
 			case "none":
 				break;
 			default:
 				throw new Exception(_t("This action does not exists."));
 				break;
 		}
+	}
+
+	function action_generate() {
+		switch ($_GET['type']) {
+			case "report":
+				action_report_generate();
+				break;
+		}
+	}
+
+	function action_report_generate() {
+		global $g_display;
+		$user = need_authentication();
+		if (is_null_or_empty($_GET["id"])) {
+			throw new Exception(_t("No event selected."));
+		}
+		if (!Event::exists($_GET["id"])) {
+			throw new Exception(_t("Event does not exists."));
+		}
+
+		$event = Event::get_from_id($_GET["id"]);
+		if (!$event->can_be_administrated()) {
+			throw new Exception(_t("You cannot access to this event."));
+		}
+
+		$g_display["report"] = deal_generate_report($event);
+		$g_display["event"] = $event;
+		$_SESSION["state"] = "report";
 	}
 
 	function action_confirm() {

@@ -16,6 +16,7 @@
 		public $status = EVENT_STATUS_PLANNED;
 		public $flags;
 		public $publish_flag;
+		public $deal_name;
 		public $facebook_event_id;
 		public $user_id;
 		public $tickets = array();
@@ -435,6 +436,10 @@ EOF;
 				":id" => $this->id,
 			);
 			$pst->execute($array);
+		}
+
+		public function get_invoices() {
+			return $this->get_devis(DEVIS_TYPE_INVOICE);
 		}
 
 		public function get_devis($type = DEVIS_TYPE_AUTODETECT) {

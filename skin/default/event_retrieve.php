@@ -117,8 +117,8 @@ EOF;
 		} else {
 			$content .= '<li>{{This event is not published.}}</li>';
 		}
-
-		$content .= '<li>'.$event->funding_acquired.'€/'.$event->funding_needed.'€ '._t('funding acquired').'.</li>';
+		$report = deal_generate_report($event);
+		$content .= '<li>'.curr($report['total']).'€/'.$event->funding_needed.'€ '._t('funding acquired').'.</li>';
 		$id = $event->id;
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$content .= '<li>{{Tickets indicate attendee name.}}</li>';
@@ -135,6 +135,7 @@ EOF;
 		}
 
 		$content .= <<<EOF
+	<li><a href="?action=generate&amp;type=report&amp;id=${id}">{{View report}}</a></li>
 	<li><a href="?action=get_form&amp;type=event&amp;id=${id}">{{Edit event}}</a></li>
 	<li><a href="?action=delete&amp;type=event&amp;id=${id}">{{Delete event}}</a></li>
 </ul>
@@ -227,7 +228,13 @@ EOF;
 <ul>
 	<li><b>{{Organizer}}<br/></b>{$event->organizer_name}</li>
 	<li><b>{{Confirmation date}}<br/></b>${confirmation_date}</li>
+EOF;
+	if (url_exists($event->link)) {
+		$generale_info .= <<<EOF
 	<li><b>{{Event website}}<br/></b><a href="{$event->link}" target="_blank">{$event->link}</a></li>
+EOF;
+	}
+	$generale_info .= <<<EOF
 </ul>
 EOF;
 	$block = new Block();

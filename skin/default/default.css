@@ -1048,3 +1048,16 @@ a.evt_button {
 	background-color: #F4F4F4;
 	height: 100%;
 }
+
+.eb_invoice_even {
+	background-color: #FFD9D9;
+}
+
+.eb_invoice_odd {
+	background-color: #F5F5F5;
+}
+
+.eb_report {
+	display: inline-block;
+	border: 0px;
+}

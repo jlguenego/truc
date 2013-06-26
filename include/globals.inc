@@ -43,6 +43,7 @@
 		"record_manage",
 		"task_run",
 		"bitcoin_payment",
+		"report",
 	);
 
 	$g_event_states = array(
