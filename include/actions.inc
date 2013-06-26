@@ -368,7 +368,8 @@
 	function action_signout() {
 		$_SESSION["user_id"] = null;
 		debug("SESSION=".sprint_r($_SESSION));
-		$_SESSION["state"] = "root";
+		redirect_to($_SESSION['previous_url']);
+		//$_SESSION["state"] = "root";
 	}
 
 	function action_get_form() {
@@ -779,7 +780,7 @@
 				if ($user->is_activated()) {
 					$_SESSION['user_id'] = $user->id;
 					if (is_null_or_empty($_SESSION["url"])) {
-						redirect_to("index.php");
+						redirect_to($_SESSION["previous_url"]);
 					} else {
 						$url = $_SESSION["url"];
 						unset($_SESSION["url"]);
@@ -825,7 +826,7 @@
 			$_SESSION['user_id'] = $user->id;
 
 			if (is_null_or_empty($_SESSION["url"])) {
-				redirect_to("index.php");
+				redirect_to($_SESSION["previous_url"]);
 			} else {
 				$url = $_SESSION["url"];
 				unset($_SESSION["url"]);
@@ -846,7 +847,7 @@
 			$_SESSION['user_id'] = $user->id;
 
 			if (is_null_or_empty($_SESSION["url"])) {
-				redirect_to("index.php");
+				redirect_to($_SESSION["previous_url"]);
 			} else {
 				$url = $_SESSION["url"];
 				unset($_SESSION["url"]);
@@ -871,7 +872,7 @@
 			$_SESSION['user_id'] = $user->id;
 
 			if (is_null_or_empty($_SESSION["url"])) {
-				redirect_to("index.php");
+				redirect_to($_SESSION["previous_url"]);
 			} else {
 				$url = $_SESSION["url"];
 				unset($_SESSION["url"]);

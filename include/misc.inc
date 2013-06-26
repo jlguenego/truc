@@ -335,4 +335,10 @@ EOF;
         curl_close($ch);
         return ($httpcode >= 200 && $httpcode < 300);
 	}
+
+	function save_previous_url() {
+		if (!in_array($_GET['action'], array("sign_out", "sign_in", "authenticate", "auto_authenticate"))) {
+			$_SESSION['previous_url'] = HOST."?".$_SERVER['QUERY_STRING'];
+		}
+	}
 ?>

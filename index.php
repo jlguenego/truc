@@ -38,7 +38,7 @@
 	$g_i18n->init();
 
 	debug(BASE_DIR);
-	//debug("SERVER=".sprint_r($_SERVER));
+	debug("SERVER=".sprint_r($_SERVER));
 	debug("GET=".sprint_r($_GET));
 	debug("POST=".sprint_r($_POST));
 	debug("SESSION=".sprint_r($_SESSION));
@@ -68,6 +68,9 @@
 		$_SESSION["state"] = "root";
 		$_GET["action"] = "none";
 	}
+
+	// Allows to be redirected to the previous url when sign in or sign out
+	save_previous_url();
 
 	try {
 		action();
