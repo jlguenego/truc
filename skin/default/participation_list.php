@@ -14,18 +14,18 @@
 	</tr>
 <?php
 	foreach ($g_display["participations"] as $participation) {
-		list($item, $devis) = $participation;
-		$user = User::get_from_id($devis->user_id);
+		list($item, $bill) = $participation;
+		$user = User::get_from_id($bill->user_id);
 ?>
 	<tr>
 <?php
 	if (is_admin_logged()) {
 ?>
-		<td><a href="<?php echo $devis->url(); ?>"><?php echo $devis->label; ?></a></td>
+		<td><a href="<?php echo $bill->url(); ?>"><?php echo $bill->label; ?></a></td>
 <?php
 	} else {
 ?>
-		<td><?php echo $devis->label; ?></td>
+		<td><?php echo $bill->label; ?></td>
 <?php
 	}
 ?>
@@ -37,10 +37,10 @@
 		<td><?php echo $item->attendee_firstname; ?></td>
 		<td><?php echo $user->email; ?></td>
 <?php
-	if (is_admin_logged() && !$devis->is_really_paid()) {
+	if (is_admin_logged() && !$bill->is_really_paid()) {
 ?>
-		<td><a class="evt_button evt_btn_small" href="?action=confirm&amp;type=bill&amp;id=<?php echo $devis->id; ?>">{{Confirm}}</a></td>
-		<td><a class="evt_button evt_btn_small" href="?action=delete&amp;type=bill&amp;id=<?php echo $devis->id; ?>">{{Delete}}</a></td>
+		<td><a class="evt_button evt_btn_small" href="?action=confirm&amp;type=bill&amp;id=<?php echo $bill->id; ?>">{{Confirm}}</a></td>
+		<td><a class="evt_button evt_btn_small" href="?action=delete&amp;type=bill&amp;id=<?php echo $bill->id; ?>">{{Delete}}</a></td>
 <?php
 	}
 ?>

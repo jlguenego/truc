@@ -1,5 +1,5 @@
 <?php
-	class Devis {
+	class Bill {
 		public $id;
 		public $created_t;
 		public $mod_t;
@@ -12,16 +12,16 @@
 		public $username;
 		public $address;
 		public $vat;
-		public $status = DEVIS_STATUS_PLANNED;
-		public $type = DEVIS_TYPE_QUOTATION;
+		public $status = BILL_STATUS_PLANNED;
+		public $type = BILL_TYPE_QUOTATION;
 		public $payment_info;
 		public $event_id;
 		public $user_id;
 
 		public static function get_from_id($id) {
-			$devis = new Devis();
-			$devis->load($id);
-			return $devis;
+			$bill = new Bill();
+			$bill->load($id);
+			return $bill;
 		}
 
 		public static function exists($id) {
@@ -61,7 +61,7 @@ EOF;
 		public function store() {
 			global $g_pdo;
 
-			if ($this->type == DEVIS_TYPE_INVOICE) {
+			if ($this->type == BILL_TYPE_INVOICE) {
 				$this->label .= "#".seq_next('invoice');
 			} else {
 				$this->label .= "#".seq_next('quotation');
@@ -130,11 +130,11 @@ EOF;
 			$pst->execute(array(
 				":id" => $id,
 			));
-			$devis = $pst->fetch(PDO::FETCH_ASSOC);
-			if (!isset($devis['id'])) {
+			$bill = $pst->fetch(PDO::FETCH_ASSOC);
+			if (!isset($bill['id'])) {
 				return NULL;
 			}
-			$this->hydrate($devis);
+			$this->hydrate($bill);
 			$pst->closeCursor();
 
 			$request = <<<EOF
@@ -207,12 +207,12 @@ EOF;
 		}
 
 		public function url() {
-			return HOST . "/index.php?action=retrieve&type=devis&id=" . $this->id;
+			return HOST . "/index.php?action=retrieve&type=bill&id=" . $this->id;
 		}
 
 		public function create_invoice() {
 			$invoice = clone $this;
-			$invoice->type = DEVIS_TYPE_INVOICE;
+			$invoice->type = BILL_TYPE_INVOICE;
 			$invoice->store();
 			return $invoice;
 		}

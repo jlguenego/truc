@@ -155,7 +155,7 @@
 			throw new Exception(_t("No bill id given."));
 		}
 
-		$bill = Devis::get_from_id($_GET['id']);
+		$bill = Bill::get_from_id($_GET['id']);
 		$bill->payment_info = "Really paid";
 		$bill->update();
 		$client = User::get_from_id($bill->user_id);
@@ -172,7 +172,7 @@
 			throw new Exception(_t("No bill id given."));
 		}
 
-		$bill = Devis::get_from_id($_GET['id']);
+		$bill = Bill::get_from_id($_GET['id']);
 		$bill->delete();
 		redirect_action('?action=list&type=participation&id='.$bill->event_id);
 	}
@@ -299,8 +299,8 @@
 			case "account":
 				action_account_retrieve();
 				break;
-			case "devis":
-				action_devis_retrieve();
+			case "bill":
+				action_bill_retrieve();
 				break;
 			default:
 				throw new Exception("Cannot retrieve object of type ".$_GET["type"]);
@@ -726,7 +726,7 @@
 		}
 		$event = Event::get_from_id($_GET['id']);
 		$event->set_status(EVENT_STATUS_CONFIRMED);
-		$event->set_devis_status(DEVIS_STATUS_CONFIRMED);
+		$event->set_bill_status(BILL_STATUS_CONFIRMED);
 		debug("Send Confirmation mail.");
 		mail_event_confirm($_GET['id']);
 		action_supervision();
@@ -749,25 +749,25 @@
 		action_supervision();
 	}
 
-	function action_devis_retrieve() {
+	function action_bill_retrieve() {
 		global $g_display;
 
 		$user = need_authentication();
 		if (!isset($_GET['id'])) {
-			throw new Exception(_t("No devis given."));
+			throw new Exception(_t("No bill given."));
 		}
-		if (!Devis::exists($_GET['id'])) {
+		if (!Bill::exists($_GET['id'])) {
 			throw new Exception(_t("Bill does not exists."));
 		}
-		$devis = Devis::get_from_id($_GET['id']);
-		if (!$devis->can_be_retrieved()) {
+		$bill = Bill::get_from_id($_GET['id']);
+		if (!$bill->can_be_retrieved()) {
 			throw new Exception(_t("Cannot access to this object. Permission denied."));
 		}
-		$event = Event::get_from_id($devis->event_id);
+		$event = Event::get_from_id($bill->event_id);
 
-		$g_display["devis"] = $devis;
+		$g_display["bill"] = $bill;
 		$g_display["event"] = $event;
-		$_SESSION["state"] = "devis_retrieve";
+		$_SESSION["state"] = "bill_retrieve";
 	}
 
 	function action_authenticate() {
@@ -890,23 +890,23 @@
 			throw new Exception(_t("You must read and accept the policies."));
 		}
 
-		$devis = new Devis();
-		$devis->username = $_GET['username'];
-		$devis->address = nl2br($_GET['address']);
-		$devis->vat = $_GET["vat"];
-		$devis->event_id = $_GET["event_id"];
+		$bill = new Bill();
+		$bill->username = $_GET['username'];
+		$bill->address = nl2br($_GET['address']);
+		$bill->vat = $_GET["vat"];
+		$bill->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
 		$label = "Event-Biller-";
 		if ($event->is_confirmed()) {
-			$devis->status = DEVIS_STATUS_CONFIRMED;
-			$devis->type = DEVIS_TYPE_INVOICE;
-			$label .= "I-";
+			$bill->status = BILL_STATUS_CONFIRMED;
+			$bill->type = BILL_TYPE_INVOICE;
+			$bill .= "I-";
 		} else {
-			$devis->status = DEVIS_STATUS_PLANNED;
-			$devis->type = DEVIS_TYPE_QUOTATION;
+			$bill->status = BILL_status_planned;
+			$bill->type = BILL_type_quotation;
 			$label .= "Q-";
 		}
-		$devis->label = $label."EVT-".sprintf("%06d", $event->id);
+		$bill->label = $label."EVT-".sprintf("%06d", $event->id);
 
 		$tickets = $event->get_tickets();
 		$total_ttc = 0.00;
@@ -927,14 +927,14 @@
 
 				$item->compute();
 
-				$devis->items[] = $item;
+				$bill->items[] = $item;
 			}
 			$i++;
 		}
-		$devis->compute();
-		$devis->store();
-		$g_display["devis"] = $devis;
-		$_SESSION["devis"] = $devis;
+		$bill->compute();
+		$bill->store();
+		$g_display["bill"] = $bill;
+		$_SESSION["bill"] = $bill;
 		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_regular_recapitulation";
@@ -943,9 +943,9 @@
 	function action_participate_regular_recapitulation() {
 		global $g_display;
 
-		$devis = $_SESSION['devis'];
+		$bill = $_SESSION['bill'];
 		$event = Event::get_from_id($_GET["event_id"]);
-		$g_display["devis"] = $devis;
+		$g_display["bill"] = $bill;
 		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_regular_recapitulation";
@@ -956,26 +956,26 @@
 		if (!isset($_GET['confirm'])) {
 			throw new Exception(_t("You must read and accept the policies."));
 		}
-		$devis = new Devis();
-		$devis->username = $_GET['username'];
-		$devis->address = nl2br($_GET['address']);
-		$devis->vat = $_GET["vat"];
-		$devis->event_id = $_GET["event_id"];
+		$bill = new Bill();
+		$bill->username = $_GET['username'];
+		$bill->address = nl2br($_GET['address']);
+		$bill->vat = $_GET["vat"];
+		$bill->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
 		if ($event == NULL) {
 			throw new Exception(_t("Event is null."));
 		}
 		$label = "Event-Biller-";
 		if ($event->is_confirmed()) {
-			$devis->status = DEVIS_STATUS_CONFIRMED;
-			$devis->type = DEVIS_TYPE_INVOICE;
+			$bill->status = BILL_STATUS_CONFIRMED;
+			$bill->type = BILL_TYPE_INVOICE;
 			$label .= "I-";
 		} else {
-			$devis->status = DEVIS_STATUS_PLANNED;
-			$devis->type = DEVIS_TYPE_QUOTATION;
+			$bill->status = BILL_STATUS_PLANNED;
+			$bill->type = BILL_TYPE_QUOTATION;
 			$label .= "Q-";
 		}
-		$devis->label = $label."EVT-".sprintf("%06d", $event->id);
+		$bill->label = $label."EVT-".sprintf("%06d", $event->id);
 
 		$total_ttc = 0.00;
 
@@ -1001,15 +1001,15 @@
 
 			$item->compute();
 
-			$devis->items[] = $item;
+			$bill->items[] = $item;
 			$i++;
 		}
 
-		$devis->compute();
-		$devis->store();
-		$g_display["devis"] = $devis;
-		$_SESSION["devis"] = $devis;
-		debug("devis=".sprint_r($devis));
+		$bill->compute();
+		$bill->store();
+		$g_display["bill"] = $bill;
+		$_SESSION["bill"] = $bill;
+		debug("bill=".sprint_r($bill));
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$g_display["event"] = $event;
 		$_SESSION["state"] = "participation_nominative_recapitulation";
@@ -1018,10 +1018,10 @@
 	function action_participate_nominative_recapitulation() {
 		global $g_display;
 
-		$devis = $_SESSION["devis"];
+		$bill = $_SESSION["bill"];
 		$event = Event::get_from_id($_GET["event_id"]);
 		debug('action_participate_nominative_recapitulation');
-		$g_display["devis"] = $devis;
+		$g_display["bill"] = $bill;
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$g_display["event"] = $event;
 		$_SESSION["state"] = "participation_nominative_recapitulation";
@@ -1055,7 +1055,7 @@
 			if (!isset($_GET['id'])) {
 				throw new Exception('No id given.');
 			}
-			$bill = Devis::get_from_id($_GET['id']);
+			$bill = Bill::get_from_id($_GET['id']);
 			if ($user->id != $bill->user_id) {
 				throw new Exception('This is not your bill');
 			}
@@ -1076,10 +1076,10 @@
 			if ((!TEST_MODE) && $_SESSION['state'] == "payment_success") {
 				return;
 			}
-			$devis = $_SESSION['devis'];
-			$devis->payment_info = $_SERVER["QUERY_STRING"];
-			$devis->update();
-			mail_payment($user->email, $devis);
+			$bill = $_SESSION['bill'];
+			$bill->payment_info = $_SERVER["QUERY_STRING"];
+			$bill->update();
+			mail_payment($user->email, $bill);
 			$_SESSION['state'] = "payment_success";
 		} catch (Exception $e) {
 			message_set_error($e->getMessage());

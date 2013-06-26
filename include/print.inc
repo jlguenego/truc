@@ -5,7 +5,7 @@
 		$event = Event::get_from_id($bill->event_id);
 
 		$bill_type = "invoice";
-		if ($bill->type != DEVIS_TYPE_INVOICE) {
+		if ($bill->type != BILL_TYPE_INVOICE) {
 			$bill_type = "quotation";
 		}
 ?>
@@ -41,7 +41,7 @@
 	<b>{{<?php echo ucfirst($bill_type); ?> ID}}:</b> <?php echo $bill->label; ?><br/>
 	<b>{{<?php echo ucfirst($bill_type); ?> date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php
-	if ($bill->type == DEVIS_TYPE_INVOICE) {
+	if ($bill->type == BILL_TYPE_INVOICE) {
 ?>
 	<b>{{Due date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php

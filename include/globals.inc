@@ -30,7 +30,7 @@
 		"account_retrieve",
 		"account_update",
 		"account_delete_confirm",
-		"devis_retrieve",
+		"bill_retrieve",
 		"payment_cancel",
 		"payment_success",
 		"supervision",

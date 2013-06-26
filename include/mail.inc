@@ -54,13 +54,13 @@
 		$subject = format_mail_subject(_t("Payment authorization"));
 		$g_display["user"] = $user;
 		$g_display["bill"] = $bill;
-		if ($bill->status == DEVIS_STATUS_PLANNED) {
+		if ($bill->status == BILL_STATUS_PLANNED) {
 			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_authorization.php");
 			$subject = _t("Payment confirmation and invoice");
-		} else if ($bill->status == DEVIS_STATUS_CONFIRMED) {
+		} else if ($bill->status == BILL_STATUS_CONFIRMED) {
 			$msg_html = $user->get_i18n()->get_mail_html(BASE_DIR."/mail/payment_full.php");
 		} else {
-			throw new Exception("Unexpected devis status.");
+			throw new Exception("Unexpected bill status.");
 		}
 
 		$msg = mail_build($msg_html, $mail);
@@ -72,15 +72,15 @@
 
 		$subject = format_mail_subject(_t("Event confirmation"));
 		$event = Event::get_from_id($event_id);
-		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
-		foreach ($devis_array as $devis) {
-			$user = User::get_from_id($devis->user_id);
+		$bill_array = $event->get_bill(BILL_TYPE_QUOTATION);
+		foreach ($bill_array as $bill) {
+			$user = User::get_from_id($bill->user_id);
 			$i18n = $user->get_i18n();
 			$mail = $user->email;
 
 
-			$g_display["invoice"] = $devis->create_invoice();
-			$g_display["quotation"] = $devis;
+			$g_display["invoice"] = $bill->create_invoice();
+			$g_display["quotation"] = $bill;
 			$g_display["user"] = $user;
 			$msg_html = $i18n->get_mail_html(BASE_DIR."/mail/event_confirm.php");
 			debug("msg_html=".$msg_html);
@@ -95,13 +95,13 @@
 
 		$subject = format_mail_subject(_t("Event cancellation"));
 		$event = Event::get_from_id($event_id);
-		$devis_array = $event->get_devis(DEVIS_TYPE_QUOTATION);
-		foreach ($devis_array as $devis) {
-			$user = User::get_from_id($devis->user_id);
+		$bill_array = $event->get_bill(BILL_TYPE_QUOTATION);
+		foreach ($bill_array as $bill) {
+			$user = User::get_from_id($bill->user_id);
 			$i18n = $user->get_i18n();
 			$mail = $user->email;
 
-			$g_display["bill"] = $devis;
+			$g_display["bill"] = $bill;
 			$g_display["user"] = $user;
 			$msg_html = $i18n->get_mail_html(BASE_DIR."/mail/event_cancel.php");
 			debug("msg_html=".$msg_html);

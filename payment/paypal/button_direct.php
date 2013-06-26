@@ -1,5 +1,5 @@
 <?php
-	$devis = $g_display['devis'];
+	$bill = $g_display['bill'];
 	$event = $g_display['event'];
 ?>
 
@@ -7,8 +7,8 @@
 	<input type="hidden" name="cmd" value="_xclick">
 	<input type="hidden" name="business" value="<?php echo PAYPAL_SELLER; ?>">
 	<input type="hidden" name="lc" value="US">
-	<input type="hidden" name="item_name" value="<?php echo $devis->label.": ".$event->title; ?>">
-	<input type="hidden" name="amount" value="<?php echo $devis->total_ttc; ?>">
+	<input type="hidden" name="item_name" value="<?php echo $bill->label.": ".$event->title; ?>">
+	<input type="hidden" name="amount" value="<?php echo $bill->total_ttc; ?>">
 	<input type="hidden" name="currency_code" value="EUR">
 	<input type="hidden" name="button_subtype" value="services">
 	<input type="hidden" name="no_note" value="0">

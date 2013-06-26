@@ -152,7 +152,7 @@ EOF;
 			global $g_pdo;
 
 			$event = Event::get_from_id($this->event_id);
-			$bills = $event->get_devis();
+			$bills = $event->get_bill();
 
 			foreach ($bills as $bill) {
 				foreach ($bill->items as $item) {
@@ -176,9 +176,9 @@ EOF;
 				return 0;
 			}
 
-			$type = DEVIS_TYPE_QUOTATION;
+			$type = BILL_TYPE_QUOTATION;
 			if ($event->is_confirmed()) {
-				$type = DEVIS_TYPE_INVOICE;
+				$type = BILL_TYPE_INVOICE;
 			}
 
 			$result = $this->max_quantity;

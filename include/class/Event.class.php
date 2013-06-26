@@ -259,7 +259,7 @@ EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
 				":id" => $this->id,
-				":type" => DEVIS_TYPE_QUOTATION,
+				":type" => BILL_TYPE_QUOTATION,
 			);
 			$pst->execute($array);
 			if (($record = $pst->fetch(PDO::FETCH_ASSOC)) != NULL) {
@@ -439,15 +439,15 @@ EOF;
 		}
 
 		public function get_invoices() {
-			return $this->get_devis(DEVIS_TYPE_INVOICE);
+			return $this->get_bill(BILL_TYPE_INVOICE);
 		}
 
-		public function get_devis($type = DEVIS_TYPE_AUTODETECT) {
+		public function get_bill($type = BILL_TYPE_AUTODETECT) {
 			global $g_pdo;
-			if ($type == DEVIS_TYPE_AUTODETECT) {
-				$type = DEVIS_TYPE_QUOTATION;
+			if ($type == BILL_TYPE_AUTODETECT) {
+				$type = BILL_TYPE_QUOTATION;
 				if ($this->is_confirmed()) {
-					$type = DEVIS_TYPE_INVOICE;
+					$type = BILL_TYPE_INVOICE;
 				}
 			}
 			$request = <<<EOF
@@ -462,19 +462,19 @@ EOF;
 			);
 			$q->execute($array);
 
-			$devis_array = array();
+			$bill_array = array();
 			while (($record = $q->fetch()) != NULL) {
 				debug("record=".sprint_r($record));
-				$devis = Devis::get_from_id($record["id"]);
-				$devis_array[] = $devis;
+				$bill = Bill::get_from_id($record["id"]);
+				$bill_array[] = $bill;
 			}
-			return $devis_array;
+			return $bill_array;
 		}
 
-		public function set_devis_status($status) {
-			$devis_array = $this->get_devis(DEVIS_TYPE_QUOTATION);
-			foreach ($devis_array as $devis) {
-				$devis->set_status($status);
+		public function set_bill_status($status) {
+			$bill_array = $this->get_bill(BILL_TYPE_QUOTATION);
+			foreach ($bill_array as $bill) {
+				$bill->set_status($status);
 			}
 		}
 
@@ -500,14 +500,14 @@ EOF;
 			if (is_admin_logged()) {
 				$admin = true;
 			}
-			$devis_array = $this->get_devis();
+			$bill_array = $this->get_bill();
 			$participations = array();
-			foreach ($devis_array as $devis) {
-				if (!$admin && !$devis->is_really_paid()) {
+			foreach ($bill_array as $bill) {
+				if (!$admin && !$bill->is_really_paid()) {
 					continue;
 				}
-				foreach ($devis->get_items() as $item) {
-					$participations[] = array($item, $devis);
+				foreach ($bill->get_items() as $item) {
+					$participations[] = array($item, $bill);
 				}
 			}
 			return $participations;
