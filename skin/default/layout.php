@@ -19,6 +19,7 @@
 		<link href="_ext/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 		<script src="_ext/jquery-ui-1.10.3.custom/js/jquery-1.9.1.js"></script>
 		<script src="_ext/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
+		<script src="_ext/jquery-addresspicker/src/jquery.ui.addresspicker.js"></script>
 		<script src="_ext/tinymce/tinymce.min.js"></script>
 		<script src="_ext/sha1.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans">
