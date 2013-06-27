@@ -135,6 +135,7 @@ EOF
 <?php
 				} else {
 ?>
+					<input type="hidden" name="confirmation_t" value="<?php echo $event->confirmation_t; ?>" />
 					<input type="hidden" name="is_confirmed" value="" />
 				</td>
 			</tr>
