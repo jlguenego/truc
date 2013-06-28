@@ -295,7 +295,6 @@ EOF;
 		public function clean_format() {
 			$this->lastname = format_lastname($this->lastname);
 			$this->firstname = format_firstname($this->firstname);
-			$this->city = mb_strtoupper($this->city, "UTF-8");
 		}
 
 		public function address() {

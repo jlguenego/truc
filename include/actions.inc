@@ -416,6 +416,9 @@
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
+			$address = new Address();
+			$address->store();
+			$user->address_id = $address->id;
 			$user->store();
 			message_set_info(_t("Account successfully created. Check your email for activation."));
 			if (is_null_or_empty($_SESSION["url"])) {

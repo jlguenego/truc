@@ -223,7 +223,6 @@
       if (!address) {
         return;
       }
-
       if (this.gmarker) {
         this.gmarker.setPosition(address.geometry.location);
         this.gmarker.setVisible(true);
