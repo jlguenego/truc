@@ -8,13 +8,9 @@
 		public $role;
 		public $activation_status;
 		public $activation_key;
-		public $street;
-		public $zip;
-		public $city;
-		public $country;
-		public $state;
 		public $phone;
 		public $locale = "en";
+		public $address_id;
 
 		public static function get_from_id($id = null) {
 			$user = new User();
@@ -127,12 +123,8 @@ SET
 	`role`= :role,
 	`activation_status`= :activation_status,
 	`activation_key`= :activation_key,
-	`street`= :street,
-	`zip`= :zip,
-	`city`= :city,
-	`country`= :country,
-	`state`= :state,
-	`locale`= :locale;
+	`locale`= :locale,
+	`id_address`= :address_id;
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -147,12 +139,8 @@ EOF;
 				":role" => $this->role,
 				":activation_status" => $this->activation_status,
 				":activation_key" => $this->activation_key,
-				":street" => $this->street,
-				":zip" => $this->zip,
-				":city" => $this->city,
-				":country" => $this->country,
-				":state" => $this->state,
 				":locale" => $this->locale,
+				":address_id" => $this->address_id,
 			);
 			$pst->execute($array);
 			if (!$this->is_activated()) {
@@ -171,13 +159,9 @@ SET
 	`email`= :email,
 	`firstname`= :firstname,
 	`lastname`= :lastname,
-	`street`= :street,
-	`zip`= :zip,
-	`city`= :city,
-	`country`= :country,
-	`state`= :state,
 	`phone`= :phone,
-	`locale`= :locale
+	`locale`= :locale,
+	`id_address`= :address_id
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -187,14 +171,10 @@ EOF;
 				":email" => $this->email,
 				":firstname" => $this->firstname,
 				":lastname" => $this->lastname,
-				":street" => $this->street,
-				":zip" => $this->zip,
-				":city" => $this->city,
-				":country" => $this->country,
-				":state" => $this->state,
 				":id" => $this->id,
 				":phone" => $this->phone,
 				":locale" => $this->locale,
+				":address_id" => $this->address_id,
 			);
 			$pst->execute($array);
 			$pst->closeCursor();
@@ -319,23 +299,8 @@ EOF;
 		}
 
 		public function address() {
-			if ($this->has_no_address()) {
-				return "Not defined";
-			}
-			$state = "";
-			if ($this->state != "") {
-				$state = $this->state.",&nbsp;";
-			}
-			$address = $this->street."\n".
-				$state.$this->zip." ".$this->city." ".$this->country;
-			return $address;
-		}
-
-		public function has_no_address() {
-			return is_null_or_empty($this->street)
-				|| is_null_or_empty($this->zip)
-				|| is_null_or_empty($this->city)
-				|| is_null_or_empty($this->country);
+			$address = Address::get_from_id($this->address_id);
+			return $address->to_string();
 		}
 
 		public function fill_address_from_participation() {

@@ -1061,3 +1061,46 @@ a.evt_button {
 	display: inline-block;
 	border: 0px;
 }
+
+/* ADDRESS PICKER */
+.invalid_address {
+	color: blue;
+}
+
+.ap_map {
+	float: right;
+	border: 1px solid #DDD;
+	width: 200px;
+	height: 202px;
+	margin: 2px;
+}
+
+.eb_map_block {
+	padding: 5px;
+	position: absolute;
+	border: 1px solid #E5E5E5;
+	background-image: linear-gradient(to top, #E5E5E5, #FFFFFF);
+	background-color: #E5E5E5;
+}
+
+.eb_map_block * {
+	font-size: 10px;
+}
+
+.eb_map_block input {
+	width: 150px;
+	background-color: #DDDDDD;
+}
+
+.eb_map_block td {
+	vertical-align: top;
+}
+
+.eb_map_block th {
+	font-weight: 400;
+	text-align: right;
+}
+
+.ap_map_wrapper, .ap_input_positioned {
+	display: inline-block;
+}

@@ -13,7 +13,6 @@ CREATE TABLE event(
         confirmation_t    Varchar (25) NOT NULL ,
         funding_needed    Decimal (25,2) NOT NULL ,
         funding_acquired  Decimal (25,2) NOT NULL ,
-        location          Varchar (255) NOT NULL ,
         link              Varchar (255) ,
         phone             Varchar (25) ,
         short_description Text NOT NULL ,
@@ -25,6 +24,8 @@ CREATE TABLE event(
         deal_name         Varchar (255) ,
         facebook_event_id Varchar (255) ,
         id_user           Int NOT NULL ,
+        id_address        Int NOT NULL ,
+        id_address1       Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -40,14 +41,10 @@ CREATE TABLE user(
         role              Int NOT NULL ,
         activation_status Int NOT NULL ,
         activation_key    Varchar (255) ,
-        street            Varchar (255) ,
-        zip               Varchar (255) ,
-        city              Varchar (255) ,
-        country           Varchar (255) ,
-        state             Varchar (255) ,
         locale            Varchar (25) ,
         token             Varchar (255) ,
         phone             Varchar (25) ,
+        id_address        Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -87,12 +84,12 @@ CREATE TABLE bill(
         total_tax    Decimal (25,2) NOT NULL ,
         total_ttc    Decimal (25,2) NOT NULL ,
         username     Varchar (255) NOT NULL ,
-        address      Text NOT NULL ,
         vat          Varchar (255) ,
         status       Int NOT NULL ,
         type         Int NOT NULL ,
         id_user      Int NOT NULL ,
         id_event     Int NOT NULL ,
+        id_address   Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
@@ -163,6 +160,23 @@ CREATE TABLE task(
 )ENGINE=InnoDB;
 
 
+CREATE TABLE address(
+        id                          Int NOT NULL ,
+        created_t                   Varchar (255) NOT NULL ,
+        mod_t                       Varchar (255) NOT NULL ,
+        lat                         Varchar (255) ,
+        lng                         Varchar (255) ,
+        street_number               Varchar (255) ,
+        route                       Varchar (255) ,
+        postal_code                 Varchar (255) ,
+        locality                    Varchar (255) ,
+        administrative_area_level_2 Varchar (255) ,
+        administrative_area_level_1 Varchar (255) ,
+        country                     Varchar (255) ,
+        PRIMARY KEY (id )
+)ENGINE=InnoDB;
+
+
 CREATE TABLE event_guest(
         id_guest Int NOT NULL ,
         id_event Int NOT NULL ,
@@ -170,9 +184,13 @@ CREATE TABLE event_guest(
 )ENGINE=InnoDB;
 
 ALTER TABLE event ADD CONSTRAINT FK_event_id_user FOREIGN KEY (id_user) REFERENCES user(id);
+ALTER TABLE event ADD CONSTRAINT FK_event_id_address FOREIGN KEY (id_address) REFERENCES address(id);
+ALTER TABLE event ADD CONSTRAINT FK_event_id_address1 FOREIGN KEY (id_address1) REFERENCES address(id);
+ALTER TABLE user ADD CONSTRAINT FK_user_id_address FOREIGN KEY (id_address) REFERENCES address(id);
 ALTER TABLE ticket ADD CONSTRAINT FK_ticket_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_address FOREIGN KEY (id_address) REFERENCES address(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
