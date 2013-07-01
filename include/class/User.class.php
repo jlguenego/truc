@@ -79,6 +79,7 @@ EOF;
 				}
 				$this->$key = $value;
 			}
+			$this->address_id = $array['id_address'];
 		}
 
 		public function set_token($token) {
@@ -297,9 +298,9 @@ EOF;
 			$this->firstname = format_firstname($this->firstname);
 		}
 
-		public function address() {
+		public function address($b_google_addrs = false) {
 			$address = Address::get_from_id($this->address_id);
-			return $address->to_string();
+			return nl2br($address->to_string($b_google_addrs));
 		}
 
 		public function fill_address_from_participation() {

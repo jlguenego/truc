@@ -20,7 +20,7 @@ a {
 }
 
 input[type=text], input[type=email], input[type=password],
-input[type=number] {
+input[type=number], textarea {
 	border: 1px solid #CCCCCC;
 	padding: 2px;
 	width: 300px;
@@ -1063,10 +1063,6 @@ a.evt_button {
 }
 
 /* ADDRESS PICKER */
-.invalid_address {
-	color: blue;
-}
-
 .ap_map {
 	float: right;
 	border: 1px solid #DDD;

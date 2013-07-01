@@ -164,6 +164,7 @@ CREATE TABLE address(
         id                          Int NOT NULL ,
         created_t                   Varchar (255) NOT NULL ,
         mod_t                       Varchar (255) NOT NULL ,
+        address                     Varchar (255) ,
         lat                         Varchar (255) ,
         lng                         Varchar (255) ,
         street_number               Varchar (255) ,

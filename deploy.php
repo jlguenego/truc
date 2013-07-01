@@ -36,6 +36,8 @@
 			$user->generate_activation_key();
 
 			$address = new Address();
+			$address->address = $_POST["address"];
+			$address->lat = $_POST["address_lat"];
 			$address->lat = $_POST["address_lat"];
 			$address->lng = $_POST["address_lng"];
 			$address->street_number = $_POST["address_street_number"];
@@ -79,11 +81,10 @@
 		<link href="_ext/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
 		<!-- ADDRESS PICKER START -->
 		<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-		<script src="_ext/jquery-addresspicker/src/jquery.ui.addresspicker.js"></script>
+		<script src="jscript/textarea_addresspicker.js"></script>
 		<!-- ADDRESS PICKER END -->
 		<script src="_ext/sha1.js"></script>
 		<script src="jscript/misc.js"></script>
-		<script src="jscript/eb_addresspicker.js"></script>
 		<link rel="stylesheet" href="skin/default/default.css">
 		<script>
 		</script>
@@ -125,7 +126,7 @@
 				</tr>
 				<tr>
 					<td>Address:</td>
-					<td><input type="text" class="addresspicker" name="address"/></td>
+					<td><textarea class="addresspicker" name="address" rows="4"></textarea></td>
 				</tr>
 				<tr>
 					<td><input type="submit" value="Submit"></td>
@@ -135,7 +136,6 @@
 			<input type="hidden" name="password" value=""/>
 			<input type="hidden" name="password2" value=""/>
 		</form>
-
 		<script>
 			var hash_salt = "<?php echo RANDOM_SALT ?>";
 			$(document).ready(function() {
@@ -157,7 +157,7 @@
 				$("input[name=lastname]").val(profile_array[i].admin_lastname);
 				$("input[name=clear_password]").val(profile_array[i].admin_password);
 				$("input[name=clear_password2]").val(profile_array[i].admin_password);
-				$("input[name=address]").val(profile_array[i].admin_address);
+				$("textarea[name=address]").html(profile_array[i].admin_address);
 			}
 		</script>
 <?php

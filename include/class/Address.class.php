@@ -1,6 +1,7 @@
 <?php
 	class Address {
 		public $id;
+		public $address;
 		public $lat;
 		public $lng;
 		public $street_number;
@@ -33,6 +34,7 @@
 INSERT INTO `address`
 SET
 	`id`= :id,
+	`address`= :address,
 	`created_t`= :created_t,
 	`mod_t`= :mod_t,
 	`lat`= :lat,
@@ -51,6 +53,7 @@ EOF;
 				":id" => $this->id,
 				":created_t" => $created_t,
 				":mod_t" => $mod_t,
+				":address" => $this->address,
 				":lat" => $this->lat,
 				":lng" => $this->lng,
 				":street_number" => $this->street_number,
@@ -82,7 +85,8 @@ EOF;
 		}
 
 		public function is_empty() {
-			return is_null_or_empty($this->lat)
+			return is_null_or_empty($this->address)
+				|| is_null_or_empty($this->lat)
 				|| is_null_or_empty($this->lng)
 				|| is_null_or_empty($this->street_number)
 				|| is_null_or_empty($this->route)
@@ -93,5 +97,53 @@ EOF;
 				|| is_null_or_empty($this->country);
 		}
 
+		public function to_string($b_google_addrs = false) {
+			$result = $this->address;
+			if ($b_google_addrs) {
+				$result = $this->google_address();
+			}
+			return	$result;
+		}
+
+		public function google_address() {
+			$address = "";
+			if ($this->street_number) {
+				$address .= $this->street_number . "&nbsp;";
+			}
+			if ($this->route) {
+				$address .= $this->route;
+			}
+			if ($address != "") {
+				$address .= "<br/>";
+			}
+
+			if ($this->postal_code) {
+				$address .= $this->postal_code . "&nbsp;";
+			}
+			if ($this->locality) {
+				$address .= $this->locality;
+			}
+			if ($address != "") {
+				$address .= "<br/>";
+			}
+
+			if ($this->administrative_area_level_2) {
+				$address .= $this->administrative_area_level_2;
+			}
+			if ($this->administrative_area_level_1) {
+				if ($address != "") {
+					$address .= ",&nbsp;";
+				}
+				$address .= $this->administrative_area_level_1;
+			}
+			if ($address != "") {
+				$address .= "<br/>";
+			}
+
+			if ($this->country) {
+				$address .= $this->country;
+			}
+			return $address;
+		}
 	}
 ?>
