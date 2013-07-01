@@ -12,6 +12,10 @@
 		public $administrative_area_level_1;
 		public $country;
 
+		public function __construct() {
+			$this->set_null();
+		}
+
 		public function hydrate($array) {
 			foreach ($array as $key => $value) {
 				$this->$key = $value;
@@ -84,6 +88,46 @@ EOF;
 			$this->hydrate($record);
 		}
 
+		public function update() {
+			global $g_pdo;
+
+			$mod_t = time();
+			$request = <<<EOF
+UPDATE `address`
+SET
+	`address`= :address,
+	`mod_t`= :mod_t,
+	`lat`= :lat,
+	`lng`= :lng,
+	`street_number`= :street_number,
+	`route`= :route,
+	`postal_code`= :postal_code,
+	`locality`= :locality,
+	`administrative_area_level_2`= :administrative_area_level_2,
+	`administrative_area_level_1`= :administrative_area_level_1,
+	`country`= :country
+WHERE
+	`id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$array = array(
+				":id" => $this->id,
+				":mod_t" => $mod_t,
+				":address" => $this->address,
+				":lat" => $this->lat,
+				":lng" => $this->lng,
+				":street_number" => $this->street_number,
+				":route" => $this->route,
+				":postal_code" => $this->postal_code,
+				":locality" => $this->locality,
+				":administrative_area_level_2" => $this->administrative_area_level_2,
+				":administrative_area_level_1" => $this->administrative_area_level_1,
+				":country" => $this->country,
+			);
+			$pst->execute($array);
+		}
+
 		public function is_empty() {
 			return is_null_or_empty($this->address)
 				|| is_null_or_empty($this->lat)
@@ -95,6 +139,19 @@ EOF;
 				|| is_null_or_empty($this->administrative_area_level_2)
 				|| is_null_or_empty($this->administrative_area_level_1)
 				|| is_null_or_empty($this->country);
+		}
+
+		public function set_null() {
+			$this->address = null;
+			$this->lat = null;
+			$this->lng = null;
+			$this->street_number = null;
+			$this->route = null;
+			$this->postal_code = null;
+			$this->locality = null;
+			$this->administrative_area_level_2 = null;
+			$this->administrative_area_level_1 = null;
+			$this->country = null;
 		}
 
 		public function to_string($b_google_addrs = false) {

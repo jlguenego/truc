@@ -21,13 +21,18 @@
 	$item->is_optional = true;
 	$item = $f->add_textarea(_t("Address"), "address",
 		default_value("address", $address->address), _t("Your address"));
-	$item->other_attr = "size=\"70\" class=\"addresspicker\"";
-	$f->add_password(_t("New Password (optional)"), "clear_new_pass",
+	$item->is_optional = true;
+	$item->other_attr = "class=\"addresspicker\"";
+	$item = $f->add_password(_t("New Password (optional)"), "clear_new_pass",
 		_t("Leave empty if you do not want to change your password."));
-	$f->add_password(_t("Retype new Password (optional)"), "clear_new_pass2",
+	$item->is_optional = true;
+	$item = $f->add_password(_t("Retype new Password (optional)"), "clear_new_pass2",
 		_t("Retype your new password."));
-	$f->add_hidden("new_pass", "");
-	$f->add_hidden("new_pass2", "");
+	$item->is_optional = true;
+	$item = $f->add_hidden("new_pass", "");
+	$item->is_optional = true;
+	$item = $f->add_hidden("new_pass2", "");
+	$item->is_optional = true;
 	$f->add_hidden("id", $user->id);
 	$f->add_submit(_t("Update"));
 	echo $f->html();

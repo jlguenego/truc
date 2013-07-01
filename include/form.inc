@@ -88,30 +88,19 @@
 	}
 
 	function form_valid_user_update($user) {
-		if (!is_null_or_empty($_GET["firstname"])
-			&& $user->firstname != $_GET["firstname"]) {
-			$user->firstname = $_GET["firstname"];
+		$f = $_SESSION["form"];
+		foreach ($_GET as $key => $value) {
+			if (!$f->has_item($key)) {
+				continue;
+			}
+			if ($f->is_optional($key)) {
+				continue;
+			}
+			debug($key."=>".$value);
+			if (is_null_or_empty($value)) {
+				throw new Exception(_t("Please fill all fields: ") . $f->get_label($key));
+			}
 		}
-		if (!is_null_or_empty($_GET["lastname"])
-			&& $user->lastname != $_GET["lastname"]) {
-			$user->lastname = $_GET["lastname"];
-		}
-		if ($user->phone != $_GET["phone"]) {
-			$user->phone = $_GET["phone"];
-		}
-		if ($user->street != $_GET["street"]) {
-			$user->street = $_GET["street"];
-		}
-		if ($user->zip != $_GET["zip"]) {
-			$user->zip = $_GET["zip"];
-		}
-		if ($user->city != $_GET["city"]) {
-			$user->city = $_GET["city"];
-		}
-		if ($user->country != $_GET["country"]) {
-			$user->country = $_GET["country"];
-		}
-		$user->state = $_GET["state"];
 		if (!is_null_or_empty($_GET["email"])) {
 			if (!check_mail($_GET["email"])) {
 				throw new Exception(_t("Invalid mail."));
@@ -119,18 +108,12 @@
 			if (User::used_mail($_GET["email"])) {
 				throw new Exception(_t("This mail is already used."));
 			}
-			$user->email = $_GET['email'];
 		}
 		if (!is_null_or_empty($_GET['new_pass'])) {
 			if ($_GET['new_pass'] != $_GET['new_pass2']) {
 				throw new Exception(_t("New passwords are different."));
 			}
-			$user->password = $_GET['new_pass'];
-		} else {
-			$user->password = "";
 		}
-		$user->clean_format();
-		debug("user=".  sprint_r($user));
 	}
 
 	function form_get_country_options($country = "") {

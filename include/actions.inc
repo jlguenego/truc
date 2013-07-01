@@ -457,10 +457,45 @@
 			if (User::exists($_GET["id"])) {
 				$user = User::get_from_id($_GET["id"]);
 				form_valid_user_update($user);
+				$user->firstname = $_GET["firstname"];
+				$user->lastname = $_GET["lastname"];
+				$user->phone = $_GET["phone"];
 				$user->locale = $_SESSION["locale"];
+				$user->email = $_GET['email'];
+				if (!is_null_or_empty($_GET['new_pass'])) {
+					$user->password = $_GET['new_pass'];
+				} else {
+					$user->password = "";
+				}
+				$user->clean_format();
+
+				$address = Address::get_from_id($user->address_id);
+				if ($address->address != $_GET["address"]) {
+					if (is_null_or_empty($_GET["address"])) {
+						$address->set_null();
+					} else {
+						$address->address = $_GET["address"];
+						$address->lat = $_GET["address_lat"];
+						$address->lng = $_GET["address_lng"];
+						$address->street_number = $_GET["address_street_number"];
+						$address->route = $_GET["address_route"];
+						$address->postal_code = $_GET["address_postal_code"];
+						$address->locality = $_GET["address_locality"];
+						$address->administrative_area_level_2 = $_GET["address_administrative_area_level_2"];
+						$address->administrative_area_level_1 = $_GET["address_administrative_area_level_1"];
+						$address->country = $_GET["address_country"];
+					}
+
+					if ($user->has_bill()) {
+						$address->store();
+						$user->address_id = $address->id;
+					} else {
+						$address->update();
+					}
+				}
 				$user->update();
 
-				$info = _t("Your personal informations has been changed.");
+				$info = _t("Your personal informations have been changed.");
 				if (!is_null_or_empty($_GET["new_pass"])) {
 					$info .= _t(" Your password has changed. We just sent you a mail for information.");
 					debug("password changed => mail send");
@@ -474,6 +509,7 @@
 		} catch (Exception $e) {
 			message_set_error($e->getMessage());
 			$g_display["user"] = $user;
+			$g_display["address"] = Address::get_from_id($user->address_id);
 			$_SESSION["state"] = "account_update";
 		}
 	}

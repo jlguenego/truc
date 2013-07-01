@@ -19,6 +19,7 @@
 			showBlockMap: true,
 			appendAddressString: "",
 			draggableMarker: true,
+        	regionBias: null,
 			mapOptions: {
 				zoom: 5,
 				center: new google.maps.LatLng(46, 2),

@@ -99,7 +99,7 @@ $this->array = array(
 		" Votre mot de passe a été changé. Nous vous avons envoyé un mail d'information.",
 	"New passwords are different." => "Les nouveaux mots de passe sont différents",
 	"Your password has been updated." => "Votre mot de passe a été mis à jour.",
-	"Your personal informations has been changed." =>
+	"Your personal informations have been changed." =>
 		"Vos informations personnelles ont été mises à jour.",
 
 //Cancel Payment
