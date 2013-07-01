@@ -232,6 +232,16 @@
 			}
 		},
 
+		_resetAddressParts: function() {
+			for (addressPart in this._addressParts){
+				if (this[addressPart]){
+					this[addressPart].val(null);
+				}
+			}
+			this.lat.val(null);
+			this.lng.val(null);
+		},
+
 		_parseGeocodeResult: function(geocodeResult){
 			var parsed = {
 				lat: geocodeResult.geometry.location.lat(),
@@ -258,6 +268,10 @@
 
 		syncAddress: function() {
 			address = this.element.val();
+			if (address == "") {
+				this._resetAddressParts();
+				return;
+			}
 	    	var self = this;
 	    	var request = {term: address};
 	    	var response = function(result) {
