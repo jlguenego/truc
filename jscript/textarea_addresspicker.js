@@ -74,6 +74,8 @@
 				this._initMap();
 			}
 
+			this.element.attr('rows', '4');
+
 			this._on(this.element, {
 				keyup: function(event) {
 					this.syncAddress();
@@ -83,7 +85,7 @@
 					if (!this.options.showBlockMap) {
 						return;
 					}
-					this.map_block.css('top', this.top + 'px');
+					this.map_block.offset({top: this.top});
 				},
 
 				focusout:  function(event) {
@@ -91,7 +93,7 @@
 						return;
 					}
 
-					this.map_block.css('top', '-2000px');
+					this.map_block.offset({top: -2000});
 				}
 			});
 
@@ -119,7 +121,7 @@
 			var left = textarea.offset().left + textarea.width() + 10;
 			this.top = textarea.offset().top;
 			var top = this.top;
-			var content = '	<div style="left: ' + left + 'px; top: -2000px;" id="' + name + '_eb_map_block" class="eb_map_block">\
+			var content = '	<div id="' + name + '_eb_map_block" class="eb_map_block">\
 								<table>\
 									<tr>\
 										<td>\
@@ -142,6 +144,7 @@
 								</table>\
 							</div>';
 			textarea.after(content);
+			$('#' + name + '_eb_map_block').offset({top: -2000, left: left});
 
 			this.options.elements.map_block = '#' + name + '_eb_map_block';
 			this.options.elements.map = '#' + name + '_map';

@@ -1,5 +1,6 @@
 <?php
 	$user = $g_display["user"];
+	$address = $g_display["address"];
 
 	$f = new Form();
 	$f->cancel = true;
@@ -18,17 +19,9 @@
 		default_value("phone", $user->phone),
 		_t("Used only when processing order if we need to contact you quickly."));
 	$item->is_optional = true;
-	$item = $f->add_text(_t("Street# and street name"), "street",
-		default_value("street", $user->street), _t("Number and street name"));
-	$item->other_attr = "size=\"70\"";
-	$f->add_text(_t("ZIP"), "zip", default_value("zip", $user->zip),
-		_t("ZIP code of your city."));
-	$f->add_text(_t("City"), "city", default_value("city", $user->city),
-		_t("Your city."));
-	$f->add_select(_t("Country"), "country", form_get_country_options(default_value("country", $user->country)),
-		_t("Your country"));
-	$f->add_text(_t("State (optional)"), "state", default_value("state", $user->state),
-		_t("Your state if any."));
+	$item = $f->add_textarea(_t("Address"), "address",
+		default_value("address", $address->address), _t("Your address"));
+	$item->other_attr = "size=\"70\" class=\"addresspicker\"";
 	$f->add_password(_t("New Password (optional)"), "clear_new_pass",
 		_t("Leave empty if you do not want to change your password."));
 	$f->add_password(_t("Retype new Password (optional)"), "clear_new_pass2",
@@ -44,6 +37,7 @@
 	$(document).ready(function() {
 		eb_sync_hash('clear_new_pass', 'new_pass');
 		eb_sync_hash('clear_new_pass2', 'new_pass2');
+		addresspicker_init();
 	});
 	$("form").submit(function() {
 		$('input[type=password]').attr('name', '');

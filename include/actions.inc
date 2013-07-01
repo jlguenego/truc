@@ -521,6 +521,7 @@
 		} else {
 			$user = User::get_from_id($_GET["id"]);
 			$g_display["user"] = $user;
+			$g_display["address"] = Address::get_from_id($user->address_id);
 			$_SESSION["state"] = "account_update";
 		}
 	}

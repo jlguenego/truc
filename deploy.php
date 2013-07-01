@@ -126,7 +126,7 @@
 				</tr>
 				<tr>
 					<td>Address:</td>
-					<td><textarea class="addresspicker" name="address" rows="4"></textarea></td>
+					<td><textarea class="addresspicker" name="address"></textarea></td>
 				</tr>
 				<tr>
 					<td><input type="submit" value="Submit"></td>
