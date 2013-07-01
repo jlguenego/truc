@@ -571,10 +571,25 @@
 			$event = new Event();
 			$event->hydrate_from_form();
 
+			$billing_address = Address::get_from_id($event->billing_address_id);
+			if ($billing_address == null) {
+				$billing_address = new Address();
+			}
+			$billing_address->hydrate_from_form('billing_address');
+			$billing_address->store();
+			$event->billing_address_id = $billing_address->id;
+
+			$location_address = Address::get_from_id($event->location_address_id);
+			if ($location_address == null) {
+				$location_address = new Address();
+			}
+			$location_address->hydrate_from_form('location_address');
+			$location_address->store();
+			$event->location_address_id = $location_address->id;
+
 			$event->user_id = User::get_id_from_account();
 			$event->store();
 			$user->sync_phone($event->phone);
-			debug(sprint_r($event));
 
 			debug("Ticket=".sprint_r($_GET['ticket_name_a']));
 			$i = 0;

@@ -55,10 +55,18 @@ EOF
 		default_value("confirmation_t", $event->confirmation_t),
 		_t("Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)."));
 	$item->other_attr = 'autocomplete="off"';
-	$item = $f->add_text(_t("Event place"), "location",
-		default_value("location", $event->location),
+
+	$location = Address::get_from_id($event->billing_address_id);
+	$item = $f->add_textarea(_t("Event place"), "location_address",
+		default_value("location_address", $location->address),
 		_t("Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
-	$item->other_attr = 'size="60" maxlength="255"';
+	$item->other_attr = 'class="addresspicker"';
+
+	$billing_address = Address::get_from_id($event->location_address_id);
+	$item = $f->add_textarea(_t("Billing address"), "billing_address",
+		default_value("billing_address", $billing_address->address),
+		_t("Address where the bill will be sent."));
+	$item->other_attr = 'class="addresspicker"';
 	$item = $f->add_text(_t("Web site (optional)"), "link", default_value("link", $event->link),
 		_t("Official event web site (if any)."));
 	$item->other_attr = 'size="60" maxlength="255"';
@@ -118,8 +126,13 @@ EOF
 			<tr>
 				<td><?php echo $f->get_element('happening_t'); ?></td>
 				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><?php echo $f->get_element('location_address'); ?></td>
+				<td>&nbsp;</td>
 				<td>
-					<?php echo $f->get_element('location'); ?>
+					<?php echo $f->get_element('billing_address'); ?>
 <?php
 				if (!$event->is_confirmed()) {
 ?>
@@ -188,7 +201,8 @@ EOF
 		test &= $("input[name=happening_t]").val().length > 0;
 		test &= $("input[name=confirmation_t]").val().length > 0
 				|| $("input[name=is_confirmed]:checked").length > 0;
-		test &= $("input[name=location]").val().length > 0;
+		test &= $("textarea[name=location_address]").val().length > 0;
+		test &= $("textarea[name=billing_address]").val().length > 0;
 
 		if (test) {
 			$("input[type=submit]").removeAttr("disabled");
@@ -221,6 +235,7 @@ EOF
 	$(document).ready(function() {
 		update_form();
 		manage_submit();
+		addresspicker_init();
 	});
 	$("input").keyup(manage_submit);
 	$("input").change(function() {

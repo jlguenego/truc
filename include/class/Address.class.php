@@ -22,6 +22,23 @@
 			}
 		}
 
+		public function hydrate_from_form($prefix = "") {
+			$this->address = $_GET[$prefix];
+
+			if ($prefix != "" && !preg_match('#_$#', $prefix)) {
+				$prefix .= "_";
+			}
+			$this->lat = $_GET[$prefix."lat"];
+			$this->lng = $_GET[$prefix."lng"];
+			$this->street_number = $_GET[$prefix."street_number"];
+			$this->route = $_GET[$prefix."route"];
+			$this->postal_code = $_GET[$prefix."postal_code"];
+			$this->locality = $_GET[$prefix."locality"];
+			$this->administrative_area_level_2 = $_GET[$prefix."administrative_area_level_2"];
+			$this->administrative_area_level_1 = $_GET[$prefix."administrative_area_level_2"];
+			$this->country = $_GET[$prefix."country"];
+		}
+
 		public static function get_from_id($id) {
 			$address = new Address();
 			$address->load($id);

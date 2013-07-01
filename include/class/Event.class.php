@@ -7,7 +7,6 @@
 		public $confirmation_t = "";
 		public $funding_needed;
 		public $funding_acquired;
-		public $location;
 		public $link;
 		public $phone;
 		public $short_description;
@@ -19,6 +18,8 @@
 		public $deal_name;
 		public $facebook_event_id;
 		public $user_id;
+		public $location_address_id;
+		public $billing_address_id;
 		public $tickets = array();
 
 		public static function get_from_id($id) {
@@ -66,15 +67,18 @@ EOF;
 		public function hydrate($array) {
 			foreach ($array as $key => $value) {
 				if (ESCAPE_QUOTE) {
-					//$value = str_replace("\\'", "'", $value);
-					//$value = str_replace('\\"', '"', $value);
 					$value = stripcslashes($value);
 					$value = str_replace("%5C%22", "", $value);
 				}
 				if ($key == "id_user") {
 					$this->user_id = $value;
 				}
-				debug($key."=>".$value);
+				if ($key == "id_address") {
+					$this->location_address_id = $value;
+				}
+				if ($key == "id_address1") {
+					$this->billing_address_id = $value;
+				}
 				$this->$key = $value;
 			}
 		}
@@ -96,7 +100,6 @@ SET
 	`id_user`= :id_user,
 	`title`= :title,
 	`organizer_name`= :organizer_name,
-	`location`= :location,
 	`link`= :link,
 	`short_description`= :short_description,
 	`long_description`= :long_description,
@@ -108,7 +111,9 @@ SET
 	`status`= :status,
 	`publish_flag`= :publish_flag,
 	`flags`= :flags,
-	`phone`= :phone
+	`phone`= :phone,
+	`id_address`= :location_address_id,
+	`id_address1`= :billing_address_id
 EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
@@ -119,7 +124,6 @@ EOF;
 				":id_user" => $this->user_id,
 				":title" => $this->title,
 				":organizer_name" => $this->organizer_name,
-				":location" => $this->location,
 				":link" => $this->link,
 				":short_description" => $this->short_description,
 				":long_description" => $this->long_description,
@@ -131,6 +135,8 @@ EOF;
 				":publish_flag" => $publish_flag,
 				":flags" => $this->flags,
 				":phone" => $this->phone,
+				":location_address_id" => $this->location_address_id,
+				":billing_address_id" => $this->billing_address_id,
 			);
 			$pst->execute($array);
 		}
@@ -145,7 +151,6 @@ SET
 	`mod_t`= :mod_t,
 	`title`= :title,
 	`organizer_name`= :organizer_name,
-	`location`= :location,
 	`link`= :link,
 	`short_description`= :short_description,
 	`long_description`= :long_description,
@@ -155,7 +160,9 @@ SET
 	`flags`= :flags,
 	`type`= :type,
 	`phone`= :phone,
-	`facebook_event_id`= :facebook_event_id
+	`facebook_event_id`= :facebook_event_id,
+	`id_address`= :location_address_id,
+	`id_address1`= :billing_address_id
 WHERE `id`= :id
 EOF;
 			debug($request);
@@ -164,7 +171,6 @@ EOF;
 				":mod_t" => $mod_t,
 				":title" => $this->title,
 				":organizer_name" => $this->organizer_name,
-				":location" => $this->location,
 				":link" => $this->link,
 				":short_description" => $this->short_description,
 				":long_description" => $this->long_description,
@@ -176,6 +182,8 @@ EOF;
 				":type" => $this->type,
 				":phone" => $this->phone,
 				":facebook_event_id" => $this->facebook_event_id,
+				":phone" => $this->phone,
+				":billing_address_id" => $this->billing_address_id,
 			);
 			$pst->execute($array);
 		}
@@ -518,7 +526,6 @@ EOF;
 			$this->organizer_name = $_GET['organizer_name'];
 			$this->happening_t = $_GET['happening_t'];
 			$this->funding_needed = $_GET['funding_needed'];
-			$this->location = $_GET['location'];
 			$this->link = $_GET['link'];
 			$this->short_description = $_GET['short_description'];
 			$this->long_description = $_GET['long_description'];
@@ -530,7 +537,6 @@ EOF;
 			} else {
 				$this->confirmation_t = $_GET['confirmation_t'];
 			}
-			debug("hydrate_from_form=".sprint_r($this));
 		}
 
 		public function has_rate($label) {
