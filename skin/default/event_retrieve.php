@@ -127,9 +127,17 @@ EOF;
 		}
 
 		$phone = $event->phone;
-		$content .= <<<EOF
+		if (!is_null_or_empty($phone)) {
+			$content .= <<<EOF
 	<li>{{Organizer phone}}: ${phone}</li>
 EOF;
+		}
+		$billing_address = Address::get_from_id($event->billing_address_id);
+		$typed_billing_address = nl2br($billing_address->address);
+		$content .= <<<EOF
+	<li>{{Billing}}: <br/>{$event->organizer_name}<br/>${typed_billing_address}</li>
+EOF;
+
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {
 			$content .= '<li><a href="?action=list&amp;type=participation&amp;id='.$id.'">{{View registrations}}</a></li>';
 		}
@@ -243,29 +251,17 @@ EOF;
 	$block->content = $generale_info;
 	$blocks[] = $block;
 
-	$address = $event->location;
+	$address = Address::get_from_id($event->location_address_id);
+	$google_address = $address->google_address();
+	$typed_address = nl2br($address->address);
 	$location = <<<EOF
-<iframe
-	width="278"
-	height="300"
-	frameborder="0"
-	scrolling="no"
-	marginheight="0"
-	marginwidth="0"
-	src="https://maps.google.fr/maps?safe=off
-		&amp;q=${address}
-		&amp;ie=UTF8
-		&amp;hq=
-		&amp;hnear=${address}
-		&amp;gl=fr
-		&amp;t=m
-		&amp;z=14
-		&amp;output=embed
-		&amp;iwloc=near">
-</iframe><br/>
+<div id="event_location_map" class="map"></div>
 <br/>
-<b>{{Location}}</b><br/>
-${address}
+<b>{{Location}}</b>
+<hr/>
+${typed_address}<br/>
+<br/>
+${google_address}
 EOF;
 	$block = new Block();
 	$block->side = 'left';
@@ -286,7 +282,7 @@ ${happening}<br/>
     <span class="_zonecode">40</span>
     <span class="_summary">{$event->title}</span>
     <span class="_description">{{More informations at}} ${event_url}</span>
-    <span class="_location">{$event->location}</span>
+    <span class="_location">{$event->location()}</span>
     <span class="_organizer">{$event->organizer_name}</span>
     <span class="_all_day_event">true</span>
     <span class="_date_format">DD/MM/YYYY</span>
@@ -311,3 +307,21 @@ EOF;
 	echo format_columns($blocks)
 ?>
 <div style="clear: both;"></div>
+<script>
+	$(document).ready(function () {
+		var lat = <?php echo $address->lat; ?>;
+		var lng = <?php echo $address->lng; ?>;
+		var map_canvas = document.getElementById('event_location_map');
+		var map_options = {
+			center: new google.maps.LatLng(lat, lng),
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		var map = new google.maps.Map(map_canvas, map_options);
+		var latLng = new google.maps.LatLng(lat, lng);
+		var marker = new google.maps.Marker({
+			position: latLng,
+			map: map,
+		});
+	});
+</script>

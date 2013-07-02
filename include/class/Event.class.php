@@ -658,5 +658,15 @@ EOF;
 		public function get_url() {
 			return HOST.'event/'.$this->id."/".str_replace("+", "-", urlencode($this->title));
 		}
+
+		public function location($b_google_addrs = false) {
+			$address = Address::get_from_id($this->location_address_id);
+			return nl2br($address->to_string($b_google_addrs));
+		}
+
+		public function billing_address($b_google_addrs = false) {
+			$address = Address::get_from_id($this->billing_address_id);
+			return nl2br($address->to_string($b_google_addrs));
+		}
 	}
 ?>

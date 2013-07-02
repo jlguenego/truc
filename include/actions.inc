@@ -591,7 +591,6 @@
 			$event->store();
 			$user->sync_phone($event->phone);
 
-			debug("Ticket=".sprint_r($_GET['ticket_name_a']));
 			$i = 0;
 			foreach ($_GET['ticket_name_a'] as $label) {
 				$ticket = new Ticket();

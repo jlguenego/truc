@@ -1071,6 +1071,13 @@ a.evt_button {
 	margin: 2px;
 }
 
+.map {
+	border: 1px solid #DDD;
+	width: 275px;
+	height: 300px;
+	margin: 2px;
+}
+
 .eb_map_block {
 	padding: 5px;
 	position: absolute;
