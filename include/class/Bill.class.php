@@ -13,6 +13,7 @@
 		public $vat;
 		public $status = BILL_STATUS_PLANNED;
 		public $type = BILL_TYPE_QUOTATION;
+		public $is_for = BILL_FOR_CUSTOMER;
 		public $payment_info;
 		public $event_id;
 		public $user_id;
@@ -89,6 +90,7 @@ SET
 	`id_event`= :id_event,
 	`payment_info`= :payment_info,
 	`vat`= :vat,
+	`is_for`= :is_for,
 	`id_address`= :address_id
 EOF;
 			$pst = $g_pdo->prepare($request);
@@ -108,6 +110,7 @@ EOF;
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
 				":vat" => $this->vat,
+				":is_for" => $this->is_for,
 				":address_id" => $this->address_id,
 			);
 
@@ -260,6 +263,24 @@ EOF;
 
 		public function is_really_paid() {
 			return !is_null_or_empty($this->payment_info);
+		}
+
+		public function is_for($target) {
+			return $this->is_for == $target;
+		}
+
+		public static function invoice_from_report($report, $event) {
+			$bill = new Bill();
+			$bill->is_for = BILL_FOR_ORGANIZER;
+			$bill->total_ttc = curr($report['eb_fee']);
+			$bill->total_ht = curr($bill->total_ttc / 1.196);
+			$bill->total_tax = $bill->total_ttc - $bill->total_ht;
+			$bill->username = $event->organizer_name;
+			$bill->user_id = $_SESSION['user_id'];
+			$bill->event_id = $event->id;
+			$bill->address_id = $event->billing_address_id;
+
+			return $bill;
 		}
 	}
 ?>

@@ -54,4 +54,17 @@
 
 		return $result;
 	}
+
+	function deal_get_description($deal_name) {
+		$result = "";
+		switch($deal_name) {
+			case "deal_050_5":
+				$result = _t('0.50€/ticket + 5% of total sales');
+				break;
+			default:
+				throw new Exception("Unknown deal_name: " . $deal_name);
+				break;
+		}
+		return $result;
+	}
 ?>

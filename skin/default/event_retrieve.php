@@ -15,7 +15,7 @@
 	<li>Organizer: <a href="?action=retrieve&amp;type=account&amp;id={$organizer->id}">{$organizer->email}</a></li>
 </ul><br/>
 <br/>
-
+<a href="?action=generate&amp;type=invoice&amp;id={$event->id}"><button class="evt_button evt_btn_small">{{Generate Invoice}}</button></a>
 EOF;
 		$publish_button_grey = "";
 		if ($event->status == EVENT_STATUS_INACTIVATED

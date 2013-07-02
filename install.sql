@@ -87,6 +87,7 @@ CREATE TABLE bill(
         vat          Varchar (255) ,
         status       Int NOT NULL ,
         type         Int NOT NULL ,
+        is_for       Int ,
         id_user      Int NOT NULL ,
         id_event     Int NOT NULL ,
         id_address   Int NOT NULL ,
@@ -96,9 +97,9 @@ CREATE TABLE bill(
 
 CREATE TABLE item(
         id                 Int NOT NULL ,
-        event_name         Varchar (255) NOT NULL ,
-        event_rate_name    Varchar (255) NOT NULL ,
-        event_rate_amount  Decimal (25,2) NOT NULL ,
+        event_name         Varchar (255) ,
+        event_rate_name    Varchar (255) ,
+        event_rate_amount  Decimal (25,2) ,
         event_rate_tax     Decimal (25,2) NOT NULL ,
         quantity           Int NOT NULL ,
         total_ht           Decimal (25,2) NOT NULL ,

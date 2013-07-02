@@ -28,6 +28,9 @@
 	define("BILL_TYPE_QUOTATION", 0);
 	define("BILL_TYPE_INVOICE", 1);
 
+	define('BILL_FOR_CUSTOMER', 0);
+	define('BILL_FOR_ORGANIZER', 1);
+
 	define('EVENT_PUBLISH_FLAG_NO', 0);
 	define('EVENT_PUBLISH_FLAG_YES', 1);
 
@@ -38,6 +41,7 @@
 
 	define('EVENT_FLAG_READY_FOR_PUBLICATION', 1);
 	define('EVENT_FLAG_FACEBOOK_EVENT_CREATED', 2);
+	define('EVENT_FLAG_INVOICE_ALREADY_CREATED', 4);
 
 	define('RANDOM_SALT', 'kii/[sf8243rwk#$f98|}{{}]\'');
 

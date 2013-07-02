@@ -3,6 +3,7 @@
 		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
+		$billing_address = Address::get_from_id($event->billing_address_id);
 
 		$bill_type = "invoice";
 		if ($bill->type != BILL_TYPE_INVOICE) {
@@ -13,7 +14,7 @@
 <p>
 	<table width="100%">
 		<tr valign="top">
-			<td>
+			<td width="50%">
 				<b>{{Provider identification}}</b><br/>
 				<br/>
 				JLG-Consulting - Jean-Louis GUENEGO - Entreprise Individuelle<br/>
@@ -26,7 +27,7 @@
 				<b>{{Client identification}}</b><br/>
 				<br/>
 				{{Billing entity}}: <?php echo $bill->username; ?><br/>
-				{{Billing address}}: <?php echo $bill->address; ?><br/>
+				{{Billing address}}: <?php echo $billing_address->address; ?><br/>
 			<?php
 				if ($bill->is_for_company()) {
 			?>
@@ -126,6 +127,76 @@
 	<br/>
 	<br/>
 	<?php require_once($g_i18n->filename(BASE_DIR."/etc/".$bill_type."_legal.html")); ?>
+</p>
+<?php
+	}
+
+	function print_organizer_invoice($bill) {
+		global $g_i18n;
+
+		$event = Event::get_from_id($bill->event_id);
+		$billing_address = Address::get_from_id($event->billing_address_id);
+
+?>
+<div class="evt_title"><p>{{INVOICE}}</p></div>
+<p>
+	<table width="100%">
+		<tr>
+			<th align="left">{{Provider identification}}</th>
+			<th align="right">{{Client identification}}</th>
+		</tr>
+		<tr valign="top">
+			<td width="50%">
+				JLG-Consulting - Jean-Louis GUENEGO - Entreprise Individuelle<br/>
+				2 allée du commandant Charcot <br/>
+				77200 Torcy, France<br/>
+				{{VAT identification number}}: FR 61 439 317 058<br/>
+				SIRET: 439 317 058 00022<br/>
+			</td>
+			<td align="right">
+				<?php echo $bill->username; ?><br/>
+				<?php echo nl2br($billing_address->address); ?><br/>
+				{{VAT identification number}}: <?php echo $bill->vat; ?>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<br/>
+	<b>{{Invoice ID}}:</b> <?php echo $bill->label; ?><br/>
+	<b>{{Invoice date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
+<?php
+	if ($bill->type == BILL_TYPE_INVOICE) {
+?>
+	<b>{{Due date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
+<?php
+	}
+?>
+	<table border="1px" class="evt_table">
+		<tr>
+			<th>{{Services}}</th>
+			<th>{{Description}}</th>
+			<th>{{Total (Tax excluded)}}</th>
+			<th>{{Tax rate}}</th>
+			<th>{{Total taxes}}</th>
+			<th>{{Total}}</th>
+		</tr>
+		<tr>
+			<td>{{Ticket sales}}</td>
+			<td><?php echo deal_get_description($event->deal_name); ?></td>
+			<td class="evt_curr"><?php echo $bill->total_ht; ?>€</td>
+			<td class="evt_curr	">19.6%</td>
+			<td class="evt_curr"><?php echo $bill->total_tax; ?>€</td>
+			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
+		</tr>
+	</table>
+	<table border="1px" class="evt_table">
+		<tr>
+			<th>{{Total due}}</th>
+			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
+		</tr>
+	</table>
+	<br/>
+	<?php require_once($g_i18n->filename(BASE_DIR."/etc/invoice_legal.html")); ?>
 </p>
 <?php
 	}

@@ -115,7 +115,40 @@
 			case "report":
 				action_report_generate();
 				break;
+			case "invoice":
+				action_invoice_generate();
+				break;
 		}
+	}
+
+	function action_invoice_generate() {
+		$user = need_authentication();
+		if (is_null_or_empty($_GET["id"])) {
+			throw new Exception(_t("No event selected."));
+		}
+		if (!Event::exists($_GET["id"])) {
+			throw new Exception(_t("Event does not exists."));
+		}
+
+		$event = Event::get_from_id($_GET["id"]);
+		if (!$event->can_be_administrated()) {
+			throw new Exception(_t("You cannot access to this event."));
+		}
+
+		$report = deal_generate_report($event);
+		$bill = Bill::invoice_from_report($report, $event);
+		$bill->store();
+		//$event->add_flag(EVENT_FLAG_INVOICE_ALREADY_CREATED);
+
+		$_GET['id'] = $bill->id;
+		action_invoice_retrieve();
+	}
+
+	function action_invoice_retrieve() {
+		global $g_display;
+		$bill = Bill::get_from_id($_GET['id']);
+		$g_display["bill"] = $bill;
+		$_SESSION["state"] = "bill_retrieve";
 	}
 
 	function action_report_generate() {
@@ -824,7 +857,6 @@
 		$event = Event::get_from_id($bill->event_id);
 
 		$g_display["bill"] = $bill;
-		$g_display["event"] = $event;
 		$_SESSION["state"] = "bill_retrieve";
 	}
 
