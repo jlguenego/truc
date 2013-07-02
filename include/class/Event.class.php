@@ -183,6 +183,7 @@ EOF;
 				":phone" => $this->phone,
 				":facebook_event_id" => $this->facebook_event_id,
 				":phone" => $this->phone,
+				":location_address_id" => $this->location_address_id,
 				":billing_address_id" => $this->billing_address_id,
 			);
 			$pst->execute($array);

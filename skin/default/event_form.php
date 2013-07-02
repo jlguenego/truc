@@ -56,13 +56,13 @@ EOF
 		_t("Maximum date at which the event will be confirmed or cancelled (Format: YYYY-MM-DD)."));
 	$item->other_attr = 'autocomplete="off"';
 
-	$location = Address::get_from_id($event->billing_address_id);
+	$location = Address::get_from_id($event->location_address_id);
 	$item = $f->add_textarea(_t("Event place"), "location_address",
 		default_value("location_address", $location->address),
 		_t("Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
 	$item->other_attr = 'class="addresspicker"';
 
-	$billing_address = Address::get_from_id($event->location_address_id);
+	$billing_address = Address::get_from_id($event->billing_address_id);
 	$item = $f->add_textarea(_t("Billing address"), "billing_address",
 		default_value("billing_address", $billing_address->address),
 		_t("Address where the bill will be sent."));

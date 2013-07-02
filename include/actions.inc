@@ -571,18 +571,10 @@
 			$event = new Event();
 			$event->hydrate_from_form();
 
-			$billing_address = Address::get_from_id($event->billing_address_id);
-			if ($billing_address == null) {
-				$billing_address = new Address();
-			}
 			$billing_address->hydrate_from_form('billing_address');
 			$billing_address->store();
 			$event->billing_address_id = $billing_address->id;
 
-			$location_address = Address::get_from_id($event->location_address_id);
-			if ($location_address == null) {
-				$location_address = new Address();
-			}
 			$location_address->hydrate_from_form('location_address');
 			$location_address->store();
 			$event->location_address_id = $location_address->id;
@@ -644,6 +636,15 @@
 
 					$event->check_owner();
 
+
+					$billing_address = Address::get_from_id($event->billing_address_id);
+					$billing_address->hydrate_from_form('billing_address');
+					$billing_address->update();
+
+					$location_address = Address::get_from_id($event->location_address_id);
+					$location_address->hydrate_from_form('location_address');
+					$location_address->update();
+
 					$event->update();
 					$user->sync_phone($event->phone);
 
@@ -671,6 +672,7 @@
 				throw new Exception(_t("No event selected."));
 			}
 		} catch (Exception $e) {
+			debug(sprint_r($e));
 			message_set_error($e->getMessage());
 			action_event_get_form();
 		}
