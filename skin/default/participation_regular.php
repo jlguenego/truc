@@ -92,37 +92,11 @@
 			<td class="help">{{The person or organisation name to be charged.}}</td>
 		</tr>
 		<tr>
-			<th class="th_left" rowspan="5">{{Billing address}}</th>
+			<th class="th_left">{{Billing address}}</th>
 			<td>
-				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="{{Street# and street name}}"/>
+				<textarea class="addresspicker" name="billing_address"" placeholder="{{Street# and street name}}"><?php echo default_value('address', $user->address()); ?></textarea>
 			</td>
 			<td class="help">{{Street# and street name}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="{{City}}"/>
-			</td>
-			<td class="help">{{City}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="{{ZIP code}}"/>
-			</td>
-			<td class="help">{{ZIP code}}</td>
-		</tr>
-		<tr>
-			<td>
-				<select name="address_country">
-					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
-				</select>
-			</td>
-			<td class="help">{{Country}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="{{State (optional)}}"/>
-			</td>
-			<td class="help">{{State (optional)}}</td>
 		</tr>
 		<tr>
 			<th>VAT number (if applicable)</th>
@@ -141,6 +115,7 @@
 	<input class="evt_button evt_btn_small" type="submit" name="next" value="{{Next}}" disabled/>
 </form>
 <script>
+	$(document).ready(addresspicker_init)
 	var max_reached = "{{Max quantity reached}}";
 	var rate_nbr = <?php echo $i; ?>;
 	var tax_nbr = <?php echo $i2; ?>;
@@ -162,33 +137,15 @@
 	$('input[data-type="quantity"]').change(eb_sync_amount);
 	$('input[data-type="quantity"]').keyup(eb_sync_amount);
 	$('input[data-type="quantity"]').each(eb_sync_amount);
+	$('textarea').change(eb_sync_next_button);
 
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input[type=checkbox]').change(eb_sync_next_button);
 
-
-
-	function eb_sync_address() {
-		var state = $("input[name='state']").val();
-		if (!state) {
-			state = "";
-		} else {
-			state += " ";
-		}
-		$("input[name='address']").val(
-			$("input[name='address_street']").val() + "\n" +
-			state + $("input[name='address_zip']").val() + " " +
-			$("input[name='address_city']").val() + " " +
-			$("select[name='address_country']").val()
-		);
-		log($("input[name='address']").val());
-	}
-
 	function eb_sync_next_button() {
-		eb_sync_address();
 		var test = $('input[type=checkbox]').is(':checked');
 
-		$("input[name*='address_']").each(function(){
+		$("textarea[name='billing_address']").each(function(){
 			if ($(this).val() == "") {
 				test = false;
 			}

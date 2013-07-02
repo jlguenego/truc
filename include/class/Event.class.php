@@ -209,6 +209,11 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(":id" => $this->id));
+
+			$billing_address = Address::get_from_id($this->billing_address_id);
+			$billing_address->delete();
+			$location_address = Address::get_from_id($this->location_address_id);
+			$location_address->delete();
 		}
 
 		public function is_published() {

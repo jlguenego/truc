@@ -49,6 +49,8 @@
 	</tr>
 <?php
 	}
+
+	$address = Address::get_from_id($bill->address_id);
 ?>
 </table>
 <table class="evt_table inline">
@@ -73,7 +75,7 @@
 	</tr>
 	<tr>
 		<th class="th_left">{{Billing address}}</th>
-		<td><?php echo $bill->address; ?></td>
+		<td><?php echo nl2br($address->address); ?></td>
 	</tr>
 <?php
 	if ($bill->is_for_company()) {

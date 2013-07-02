@@ -24,6 +24,7 @@
 
 		public function hydrate_from_form($prefix = "") {
 			$this->address = $_GET[$prefix];
+			debug("address=".$this->address);
 
 			if ($prefix != "" && !preg_match('#_$#', $prefix)) {
 				$prefix .= "_";
@@ -143,6 +144,17 @@ EOF;
 				":country" => $this->country,
 			);
 			$pst->execute($array);
+		}
+
+		public function delete() {
+			global $g_pdo;
+			$request = <<<EOF
+DELETE FROM `address`
+WHERE `id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
 		}
 
 		public function is_empty() {

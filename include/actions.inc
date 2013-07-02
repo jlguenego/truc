@@ -571,10 +571,12 @@
 			$event = new Event();
 			$event->hydrate_from_form();
 
+			$billing_address = new Address();
 			$billing_address->hydrate_from_form('billing_address');
 			$billing_address->store();
 			$event->billing_address_id = $billing_address->id;
 
+			$location_address = new Address();
 			$location_address->hydrate_from_form('location_address');
 			$location_address->store();
 			$event->location_address_id = $location_address->id;
@@ -956,7 +958,7 @@
 		if ($event->is_confirmed()) {
 			$bill->status = BILL_STATUS_CONFIRMED;
 			$bill->type = BILL_TYPE_INVOICE;
-			$bill .= "I-";
+			$label .= "I-";
 		} else {
 			$bill->status = BILL_status_planned;
 			$bill->type = BILL_type_quotation;
@@ -988,6 +990,12 @@
 			$i++;
 		}
 		$bill->compute();
+
+		$address = new Address();
+		$address->hydrate_from_form('billing_address');
+		$address->store();
+		$bill->address_id = $address->id;
+
 		$bill->store();
 		$g_display["bill"] = $bill;
 		$_SESSION["bill"] = $bill;
@@ -1014,7 +1022,6 @@
 		}
 		$bill = new Bill();
 		$bill->username = $_GET['username'];
-		$bill->address = nl2br($_GET['address']);
 		$bill->vat = $_GET["vat"];
 		$bill->event_id = $_GET["event_id"];
 		$event = Event::get_from_id($_GET["event_id"]);
@@ -1062,6 +1069,12 @@
 		}
 
 		$bill->compute();
+
+		$address = new Address();
+		$address->hydrate_from_form('billing_address');
+		$address->store();
+		$bill->address_id = $address->id;
+
 		$bill->store();
 		$g_display["bill"] = $bill;
 		$_SESSION["bill"] = $bill;
@@ -1175,6 +1188,7 @@
 				$_SESSION["state"] = "error";
 			}
 		} catch (Exception $e) {
+			debug(sprint_r($e));
 			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 			$g_display["user"] = $user;

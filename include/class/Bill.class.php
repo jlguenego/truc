@@ -10,13 +10,13 @@
 		public $total_ttc;
 		public $label;
 		public $username;
-		public $address;
 		public $vat;
 		public $status = BILL_STATUS_PLANNED;
 		public $type = BILL_TYPE_QUOTATION;
 		public $payment_info;
 		public $event_id;
 		public $user_id;
+		public $address_id;
 
 		public static function get_from_id($id) {
 			$bill = new Bill();
@@ -43,6 +43,7 @@ EOF;
 			}
 			$this->event_id = $record["id_event"];
 			$this->user_id = $record["id_user"];
+			$this->address_id = $record["id_address"];
 		}
 
 		public function compute() {
@@ -82,13 +83,13 @@ SET
 	`total_ttc`= :total_ttc,
 	`label`= :label,
 	`username`= :username,
-	`address`= :address,
 	`status`= :status,
 	`type`= :type,
 	`id_user`= :id_user,
 	`id_event`= :id_event,
 	`payment_info`= :payment_info,
-	`vat`= :vat
+	`vat`= :vat,
+	`id_address`= :address_id
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
@@ -101,13 +102,13 @@ EOF;
 				":total_ttc" => $this->total_ttc,
 				":label" => $this->label,
 				":username" => $this->username,
-				":address" => $this->address,
 				":status" => $this->status,
 				":type" => $this->type,
 				":id_user" => $this->user_id,
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
 				":vat" => $this->vat,
+				":address_id" => $this->address_id,
 			);
 
 			$pst->execute($array);

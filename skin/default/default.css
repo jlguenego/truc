@@ -1090,6 +1090,12 @@ a.evt_button {
 	font-size: 10px;
 }
 
+.eb_map_block table, .eb_map_block th, .eb_map_block td,
+.eb_map_block tr:first-child td {
+	border: none;
+	background-color: transparent;
+}
+
 .eb_map_block input {
 	width: 150px;
 	background-color: #DDDDDD;

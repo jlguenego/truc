@@ -171,11 +171,14 @@ EOF
 		echo $f->get_element('short_description');
 		echo $f->get_element('long_description');
 		echo $f->get_element('id');
-		echo $f->get_element('event_type');
 	?>
 	</div>
 	<h1>{{Create tickets and define their price}}</h1>
 	<div class="form_section">
+<?php
+	echo $f->get_element('event_type_checkbox');
+	echo $f->get_element('event_type');
+?>
 		<table id="tickets" class="evt_rate">
 		</table>
 		<a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>

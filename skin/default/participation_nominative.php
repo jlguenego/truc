@@ -103,37 +103,11 @@
 			<td class="help">{{The person or organisation name to be charged.}}</td>
 		</tr>
 		<tr>
-			<th class="th_left" rowspan="5">{{Billing address}}</th>
+			<th class="th_left">{{Billing address}}</th>
 			<td>
-				<input type="text" name="address_street" value="<?php echo $user->street; ?>" placeholder="{{Street# and street name}}"/>
+				<textarea class="addresspicker" name="billing_address"" placeholder="{{Street# and street name}}"><?php echo default_value('address', $user->address()); ?></textarea>
 			</td>
 			<td class="help">{{Street# and street name}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="address_city" value="<?php echo $user->city; ?>" placeholder="{{City}}"/>
-			</td>
-			<td class="help">{{City}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="address_zip" value="<?php echo $user->zip; ?>" placeholder="{{ZIP code}}"/>
-			</td>
-			<td class="help">{{ZIP code}}</td>
-		</tr>
-		<tr>
-			<td>
-				<select name="address_country">
-					<?php echo form_get_country_options(default_value("country", $user->country)); ?>
-				</select>
-			</td>
-			<td class="help">{{Country}}</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" name="state" value="<?php echo $user->state; ?>" placeholder="{{State (optional)}}"/>
-			</td>
-			<td class="help">{{State (if applicable)}}</td>
 		</tr>
 		<tr>
 			<th>{{VAT number (if applicable)}}</th>
@@ -181,6 +155,8 @@
 
 	$('input[type=checkbox]').ready(eb_sync_next_button);
 	$('input').change(eb_sync_next_button);
+	$('textarea').change(eb_sync_next_button);
+	$(document).ready(addresspicker_init);
 
 	var ticket_counter = 0;
 
@@ -301,23 +277,7 @@
 		});
 	}
 
-	function eb_sync_address() {
-		var state = $("input[name='state']").val();
-		if (!state) {
-			state = "";
-		} else {
-			state += " ";
-		}
-		$("input[name='address']").val(
-			$("input[name='address_street']").val() + "\n" +
-			state + $("input[name='address_zip']").val() + " " +
-			$("input[name='address_city']").val() + " " +
-			$("select[name='address_country']").val()
-		);
-	}
-
 	function eb_sync_next_button() {
-		eb_sync_address();
 		var test = $('input[type=checkbox]').is(':checked');
 		var c = $("input[name='lastnames[]']").length;
 
@@ -332,11 +292,9 @@
 				test = false;
 			}
 		});
-		$("input[name*='address_']").each(function(){
-			if ($(this).val() == "") {
-				test = false;
-			}
-		});
+		if ($("textarea[name='billing_address']").val() == "") {
+			test = false;
+		}
 
 		if (test) {
 			$('input[name=next]').removeAttr('disabled');

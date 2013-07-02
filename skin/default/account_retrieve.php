@@ -17,7 +17,7 @@
 		</tr>
 		<tr>
 			<th class="th_left">{{Postal address}}</th>
-			<td><?php echo $user->address(); ?></td>
+			<td><?php echo nl2br($user->address()); ?></td>
 		</tr>
 		<tr>
 			<th class="th_left">{{Phone number}}</th>

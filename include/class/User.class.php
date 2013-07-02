@@ -300,15 +300,23 @@ EOF;
 
 		public function address($b_google_addrs = false) {
 			$address = Address::get_from_id($this->address_id);
-			return nl2br($address->to_string($b_google_addrs));
+			return $address->to_string($b_google_addrs);
+		}
+
+		public function has_no_address() {
+			$address = Address::get_from_id($this->address_id);
+			return $address->is_empty();
 		}
 
 		public function fill_address_from_participation() {
-			$this->street = $_GET["address_street"];
-			$this->zip = $_GET["address_zip"];
-			$this->city = $_GET["address_city"];
-			$this->state = $_GET["state"];
-			$this->country = $_GET["address_country"];
+			$address = Address::get_from_id($this->address_id);
+			$address->hydrate_from_form('address');
+			if ($this->has_accountancy_activity()) {
+				$address->store();
+				$this->address_id = $address->id;
+			} else {
+				$address->update();
+			}
 			$this->update();
 		}
 
