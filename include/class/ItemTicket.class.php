@@ -27,7 +27,7 @@ EOF;
 			$pst->execute(array(":id" => $this->id));
 			$record = $pst->fetch(PDO::FETCH_ASSOC);
 			if (!isset($record['obj_id'])) {
-				throw new Exception(_t("Cannot load the item_ticket with id=") . $id);
+				throw new Exception("Cannot load the item_ticket with id=" . $id);
 			}
 			$this->hydrate($record);
 		}

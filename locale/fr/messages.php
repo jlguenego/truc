@@ -217,8 +217,10 @@ $this->array = array(
 	"Date at which starts the ticket reservation or sale (Format: YYYY-MM-DD)." =>
 		"Date à laquelle démarre la réservation ou la vente de ticket (Format : AAAA-MM-JJ).",
 	"Event place" => "Lieu de l'évènement",
-	"Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)" =>
-		"Nom du lieu où se passera l'évènement. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
+	"Address of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)" =>
+		"Adresse du lieu où se passera l'évènement. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
+	"Address of the organizer. Please indicate an accurate address (street, street no, city, zip, state, country)" =>
+		"Adresse de l'organisateur. Veuillez indiquer une addresse correcte (rue, nº de rue, ville, code postal, état, pays)",
 	"Web site (optional)" => "Site Web (facultatif)",
 	"Official event web site (if any)." => "Site web officiel de l'évènement (s'il y en a).",
 	"Short description" => "Brève description",
@@ -506,6 +508,31 @@ $this->array = array(
 	"Facebook Event" => "Evènement Facebook",
 	"More informations at" => "Plus d'information sur",
 	"See your event on Facebook" => "Voir votre évènement sur Facebook",
+	"Attendee:" => "Participant&nbsp;:",
+	"Event address" => "Adresse de l'évènement",
+	"Received by Event-Biller" => "Reçu par Event-Biller",
+	"Fees" => "Frais",
+	"For EU company only." => "Pour les entreprises européenne seulement.",
+	"Organizer revenue" => "Revenue de l'organisateur",
+	"Payment report" => "Rapport de paiement",
+	"Paypal fee" => "Frais Paypal",
+	"Paypal fees" => "Frais Paypal",
+	"Rate details:" => "Détails du prix :",
+	"Real Event-Biller fees" => "Véritables frais de Event-Biller",
+	"Sold ticket number:" => "Nombre de ticket vendu :",
+	"Ticket price" => "Prix du ticket",
+	"Ticket sales fees" => "Frais de vente de ticket",
+	"Total (taxes excluded)" => "Total HT",
+	"Total invoice" => "Total facture",
+	"Unit Price" => "Prix unitaire",
+	"VAT indentification number" => "Numéro de TVA",
+	"View report" => "Voir le rapport",
+	"Your address" => "Votre adresse",
+	"For information:" => "Pour information :",
+	"Generate Invoice" => "Générer la facture",
+	"Billing:" => "Facturation :",
+	"Total ticket" => "Total ticket",
+
 
 //The End
 );

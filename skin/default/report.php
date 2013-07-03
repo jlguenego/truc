@@ -11,10 +11,11 @@
 <table class="evt_table eb_report inline">
 	<tr>
 		<th>{{Ticket name}}</th>
-		<th>{{Ticket price}} (€)</th>
+		<th>{{Quantity}}</th>
+		<th>{{Total ticket}} (€)</th>
 		<th>{{Total invoice}} (€)</th>
 		<th>{{Paypal fee}} (€)</th>
-		<th>{{Event-Biller credit}} (€)</th>
+		<th>{{Received by Event-Biller}} (€)</th>
 	</tr>
 <?php
 	$invoice_even = 'eb_invoice_odd';
@@ -28,6 +29,9 @@
 ?>
 		<td class="<?php echo $invoice_even; ?>">
 			<?php echo $ticket['name']; ?>
+		</td>
+		<td class="evt_curr <?php echo $invoice_even; ?>">
+			<?php echo $ticket['quantity']; ?>
 		</td>
 		<td class="evt_curr <?php echo $invoice_even; ?>">
 			<?php echo curr($ticket['total_ttc']); ?>

@@ -114,7 +114,7 @@
 			<td>
 				<input type="text" name="vat" value="" placeholder="{{For EU companies only.}}"/>
 			</td>
-			<td class="help">{{[help]For EU companies only.}}</td>
+			<td class="help">{{For EU companies only.}}</td>
 		</tr>
 	</table>
 	<input type="hidden" name="address" value=""/>

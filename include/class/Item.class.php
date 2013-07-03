@@ -126,7 +126,7 @@ EOF;
 			$pst->execute(array(":id" => $this->id));
 			$record = $pst->fetch(PDO::FETCH_ASSOC);
 			if (!isset($record['id'])) {
-				throw new Exception(_t("Cannot load the item with id=") . $id);
+				throw new Exception("Cannot load the item with id=" . $id);
 			}
 			$this->hydrate($record);
 		}

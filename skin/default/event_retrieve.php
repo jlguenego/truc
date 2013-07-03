@@ -135,7 +135,7 @@ EOF;
 		$billing_address = Address::get_from_id($event->billing_address_id);
 		$typed_billing_address = nl2br($billing_address->address);
 		$content .= <<<EOF
-	<li>{{Billing}}: <br/>{$event->organizer_name}<br/>${typed_billing_address}</li>
+	<li>{{Billing:}} <br/>{$event->organizer_name}<br/>${typed_billing_address}</li>
 EOF;
 
 		if ($event->type == EVENT_TYPE_NOMINATIVE) {

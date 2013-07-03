@@ -41,6 +41,7 @@
 				if (!is_null_or_empty($item->event_rate_name)) {
 					$ticket['name'] = $item->event_rate_name;
 				}
+				$ticket['quantity'] = $item->quantity;
 				$ticket['total_ttc'] = $item->total_ttc;
 				$invoice_a['tickets'][] = $ticket;
 				$result["ticket_quantity"] += $item->quantity;
