@@ -1,79 +1,81 @@
 <?php
 	class Item {
 		public $id;
-		public $event_name;
-		public $event_rate_name;
-		public $event_rate_amount;
-		public $event_rate_tax;
+		public $class;
 		public $quantity;
+		public $tax_rate;
+		public $description;
 		public $total_ht;
 		public $total_tax;
 		public $total_ttc;
-		public $attendee_firstname;
-		public $attendee_lastname;
-		public $attendee_title;
 		public $bill_id;
-		public $ticket_id;
+
+		public function __construct() {
+			$this->class = '/item';
+		}
 
 		public function hydrate($record) {
 			foreach ($record as $key => $value) {
 				if (ESCAPE_QUOTE) {
-					//$value = str_replace("\\'", "'", $value);
-					//$value = str_replace('\\"', '"', $value);
 					$value = stripcslashes($value);
 					$value = str_replace("%5C%22", "", $value);
 				}
-				$this->$key = $value;
+				switch ($key) {
+					case 'id_bill':
+						$this->bill_id = $record["id_bill"];
+						break;
+					case 'id_ticket':
+						$this->ticket_id = $record["id_ticket"];
+						break;
+					default:
+						$this->$key = $value;
+				}
 			}
-			$this->bill_id = $record["id_bill"];
-			$this->ticket_id = $record["id_ticket"];
 		}
 
-		public function compute() {
-			$this->total_ht = curr($this->event_rate_amount * $this->quantity);
-			$this->total_tax = curr(($this->total_ht * ($this->event_rate_tax/100)));
-			$this->total_ttc = $this->total_ht + $this->total_tax;
+		public function get_object_class() {
+			$result = explode('/', $this->class);
+			foreach ($result as $key => $value) {
+				$result[$key] = ucfirst(strtolower($value));
+			}
+			return join('', $result);
 		}
 
 		public function store() {
 			global $g_pdo;
 
 			$this->id = create_id();
+			$created_t = time();
+			$mod_t = $created_t;
 
 			$request = <<<EOF
 INSERT INTO `item`
 SET
 	`id`= :id,
-	`event_name`= :event_name,
-	`event_rate_name`= :event_rate_name,
-	`event_rate_amount`= :event_rate_amount,
-	`event_rate_tax`= :event_rate_tax,
+	`created_t`= :created_t,
+	`mod_t`= :mod_t,
+	`class`= :class,
+	`tax_rate`= :tax_rate,
+	`description`= :description,
 	`quantity`= :quantity,
 	`total_ht`= :total_ht,
 	`total_tax`= :total_tax,
 	`total_ttc`= :total_ttc,
-	`id_bill`= :id_bill,
-	`id_ticket`= :id_ticket,
-	`attendee_firstname`= :attendee_firstname,
-	`attendee_lastname`= :attendee_lastname,
-	`attendee_title`= :attendee_title;
+	`id_bill`= :id_bill
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
 				":id" => $this->id,
-				":event_name" => $this->event_name,
-				":event_rate_name" => $this->event_rate_name,
-				":event_rate_amount" => $this->event_rate_amount,
-				":event_rate_tax" => $this->event_rate_tax,
+				":created_t" => $created_t,
+				":mod_t" => $mod_t,
+				":class" => $this->class,
+				":tax_rate" => $this->tax_rate,
+				":description" => $this->description,
 				":quantity" => $this->quantity,
 				":total_ht" => $this->total_ht,
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
 				":id_bill" => $this->bill_id,
-				":id_ticket" => $this->ticket_id,
-				":attendee_firstname" => $this->attendee_firstname,
-				":attendee_lastname" => $this->attendee_lastname,
-				":attendee_title" => $this->attendee_title,
 			);
 			$pst->execute($array);
 		}
@@ -88,6 +90,53 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(":id" => $this->id));
+		}
+
+		public static function get_from_id($id) {
+			global $g_pdo;
+
+			$item = null;
+			$request = <<<EOF
+SELECT class FROM item
+WHERE id = :id
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $id));
+			$record = $pst->fetch(PDO::FETCH_ASSOC);
+			$class = $record['class'];
+			debug('class='.$class);
+			if ($class == '/item/ticket') {
+				$item = new ItemTicket();
+			} else {
+				$item = new Item();
+			}
+			$item->id = $id;
+			$item->load();
+			return $item;
+		}
+
+		public function load() {
+			global $g_pdo;
+			$request = <<<EOF
+SELECT * FROM `item`
+WHERE `id`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+			$record = $pst->fetch(PDO::FETCH_ASSOC);
+			if (!isset($record['id'])) {
+				throw new Exception(_t("Cannot load the item with id=") . $id);
+			}
+			$this->hydrate($record);
+		}
+
+		public function get_description() {
+			return $this->description;
+		}
+
+		public function get_bill() {
+			return Bill::get_from_id($this->bill_id);
 		}
 	}
 ?>

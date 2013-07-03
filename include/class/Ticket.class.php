@@ -188,11 +188,13 @@ SELECT
   SUM(quantity)
 FROM
   item i,
+  item_ticket it,
   bill b
 WHERE
   i.id_bill = b.id
+  AND it.obj_id = i.id
   AND b.type = :type
-  AND i.id_ticket = :id
+  AND it.id_ticket = :id
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);

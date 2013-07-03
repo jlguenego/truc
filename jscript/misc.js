@@ -292,6 +292,12 @@ function eb_execute_tasks(event_id) {
 
 function addresspicker_init() {
 	$('.addresspicker').each(function() {
-		var addresspicker = $(this).textarea_addresspicker();
+		var str = $(this).attr('data-addresspickeroptions');
+		log('str='+str);
+		var options = {};
+		if (str) {
+			options = $.parseJSON(str);
+		}
+		var addresspicker = $(this).textarea_addresspicker(options);
 	});
 }

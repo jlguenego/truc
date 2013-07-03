@@ -3,12 +3,13 @@
 		public $id = -1;
 		public $title;
 		public $organizer_name;
+		public $phone;
+		public $vat;
 		public $happening_t;
 		public $confirmation_t = "";
 		public $funding_needed;
 		public $funding_acquired;
 		public $link;
-		public $phone;
 		public $short_description;
 		public $long_description;
 		public $type;
@@ -53,7 +54,6 @@ EOF;
 			$this->confirmation_t = "";
 			$this->funding_needed = 0.00;
 			$this->funding_acquired = 0;
-			$this->location = "";
 			$this->link = "http://";
 			$this->short_description = file_get_contents($g_i18n->filename(BASE_DIR . "/etc/short_description.html"));
 			$this->long_description = file_get_contents($g_i18n->filename(BASE_DIR . "/etc/long_description.html"));
@@ -61,7 +61,7 @@ EOF;
 			$this->status = EVENT_STATUS_PLANNED;
 			$this->publish_flag = EVENT_PUBLISH_FLAG_NO;
 			$this->flags = 0;
-			$this->user_id = User::get_id_from_account();;
+			$this->user_id = User::get_id_from_account();
 		}
 
 		public function hydrate($array) {
@@ -100,6 +100,8 @@ SET
 	`id_user`= :id_user,
 	`title`= :title,
 	`organizer_name`= :organizer_name,
+	`phone`= :phone,
+	`vat`= :vat,
 	`link`= :link,
 	`short_description`= :short_description,
 	`long_description`= :long_description,
@@ -111,7 +113,7 @@ SET
 	`status`= :status,
 	`publish_flag`= :publish_flag,
 	`flags`= :flags,
-	`phone`= :phone,
+	`deal_name`= :deal_name,
 	`id_address`= :location_address_id,
 	`id_address1`= :billing_address_id
 EOF;
@@ -124,6 +126,8 @@ EOF;
 				":id_user" => $this->user_id,
 				":title" => $this->title,
 				":organizer_name" => $this->organizer_name,
+				":phone" => $this->phone,
+				":vat" => $this->vat,
 				":link" => $this->link,
 				":short_description" => $this->short_description,
 				":long_description" => $this->long_description,
@@ -134,7 +138,7 @@ EOF;
 				":status" => $this->status,
 				":publish_flag" => $publish_flag,
 				":flags" => $this->flags,
-				":phone" => $this->phone,
+				":deal_name" => $this->deal_name,
 				":location_address_id" => $this->location_address_id,
 				":billing_address_id" => $this->billing_address_id,
 			);
@@ -151,6 +155,8 @@ SET
 	`mod_t`= :mod_t,
 	`title`= :title,
 	`organizer_name`= :organizer_name,
+	`phone`= :phone,
+	`vat`= :vat,
 	`link`= :link,
 	`short_description`= :short_description,
 	`long_description`= :long_description,
@@ -159,7 +165,6 @@ SET
 	`funding_needed`= :funding_needed,
 	`flags`= :flags,
 	`type`= :type,
-	`phone`= :phone,
 	`facebook_event_id`= :facebook_event_id,
 	`id_address`= :location_address_id,
 	`id_address1`= :billing_address_id
@@ -171,6 +176,7 @@ EOF;
 				":mod_t" => $mod_t,
 				":title" => $this->title,
 				":organizer_name" => $this->organizer_name,
+				":vat" => $this->vat,
 				":link" => $this->link,
 				":short_description" => $this->short_description,
 				":long_description" => $this->long_description,
@@ -180,7 +186,6 @@ EOF;
 				":id" => $this->id,
 				":flags" => $this->flags,
 				":type" => $this->type,
-				":phone" => $this->phone,
 				":facebook_event_id" => $this->facebook_event_id,
 				":phone" => $this->phone,
 				":location_address_id" => $this->location_address_id,
@@ -456,7 +461,7 @@ EOF;
 			return $this->get_bill(BILL_TYPE_INVOICE);
 		}
 
-		public function get_bill($type = BILL_TYPE_AUTODETECT) {
+		public function get_bill($type = BILL_TYPE_AUTODETECT, $target = BILL_TARGET_ATTENDEE) {
 			global $g_pdo;
 			if ($type == BILL_TYPE_AUTODETECT) {
 				$type = BILL_TYPE_QUOTATION;
@@ -466,13 +471,14 @@ EOF;
 			}
 			$request = <<<EOF
 SELECT `id` FROM `bill`
-WHERE `id_event`= :id_event AND `type`= :type
+WHERE `id_event`= :id_event AND `type`= :type AND target = :target
 EOF;
 			debug($request);
 			$q = $g_pdo->prepare($request);
 			$array = array(
 				":id_event" => $this->id,
 				":type" => $type,
+				":target" => $target,
 			);
 			$q->execute($array);
 
@@ -530,13 +536,14 @@ EOF;
 		public function hydrate_from_form() {
 			$this->title = $_GET['title'];
 			$this->organizer_name = $_GET['organizer_name'];
+			$this->phone = $_GET['phone'];
+			$this->vat = $_GET['vat'];
 			$this->happening_t = $_GET['happening_t'];
 			$this->funding_needed = $_GET['funding_needed'];
 			$this->link = $_GET['link'];
 			$this->short_description = $_GET['short_description'];
 			$this->long_description = $_GET['long_description'];
 			$this->type = $_GET['event_type'];
-			$this->phone = $_GET['phone'];
 			if (isset($_GET["is_confirmed"])) {
 				$this->status = EVENT_STATUS_CONFIRMED;
 				$this->confirmation_t = t2s(time());

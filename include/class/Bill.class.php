@@ -13,7 +13,7 @@
 		public $vat;
 		public $status = BILL_STATUS_PLANNED;
 		public $type = BILL_TYPE_QUOTATION;
-		public $is_for = BILL_FOR_CUSTOMER;
+		public $target = BILL_TARGET_ATTENDEE;
 		public $payment_info;
 		public $event_id;
 		public $user_id;
@@ -90,7 +90,7 @@ SET
 	`id_event`= :id_event,
 	`payment_info`= :payment_info,
 	`vat`= :vat,
-	`is_for`= :is_for,
+	`target`= :target,
 	`id_address`= :address_id
 EOF;
 			$pst = $g_pdo->prepare($request);
@@ -110,7 +110,7 @@ EOF;
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
 				":vat" => $this->vat,
-				":is_for" => $this->is_for,
+				":target" => $this->target,
 				":address_id" => $this->address_id,
 			);
 
@@ -141,24 +141,7 @@ EOF;
 			$this->hydrate($bill);
 			$pst->closeCursor();
 
-			$request = <<<EOF
-SELECT * FROM `item`
-WHERE `id_bill`= :id
-ORDER BY event_rate_name
-EOF;
-			debug($request);
-			$pst = $g_pdo->prepare($request);
-			$pst->execute(array(
-				":id" => $id,
-			));
-			$records = $pst->fetchAll(PDO::FETCH_ASSOC);
-
-			foreach ($records as $record) {
-				$item = new Item();
-				$item->hydrate($record);
-				$this->items[] = $item;
-			}
-			debug(sprint_r($this));
+			$this->items = $this->get_items();
 		}
 
 		public function update() {
@@ -225,7 +208,7 @@ EOF;
 			global $g_pdo;
 
 			$request = <<<EOF
-SELECT * FROM `item`
+SELECT id FROM `item`
 WHERE `id_bill`= :id
 EOF;
 			debug($request);
@@ -233,8 +216,8 @@ EOF;
 			$pst->execute(array(":id" => $this->id));
 			$items = array();
 			while ($record = $pst->fetch()) {
-				$item = new Item();
-				$item->hydrate($record);
+				$id = $record['id'];
+				$item = Item::get_from_id($id);
 				$items[] = $item;
 			}
 			return $items;
@@ -266,19 +249,40 @@ EOF;
 		}
 
 		public function is_for($target) {
-			return $this->is_for == $target;
+			return $this->target == $target;
 		}
 
 		public static function invoice_from_report($report, $event) {
 			$bill = new Bill();
-			$bill->is_for = BILL_FOR_ORGANIZER;
-			$bill->total_ttc = curr($report['eb_fee']);
-			$bill->total_ht = curr($bill->total_ttc / 1.196);
-			$bill->total_tax = $bill->total_ttc - $bill->total_ht;
-			$bill->username = $event->organizer_name;
 			$bill->user_id = $_SESSION['user_id'];
+			$bill->target = BILL_TARGET_ORGANIZER;
+			$bill->username = $event->organizer_name;
 			$bill->event_id = $event->id;
 			$bill->address_id = $event->billing_address_id;
+			$bill->vat = $event->vat;
+			$bill->type = BILL_TYPE_INVOICE;
+
+			$label = "Event-Biller-I-";
+			$bill->label = $label."EVT-".sprintf("%06d", $event->id);
+
+			$tickets = $event->get_tickets();
+			$item = new Item();
+			$item->quantity = 1;
+			$sold_ticket_nbr = $report["ticket_quantity"];
+			$rate= deal_get_description($event->deal_name);
+			$amount_ticket_sales = $report['total'];
+			$item->description = <<<EOF
+<b>{{Ticket sales fees}}</b><br/>
+{{Amount ticket sales:}}&nbsp;${amount_ticket_sales}€&nbsp;&nbsp;&nbsp;{{Sold ticket number:}}&nbsp;${sold_ticket_nbr}<br/>
+{{Rate details:}}&nbsp;${rate}
+EOF;
+			$item->tax_rate = 19.6;
+			$item->total_ttc = curr($report['eb_fee']);
+			$item->total_ht = curr($item->total_ttc / (1 + ($item->tax_rate / 100)));
+			$item->total_tax = $item->total_ttc - $item->total_ht;
+
+			$bill->items[] = $item;
+			$bill->compute();
 
 			return $bill;
 		}

@@ -1,7 +1,6 @@
 <?php
 	function deal_generate_report($event) {
 		$deal_name = $event->deal_name;
-		$deal_name = "deal_050_5";
 
 		$result = array();
 		switch($deal_name) {
@@ -24,10 +23,14 @@
 		$result["total"] = 0;
 		$result["eb_total"] = 0;
 		$result["organizer_revenue"] = 0;
+		$result["ticket_quantity"] = 0;
 		$result['invoices'] = array();
 
 		$fix = 0;
 		foreach ($invoices as $invoice) {
+			if (!$invoice->is_really_paid()) {
+				continue;
+			}
 			$invoice_a = array();
 			$invoice_a['total'] = $invoice->total_ttc;
 			$invoice_a['paypal_fee'] = round($invoice->total_ttc * 0.034, 2) + 0.25;
@@ -35,10 +38,12 @@
 			$invoice_a['tickets'] = array();
 			foreach ($invoice->get_items() as $item) {
 				$ticket = array();
-				$ticket['name'] = $item->event_rate_name;
+				if (!is_null_or_empty($item->event_rate_name)) {
+					$ticket['name'] = $item->event_rate_name;
+				}
 				$ticket['total_ttc'] = $item->total_ttc;
 				$invoice_a['tickets'][] = $ticket;
-				$fix += 0.50;
+				$result["ticket_quantity"] += $item->quantity;
 			}
 			$result['invoices'][] = $invoice_a;
 
@@ -46,8 +51,8 @@
 			$paypal_fee = round($invoice->total_ttc * 0.034, 2) + 0.25;
 			$result["paypal_fee"] += $paypal_fee;
 		}
-		$var = $result["total"] * 0.05;
-		$result["eb_fee"] = $fix + $var;
+		$var = $result["total"] * 0.05; // 5%
+		$result["eb_fee"] = (0.50 * $result["ticket_quantity"]) + $var; // +0.50€
 		$result["organizer_revenue"] = $result["total"] - $result["eb_fee"];
 		$result["real_eb_fee"] = $result["eb_fee"] - $result["paypal_fee"];
 		$result["eb_total"] = $result["total"] - $result["paypal_fee"];

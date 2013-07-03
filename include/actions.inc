@@ -138,17 +138,10 @@
 		$report = deal_generate_report($event);
 		$bill = Bill::invoice_from_report($report, $event);
 		$bill->store();
-		//$event->add_flag(EVENT_FLAG_INVOICE_ALREADY_CREATED);
+		$event->add_flag(EVENT_FLAG_INVOICE_ALREADY_CREATED);
 
 		$_GET['id'] = $bill->id;
-		action_invoice_retrieve();
-	}
-
-	function action_invoice_retrieve() {
-		global $g_display;
-		$bill = Bill::get_from_id($_GET['id']);
-		$g_display["bill"] = $bill;
-		$_SESSION["state"] = "bill_retrieve";
+		action_bill_retrieve();
 	}
 
 	function action_report_generate() {
@@ -603,6 +596,7 @@
 
 			$event = new Event();
 			$event->hydrate_from_form();
+			$event->deal_name = 'deal_050_5';
 
 			$billing_address = new Address();
 			$billing_address->hydrate_from_form('billing_address');
@@ -1006,16 +1000,18 @@
 				throw new Exception(_t("Please enter a number for the amount of person"));
 			}
 			if ($_GET["ticket_${i}"] > 0) {
-				$item = new Item();
+				$item = new ItemTicket();
+				$item->quantity = $_GET["ticket_${i}"];
 
 				$item->event_name = $event->title;
 				$item->event_rate_name = $tickets[$i]->name;
 				$item->event_rate_amount = $tickets[$i]->amount;
 				$item->event_rate_tax = $tickets[$i]->tax_rate;
-				$item->quantity = $_GET["ticket_${i}"];
+				$item->tax_rate = $tickets[$i]->tax_rate;
 				$item->ticket_id = $tickets[$i]->id;
-
-				$item->compute();
+				$item->total_ht = curr($item->event_rate_amount * $item->quantity);
+				$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
+				$item->total_ttc = $item->total_ht + $item->total_tax;
 
 				$bill->items[] = $item;
 			}
@@ -1033,10 +1029,10 @@
 		$_SESSION["bill"] = $bill;
 		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
-		$_SESSION["state"] = "participation_regular_recapitulation";
+		$_SESSION["state"] = "participation_recapitulation";
 	}
 
-	function action_participate_regular_recapitulation() {
+	function action_participate_recapitulation() {
 		global $g_display;
 
 		$bill = $_SESSION['bill'];
@@ -1044,7 +1040,7 @@
 		$g_display["bill"] = $bill;
 		$g_display["event"] = $event;
 		$g_display["event_confirmed"] = $event->is_confirmed();
-		$_SESSION["state"] = "participation_regular_recapitulation";
+		$_SESSION["state"] = "participation_recapitulation";
 	}
 
 	function action_participate_nominative() {
@@ -1082,19 +1078,21 @@
 		$ticket_ids = $_GET['ticket_ids'];
 		$i = 0;
 		foreach ($_GET['firstnames'] as $firstname) {
-			$item = new Item();
+			$item = new ItemTicket();
+			$item->quantity = 1;
 
 			$item->event_name = $event->title;
 			$item->event_rate_name = $labels[$i];
 			$item->event_rate_amount = $amount_ht[$i];
 			$item->event_rate_tax = $taxes[$i];
-			$item->quantity = 1;
+			$item->tax_rate = $taxes[$i];
 			$item->attendee_firstname = $firstname;
 			$item->attendee_lastname = $lastnames[$i];
 			$item->attendee_title = $titles[$i];
 			$item->ticket_id = $ticket_ids[$i];
-
-			$item->compute();
+			$item->total_ht = curr($item->event_rate_amount * $item->quantity);
+			$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
+			$item->total_ttc = $item->total_ht + $item->total_tax;
 
 			$bill->items[] = $item;
 			$i++;
@@ -1113,20 +1111,9 @@
 		debug("bill=".sprint_r($bill));
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$g_display["event"] = $event;
-		$_SESSION["state"] = "participation_nominative_recapitulation";
+		$_SESSION["state"] = "participation_recapitulation";
 	}
 
-	function action_participate_nominative_recapitulation() {
-		global $g_display;
-
-		$bill = $_SESSION["bill"];
-		$event = Event::get_from_id($_GET["event_id"]);
-		debug('action_participate_nominative_recapitulation');
-		$g_display["bill"] = $bill;
-		$g_display["event_confirmed"] = $event->is_confirmed();
-		$g_display["event"] = $event;
-		$_SESSION["state"] = "participation_nominative_recapitulation";
-	}
 
 	function action_participation_get_form() {
 		global $g_display;
@@ -1210,12 +1197,10 @@
 			}
 			if ($_SESSION["state"] == "participation_nominative") {
 				action_participate_nominative();
-			} else if ($_SESSION["state"] == "participation_regular_recapitulation") {
-				action_participate_regular_recapitulation();
 			} else if ($_SESSION["state"] == "participation_regular") {
 				action_participate_regular();
-			} else if ($_SESSION["state"] == "participation_nominative_recapitulation") {
-				action_participate_nominative_recapitulation();
+			} else if ($_SESSION["state"] == "participation_recapitulation") {
+				action_participate_recapitulation();
 			} else {
 				$_SESSION["state"] = "error";
 			}

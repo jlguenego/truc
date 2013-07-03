@@ -28,8 +28,8 @@
 	define("BILL_TYPE_QUOTATION", 0);
 	define("BILL_TYPE_INVOICE", 1);
 
-	define('BILL_FOR_CUSTOMER', 0);
-	define('BILL_FOR_ORGANIZER', 1);
+	define('BILL_TARGET_ATTENDEE', 0);
+	define('BILL_TARGET_ORGANIZER', 1);
 
 	define('EVENT_PUBLISH_FLAG_NO', 0);
 	define('EVENT_PUBLISH_FLAG_YES', 1);
@@ -63,4 +63,7 @@
 	define('BITCOIN_FILENAME', '_tmp/bitcoin_curr.txt');
 
 	define('QRCODE_CACHE_DIR', '_tmp/qrcode');
+
+	define('PRINT_BILL_CONTEXT_DEFAULT', 0);
+	define('PRINT_BILL_CONTEXT_CONFIRMATION', 1);
 ?>

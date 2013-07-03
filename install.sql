@@ -9,12 +9,13 @@ CREATE TABLE event(
         mod_t             Varchar (25) NOT NULL ,
         title             Varchar (255) NOT NULL ,
         organizer_name    Varchar (255) NOT NULL ,
+        phone             Varchar (25) ,
+        vat               Varchar (255) ,
         happening_t       Varchar (25) NOT NULL ,
         confirmation_t    Varchar (25) NOT NULL ,
         funding_needed    Decimal (25,2) NOT NULL ,
         funding_acquired  Decimal (25,2) NOT NULL ,
         link              Varchar (255) ,
-        phone             Varchar (25) ,
         short_description Text NOT NULL ,
         long_description  Text ,
         type              Int NOT NULL ,
@@ -87,7 +88,7 @@ CREATE TABLE bill(
         vat          Varchar (255) ,
         status       Int NOT NULL ,
         type         Int NOT NULL ,
-        is_for       Int ,
+        target       Int ,
         id_user      Int NOT NULL ,
         id_event     Int NOT NULL ,
         id_address   Int NOT NULL ,
@@ -97,20 +98,31 @@ CREATE TABLE bill(
 
 CREATE TABLE item(
         id                 Int NOT NULL ,
+        created_t          Varchar (25) NOT NULL ,
+        mod_t              Varchar (25) NOT NULL ,
+        class              Varchar (255) ,
+        description        Varchar (255) ,
+        quantity           Int NOT NULL ,
+        tax_rate           Decimal (25,2) NOT NULL ,
+        total_ht           Decimal (25,2) NOT NULL ,
+        total_tax          Decimal (25,2) NOT NULL ,
+        total_ttc          Decimal (25,2) NOT NULL ,
+        id_bill            Int NOT NULL ,
+        PRIMARY KEY (id )
+)ENGINE=InnoDB;
+
+
+CREATE TABLE item_ticket(
+        obj_id             Int NOT NULL ,
         event_name         Varchar (255) ,
         event_rate_name    Varchar (255) ,
         event_rate_amount  Decimal (25,2) ,
         event_rate_tax     Decimal (25,2) NOT NULL ,
-        quantity           Int NOT NULL ,
-        total_ht           Decimal (25,2) NOT NULL ,
-        total_tax          Decimal (25,2) NOT NULL ,
-        total_ttc          Decimal (25,2) NOT NULL ,
         attendee_firstname Varchar (255) ,
         attendee_lastname  Varchar (255) ,
         attendee_title     Varchar (25) ,
-        id_bill            Int NOT NULL ,
         id_ticket          Int NOT NULL ,
-        PRIMARY KEY (id )
+        PRIMARY KEY (obj_id)
 )ENGINE=InnoDB;
 
 
@@ -194,7 +206,7 @@ ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_address FOREIGN KEY (id_address) REFERENCES address(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
-ALTER TABLE item ADD CONSTRAINT FK_item_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
+ALTER TABLE item_ticket ADD CONSTRAINT FK_item_ticket_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_advertisement FOREIGN KEY (id_advertisement) REFERENCES advertisement(id);
 ALTER TABLE advertisement ADD CONSTRAINT FK_advertisement_id_event FOREIGN KEY (id_event) REFERENCES event(id);

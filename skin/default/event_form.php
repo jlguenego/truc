@@ -47,6 +47,10 @@ EOF
 		default_value("happening_t", $event->happening_t),
 		_t("Date at which starts the event (Format: YYYY-MM-DD)."));
 	$item->other_attr = 'autocomplete="off"';
+	$item = $f->add_text(_t("VAT indentification number"), "vat",
+		default_value("vat", $event->vat),
+		_t("For EU company only."));
+	$item->is_optional = true;
 	if (!$event->is_confirmed()) {
 		$f->add_checkbox(_t("This event is confirmed."), "is_confirmed",
 			"", _t("help_checkbox_confirmation"));
@@ -57,16 +61,19 @@ EOF
 	$item->other_attr = 'autocomplete="off"';
 
 	$location = Address::get_from_id($event->location_address_id);
-	$item = $f->add_textarea(_t("Event place"), "location_address",
+
+	$placeholder = 'Street no, Street, Zip City, etc.';
+
+	$item = $f->add_textarea(_t("Event address"), "location_address",
 		default_value("location_address", $location->address),
-		_t("Name of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
-	$item->other_attr = 'class="addresspicker"';
+		_t("Address of the place where will occur the event. Please indicate an accurate address (street, street no, city, zip, state, country)"));
+	$item->other_attr = 'class="addresspicker" data-addresspickeroptions=\'{"showBlockMap": false}\' placeholder="'.$placeholder.'"';
 
 	$billing_address = Address::get_from_id($event->billing_address_id);
 	$item = $f->add_textarea(_t("Billing address"), "billing_address",
 		default_value("billing_address", $billing_address->address),
-		_t("Address where the bill will be sent."));
-	$item->other_attr = 'class="addresspicker"';
+		_t("Address of the organizer. Please indicate an accurate address (street, street no, city, zip, state, country)"));
+	$item->other_attr = 'class="addresspicker" data-addresspickeroptions=\'{"showBlockMap": false}\' placeholder="'.$placeholder.'"';
 	$item = $f->add_text(_t("Web site (optional)"), "link", default_value("link", $event->link),
 		_t("Official event web site (if any)."));
 	$item->other_attr = 'size="60" maxlength="255"';
@@ -126,7 +133,7 @@ EOF
 			<tr>
 				<td><?php echo $f->get_element('happening_t'); ?></td>
 				<td>&nbsp;</td>
-				<td>&nbsp;</td>
+				<td><?php echo $f->get_element('vat'); ?></td>
 			</tr>
 			<tr>
 				<td><?php echo $f->get_element('location_address'); ?></td>
@@ -176,7 +183,9 @@ EOF
 	<h1>{{Create tickets and define their price}}</h1>
 	<div class="form_section">
 <?php
-	echo $f->get_element('event_type_checkbox');
+	if (!$event->has_accountancy_activity()) {
+		echo $f->get_element('event_type_checkbox');
+	}
 	echo $f->get_element('event_type');
 ?>
 		<table id="tickets" class="evt_rate">

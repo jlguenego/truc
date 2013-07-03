@@ -1,5 +1,5 @@
 <?php
-	function print_bill($bill) {
+	function print_bill($bill, $context = PRINT_BILL_CONTEXT_DEFAULT) {
 		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
@@ -9,8 +9,12 @@
 		if ($bill->type != BILL_TYPE_INVOICE) {
 			$bill_type = "quotation";
 		}
+		if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
 ?>
 <div class="evt_title"><p>{{<?php echo strtoupper($bill_type); ?>}}</p></div>
+<?php
+		}
+?>
 <p>
 	<table width="100%">
 		<tr valign="top">
@@ -26,8 +30,8 @@
 			<td align="right">
 				<b>{{Client identification}}</b><br/>
 				<br/>
-				{{Billing entity}}: <?php echo $bill->username; ?><br/>
-				{{Billing address}}: <?php echo $billing_address->address; ?><br/>
+				<?php echo $bill->username; ?><br/>
+				<?php echo nl2br($billing_address->address); ?><br/>
 			<?php
 				if ($bill->is_for_company()) {
 			?>
@@ -39,77 +43,45 @@
 		</tr>
 	</table>
 	<br/>
+<?php
+	if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
+?>
 	<b>{{<?php echo ucfirst($bill_type); ?> ID}}:</b> <?php echo $bill->label; ?><br/>
 	<b>{{<?php echo ucfirst($bill_type); ?> date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php
-	if ($bill->type == BILL_TYPE_INVOICE) {
+		if ($bill->type == BILL_TYPE_INVOICE) {
 ?>
 	<b>{{Due date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php
+		}
 	}
 ?>
-	<br/>
-
-	<br/>
 	<table border="1px" class="evt_table">
 		<tr>
-			<th>{{Event}}</th>
-			<th>{{Rate name}}</th>
-			<th>{{Amount}}</th>
-			<th>{{Tax rate}}</th>
-<?php
-	if ($event->type == EVENT_TYPE_ANONYMOUS) {
-?>
+			<th>{{Description}}</th>
 			<th>{{Quantity}}</th>
-			<th>{{Total}}</th>
-<?php
-	}
-?>
+			<th>{{Total (taxes excluded)}}</th>
+			<th>{{Tax rate}}</th>
 			<th>{{Total taxes}}</th>
-			<th>{{Total due}}</th>
+			<th>{{Total}}</th>
+		</tr>
 <?php
-	if ($event->type == EVENT_TYPE_NOMINATIVE) {
-?>
-			<th>{{Title}}</th>
-			<th>{{Firstname}}</th>
-			<th>{{Lastname}}</th>
-<?php
-	}
-
 	$i = 0;
 	foreach ($bill->items as $item) {
 ?>
 		<tr>
-			<td><?php echo "(".$event->id.") "; ?><a href="?action=retrieve&amp;type=event&amp;id=<?php echo $event->id ?>"><?php echo $item->event_name; ?></a></td>
-			<td><?php echo $item->event_rate_name; ?></td>
-			<td class="evt_curr"><?php echo $item->event_rate_amount; ?>€</td>
-			<td class="evt_curr"><?php echo $item->event_rate_tax; ?>%</td>
-<?php
-		if ($event->type == EVENT_TYPE_ANONYMOUS) {
-?>
-			<td class="evt_curr"><?php echo $item->quantity; ?></td>
+			<td><?php echo $item->get_description(); ?></td>
+			<td align="center"><?php echo $item->quantity; ?></td>
 			<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
-<?php
-		}
-?>
+			<td class="evt_curr"><?php echo $item->tax_rate; ?>%</td>
 			<td class="evt_curr"><?php echo $item->total_tax; ?>€</td>
 			<td class="evt_curr"><?php echo $item->total_ttc; ?>€</td>
-<?php
-		if ($event->type == EVENT_TYPE_NOMINATIVE) {
-?>
-			<td><?php echo "&nbsp;".$item->attendee_title; ?></td>
-			<td><?php echo $item->attendee_firstname; ?></td>
-			<td><?php echo $item->attendee_lastname; ?></td>
-<?php
-		}
-?>
 		</tr>
 <?php
 		$i++;
 	}
 ?>
 	</table>
-	<br/>
 	<table border="1px" class="evt_table">
 		<tr>
 			<th class="th_left">{{Total (Tax excluded)}}</th>
@@ -124,79 +96,11 @@
 			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
 		</tr>
 	</table>
-	<br/>
-	<br/>
-	<?php require_once($g_i18n->filename(BASE_DIR."/etc/".$bill_type."_legal.html")); ?>
-</p>
 <?php
-	}
-
-	function print_organizer_invoice($bill) {
-		global $g_i18n;
-
-		$event = Event::get_from_id($bill->event_id);
-		$billing_address = Address::get_from_id($event->billing_address_id);
-
+		if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
+			require_once($g_i18n->filename(BASE_DIR."/etc/".$bill_type."_legal.html"));
+		}
 ?>
-<div class="evt_title"><p>{{INVOICE}}</p></div>
-<p>
-	<table width="100%">
-		<tr>
-			<th align="left">{{Provider identification}}</th>
-			<th align="right">{{Client identification}}</th>
-		</tr>
-		<tr valign="top">
-			<td width="50%">
-				JLG-Consulting - Jean-Louis GUENEGO - Entreprise Individuelle<br/>
-				2 allée du commandant Charcot <br/>
-				77200 Torcy, France<br/>
-				{{VAT identification number}}: FR 61 439 317 058<br/>
-				SIRET: 439 317 058 00022<br/>
-			</td>
-			<td align="right">
-				<?php echo $bill->username; ?><br/>
-				<?php echo nl2br($billing_address->address); ?><br/>
-				{{VAT identification number}}: <?php echo $bill->vat; ?>
-			</td>
-		</tr>
-	</table>
-	<br/>
-	<br/>
-	<b>{{Invoice ID}}:</b> <?php echo $bill->label; ?><br/>
-	<b>{{Invoice date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
-<?php
-	if ($bill->type == BILL_TYPE_INVOICE) {
-?>
-	<b>{{Due date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
-<?php
-	}
-?>
-	<table border="1px" class="evt_table">
-		<tr>
-			<th>{{Services}}</th>
-			<th>{{Description}}</th>
-			<th>{{Total (Tax excluded)}}</th>
-			<th>{{Tax rate}}</th>
-			<th>{{Total taxes}}</th>
-			<th>{{Total}}</th>
-		</tr>
-		<tr>
-			<td>{{Ticket sales}}</td>
-			<td><?php echo deal_get_description($event->deal_name); ?></td>
-			<td class="evt_curr"><?php echo $bill->total_ht; ?>€</td>
-			<td class="evt_curr	">19.6%</td>
-			<td class="evt_curr"><?php echo $bill->total_tax; ?>€</td>
-			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
-		</tr>
-	</table>
-	<table border="1px" class="evt_table">
-		<tr>
-			<th>{{Total due}}</th>
-			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
-		</tr>
-	</table>
-	<br/>
-	<?php require_once($g_i18n->filename(BASE_DIR."/etc/invoice_legal.html")); ?>
 </p>
 <?php
 	}

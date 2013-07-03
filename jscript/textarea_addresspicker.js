@@ -119,7 +119,10 @@
 
 			var textarea = this.element;
 			var name = textarea.attr('name');
-			var left = textarea.offset().left + textarea.width() + 10;
+			var left = 0;
+			if (this.options.showBlockMap) {
+				left = textarea.offset().left + textarea.width() + 10;
+			}
 			this.top = textarea.offset().top;
 			var top = this.top;
 			var content = '	<div id="' + name + '_eb_map_block" class="eb_map_block">\
