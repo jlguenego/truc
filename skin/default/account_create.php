@@ -44,7 +44,8 @@
 		eb_sync_hash('clear_password2', 'password2');
 	});
 	$("form").submit(function() {
-		$('input[type=password]').attr('name', '');
+		$('input[type=clear_password]').attr('name', '');
+		$('input[type=clear_password2]').attr('name', '');
 	});
 
 

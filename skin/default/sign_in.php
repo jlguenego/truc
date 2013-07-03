@@ -1,3 +1,7 @@
+<?php
+	global $g_display;
+?>
+
 <div class="evt_title"><p>{{Sign in}}</p></div>
 
 <table class="evt_sign_in_table">
@@ -136,7 +140,7 @@
 	</tr>
 </table>
 <script>
-	var hash_salt = "<?php echo RANDOM_SALT ?>";
+	var hash_salt = "<?php echo RANDOM_SALT; ?>";
 	var nonce = "<?php echo $g_display['nonce']; ?>";
 
 	$(document).ready(function() {

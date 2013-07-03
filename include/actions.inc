@@ -389,6 +389,7 @@
 		$nonce = get_nonce();
 		$g_display['nonce'] = $nonce;
 		$_SESSION["state"] = "sign_in";
+		debug('g_display='.sprint_r($g_display));
 	}
 
 	function action_signout() {
@@ -568,7 +569,7 @@
 				}
 			}
 			message_set_info(_t("Account successfully deleted"));
-			action_signout();
+			redirect_to('index.php');
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
 			message_set_error($e->getMessage());
@@ -1225,7 +1226,7 @@
 			$user = User::activate($_GET["key"]);
 			message_set_info(_t("Account successfully activated"));
 			$_GET["email"] = $user->email;
-			$_SESSION["state"] = "sign_in";
+			action_signin();
 		} catch (Exception $e) {
 			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";

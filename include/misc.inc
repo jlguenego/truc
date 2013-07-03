@@ -337,7 +337,16 @@ EOF;
 	}
 
 	function save_previous_url() {
-		if (!in_array($_GET['action'], array("sign_out", "sign_in", "authenticate", "auto_authenticate"))) {
+		$array = array(
+			"request_for_publication",
+			"delete",
+			"sign_out",
+			"sign_in",
+			"authenticate",
+			"auto_authenticate",
+			"activation"
+		);
+		if (!in_array($_GET['action'], $array)) {
 			$_SESSION['previous_url'] = HOST."?".$_SERVER['QUERY_STRING'];
 		}
 	}

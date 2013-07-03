@@ -534,6 +534,10 @@ EOF;
 			$user->role = ROLE_USER;
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
 			$user->clean_format();
+
+			$address = new Address();
+			$address->store();
+			$user->address_id = $address->id;
 			$user->store();
 			message_set_info(_t('An account has been created based on the information given by '.
 					format_partner($_SESSION['partner'])));
