@@ -560,6 +560,7 @@
 				}
 			}
 			message_set_info(_t("Account successfully deleted"));
+			$_SESSION["user_id"] = null;
 			redirect_to('index.php');
 		} catch (Exception $e) {
 			$_SESSION["state"] = "error";
