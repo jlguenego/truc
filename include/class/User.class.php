@@ -313,14 +313,9 @@ EOF;
 
 		public function fill_address_from_participation() {
 			$address = Address::get_from_id($this->address_id);
-			$address->hydrate_from_form('address');
-			if ($this->has_accountancy_activity()) {
-				$address->store();
-				$this->address_id = $address->id;
-			} else {
-				$address->update();
-			}
-			$this->update();
+			$address->hydrate_from_form('billing_address');
+			debug('address='.sprint_r($address));
+			$address->update();
 		}
 
 		public function is_activated() {

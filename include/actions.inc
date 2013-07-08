@@ -966,7 +966,6 @@
 		if (!isset($_GET['confirm'])) {
 			throw new Exception(_t("You must read and accept the policies."));
 		}
-
 		$bill = new Bill();
 		$bill->username = $_GET['username'];
 		$bill->address = nl2br($_GET['address']);
@@ -1186,6 +1185,7 @@
 		$user = need_authentication();
 		try {
 			if ($user->has_no_address()) {
+				debug('no address');
 				$user->fill_address_from_participation();
 			}
 			if ($_SESSION["state"] == "participation_nominative") {
