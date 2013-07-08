@@ -77,6 +77,7 @@ function eb_sync_amount() {
 	$('#sub_total').html(sub_total.toFixed(2));
 
 	update_total(tax_rate);
+	eb_sync_next_button();
 }
 
 function update_total(tax_rate) {

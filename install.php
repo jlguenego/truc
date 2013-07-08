@@ -25,7 +25,10 @@
 EOF;
 			println($install_done);
 		} catch (Exception $e) {
+			echo '<pre>';
 			println("Install failed: " . $e->getMessage());
+			print_r($e);
+			echo '</pre>';
 		}
 	} else {
 ?>

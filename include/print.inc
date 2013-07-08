@@ -3,7 +3,7 @@
 		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
-		$billing_address = Address::get_from_id($event->billing_address_id);
+		$billing_address = Address::get_from_id($bill->address_id);
 
 		$bill_type = "invoice";
 		if ($bill->type != BILL_TYPE_INVOICE) {

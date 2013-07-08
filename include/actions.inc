@@ -960,68 +960,130 @@
 		}
 	}
 
-	function action_participate_regular() {
+
+
+	function action_participate() {
 		global $g_display;
 
-		if (!isset($_GET['confirm'])) {
-			throw new Exception(_t("You must read and accept the policies."));
-		}
-		$bill = new Bill();
-		$bill->username = $_GET['username'];
-		$bill->address = nl2br($_GET['address']);
-		$bill->vat = $_GET["vat"];
-		$bill->event_id = $_GET["event_id"];
-		$event = Event::get_from_id($_GET["event_id"]);
-		$label = "Event-Biller-";
-		if ($event->is_confirmed()) {
-			$bill->status = BILL_STATUS_CONFIRMED;
-			$bill->type = BILL_TYPE_INVOICE;
-			$label .= "I-";
-		} else {
-			$bill->status = BILL_status_planned;
-			$bill->type = BILL_type_quotation;
-			$label .= "Q-";
-		}
-		$bill->label = $label."EVT-".sprintf("%06d", $event->id);
-
-		$tickets = $event->get_tickets();
-		$total_ttc = 0.00;
-		$i = 0;
-		while (isset($_GET["ticket_${i}"])) {
-			if (!is_number($_GET["ticket_${i}"])) {
-				throw new Exception(_t("Please enter a number for the amount of person"));
+		$user = need_authentication();
+		try {
+			if ($user->has_no_address()) {
+				debug('no address');
+				$user->fill_address_from_participation();
 			}
-			if ($_GET["ticket_${i}"] > 0) {
-				$item = new ItemTicket();
-				$item->quantity = $_GET["ticket_${i}"];
+			debug('participation');
+			if ($_SESSION["state"] == "participation") {
+				if (!isset($_GET['confirm'])) {
+					throw new Exception(_t("You must read and accept the policies."));
+				}
+				$bill = new Bill();
+				$bill->username = $_GET['username'];
+				$bill->vat = $_GET["vat"];
+				$bill->event_id = $_GET["event_id"];
+				$event = Event::get_from_id($_GET["event_id"]);
+				if ($event == NULL) {
+					throw new Exception(_t("Event is null."));
+				}
+				$label = "Event-Biller-";
+				if ($event->is_confirmed()) {
+					$bill->status = BILL_STATUS_CONFIRMED;
+					$bill->type = BILL_TYPE_INVOICE;
+					$label .= "I-";
+				} else {
+					$bill->status = BILL_STATUS_PLANNED;
+					$bill->type = BILL_TYPE_QUOTATION;
+					$label .= "Q-";
+				}
+				$bill->label = $label."EVT-".sprintf("%06d", $event->id);
 
-				$item->event_name = $event->title;
-				$item->event_rate_name = $tickets[$i]->name;
-				$item->event_rate_amount = $tickets[$i]->amount;
-				$item->event_rate_tax = $tickets[$i]->tax_rate;
-				$item->tax_rate = $tickets[$i]->tax_rate;
-				$item->ticket_id = $tickets[$i]->id;
-				$item->total_ht = curr($item->event_rate_amount * $item->quantity);
-				$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
-				$item->total_ttc = $item->total_ht + $item->total_tax;
+				$total_ttc = 0.00;
 
-				$bill->items[] = $item;
+				if ($_GET['participation_type'] == EVENT_TYPE_NOMINATIVE) {
+					$labels = $_GET['labels'];
+					$amount_ht = $_GET['amount_ht'];
+					$taxes = $_GET['taxes'];
+					$lastnames = $_GET['lastnames'];
+					$titles = $_GET['titles'];
+					$ticket_ids = $_GET['ticket_ids'];
+					$i = 0;
+					foreach ($_GET['firstnames'] as $firstname) {
+						$item = new ItemTicket();
+						$item->quantity = 1;
+
+						$item->event_name = $event->title;
+						$item->event_rate_name = $labels[$i];
+						$item->event_rate_amount = $amount_ht[$i];
+						$item->event_rate_tax = $taxes[$i];
+						$item->tax_rate = $taxes[$i];
+						$item->attendee_firstname = $firstname;
+						$item->attendee_lastname = $lastnames[$i];
+						$item->attendee_title = $titles[$i];
+						$item->ticket_id = $ticket_ids[$i];
+						$item->total_ht = curr($item->event_rate_amount * $item->quantity);
+						$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
+						$item->total_ttc = $item->total_ht + $item->total_tax;
+
+						$bill->items[] = $item;
+						$i++;
+					}
+				} else {
+					$tickets = $event->get_tickets();
+					$i = 0;
+					while (isset($_GET["ticket_${i}"])) {
+						if (!is_number($_GET["ticket_${i}"])) {
+							throw new Exception(_t("Please enter a number for the amount of person"));
+						}
+						if ($_GET["ticket_${i}"] > 0) {
+							$item = new ItemTicket();
+							$item->quantity = $_GET["ticket_${i}"];
+
+							$item->event_name = $event->title;
+							$item->event_rate_name = $tickets[$i]->name;
+							$item->event_rate_amount = $tickets[$i]->amount;
+							$item->event_rate_tax = $tickets[$i]->tax_rate;
+							$item->tax_rate = $tickets[$i]->tax_rate;
+							$item->ticket_id = $tickets[$i]->id;
+							$item->total_ht = curr($item->event_rate_amount * $item->quantity);
+							$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
+							$item->total_ttc = $item->total_ht + $item->total_tax;
+
+							$bill->items[] = $item;
+						}
+						$i++;
+					}
+				}
+				$bill->compute();
+
+				$address = new Address();
+				$address->hydrate_from_form('billing_address');
+				$address->store();
+				debug('given address='.$_GET['billing_address']);
+				debug('address='.$address->address);
+				debug('address_id='.$address->id);
+				$bill->address_id = $address->id;
+
+				$bill->store();
+				$g_display["bill"] = $bill;
+				$_SESSION["bill"] = $bill;
+				$g_display["event"] = $event;
+				$g_display["event_confirmed"] = $event->is_confirmed();
+				$_SESSION["state"] = "participation_recapitulation";
+			} else if ($_SESSION["state"] == "participation_recapitulation") {
+				debug('caca');
+				action_participate_recapitulation();
+			} else {
+				$_SESSION["state"] = "error";
 			}
-			$i++;
+		} catch (Exception $e) {
+			debug(sprint_r($e));
+			message_set_error($e->getMessage());
+			$_SESSION["state"] = "error";
+			$g_display["user"] = $user;
+			$event = Event::get_from_id($_GET["event_id"]);
+			$g_display["event"] = $event;
+			$g_display["tickets"] = $event->get_tickets();
+			$_SESSION["state"] = "error";
 		}
-		$bill->compute();
-
-		$address = new Address();
-		$address->hydrate_from_form('billing_address');
-		$address->store();
-		$bill->address_id = $address->id;
-
-		$bill->store();
-		$g_display["bill"] = $bill;
-		$_SESSION["bill"] = $bill;
-		$g_display["event"] = $event;
-		$g_display["event_confirmed"] = $event->is_confirmed();
-		$_SESSION["state"] = "participation_recapitulation";
 	}
 
 	function action_participate_recapitulation() {
@@ -1034,78 +1096,6 @@
 		$g_display["event_confirmed"] = $event->is_confirmed();
 		$_SESSION["state"] = "participation_recapitulation";
 	}
-
-	function action_participate_nominative() {
-		global $g_display;
-		if (!isset($_GET['confirm'])) {
-			throw new Exception(_t("You must read and accept the policies."));
-		}
-		$bill = new Bill();
-		$bill->username = $_GET['username'];
-		$bill->vat = $_GET["vat"];
-		$bill->event_id = $_GET["event_id"];
-		$event = Event::get_from_id($_GET["event_id"]);
-		if ($event == NULL) {
-			throw new Exception(_t("Event is null."));
-		}
-		$label = "Event-Biller-";
-		if ($event->is_confirmed()) {
-			$bill->status = BILL_STATUS_CONFIRMED;
-			$bill->type = BILL_TYPE_INVOICE;
-			$label .= "I-";
-		} else {
-			$bill->status = BILL_STATUS_PLANNED;
-			$bill->type = BILL_TYPE_QUOTATION;
-			$label .= "Q-";
-		}
-		$bill->label = $label."EVT-".sprintf("%06d", $event->id);
-
-		$total_ttc = 0.00;
-
-		$labels = $_GET['labels'];
-		$amount_ht = $_GET['amount_ht'];
-		$taxes = $_GET['taxes'];
-		$lastnames = $_GET['lastnames'];
-		$titles = $_GET['titles'];
-		$ticket_ids = $_GET['ticket_ids'];
-		$i = 0;
-		foreach ($_GET['firstnames'] as $firstname) {
-			$item = new ItemTicket();
-			$item->quantity = 1;
-
-			$item->event_name = $event->title;
-			$item->event_rate_name = $labels[$i];
-			$item->event_rate_amount = $amount_ht[$i];
-			$item->event_rate_tax = $taxes[$i];
-			$item->tax_rate = $taxes[$i];
-			$item->attendee_firstname = $firstname;
-			$item->attendee_lastname = $lastnames[$i];
-			$item->attendee_title = $titles[$i];
-			$item->ticket_id = $ticket_ids[$i];
-			$item->total_ht = curr($item->event_rate_amount * $item->quantity);
-			$item->total_tax = curr(($item->total_ht * ($item->event_rate_tax/100)));
-			$item->total_ttc = $item->total_ht + $item->total_tax;
-
-			$bill->items[] = $item;
-			$i++;
-		}
-
-		$bill->compute();
-
-		$address = new Address();
-		$address->hydrate_from_form('billing_address');
-		$address->store();
-		$bill->address_id = $address->id;
-
-		$bill->store();
-		$g_display["bill"] = $bill;
-		$_SESSION["bill"] = $bill;
-		debug("bill=".sprint_r($bill));
-		$g_display["event_confirmed"] = $event->is_confirmed();
-		$g_display["event"] = $event;
-		$_SESSION["state"] = "participation_recapitulation";
-	}
-
 
 	function action_participation_get_form() {
 		global $g_display;
@@ -1121,11 +1111,7 @@
 		$g_display["user"] = $user;
 		$g_display["event"] = $event;
 		$g_display["tickets"] = $event->get_tickets();
-		if ($g_display["event"]->type == EVENT_TYPE_NOMINATIVE) {
-			$_SESSION["state"] = "participation_nominative";
-		} else {
-			$_SESSION["state"] = "participation_regular";
-		}
+			$_SESSION["state"] = "participation";
 	}
 
 	function action_bitcoin_payment() {
@@ -1177,40 +1163,6 @@
 		}
 		$g_display["events"] = Event::list_all();
 		$_SESSION["state"] = "supervision";
-	}
-
-	function action_participate() {
-		global $g_display;
-
-		$user = need_authentication();
-		try {
-			if ($user->has_no_address()) {
-				debug('no address');
-				$user->fill_address_from_participation();
-			}
-			if ($_SESSION["state"] == "participation_nominative") {
-				action_participate_nominative();
-			} else if ($_SESSION["state"] == "participation_regular") {
-				action_participate_regular();
-			} else if ($_SESSION["state"] == "participation_recapitulation") {
-				action_participate_recapitulation();
-			} else {
-				$_SESSION["state"] = "error";
-			}
-		} catch (Exception $e) {
-			debug(sprint_r($e));
-			message_set_error($e->getMessage());
-			$_SESSION["state"] = "error";
-			$g_display["user"] = $user;
-			$event = Event::get_from_id($_GET["event_id"]);
-			$g_display["event"] = $event;
-			$g_display["tickets"] = $event->get_tickets();
-			if ($event->type == EVENT_TYPE_NOMINATIVE) {
-				$_SESSION["state"] = "error";
-			} else {
-				$_SESSION["state"] = "error";
-			}
-		}
 	}
 
 	function action_activation() {

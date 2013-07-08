@@ -17,7 +17,7 @@
 			$captcha_pub_key = $_POST["captcha_pub_key"];
 			$captcha_priv_key = $_POST["captcha_priv_key"];
 
-			$db = new PDO("mysql:host=${host};charset=UTF-8", $login, $password);
+			$db = new PDO("mysql:host=${host}", $login, $password);
 
 			$requests = <<<EOF
 CREATE DATABASE IF NOT EXISTS ${dbname} DEFAULT CHARACTER SET = 'utf8';
@@ -29,7 +29,7 @@ EOF;
 				throw new Exception("DB creation: ".sprint_r($db->errorInfo()));
 			};
 
-			$db = new PDO("mysql:host=${host};dbname=${dbname};charset=UTF-8", $login, $password);
+			$db = new PDO("mysql:host=${host};dbname=${dbname}", $login, $password);
 			$test_mode = (isset($_POST["test_mode"])) ? "true" : "false";
 			$payment_type = $_POST["payment_type"];
 			$escape_quote = (isset($_POST["escape_quote"])) ? "true" : "false";
