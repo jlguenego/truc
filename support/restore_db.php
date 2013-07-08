@@ -12,7 +12,13 @@
 		//if ($file == 'event_guest.sql') {
 		//	continue;
 		//}
-		db_execute_file($dirname."/".$file);
+		try {
+			db_execute_file($dirname."/".$file);
+		} catch (Exception $e) {
+			echo '<pre>';
+			print_r($e);
+			echo '</pre>';
+		}
 	}
 	db_set_constraints(true);
 ?>

@@ -501,16 +501,7 @@
 					if (is_null_or_empty($_GET["address"])) {
 						$address->set_null();
 					} else {
-						$address->address = $_GET["address"];
-						$address->lat = $_GET["address_lat"];
-						$address->lng = $_GET["address_lng"];
-						$address->street_number = $_GET["address_street_number"];
-						$address->route = $_GET["address_route"];
-						$address->postal_code = $_GET["address_postal_code"];
-						$address->locality = $_GET["address_locality"];
-						$address->administrative_area_level_2 = $_GET["address_administrative_area_level_2"];
-						$address->administrative_area_level_1 = $_GET["address_administrative_area_level_1"];
-						$address->country = $_GET["address_country"];
+						$address->hydrate_from_form("address");
 					}
 
 					if ($user->has_bill()) {

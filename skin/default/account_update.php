@@ -22,7 +22,7 @@
 	$item = $f->add_textarea(_t("Address"), "address",
 		default_value("address", $address->address), _t("Your address"));
 	$item->is_optional = true;
-	$item->other_attr = "class=\"addresspicker\"";
+	$item->other_attr = 'class="addresspicker" placeholder="{{Street no, Street, Zip City, etc.}}"';
 	$item = $f->add_password(_t("New Password (optional)"), "clear_new_pass",
 		_t("Leave empty if you do not want to change your password."));
 	$item->is_optional = true;

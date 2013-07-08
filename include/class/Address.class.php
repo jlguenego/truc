@@ -29,6 +29,12 @@
 			if ($prefix != "" && !preg_match('#_$#', $prefix)) {
 				$prefix .= "_";
 			}
+
+			foreach ($_GET as $key => $value) {
+				if (is_null_or_empty($value) || $value == 'false') {
+					$_GET[$key] = null;
+				}
+			}
 			$this->lat = $_GET[$prefix."lat"];
 			$this->lng = $_GET[$prefix."lng"];
 			$this->street_number = $_GET[$prefix."street_number"];

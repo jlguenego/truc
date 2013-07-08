@@ -105,9 +105,9 @@
 		<tr>
 			<th class="th_left">{{Billing address}}</th>
 			<td>
-				<textarea class="addresspicker" name="billing_address"" placeholder="{{Street# and street name}}"><?php echo default_value('address', $user->address()); ?></textarea>
+				<textarea class="addresspicker" name="billing_address"" placeholder="{{Street no, Street, Zip City, etc.}}"><?php echo default_value('address', $user->address()); ?></textarea>
 			</td>
-			<td class="help">{{Street# and street name}}</td>
+			<td class="help">{{Street no, Street, Zip City, etc.}}</td>
 		</tr>
 		<tr>
 			<th>{{VAT number (if applicable)}}</th>

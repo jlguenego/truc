@@ -62,7 +62,7 @@ EOF
 
 	$location = Address::get_from_id($event->location_address_id);
 
-	$placeholder = 'Street no, Street, Zip City, etc.';
+	$placeholder = _t('Street no, Street, Zip City, etc.');
 
 	$item = $f->add_textarea(_t("Event address"), "location_address",
 		default_value("location_address", $location->address),
