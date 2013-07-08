@@ -532,7 +532,7 @@ $this->array = array(
 	"Generate Invoice" => "Générer la facture",
 	"Billing:" => "Facturation :",
 	"Total ticket" => "Total ticket",
-
+	"Street no, Street, Zip City, etc." => "No de rue, Rue, Code Postal Ville, etc.",
 
 //The End
 );

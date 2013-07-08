@@ -18,6 +18,7 @@
 			echo '<pre>';
 			print_r($e);
 			echo '</pre>';
+			exit;
 		}
 	}
 	db_set_constraints(true);

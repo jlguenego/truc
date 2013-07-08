@@ -55,6 +55,9 @@ EOF;
 			debug($request);
 			$pst = $g_pdo->prepare($request);
 			$pst->execute(array(":id" => $this->id));
+
+			$address = Address::get_from_id($this->address_id);
+			$address->delete();
 		}
 
 		public static function exists($id) {
