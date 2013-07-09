@@ -90,7 +90,7 @@ EOF
 	$f->add_hidden("event_type", $event->type);
 	$f->add_raw_html(<<<EOF
 	</div>
-	<h1>{{Create tickets and define their price}}</h1>
+	<h1>{{Create tickets}}</h1>
 	<div class="form_section">
 EOF
 );
@@ -180,7 +180,7 @@ EOF
 		echo $f->get_element('id');
 	?>
 	</div>
-	<h1>{{Create tickets and define their price}}</h1>
+	<h1>{{Create tickets}}</h1>
 	<div class="form_section">
 <?php
 	if (!$event->has_accountancy_activity()) {
@@ -188,9 +188,16 @@ EOF
 	}
 	echo $f->get_element('event_type');
 ?>
+		<a class="evt_button evt_btn_small" href="JavaScript:addRate('tickets');">
+			{{Add a paying ticket}}
+		</a>
+		<a class="evt_button evt_btn_small" href="JavaScript:addFreeTicket('tickets');">
+			{{Add a free ticket}}
+		</a>
+		<br/><br/>
+
 		<table id="tickets" class="evt_rate">
 		</table>
-		<a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>
 	</div>
 	<?php
 		if ($scenario == "create") {
@@ -199,6 +206,65 @@ EOF
 	?>
 	<?php echo $f->get_element('form_submit_button');?>
 </form>
+
+<table id="default_ticket" style="display: none;">
+	<tr data-name="basic">
+		<td>
+			<input type="text" name="ticket_name_a[]" value="" placeholder="{{Ticket name}}" />
+		</td>
+		<td>
+			<input class="evt_rate_qty" type="number" name="ticket_quantity_a[]" value="" min="0" placeholder="{{Quantity}}" />
+		</td>
+		<td>
+			<input class="evt_rate_price" type="number" name="ticket_amount_a[]" value="" step="0.01" min="0" placeholder="{{Price}}" />&nbsp;€&nbsp;(Euro)
+		</td>
+		<td>
+			<select name="ticket_tax_a[]">
+<?php
+	foreach ($g_tax_rates as $name => $rate) {
+?>
+			<option value="<?php echo $rate; ?>"><?php echo $name; ?></option>
+<?php
+}
+?>
+			</select>
+		</td>
+		<td>settings</td>
+		<td>
+			<input type="button" value="{{Remove}}" />
+		</td>
+	</tr>
+
+	<tr data-name="advanced">
+		<td colspan="7">
+			<table id="table_advanced_" width="100%">
+				<tr>
+					<td class="form_label" width="200px">Description</td>
+					<td><textarea name="ticket_description_a[]" style="resize: none; width: 100%;"></textarea></td>
+				</tr>
+<!--
+				<tr>
+					<td class="form_label">Start/End salling date</td>
+					<td>
+						<table>
+							<tr>
+								<td align="right">Sale starts at</td>
+								<td><input type="text" name="ticket_start_a[]"/></td>
+								<td class="form_help">{{Leave empty to start from now.}}</td>
+							</tr>
+							<tr>
+								<td align="right">Sale ends at</td>
+								<td><input type="text" name="ticket_end_a[]"/></td>
+								<td class="form_help">{{Leave empty to never end.}}</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+-->
+			</table>
+		</td>
+	</tr>
+</table>
 
 <script>
 	function manage_submit() {
@@ -287,10 +353,6 @@ EOF
 	}
 ?>
 	setCounter(<?php echo $i; ?>);
-	if (getCounter() < 1) {
-		log("No rate.");
-		addRate('tickets');
-	}
 	$("[name=title]").focus();
 
 	eb_tiny_mce_on();
@@ -306,73 +368,49 @@ EOF
 		}
 	});
 
-	function addRate(divName, label, quantity, amount, selected_tax, description){
+	function addFreeTicket(divName) {
+		addRate(divName, '', '', '', '', '', true);
+	}
+
+	function addRate(divName, label, quantity, amount, selected_tax, description, isFree){
 		label = label || "";
 		amount = amount || "";
 		quantity = quantity || "";
 		description = description || "";
+		isFree = isFree || false;
 		log(selected_tax);
 		if (selected_tax == undefined) {
 			selected_tax = taxes[0][1];
 		}
 		counter++;
 		var id = new Date().getTime();
-		$("#" + divName).append("<tr id=\"" + id + "\"></tr>");
-		var content =
-					"<td>" +
-						"<input type=\"text\" name=\"ticket_name_a[]\" value=\"" + label + "\" placeholder=\"{{Ticket name}}\"/>" +
-					"</td>" +
-					"<td>" +
-						"<input class=\"evt_rate_qty\" type=\"number\" name=\"ticket_quantity_a[]\" value=\""+quantity+"\" min=\"0\" placeholder=\"{{Quantity}}\">" +
-					"</td>" +
-					"<td>" +
-						"<input class=\"evt_rate_price\" type=\"number\" name=\"ticket_amount_a[]\" value=\"" + amount + "\" step=\"0.01\" min=\"0\" placeholder=\"{{Price}}\"/>&nbsp;€&nbsp;(Euro)" +
-						"</td>" +
-					"<td>" +
-						"<select name=\"ticket_tax_a[]\" \">";
-		for (var i = 0; i < taxes.length; i++) {
-			var selected = "";
-			log("selected_tax=" + selected_tax);
-			log("taxes[i][1]=" + taxes[i][1]);
-			if (taxes[i][1] == selected_tax) {
-				selected = "selected";
-			}
-			content += 			"<option value=\"" + taxes[i][1] + "\" " + selected + ">" + taxes[i][0] + "</option>";
+		var content = $('#default_ticket').html();
+		$("#" + divName).append(content);
+		var basic = $("#" + divName).find('[data-name=basic]');
+		var advanced = $("#" + divName).find('[data-name=advanced]');
+
+		basic.removeAttr('data-name');
+		advanced.removeAttr('data-name');
+
+		basic.attr('id', 'basic_' + id);
+		basic.find('[name*=ticket_name_a]').val(label);
+		basic.find('[name*=ticket_quantity_a]').val(quantity);
+		basic.find('[name*=ticket_amount_a]').val(amount);
+		basic.find('[name*=ticket_tax_a]').val(selected_tax);
+		basic.find('input[type=button]').click(function() {
+			eb_removeRate(id);
+		});
+
+		if (isFree) {
+			var cell = basic.find('[name*=ticket_amount_a]').parent();
+			basic.find('[name*=ticket_tax_a]').parent().remove();
+			cell.attr('colspan', '2');
+			cell.html('{{Free}}');
+			cell.append('<input type="hidden" name="ticket_amount_a[]" value="0" />');
+			cell.append('<input type="hidden" name="ticket_tax_a[]" value="0" />');
 		}
-		content +=		"</select>" +
-					"</td>" +
-					"<td>settings</td>" +
-					"<td id=\"remove_" + id + "\"></td>";
-		$("#" + id).html(content);
-		$("#" + divName).append("<tr id=\"advanced_" + id + "\"></tr>");
-		var content =
-					"<td colspan=\"7\">" +
-						"<table id=\"table_advanced_" + id + "\" width=\"100%\">" +
-							"<tr>" +
-								"<td class=\"form_label\" width=\"200px\">Description</td>" +
-								"<td><textarea name=\"ticket_description_a[]\" style=\"resize: none; width: 100%;\">"+description+"</textarea></td>" +
-							"</tr>" +
-//							"<tr>" +
-//								"<td class=\"form_label\">Start/End salling date</td>" +
-//								"<td>" +
-//									"<table>" +
-//										"<tr>" +
-//											"<td align=\"right\">Sale starts at</td>" +
-//											"<td><input type=\"text\" name=\"ticket_start_a[]\"/></td>" +
-//											"<td class=\"form_help\">{{Leave empty to start from now.}}</td>" +
-//										"</tr>" +
-//										"<tr>" +
-//											"<td align=\"right\">Sale ends at</td>" +
-//											"<td><input type=\"text\" name=\"ticket_end_a[]\"/></td>" +
-//											"<td class=\"form_help\">{{Leave empty to never end.}}</td>" +
-//										"</tr>" +
-//									"</table>" +
-//								"</td>" +
-//							"</tr>" +
-						"</table>" +
-					"</td>";
-		$("#advanced_" + id).html(content);
-		$("#" + id).find("[name*=ticket_name_a]").focus();
-		sync_remove_button(divName);
+
+		advanced.attr('id', 'advanced_' + id);
+		advanced.find('[name*=ticket_description_a]').val(description);
 	}
 </script>

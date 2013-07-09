@@ -12,41 +12,18 @@ function log(msg) {
 	if (window.console) console.log(msg);
 }
 
-
-function sync_remove_button(divName) {
-	log("divName=" + divName);
-	if (counter > 1) {
-		$("#" + divName).find("[id*=remove_]").each(add_remove_button);
-	} else {
-		$("#" + divName).find("[id*=remove_]").each(delete_remove_button);
-	}
-}
-
-function delete_remove_button() {
-	log("Delete remove button from: " + $(this).attr("id"));
-	$("#" + $(this).attr("id")).html("");
-}
-
-function add_remove_button() {
-	log("Add remove button to: " + $(this).attr("id"));
-	$("#" + $(this).attr("id")).html(
-		"<input type=\"button\" value=\"Remove\" onClick=\"removeRate('"
-		+ $(this).closest('tr').attr("id") + "', 'tickets');\">");
-}
-
-function removeRate(el, parent) {
-	if (counter > 1) {
+function eb_removeRate(id) {
+	if (counter > 0) {
 		counter--;
-		removeElement(el, parent);
-		removeElement("advanced_" + el, parent);
-		sync_remove_button(parent);
+		removeElement('basic_' + id);
+		removeElement("advanced_" + id);
 	} else {
 		alert("You have to set at least one rate");
 	}
 }
 
-function removeElement(el, parent) {
-	$("#" + parent).find("#" + el).remove();
+function removeElement(id) {
+	$("#" + id).remove();
 }
 
 function eb_curr(m) {
