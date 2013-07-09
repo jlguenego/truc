@@ -49,69 +49,6 @@ function removeElement(el, parent) {
 	$("#" + parent).find("#" + el).remove();
 }
 
-function eb_sync_amount() {
-	var amount = Math.abs($(this).val());
-	$(this).val(amount);
-
-	var id = $(this).attr('data-id');
-	var max_quantity = $(this).attr('max');
-	if (amount > max_quantity) {
-		amount = max_quantity;
-		$(this).val(max_quantity);
-	}
-	var unit_price = $('#unit_price_' + id).html();
-	var total_ht = amount * unit_price;
-	$('#total_ht_' + id).html(total_ht.toFixed(2));
-
-	var tax_rate = $('#tax_rate_' + id).html();
-	var tax_amount = (tax_rate/100) * total_ht;
-	$('#tax_amount_' + id).html(tax_amount.toFixed(2));
-
-	$('#ttc_' + id).html((tax_amount + total_ht).toFixed(2));
-
-	var sub_total = 0;
-	for (i = 0; i < rate_nbr; i++) {
-		var current_ttc = $('#total_ht_' + i).html();
-		sub_total = parseFloat(sub_total) + parseFloat(current_ttc);
-	}
-	$('#sub_total').html(sub_total.toFixed(2));
-
-	update_total(tax_rate);
-	eb_sync_next_button();
-}
-
-function update_total(tax_rate) {
-	for (i = 0; i < taxes.length; i++) {
-		var tax = taxes[i][0];
-		var id = taxes[i][1];
-		if (tax == tax_rate) {
-			var sub_total = 0;
-			for (i = 0; i < rate_nbr; i++) {
-				var tax_rate2 = $('#tax_rate_' + i).html();
-				if (tax_rate2 == tax) {
-					var current_total = $('#total_ht_' + i).html();
-					sub_total = parseFloat(sub_total) + parseFloat(current_total);
-				}
-			}
-			$('#tax_base_' + id).html(sub_total.toFixed(2));
-			var total = sub_total;
-			sub_total *= (tax/100);
-			$('#tax_total_' + id).html(sub_total.toFixed(2));
-			total += sub_total;
-			$('#tax_total_due_' + id).html(total.toFixed(2));
-		}
-	}
-
-	sub_total = 0;
-	for (i = 0; i < tax_nbr; i++) {
-		var current_total = $('#tax_total_' + i).html();
-		sub_total = parseFloat(sub_total) + parseFloat(current_total);
-	}
-	$('#tax_total').html(sub_total.toFixed(2));
-	var total = parseFloat($('#sub_total').html()) + parseFloat($('#tax_total').html());
-	$('#total_due').html('<b>' + total.toFixed(2) + '</b>');
-}
-
 function eb_curr(m) {
 	return parseFloat(m).toFixed(2);
 }

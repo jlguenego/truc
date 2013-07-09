@@ -1111,7 +1111,7 @@
 		$g_display["user"] = $user;
 		$g_display["event"] = $event;
 		$g_display["tickets"] = $event->get_tickets();
-			$_SESSION["state"] = "participation";
+		$_SESSION["state"] = "participation";
 	}
 
 	function action_bitcoin_payment() {
