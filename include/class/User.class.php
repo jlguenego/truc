@@ -5,10 +5,12 @@
 		public $email;
 		public $lastname;
 		public $firstname;
-		public $role;
+		public $flags;
 		public $activation_status;
 		public $activation_key;
 		public $phone;
+		public $vat;
+		public $compagny_name;
 		public $locale = "en";
 		public $address_id;
 
@@ -124,10 +126,12 @@ SET
 	`lastname`= :lastname,
 	`password`= :password,
 	`email`= :email,
-	`role`= :role,
+	`flags`= :flags,
 	`activation_status`= :activation_status,
 	`activation_key`= :activation_key,
 	`locale`= :locale,
+	`vat`= :vat,
+	`compagny_name`= :compagny_name,
 	`id_address`= :address_id;
 EOF;
 			debug($request);
@@ -140,10 +144,12 @@ EOF;
 				":lastname" => $this->lastname,
 				":password" => $this->password,
 				":email" => $this->email,
-				":role" => $this->role,
+				":flags" => $this->flags,
 				":activation_status" => $this->activation_status,
 				":activation_key" => $this->activation_key,
 				":locale" => $this->locale,
+				":vat" => $this->vat,
+				":compagny_name" => $this->compagny_name,
 				":address_id" => $this->address_id,
 			);
 			$pst->execute($array);
@@ -164,6 +170,8 @@ SET
 	`firstname`= :firstname,
 	`lastname`= :lastname,
 	`phone`= :phone,
+	`vat`= :vat,
+	`compagny_name`= :compagny_name,
 	`locale`= :locale,
 	`id_address`= :address_id
 WHERE `id`= :id
@@ -177,6 +185,8 @@ EOF;
 				":lastname" => $this->lastname,
 				":id" => $this->id,
 				":phone" => $this->phone,
+				":vat" => $this->vat,
+				":compagny_name" => $this->compagny_name,
 				":locale" => $this->locale,
 				":address_id" => $this->address_id,
 			);
@@ -508,6 +518,14 @@ EOF;
 			return format_firstname($this->firstname)." ".format_lastname($this->lastname);
 		}
 
+		public function get_compagny_name() {
+			$result = $this->compagny_name;
+			if (is_null_or_empty($result)) {
+				$result = $this->get_name();
+			}
+			return $result;
+		}
+
 		public function sync_phone($phone) {
 			if (is_null_or_empty($this->phone)) {
 				$this->phone = $phone;
@@ -529,7 +547,7 @@ EOF;
 			$user->lastname = $lastname;
 			$user->password = $_SESSION['partner'];
 			$user->locale = $locale;
-			$user->role = ROLE_USER;
+			$user->add_flag(ROLE_USER);
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
 			$user->clean_format();
 
@@ -541,6 +559,33 @@ EOF;
 					format_partner($_SESSION['partner'])));
 			unset($_SESSION['partner']);
 			return $user;
+		}
+
+		public function add_flag($flag) {
+			$this->flags |= $flag;
+		}
+
+		public function remove_flag($flag) {
+			$this->flags &= ~$flag;
+		}
+
+		public function has_flag($flag) {
+			return ($this->flags & $flag) != 0;
+		}
+
+		public static function get_biller() {
+			global $g_pdo;
+
+			$admin = ROLE_ADMIN;
+			$request = <<<EOF
+SELECT id FROM `user` WHERE `flags`&&${admin}
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute();
+			$record = $q->fetch();
+			$admin = new User();
+			$admin->load($record['id']);
+			return $admin;
 		}
 	}
 ?>

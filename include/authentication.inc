@@ -29,6 +29,6 @@
 			return FALSE;
 		}
 		$user = need_authentication();
-		return $user->role == ROLE_ADMIN;
+		return $user->has_flag(ROLE_ADMIN);
 	}
 ?>

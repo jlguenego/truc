@@ -3,12 +3,13 @@
 		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
-		$billing_address = Address::get_from_id($bill->address_id);
+		$billing_address = Address::get_from_id($bill->client_address_id);
 
 		$bill_type = "invoice";
 		if ($bill->type != BILL_TYPE_INVOICE) {
 			$bill_type = "quotation";
 		}
+		$biller_billing_address = Address::get_from_id($bill->biller_address_id);
 		if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
 ?>
 <div class="evt_title"><p>{{<?php echo strtoupper($bill_type); ?>}}</p></div>
@@ -21,11 +22,15 @@
 			<td width="50%">
 				<b>{{Provider identification}}</b><br/>
 				<br/>
-				JLG-Consulting - Jean-Louis GUENEGO - Entreprise Individuelle<br/>
-				2 allée du commandant Charcot <br/>
-				77200 Torcy, France<br/>
-				{{VAT identification number}}: FR 61 439 317 058<br/>
-				SIRET: 439 317 058 00022<br/>
+				<?php echo $bill->biller_name ; ?><br/>
+				<?php echo nl2br($biller_billing_address->address); ?><br/>
+			<?php
+				if (!is_null_or_empty($bill->biller_vat)) {
+			?>
+				{{VAT#}}: <?php echo $bill->biller_vat; ?>
+			<?php
+				}
+			?>
 			</td>
 			<td align="right">
 				<b>{{Client identification}}</b><br/>
@@ -35,7 +40,7 @@
 			<?php
 				if ($bill->is_for_company()) {
 			?>
-				{{VAT identification number}}: <?php echo $bill->vat; ?>
+				{{VAT#}}: <?php echo $bill->vat; ?>
 			<?php
 				}
 			?>

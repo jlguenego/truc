@@ -31,7 +31,10 @@
 			$user->password = $_POST["password"];
 			$user->lastname = format_lastname($_POST["lastname"]);
 			$user->firstname = format_firstname($_POST["firstname"]);
-			$user->role = ROLE_ADMIN;
+			$user->compagny_name = $_POST["compagny_name"];
+			$user->vat = $_POST["compagny_vat"];
+			$user->add_flag(ROLE_ADMIN);
+			$user->add_flag(ROLE_BILLER);
 			$user->activation_status = ACTIVATION_STATUS_ACTIVATED;
 			$user->generate_activation_key();
 
@@ -113,6 +116,14 @@
 					<td><input type="text" name="firstname"></td>
 				</tr>
 				<tr>
+					<td>VAT#: </td>
+					<td><input type="text" name="compagny_vat"></td>
+				</tr>
+				<tr>
+					<td>Compagny Name: </td>
+					<td><input type="text" name="compagny_name"></td>
+				</tr>
+				<tr>
 					<td>Lastname: </td>
 					<td><input type="text" name="lastname"></td>
 				</tr>
@@ -157,6 +168,8 @@
 				$("input[name=lastname]").val(profile_array[i].admin_lastname);
 				$("input[name=clear_password]").val(profile_array[i].admin_password);
 				$("input[name=clear_password2]").val(profile_array[i].admin_password);
+				$("input[name=compagny_vat]").val(profile_array[i].compagny_vat);
+				$("input[name=compagny_name]").val(profile_array[i].compagny_name);
 				$("textarea[name=address]").html(profile_array[i].admin_address);
 			}
 		</script>

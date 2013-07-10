@@ -27,7 +27,7 @@
 			<?php
 				if ($event->can_participate()) {
 			?>
-				<button class="evt_button evt_btn_small" style="width: 160px;" onclick="window.location='?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>';return false;"><?php echo format_participate_button($event); ?></button>
+				<button class="evt_button evt_btn_small" style="width: 190px;" onclick="window.location='?action=get_form&amp;type=participation&amp;event_id=<?php echo $event->id ?>';return false;">{{Order tickets!}}</button>
 			<?php
 				} else if($event->get_remaining_tickets_amount() <= 0) {
 			?>

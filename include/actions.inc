@@ -102,6 +102,9 @@
 			case "generate":
 				action_generate();
 				break;
+			case "confirm_order":
+				action_confirm_order();
+				break;
 			case "none":
 				break;
 			default:
@@ -138,6 +141,7 @@
 		$report = deal_generate_report($event);
 		$bill = Bill::invoice_from_report($report, $event);
 		$bill->store();
+		debug('bill='.sprint_r($bill));
 		$event->add_flag(EVENT_FLAG_INVOICE_ALREADY_CREATED);
 
 		$_GET['id'] = $bill->id;
@@ -440,7 +444,7 @@
 			$user->id = create_id();
 			$user->hydrate_from_form();
 			$user->locale = $_SESSION["locale"];
-			$user->role = ROLE_USER;
+			$user->add_flag(ROLE_USER);
 			$user->activation_status = ACTIVATION_STATUS_TO_BE_ACTIVATED;
 			$user->generate_activation_key();
 			$address = new Address();
@@ -489,6 +493,8 @@
 				$user->phone = $_GET["phone"];
 				$user->locale = $_SESSION["locale"];
 				$user->email = $_GET['email'];
+				$user->vat = $_GET['vat'];
+				$user->compagny_name = $_GET['compagny_name'];
 				if (!is_null_or_empty($_GET['new_pass'])) {
 					$user->password = $_GET['new_pass'];
 				} else {
@@ -1060,9 +1066,13 @@
 				debug('given address='.$_GET['billing_address']);
 				debug('address='.$address->address);
 				debug('address_id='.$address->id);
-				$bill->address_id = $address->id;
+				$bill->client_address_id = $address->id;
+				$bill->biller_address_id = $event->billing_address_id;
+				$bill->biller_name = $event->organizer_name;
+				$bill->biller_vat = $event->vat;
 
 				$bill->store();
+				debug('bill='.sprint_r($bill));
 				$g_display["bill"] = $bill;
 				$_SESSION["bill"] = $bill;
 				$g_display["event"] = $event;
@@ -1133,6 +1143,14 @@
 			message_set_error($e->getMessage());
 			$_SESSION["state"] = "error";
 		}
+	}
+
+	function action_confirm_order() {
+		if ((!TEST_MODE) && $_SESSION['state'] == "confirm_order") {
+			return;
+		}
+		action_payment_success();
+		$_SESSION['state'] = "confirm_order";
 	}
 
 	function action_payment_success() {

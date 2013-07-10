@@ -11,6 +11,7 @@
 
 	define('ROLE_USER', 0);
 	define('ROLE_ADMIN', 1);
+	define('ROLE_BILLER', 2);
 
 	define('ACTIVATION_STATUS_TO_BE_ACTIVATED', 0);
 	define('ACTIVATION_STATUS_ACTIVATED', 1);

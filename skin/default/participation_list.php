@@ -18,17 +18,7 @@
 		$user = User::get_from_id($bill->user_id);
 ?>
 	<tr>
-<?php
-	if (is_admin_logged()) {
-?>
 		<td><a href="<?php echo $bill->url(); ?>"><?php echo $bill->label; ?></a></td>
-<?php
-	} else {
-?>
-		<td><?php echo $bill->label; ?></td>
-<?php
-	}
-?>
 		<td><?php echo $item->event_rate_name; ?></td>
 		<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 		<td class="evt_curr"><?php echo $item->total_tax; ?>%</td>

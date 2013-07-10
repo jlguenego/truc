@@ -20,6 +20,14 @@
 			<td><?php echo nl2br($user->address()); ?></td>
 		</tr>
 		<tr>
+			<th class="th_left">{{VAT#}}</th>
+			<td><?php echo nl2br($user->vat); ?></td>
+		</tr>
+		<tr>
+			<th class="th_left">{{Compagny name}}</th>
+			<td><?php echo nl2br($user->compagny_name); ?></td>
+		</tr>
+		<tr>
 			<th class="th_left">{{Phone number}}</th>
 			<td><?php echo $user->phone; ?></td>
 		</tr>

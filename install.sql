@@ -11,6 +11,8 @@ CREATE TABLE event(
         organizer_name    Varchar (255) NOT NULL ,
         phone             Varchar (25) ,
         vat               Varchar (255) ,
+        biller_name       Varchar (255) ,
+        biller_vat        Varchar (255) ,
         happening_t       Varchar (25) NOT NULL ,
         confirmation_t    Varchar (25) NOT NULL ,
         funding_needed    Decimal (25,2) NOT NULL ,
@@ -39,12 +41,14 @@ CREATE TABLE user(
         password          Varchar (255) NOT NULL ,
         lastname          Varchar (255) NOT NULL ,
         firstname         Varchar (255) NOT NULL ,
-        role              Int NOT NULL ,
+        flags             Int NOT NULL ,
         activation_status Int NOT NULL ,
         activation_key    Varchar (255) ,
         locale            Varchar (25) ,
         token             Varchar (255) ,
         phone             Varchar (25) ,
+        vat               Varchar (255) ,
+        compagny_name     Varchar (255) ,
         id_address        Int NOT NULL ,
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
@@ -75,24 +79,27 @@ CREATE TABLE sequence(
 
 
 CREATE TABLE bill(
-        id           Int NOT NULL ,
-        created_t    Varchar (25) NOT NULL ,
-        mod_t        Varchar (25) NOT NULL ,
-        flags        Int ,
-        label        Varchar (255) NOT NULL ,
-        payment_info Text ,
-        total_ht     Decimal (25,2) NOT NULL ,
-        total_tax    Decimal (25,2) NOT NULL ,
-        total_ttc    Decimal (25,2) NOT NULL ,
-        username     Varchar (255) NOT NULL ,
-        vat          Varchar (255) ,
-        status       Int NOT NULL ,
-        type         Int NOT NULL ,
-        target       Int ,
-        id_user      Int NOT NULL ,
-        id_event     Int NOT NULL ,
-        id_address   Int NOT NULL ,
-        PRIMARY KEY (id )
+        id                     Int NOT NULL ,
+        created_t              Varchar (25) NOT NULL ,
+        mod_t                  Varchar (25) NOT NULL ,
+        flags                  Int ,
+        label                  Varchar (255) NOT NULL ,
+        payment_info           Text ,
+        total_ht               Decimal (25,2) NOT NULL ,
+        total_tax              Decimal (25,2) NOT NULL ,
+        total_ttc              Decimal (25,2) NOT NULL ,
+        username               Varchar (255) NOT NULL ,
+        vat                    Varchar (255) ,
+        biller_name            Varchar (255) ,
+        biller_vat             Varchar (255) ,
+        status                 Int NOT NULL ,
+        type                   Int NOT NULL ,
+        target                 Int ,
+        id_user                Int NOT NULL ,
+        id_event               Int NOT NULL ,
+        id_client_address      Int NOT NULL ,
+        id_biller_address   Int NOT NULL ,
+        PRIMARY KEY (id)
 )ENGINE=InnoDB;
 
 
@@ -204,7 +211,8 @@ ALTER TABLE user ADD CONSTRAINT FK_user_id_address FOREIGN KEY (id_address) REFE
 ALTER TABLE ticket ADD CONSTRAINT FK_ticket_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
-ALTER TABLE bill ADD CONSTRAINT FK_bill_id_address FOREIGN KEY (id_address) REFERENCES address(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_client_address FOREIGN KEY (id_client_address) REFERENCES address(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_organizer_address FOREIGN KEY (id_organizer_address) REFERENCES address(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
 ALTER TABLE item_ticket ADD CONSTRAINT FK_item_ticket_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);

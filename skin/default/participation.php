@@ -372,7 +372,7 @@ $(function() {
 	}
 ?>
 
-<div class="evt_title"><p><?php echo format_participate_title($event); ?></p></div>
+<div class="evt_title"><p>{{Order tickets}}</p></div>
 {{Event:}} <?php echo $event->title; ?>
 
 <form name="input" action="?action=participate&amp;event_id=<?php echo $event->id; ?>" method="POST">
@@ -388,7 +388,7 @@ $(function() {
 	command_billinfo($user);
 ?>
 	<input type="hidden" name="participation_type" value="<?php echo $event->type; ?>"/>
-	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales">Sales policies</a> and accept them.}}<br/>
+	<input type="checkbox" name="confirm"/> {{I have read the <a href="info/sales" target="_blank">Sales policies</a>, the <a href="info/terms" target="_blank">Terms and Conditions</a> and accept them.}}<br/>
 	<br/>
 	<span class="form_cancel">
 		<input type="button" class="evt_button evt_btn_small evt_btn_cancel" onclick="window.location='?action=retrieve&amp;type=event&amp;id=<?php echo $event->id; ?>'" value="{{Cancel}}" />

@@ -163,11 +163,10 @@ EOF;
 EOF;
 	if ($event->can_participate()) {
 		$id = $event->id;
-		$button_label = format_participate_button($event);
 
 		$ticket_table .= <<<EOF
 			<a href="?action=get_form&amp;type=participation&amp;event_id=${id}">
-				<button class="evt_button">${button_label}</button>
+				<button class="evt_button">{{Order tickets!}}</button>
 			</a>
 EOF;
 	} else if ($event->get_remaining_tickets_amount() <= 0) {
@@ -252,7 +251,6 @@ EOF;
 	$blocks[] = $block;
 
 	$address = Address::get_from_id($event->location_address_id);
-	$google_address = $address->google_address();
 	$typed_address = nl2br($address->address);
 	$location = <<<EOF
 <div id="event_location_map" class="map"></div>
@@ -260,9 +258,14 @@ EOF;
 <b>{{Location}}</b>
 <hr/>
 ${typed_address}<br/>
+EOF;
+	if (TEST_MODE) {
+		$google_address = $address->google_address();
+		$location .=<<<EOF
 <br/>
 ${google_address}
 EOF;
+	}
 	$block = new Block();
 	$block->side = 'left';
 	$block->title = 'Location';

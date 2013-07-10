@@ -210,13 +210,16 @@ EOF
 <table id="default_ticket" style="display: none;">
 	<tr data-name="basic">
 		<td>
-			<input type="text" name="ticket_name_a[]" value="" placeholder="{{Ticket name}}" />
+			<label>{{Ticket name}}</label><br/>
+			<input type="text" name="ticket_name_a[]" value="" />
 		</td>
 		<td>
-			<input class="evt_rate_qty" type="number" name="ticket_quantity_a[]" value="" min="0" placeholder="{{Quantity}}" />
+			<label>{{Quantity}}</label><br/>
+			<input class="evt_rate_qty" type="number" name="ticket_quantity_a[]" value="" min="0" />
 		</td>
 		<td>
-			<input class="evt_rate_price" type="number" name="ticket_amount_a[]" value="" step="0.01" min="0" placeholder="{{Price}}" />&nbsp;€&nbsp;(Euro)
+			<label>{{Price}}</label><br/>
+			<input class="evt_rate_price" type="number" name="ticket_amount_a[]" value="" step="0.01" min="0" />&nbsp;€&nbsp;(Euro)
 		</td>
 		<td>
 			<select name="ticket_tax_a[]">

@@ -11,13 +11,16 @@
 		public $label;
 		public $username;
 		public $vat;
+		public $biller_name;
+		public $biller_vat;
 		public $status = BILL_STATUS_PLANNED;
 		public $type = BILL_TYPE_QUOTATION;
 		public $target = BILL_TARGET_ATTENDEE;
 		public $payment_info;
 		public $event_id;
 		public $user_id;
-		public $address_id;
+		public $client_address_id;
+		public $biller_address_id;
 
 		public static function get_from_id($id) {
 			$bill = new Bill();
@@ -44,7 +47,8 @@ EOF;
 			}
 			$this->event_id = $record["id_event"];
 			$this->user_id = $record["id_user"];
-			$this->address_id = $record["id_address"];
+			$this->client_address_id = $record["id_client_address"];
+			$this->biller_address_id = $record["id_biller_address"];
 		}
 
 		public function compute() {
@@ -90,8 +94,11 @@ SET
 	`id_event`= :id_event,
 	`payment_info`= :payment_info,
 	`vat`= :vat,
+	`biller_name`= :biller_name,
+	`biller_vat`= :biller_vat,
 	`target`= :target,
-	`id_address`= :address_id
+	`id_client_address`= :client_address_id,
+	`id_biller_address`= :biller_address_id
 EOF;
 			$pst = $g_pdo->prepare($request);
 			$array = array(
@@ -110,8 +117,11 @@ EOF;
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
 				":vat" => $this->vat,
+				":biller_name" => $this->biller_name,
+				":biller_vat" => $this->biller_vat,
 				":target" => $this->target,
-				":address_id" => $this->address_id,
+				":client_address_id" => $this->client_address_id,
+				":biller_address_id" => $this->biller_address_id,
 			);
 
 			$pst->execute($array);
@@ -258,9 +268,13 @@ EOF;
 			$bill->target = BILL_TARGET_ORGANIZER;
 			$bill->username = $event->organizer_name;
 			$bill->event_id = $event->id;
-			$bill->address_id = $event->billing_address_id;
+			$bill->client_address_id = $event->billing_address_id;
 			$bill->vat = $event->vat;
 			$bill->type = BILL_TYPE_INVOICE;
+			$organizer = User::get_biller();
+			$bill->biller_address_id = $organizer->address_id;
+			$bill->biller_name = $organizer->get_compagny_name();
+			$bill->biller_vat = $organizer->vat;
 
 			$label = "Event-Biller-I-";
 			$bill->label = $label."EVT-".sprintf("%06d", $event->id);

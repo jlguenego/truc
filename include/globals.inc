@@ -41,6 +41,7 @@
 		"record_manage",
 		"task_run",
 		"bitcoin_payment",
+		"confirm_order",
 		"report",
 	);
 

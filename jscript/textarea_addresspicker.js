@@ -119,13 +119,15 @@
 
 			var textarea = this.element;
 			var name = textarea.attr('name');
-			var left = 0;
-			if (this.options.showBlockMap) {
-				left = textarea.offset().left + textarea.width() + 10;
+			var left = textarea.offset().left + textarea.width() + 10;
+			var displayNone = '';
+			if (!this.options.showBlockMap) {
+				left = 0;
+				displayNone = 'style="display: none;"';
 			}
 			this.top = textarea.offset().top;
 			var top = this.top;
-			var content = '	<div id="' + name + '_eb_map_block" class="eb_map_block">\
+			var content = '	<div id="' + name + '_eb_map_block" class="eb_map_block" ' + displayNone + '>\
 								<table>\
 									<tr>\
 										<td>\

@@ -41,7 +41,7 @@
 
 			$admin = ROLE_ADMIN;
 			$request = <<<EOF
-SELECT COUNT(*) FROM `user` WHERE `role`=${admin}
+SELECT COUNT(*) FROM `user` WHERE `flags`&&${admin}
 EOF;
 			$q = $g_pdo->prepare($request);
 			$q->execute();

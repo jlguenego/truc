@@ -135,10 +135,8 @@ $this->array = array(
 	"Event List" => "Liste des évènements",
 	"Name" => "Nom",
 	"Status" => "Statut",
-	"Book tickets!" => "Réserver des billets !",
-	"Buy tickets!" => "Acheter des billets !",
-	"Book tickets" => "Réserver des billets",
-	"Buy tickets" => "Acheter des billets",
+	"Order tickets!" => "Commander des billets !",
+	"Order tickets" => "Commander des billets",
 	"Date" => "Date",
 	" (Non Published)" => " (Non Publié)",
 	"Planned" => "Prévu",
@@ -154,7 +152,7 @@ $this->array = array(
 	"here" => "ici",
 	"to request its publication to our support." => "pour demander sa publication à notre support.",
 	"A request for publication has been done. Our support team is going to process it very soon." =>
-		"Une requête de publication à été faite. Notre équipe la traitera bientôt.",
+		"Une requête de publication à été faite. Notre équipe la traitera dans les meilleurs délais.",
 	"Administration" => "Administration",
 	"This event is published." => "Cet évènement est publié.",
 	"This event is not published." => "Cet évènement n'est pas publié.",
@@ -264,8 +262,8 @@ $this->array = array(
 		"La personne ou l'organisation en charge de règler la facture.",
 	"ZIP code" => "Code postal",
 	"State (if applicable)" => "Etat (si applicable)",
-	"I have read the <a href=\"info/sales\">Sales policies</a> and accept them." =>
-		"J'ai lu les <a href=\"info/sales\">Conditions Générales de Ventes</a> et les accepte.",
+	"I have read the <a href=\"info/sales\" target=\"_blank\">Sales policies</a>, the <a href=\"info/terms\" target=\"_blank\">Terms and Conditions</a> and accept them." =>
+		"J'ai lu les <a href=\"info/sales\" target=\"_blank\">Conditions Générales de Ventes</a>, les <a href=\"info/terms\" target=\"_blank\">Conditions Générales d'Utilisation</a> et les accepte.",
 	"Next" => "Suivant",
 	"VAT number (if applicable)" => "Numéro de TVA (si applicable)",
 	"For EU companies only." => "Uniquement pour les entreprises.",
@@ -533,6 +531,7 @@ $this->array = array(
 	"Billing:" => "Facturation :",
 	"Total ticket" => "Total ticket",
 	"Street no, Street, Zip City, etc." => "No de rue, Rue, Code Postal Ville, etc.",
+	"Confirm your order!" => "Confirmez votre commande !",
 
 //The End
 );

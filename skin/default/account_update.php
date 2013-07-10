@@ -23,6 +23,14 @@
 		default_value("address", $address->address), _t("Your address"));
 	$item->is_optional = true;
 	$item->other_attr = 'class="addresspicker" placeholder="{{Street no, Street, Zip City, etc.}}"';
+	$item = $f->add_text(_t("VAT#"), "vat",
+		default_value("vat", $user->vat),
+		_t("VAT#, for european compagny only."));
+	$item->is_optional = true;
+	$item = $f->add_text(_t("Compagny name"), "compagny_name",
+		default_value("compagny_name", $user->compagny_name),
+		_t("VAT#, for european compagny only."));
+	$item->is_optional = true;
 	$item = $f->add_password(_t("New Password (optional)"), "clear_new_pass",
 		_t("Leave empty if you do not want to change your password."));
 	$item->is_optional = true;
