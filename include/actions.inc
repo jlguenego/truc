@@ -667,7 +667,12 @@
 
 					$billing_address = Address::get_from_id($event->billing_address_id);
 					$billing_address->hydrate_from_form('billing_address');
-					$billing_address->update();
+					if ($billing_address->has_accountancy_activity()) {
+						$billing_address->store();
+						$event->billing_address_id = $billing_address->id;
+					} else {
+						$billing_address->update();
+					}
 
 					$location_address = Address::get_from_id($event->location_address_id);
 					$location_address->hydrate_from_form('location_address');
@@ -983,8 +988,8 @@
 					throw new Exception(_t("You must read and accept the policies."));
 				}
 				$bill = new Bill();
-				$bill->username = $_GET['username'];
-				$bill->vat = $_GET["vat"];
+				$bill->client_name = $_GET['client_name'];
+				$bill->client_vat = $_GET["client_vat"];
 				$bill->event_id = $_GET["event_id"];
 				$event = Event::get_from_id($_GET["event_id"]);
 				if ($event == NULL) {

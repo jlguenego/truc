@@ -237,5 +237,16 @@ EOF;
 			}
 			return $address;
 		}
+
+		public function has_accountancy_activity() {
+			global $g_pdo;
+			$request = <<<EOF
+SELECT COUNT(*) FROM bill WHERE id_biller_address = :id
+EOF;
+			$q = $g_pdo->prepare($request);
+			$q->execute(array(':id' => $this->id));
+			$count = $q->fetch();
+			return $count[0] > 0;
+		}
 	}
 ?>

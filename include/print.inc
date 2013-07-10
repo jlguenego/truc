@@ -35,12 +35,12 @@
 			<td align="right">
 				<b>{{Client identification}}</b><br/>
 				<br/>
-				<?php echo $bill->username; ?><br/>
+				<?php echo $bill->client_name; ?><br/>
 				<?php echo nl2br($billing_address->address); ?><br/>
 			<?php
 				if ($bill->is_for_company()) {
 			?>
-				{{VAT#}}: <?php echo $bill->vat; ?>
+				{{VAT#}}: <?php echo $bill->client_vat; ?>
 			<?php
 				}
 			?>

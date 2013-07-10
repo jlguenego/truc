@@ -532,6 +532,16 @@ $this->array = array(
 	"Total ticket" => "Total ticket",
 	"Street no, Street, Zip City, etc." => "No de rue, Rue, Code Postal Ville, etc.",
 	"Confirm your order!" => "Confirmez votre commande !",
+	"Add a free ticket" => "Ajouter un ticket gratuit",
+	"Add a paying ticket" => "Ajouter un ticket payant",
+	"Compagny name" => "Nom de l'entreprise",
+	"Free" => "Gratuit",
+	"Order successfully processed!" => "Commande effectuée avec succès",
+	"Remove" => "Retirer",
+	"VAT#" => "No TVA",
+	"VAT#, for european compagny only." => "No TVA, pour les entrepises européennes seulement",
+	"You can access to this bill via this permalink:" =>
+			"vous pouvez accèder à ce reçu via ce lien permanent :",
 
 //The End
 );

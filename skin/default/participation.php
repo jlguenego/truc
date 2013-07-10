@@ -350,7 +350,7 @@ $(function() {
 <table class="evt_table_billing inline">
 	<tr>
 		<th class="th_left">{{Billing Entity name}}</th>
-		<td><input type="text" name="username" value="<?php echo $user->firstname.' '.$user->lastname; ?>"/></td>
+		<td><input type="text" name="client_name" value="<?php echo $user->get_compagny_name(); ?>"/></td>
 		<td class="help">{{The person or organisation name to be charged.}}</td>
 	</tr>
 	<tr>
@@ -363,7 +363,7 @@ $(function() {
 	<tr>
 		<th>{{VAT number (if applicable)}}</th>
 		<td>
-			<input type="text" name="vat" value="" placeholder="{{For EU companies only.}}"/>
+			<input type="text" name="client_vat" value="<?php echo default_value('client_vat', $user->vat); ?>" placeholder="{{For EU companies only.}}"/>
 		</td>
 		<td class="help">{{For EU companies only.}}</td>
 	</tr>

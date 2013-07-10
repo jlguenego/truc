@@ -9,8 +9,8 @@
 		public $total_tax;
 		public $total_ttc;
 		public $label;
-		public $username;
-		public $vat;
+		public $client_name;
+		public $client_vat;
 		public $biller_name;
 		public $biller_vat;
 		public $status = BILL_STATUS_PLANNED;
@@ -87,13 +87,13 @@ SET
 	`total_tax`= :total_tax,
 	`total_ttc`= :total_ttc,
 	`label`= :label,
-	`username`= :username,
+	`client_name`= :client_name,
 	`status`= :status,
 	`type`= :type,
 	`id_user`= :id_user,
 	`id_event`= :id_event,
 	`payment_info`= :payment_info,
-	`vat`= :vat,
+	`client_vat`= :client_vat,
 	`biller_name`= :biller_name,
 	`biller_vat`= :biller_vat,
 	`target`= :target,
@@ -110,13 +110,13 @@ EOF;
 				":total_tax" => $this->total_tax,
 				":total_ttc" => $this->total_ttc,
 				":label" => $this->label,
-				":username" => $this->username,
+				":client_name" => $this->client_name,
 				":status" => $this->status,
 				":type" => $this->type,
 				":id_user" => $this->user_id,
 				":id_event" => $this->event_id,
 				":payment_info" => $this->payment_info,
-				":vat" => $this->vat,
+				":client_vat" => $this->client_vat,
 				":biller_name" => $this->biller_name,
 				":biller_vat" => $this->biller_vat,
 				":target" => $this->target,
@@ -247,7 +247,7 @@ EOF;
 		}
 
 		public function is_for_company() {
-			return !is_null_or_empty($this->vat);
+			return !is_null_or_empty($this->client_vat);
 		}
 
 		public function get_event() {
@@ -266,10 +266,10 @@ EOF;
 			$bill = new Bill();
 			$bill->user_id = $_SESSION['user_id'];
 			$bill->target = BILL_TARGET_ORGANIZER;
-			$bill->username = $event->organizer_name;
+			$bill->client_name = $event->organizer_name;
 			$bill->event_id = $event->id;
 			$bill->client_address_id = $event->billing_address_id;
-			$bill->vat = $event->vat;
+			$bill->client_vat = $event->vat;
 			$bill->type = BILL_TYPE_INVOICE;
 			$organizer = User::get_biller();
 			$bill->biller_address_id = $organizer->address_id;

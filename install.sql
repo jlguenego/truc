@@ -88,8 +88,8 @@ CREATE TABLE bill(
         total_ht               Decimal (25,2) NOT NULL ,
         total_tax              Decimal (25,2) NOT NULL ,
         total_ttc              Decimal (25,2) NOT NULL ,
-        username               Varchar (255) NOT NULL ,
-        vat                    Varchar (255) ,
+        client_name            Varchar (255) NOT NULL ,
+        client_vat             Varchar (255) ,
         biller_name            Varchar (255) ,
         biller_vat             Varchar (255) ,
         status                 Int NOT NULL ,
@@ -212,7 +212,7 @@ ALTER TABLE ticket ADD CONSTRAINT FK_ticket_id_event FOREIGN KEY (id_event) REFE
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_user FOREIGN KEY (id_user) REFERENCES user(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_event FOREIGN KEY (id_event) REFERENCES event(id);
 ALTER TABLE bill ADD CONSTRAINT FK_bill_id_client_address FOREIGN KEY (id_client_address) REFERENCES address(id);
-ALTER TABLE bill ADD CONSTRAINT FK_bill_id_organizer_address FOREIGN KEY (id_organizer_address) REFERENCES address(id);
+ALTER TABLE bill ADD CONSTRAINT FK_bill_id_biller_address FOREIGN KEY (id_biller_address) REFERENCES address(id);
 ALTER TABLE item ADD CONSTRAINT FK_item_id_bill FOREIGN KEY (id_bill) REFERENCES bill(id);
 ALTER TABLE item_ticket ADD CONSTRAINT FK_item_ticket_id_ticket FOREIGN KEY (id_ticket) REFERENCES ticket(id);
 ALTER TABLE interaction ADD CONSTRAINT FK_interaction_id_guest FOREIGN KEY (id_guest) REFERENCES guest(id);
