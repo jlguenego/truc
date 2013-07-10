@@ -71,7 +71,7 @@ EOF
 
 	$billing_address = Address::get_from_id($event->billing_address_id);
 	$item = $f->add_textarea(_t("Billing address"), "billing_address",
-		default_value("billing_address", $billing_address->address),
+		default_value("billing_address", $billing_address->address, $user->address()),
 		_t("Address of the organizer. Please indicate an accurate address (street, street no, city, zip, state, country)"));
 	$item->other_attr = 'class="addresspicker" data-addresspickeroptions=\'{"showBlockMap": false}\' placeholder="'.$placeholder.'"';
 	$item = $f->add_text(_t("Web site (optional)"), "link", default_value("link", $event->link),
@@ -347,7 +347,11 @@ EOF
 			$tax_rate = $ticket->tax_rate;
 			$quantity = $ticket->max_quantity;
 			$description = $ticket->description;
-			echo "addRate('tickets', '$label', '$quantity', '$amount', $tax_rate, '$description');";
+			$isFree = 'true';
+			if ($amount > 0) {
+				$isFree = 'false';
+			}
+			echo "addRate('tickets', '$label', '$quantity', '$amount', $tax_rate, '$description', $isFree);";
 			$i++;
 		}
 	}
