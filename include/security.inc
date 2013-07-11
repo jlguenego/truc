@@ -2,7 +2,6 @@
 	function security_html_injection() {
 		$array = array(
 			"long_description",
-			"short_description",
 			"content_h",
 		);
 		foreach ($_GET as $key => $value) {

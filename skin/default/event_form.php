@@ -81,7 +81,7 @@ EOF
 	$item = $f->add_textarea(_t("Short description"), "short_description",
 		default_value("short_description", $event->short_description),
 		_t("Enter a short description of the event. (HTML editor)"));
-	$item->other_attr = 'class="apply_tinymce"';
+	$item->other_attr = 'style="width: 100%;" rows="5"';
 	$item = $f->add_textarea(_t("Long description"), "long_description",
 		default_value("long_description", $event->long_description),
 		_t("Enter a long description of the event. (HTML editor)"));

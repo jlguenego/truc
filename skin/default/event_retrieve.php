@@ -6,7 +6,7 @@
 	$block = new Block();
 	$block->side = 'right';
 	$block->title = 'Short description';
-	$block->content = $event->short_description;
+	$block->content = nl2br($event->short_description);
 	$blocks[] = $block;
 
 	if (is_admin_logged() && !$event->is_inactivated()) {
