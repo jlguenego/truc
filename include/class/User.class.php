@@ -518,7 +518,7 @@ EOF;
 			return format_firstname($this->firstname)." ".format_lastname($this->lastname);
 		}
 
-		public function get_compagny_name() {
+		public function get_company_name() {
 			$result = $this->compagny_name;
 			if (is_null_or_empty($result)) {
 				$result = $this->get_name();

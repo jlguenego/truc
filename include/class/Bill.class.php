@@ -273,7 +273,7 @@ EOF;
 			$bill->type = BILL_TYPE_INVOICE;
 			$organizer = User::get_biller();
 			$bill->biller_address_id = $organizer->address_id;
-			$bill->biller_name = $organizer->get_compagny_name();
+			$bill->biller_name = $organizer->get_company_name();
 			$bill->biller_vat = $organizer->vat;
 
 			$label = "Event-Biller-I-";

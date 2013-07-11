@@ -28,7 +28,7 @@ EOF
 	$item = $f->add_text(_t("[event]Title"), "title", default_value("title", $event->title),
 		_t("Conference, or meeting name."));
 	$item->other_attr = ' size="60" maxlength="255"';
-	$item = $f->add_text(_t("Organizer name"), "organizer_name", default_value("organizer_name", $event->organizer_name),
+	$item = $f->add_text(_t("Organizer name"), "organizer_name", default_value("organizer_name", $event->organizer_name, $user->get_company_name()),
 		_t("The entity that is responsible for organizing the event."));
 	$item->other_attr = ' size="60" maxlength="255"';
 	$item = $f->add_text(_t("Organizer phone (optional but recommended)"), "phone",
@@ -48,7 +48,7 @@ EOF
 		_t("Date at which starts the event (Format: YYYY-MM-DD)."));
 	$item->other_attr = 'autocomplete="off"';
 	$item = $f->add_text(_t("VAT indentification number"), "vat",
-		default_value("vat", $event->vat),
+		default_value("vat", $event->vat, $user->vat),
 		_t("For EU company only."));
 	$item->is_optional = true;
 	if (!$event->is_confirmed()) {

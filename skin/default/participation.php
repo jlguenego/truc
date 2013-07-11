@@ -350,7 +350,7 @@ $(function() {
 <table class="evt_table_billing inline">
 	<tr>
 		<th class="th_left">{{Billing Entity name}}</th>
-		<td><input type="text" name="client_name" value="<?php echo $user->get_compagny_name(); ?>"/></td>
+		<td><input type="text" name="client_name" value="<?php echo $user->get_company_name(); ?>"/></td>
 		<td class="help">{{The person or organisation name to be charged.}}</td>
 	</tr>
 	<tr>
