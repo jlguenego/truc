@@ -34,6 +34,7 @@
 		public function parse($str) {
 			debug("Parsing page.");
 			$str = preg_replace_callback('/[{][{](.*?)[}][}]/', array($this, "gettext"), $str);
+			$str = preg_replace_callback('/\[\[(.*?)\]\]/', array($this, "getfile"), $str);
 			return $str;
 		}
 
@@ -62,6 +63,11 @@
 
 		public function gettext($array) {
 			return $this->_t($array[1]);
+		}
+
+		public function getfile($array) {
+			$result = file_get_contents($this->filename(BASE_DIR . $array[1]));
+			return $result;
 		}
 
 		public function _t($msg) {

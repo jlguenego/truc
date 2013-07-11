@@ -70,6 +70,18 @@ CREATE TABLE ticket(
         PRIMARY KEY (id )
 )ENGINE=InnoDB;
 
+CREATE TABLE discount(
+        id           Int NOT NULL ,
+        created_t    Varchar (25) NOT NULL ,
+        mod_t        Varchar (25) NOT NULL ,
+        class        Varchar (255) NOT NULL ,
+        code         Varchar (255) NOT NULL ,
+        expiration_t Varchar (25),
+        amount       Decimal (25,2) ,
+        percentage   Decimal (25,2) ,
+        id_event     Int,
+        PRIMARY KEY (id)
+)ENGINE=InnoDB;
 
 CREATE TABLE sequence(
         name    Varchar (255) NOT NULL ,

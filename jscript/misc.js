@@ -216,3 +216,24 @@ function addresspicker_init() {
 		var addresspicker = $(this).textarea_addresspicker(options);
 	});
 }
+
+function eb_show_dialog(id) {
+	$( "#"+id ).dialog({
+		modal: true,
+		width: 700,
+		height: 500,
+		closeOnEscape: true,
+		draggable: false,
+		buttons: {
+			Ok: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		open: function (event, ui) {
+			$('html').css('overflow', 'hidden');
+		},
+		close: function (event, ui) {
+				$('html').css('overflow', 'auto');
+		}
+    });
+}

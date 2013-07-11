@@ -154,6 +154,37 @@ EOF;
 		$block->content = $content;
 		$block->css_class = 'evt_administration';
 		$blocks[] = $block;
+
+		$discounts_html = <<<EOF
+<table class="evt_table inline" >
+	<tr>
+		<th>{{Code}}</th>
+		<th>{{Expiration date}}</th>
+		<th>{{Rule}}</th>
+	</tr>
+EOF;
+		foreach ($event->get_discounts() as $discount) {
+			$rule = '-'.$discount->amount.'€';
+			if ($discount->class == DISCOUNT_CLASS_PERCENTAGE) {
+				$rule = '-'.$discount->percentage.'%';
+			}
+			$discounts_html .= <<<EOF
+	<tr>
+		<td>{$discount->code}</td>
+		<td>{$discount->expiration_t}</td>
+		<td>${rule}</td>
+	</tr>
+EOF;
+		}
+		$discounts_html .= <<<EOF
+</table>
+EOF;
+		$block = new Block();
+		$block->side = 'left';
+		$block->title = 'Discounts';
+		$block->content = $discounts_html;
+		$block->css_class = 'evt_administration';
+		$blocks[] = $block;
 	}
 
 	$ticket_table = <<<EOF
@@ -263,7 +294,7 @@ EOF;
 		$google_address = $address->google_address();
 		$location .=<<<EOF
 <br/>
-${google_address}
+<span class="gray">${google_address}</span>
 EOF;
 	}
 	$block = new Block();

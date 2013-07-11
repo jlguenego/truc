@@ -4,6 +4,7 @@
 	$scenario = $g_display["scenario"];
 	$event = $g_display["event"];
 	$tickets = $g_display["tickets"];
+	$discounts = $g_display["discounts"];
 	$user = $g_display["user"];
 
 	$f = new Form();
@@ -104,7 +105,7 @@ EOF
 	$f->add_raw_html(<<<EOF
 <table id="tickets" class="evt_rate">
 </table>
-<a href="JavaScript:addRate('tickets');">{{Add another ticket rate}}</a><br/><br/>
+<a href="JavaScript:eb_add_rate('tickets');">{{Add another ticket rate}}</a><br/><br/>
 EOF
 );
 	if ($scenario == "create") {
@@ -188,15 +189,29 @@ EOF
 	}
 	echo $f->get_element('event_type');
 ?>
-		<a class="evt_button evt_btn_small" href="JavaScript:addRate('tickets');">
+		<a class="evt_button evt_btn_small" href="JavaScript:eb_add_rate('tickets');">
 			{{Add a paying ticket}}
 		</a>
-		<a class="evt_button evt_btn_small" href="JavaScript:addFreeTicket('tickets');">
+		<a class="evt_button evt_btn_small" href="JavaScript:eb_add_free_ticket('tickets');">
 			{{Add a free ticket}}
 		</a>
 		<br/><br/>
 
 		<table id="tickets" class="evt_rate">
+		</table>
+	</div>
+	<h1>{{Optional: Create discount}}</h1>
+	<div class="form_section">
+		<a class="evt_button evt_btn_small" href="JavaScript:eb_add_fixed_discount('discounts');">
+			{{Add a fixed discount}}
+		</a>
+		<a class="evt_button evt_btn_small" href="JavaScript:eb_add_percentage_discount('discounts');">
+			{{Add a percentage discount}}
+		</a>
+		<a href="#" onclick="javscript:eb_show_dialog('discount_help_dialog');return false;">Help</a>
+		<br/><br/>
+
+		<table id="discounts" class="evt_rate evt_discount">
 		</table>
 	</div>
 	<?php
@@ -269,8 +284,54 @@ EOF
 	</tr>
 </table>
 
+<div id="discount_help_dialog" title="{{Discount help}}" style="display: none;">
+	[[/etc/discount_help.html]]
+</div>
+
+<table id="default_fixed_discount" style="display: none;">
+	<tr data-name="basic">
+		<td>
+			<label>{{Discount code}}</label><br/>
+			<input type="text" name="discount_code_a[]" value="" />
+		</td>
+		<td>
+			<label>{{Expiration date}}</label><br/>
+			<input type="text" name="discount_date_a[]" value="" />
+		</td>
+		<td>
+			<label>{{[discount]Amount}} (€)</label><br/>
+			<input class="evt_rate_qty" type="number" name="discount_value_a[]" value="5" step="0.01" min="0" />
+		</td>
+		<td>
+			<input type="hidden" name="discount_class_a[]" value="<?php echo DISCOUNT_CLASS_FIXED; ?>" />
+			<input type="button" value="{{Remove}}" />
+		</td>
+	</tr>
+</table>
+
+<table id="default_percentage_discount" style="display: none;">
+	<tr data-name="basic">
+		<td>
+			<label>{{Discount code}}</label><br/>
+			<input type="text" name="discount_code_a[]" value="" />
+		</td>
+		<td>
+			<label>{{Expiration date}}</label><br/>
+			<input type="text" name="discount_date_a[]" value="" />
+		</td>
+		<td>
+			<label>{{[discount]Rate}} (%)</label><br/>
+			<input class="evt_rate_qty" type="number" name="discount_value_a[]" value="10" min="0" max="100" />
+		</td>
+		<td>
+			<input type="hidden" name="discount_class_a[]" value="<?php echo DISCOUNT_CLASS_PERCENTAGE; ?>" />
+			<input type="button" value="{{Remove}}" />
+		</td>
+	</tr>
+</table>
+
 <script>
-	function manage_submit() {
+	function eb_manage_submit() {
 		var test = true;
 		log("manage submit");
 		if ($("input[name=confirm]").length > 0) {
@@ -292,7 +353,7 @@ EOF
 		}
 	}
 
-	function update_form() {
+	function eb_update_form() {
 		log("update_form");
 		log("date=" + $("#happening_t").val());
 		log("is_confirmed="+$("input[name=is_confirmed]:checked").length);
@@ -310,18 +371,18 @@ EOF
 	}
 
 	$("form").change(function() {
-		update_form();
-		manage_submit();
+		eb_update_form();
+		eb_manage_submit();
 	});
 	$(document).ready(function() {
-		update_form();
-		manage_submit();
+		eb_update_form();
+		eb_manage_submit();
 		addresspicker_init();
 	});
-	$("input").keyup(manage_submit);
+	$("input").keyup(eb_manage_submit);
 	$("input").change(function() {
-		update_form();
-		manage_submit();
+		eb_update_form();
+		eb_manage_submit();
 	});
 
 
@@ -350,16 +411,34 @@ EOF
 			$tax_rate = $ticket->tax_rate;
 			$quantity = $ticket->max_quantity;
 			$description = $ticket->description;
-			$isFree = 'true';
+			$is_free = 'true';
 			if ($amount > 0) {
-				$isFree = 'false';
+				$is_free = 'false';
 			}
-			echo "addRate('tickets', '$label', '$quantity', '$amount', $tax_rate, '$description', $isFree);";
+			echo "eb_add_rate('tickets', '$label', '$quantity', '$amount', $tax_rate, '$description', $is_free);";
 			$i++;
 		}
 	}
 ?>
 	setCounter(<?php echo $i; ?>);
+<?php
+	$i = 0;
+	if ($discounts != NULL) {
+		foreach ($discounts as $discount) {
+			$code = $discount->code;
+			$class = $discount->class;
+			$expiration_t = t2s($discount->expiration_t);
+			$type = 'fixed';
+			$value = $discount->amount;
+			if ($discount->class == DISCOUNT_CLASS_PERCENTAGE) {
+				$value = $discount->percentage;
+				$type = 'percentage';
+			}
+			echo "eb_add_".$type."_discount('discounts', '$code', '$expiration_t', $value);";
+			$i++;
+		}
+	}
+?>
 	$("[name=title]").focus();
 
 	eb_tiny_mce_on();
@@ -375,16 +454,16 @@ EOF
 		}
 	});
 
-	function addFreeTicket(divName) {
-		addRate(divName, '', '', '', '', '', true);
+	function eb_add_free_ticket(divName) {
+		eb_add_rate(divName, '', '', '', '', '', true);
 	}
 
-	function addRate(divName, label, quantity, amount, selected_tax, description, isFree){
+	function eb_add_rate(divName, label, quantity, amount, selected_tax, description, is_free){
 		label = label || "";
 		amount = amount || "";
 		quantity = quantity || "";
 		description = description || "";
-		isFree = isFree || false;
+		is_free = is_free || false;
 		log(selected_tax);
 		if (selected_tax == undefined) {
 			selected_tax = taxes[0][1];
@@ -408,7 +487,7 @@ EOF
 			eb_removeRate(id);
 		});
 
-		if (isFree) {
+		if (is_free) {
 			var cell = basic.find('[name*=ticket_amount_a]').parent();
 			basic.find('[name*=ticket_tax_a]').parent().remove();
 			cell.attr('colspan', '2');
@@ -419,5 +498,42 @@ EOF
 
 		advanced.attr('id', 'advanced_' + id);
 		advanced.find('[name*=ticket_description_a]').val(description);
+	}
+
+	function eb_add_fixed_discount(divName, code, date, value){
+		code = code || '';
+		date = date || '';
+		value = value || '5';
+		var content = $('#default_fixed_discount').html();
+		eb_add_discount(divName, content, code, date, value);
+	}
+
+	function eb_add_percentage_discount(divName, code, date, value) {
+		code = code || '';
+		date = date || '';
+		value = value || '10';
+		var content = $('#default_percentage_discount').html();
+		eb_add_discount(divName, content, code, date, value);
+	}
+
+	function eb_add_discount(divName, content, code, date, value) {
+		var id = new Date().getTime();
+		$("#" + divName).append(content);
+		var basic = $("#" + divName).find('[data-name=basic]');
+		var advanced = $("#" + divName).find('[data-name=advanced]');
+
+		basic.removeAttr('data-name');
+		advanced.removeAttr('data-name');
+
+		basic.attr('id', 'discount_' + id);
+		basic.find('input[type=button]').click(function() {
+			removeElement('discount_' + id);
+		});
+
+		basic.find('[name*=discount_date_a]').datepicker({ minDate: "+0d", dateFormat: "yy-mm-dd"});
+
+		basic.find('[name*=discount_code_a]').val(code);
+		basic.find('[name*=discount_date_a]').val(date);
+		basic.find('[name*=discount_value_a]').val(value);
 	}
 </script>

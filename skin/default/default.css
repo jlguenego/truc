@@ -362,6 +362,10 @@ div[data-message] {
 
 /* FORM RATE */
 
+table.evt_discount input[type=text] {
+	width: 150px;
+}
+
 .evt_rate {
 	background-color: #F5F5F5;
 	border-spacing: 0px;
@@ -447,7 +451,7 @@ div[data-message] {
 /* Table */
 
 .evt_table, .evt_table_billing {
-	margin: 20px;
+	margin: 20px 0px;
 	border: 1px solid black;
 	border-collapse: collapse;
 }
@@ -506,6 +510,9 @@ div[data-message] {
 	color: #999999;
 }
 
+.gray {
+	color: #999999;
+}
 
 .evt_administration_title2 {
 	color: #FFFFFF;
@@ -1044,6 +1051,10 @@ a.evt_button {
 	margin-top: 30px;
 }
 
+.eb_block_content table {
+	margin: 0px auto;
+}
+
 #evt_event_retrieve {
 	background-color: #F4F4F4;
 	height: 100%;
@@ -1112,4 +1123,9 @@ a.evt_button {
 
 .ap_map_wrapper, .ap_input_positioned {
 	display: inline-block;
+}
+
+label {
+	display: inline-block;
+	margin-right: 5px;
 }

@@ -334,12 +334,22 @@ $(function() {
 	}
 ?>
 	<tr>
-		<th class="th_left" colspan="2">{{Total taxes}}</td>
-		<td id="total_tax" class="evt_curr">0.00</td>
+		<th class="th_left">{{Total}}</td>
+		<td id="full_total_ht" class="evt_curr">0.00</td>
+		<td id="full_total_tax" class="evt_curr">0.00</td>
+		<td id="full_total_ttc" class="evt_curr">0.00</td>
 	</tr>
-	<tr>
-		<th class="th_left" colspan="3"><b>{{Total due}}</b></td>
-		<td id="total_due" class="evt_curr"><b>0.00</b></td>
+	<tr id="total_discount_row" style="display: none;">
+		<th class="th_left">{{Discount}} <span id="discount_info"></span></td>
+		<td id="discount_ht" class="evt_curr">0.00</td>
+		<td id="discount_tax" class="evt_curr">0.00</td>
+		<td id="discount_ttc" class="evt_curr">0.00</td>
+	</tr>
+	<tr id="new_total" style="display: none;">
+		<th class="th_left">{{Total}}</td>
+		<td id="new_full_total_ht" class="evt_curr">0.00</td>
+		<td id="new_full_total_tax" class="evt_curr">0.00</td>
+		<td id="new_full_total_ttc" class="evt_curr">0.00</td>
 	</tr>
 </table>
 <?php
@@ -370,6 +380,16 @@ $(function() {
 </table>
 <?php
 	}
+
+	function command_discount() {
+?>
+<div id="discount_field">
+	<label for="discount">{{Enter promo code:}}</label>
+	<input id="discount" type="text" value="" name="discount" />
+	<input type="button" value="{{Check discount code}}" />
+</div>
+<?php
+	}
 ?>
 
 <div class="evt_title"><p>{{Order tickets}}</p></div>
@@ -385,6 +405,7 @@ $(function() {
 	}
 
 	command_total($tickets, $event, $tax_array);
+	command_discount();
 	command_billinfo($user);
 ?>
 	<input type="hidden" name="participation_type" value="<?php echo $event->type; ?>"/>
@@ -426,31 +447,128 @@ $(function() {
 		$('[id*="total_ht_"]').html("0.00");
 		$('[id*="total_ttc_"]').html("0.00");
 
-		$('#total_tax').html("0.00");
+		$('#full_total_ht').html("0.00");
+		$('#full_total_tax').html("0.00");
+		$('#full_total_ttc').html("0.00");
+		$('#new_full_total_ht').html("0.00");
+		$('#new_full_total_tax').html("0.00");
+		$('#new_full_total_ttc').html("0.00");
+		$('#discount_ht').html("0.00");
+		$('#discount_tax').html("0.00");
+		$('#discount_ttc').html("0.00");
 		$('#total_due').html("0.00");
 
+		var full_total_ht = 0;
+		var full_total_tax = 0;
+		var full_total_ttc = 0;
 		$('#tickets').find($('tr[id*="ticket_"]')).each(function() {
 			var amount_ht = $(this).find($("td[data-type='amount_ht']")).html();
 			var tax = $(this).find($("td[data-type='tax']")).attr("data-value");
 			var tax_amount = $(this).find($("td[data-type='tax_amount']")).html();
 
-			var total_tax = eb_curr(parseFloat($("#total_tax_" + tax).html()) + parseFloat(tax_amount));
+			var total_tax = eb_curr(
+				parseFloat($("#total_tax_" + tax).html()) +
+				parseFloat(tax_amount)
+			);
 			$("#total_tax_" + tax).html(total_tax);
-			var total_ht = eb_curr(parseFloat($("#total_ht_" + tax).html()) + parseFloat(amount_ht));
+			full_total_tax = eb_curr(
+				parseFloat(full_total_tax) +
+				parseFloat(tax_amount)
+			);
+			log('full_total_tax='+full_total_tax);
+
+			var total_ht = eb_curr(
+				parseFloat($("#total_ht_" + tax).html()) +
+				parseFloat(amount_ht)
+			);
 			$("#total_ht_" + tax).html(total_ht);
-			var total_ttc = eb_curr(parseFloat($("#total_ttc_" + tax).html()) + parseFloat(amount_ht) + parseFloat(tax_amount));
+			full_total_ht = eb_curr(
+				parseFloat(full_total_ht) +
+				parseFloat(amount_ht)
+			);
+
+			var total_ttc = eb_curr(
+				parseFloat($("#total_ttc_" + tax).html()) +
+				parseFloat(amount_ht) +
+				parseFloat(tax_amount)
+			);
 			$("#total_ttc_" + tax).html(total_ttc);
-
-			var total_taxes = eb_curr(parseFloat($("#total_tax").html()) + parseFloat(tax_amount));
-			$("#total_tax").html(total_taxes);
-			var total_due = eb_curr(parseFloat($("#total_due").html()) + parseFloat(amount_ht) + parseFloat(tax_amount));
-			$("#total_due").html(total_due);
+			full_total_ttc = eb_curr(
+				parseFloat(full_total_ttc) +
+				parseFloat(amount_ht) +
+				parseFloat(tax_amount)
+			);
 		});
+		log('hors boucle full_total_tax='+full_total_tax);
 
-		$('td[id*="total_ht_"]').each(function() {
-			var id = $(this).attr("id");
-			var tax_id = id.replace("total_ht_", "");
-			var total_ht = parseFloat($(this).html());
-		});
+		$("#full_total_ht").html(full_total_ht);
+		$("#full_total_tax").html(full_total_tax);
+		$("#full_total_ttc").html(full_total_ttc);
+
+		if (!g_discount) {
+			$('#total_discount_row').hide();
+			$('#new_total').hide();
+		} else {
+			$('#total_discount_row').show();
+			$('#new_total').show();
+
+			var discount_ht = 0;
+			var discount_tax = 0;
+			var discount_ttc = 0;
+			if (g_discount.class == "/discount/fixed") {
+				var percentage = parseFloat(g_discount.amount) / parseFloat($("#full_total_ttc").html());
+				$('#discount_info').html('');
+			} else {
+				var percentage = parseFloat(g_discount.percentage) / 100;
+				$('#discount_info').html('(-'+parseFloat(g_discount.percentage).toFixed(0)+'%)');
+			}
+			discount_ht = eb_curr(percentage * full_total_ht);
+			discount_tax = eb_curr(percentage * parseFloat($('#full_total_tax').html()));
+			discount_ttc = eb_curr(parseFloat(discount_tax) + parseFloat(discount_ht));
+			log('discount_ht='+discount_ht);
+			log('discount_tax='+discount_tax);
+			log('discount_ttc='+discount_ttc);
+			$("#discount_ht").html('-'+discount_ht);
+			$("#discount_tax").html('-'+discount_tax);
+			$("#discount_ttc").html('-'+discount_ttc);
+			var new_full_total_ht = eb_curr(parseFloat(full_total_ht) - parseFloat(discount_ht));
+			var new_full_total_tax = eb_curr(parseFloat(full_total_tax) - parseFloat(discount_tax));
+			var new_full_total_ttc = eb_curr(parseFloat(full_total_ttc) - parseFloat(discount_ttc));
+			$("#new_full_total_ht").html(new_full_total_ht);
+			$("#new_full_total_tax").html(new_full_total_tax);
+			$("#new_full_total_ttc").html(new_full_total_ttc);
+		}
+	}
+
+	$('#discount_field').find('input[type=button]').click(eb_check_discount_code);
+
+	function eb_check_discount_code() {
+		var event_id = '<?php echo $event->id; ?>';
+		var sent_data = {
+			'code': $('#discount').val(),
+			'event_id': event_id
+		};
+		$.get(
+			'endpoint/check_discount_code.php',
+			sent_data,
+			function(data) {
+				handle_response(data);
+			},
+			'json'
+		);
+	}
+
+	var g_discount = null;
+	function handle_response(data) {
+		log(data);
+		g_discount = data;
+		if (!data) {
+			$('#discount').css('border-color', 'red');
+			$('#discount').css('color', 'red');
+		} else {
+			$('#discount').css('border-color', 'green');
+			$('#discount').css('color', 'green');
+		}
+		eb_update_total();
 	}
 </script>

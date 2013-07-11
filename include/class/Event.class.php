@@ -602,7 +602,18 @@ EOF;
 			foreach ($tickets as $ticket) {
 				if (!in_array($ticket->name, $names)) {
 					debug("Deleted ".$ticket->name);
-					$ticket->delete();
+					if (!$ticket->has_accountancy_activity()) {
+						$ticket->delete();
+					}
+				}
+			}
+		}
+
+		public function delete_unused_discounts($codes) {
+			$discounts = $this->get_discounts();
+			foreach ($discounts as $discount) {
+				if (!in_array($discount->code, $codes)) {
+					$discount->delete();
 				}
 			}
 		}
@@ -623,6 +634,30 @@ EOF;
 			return NULL;
 		}
 
+		public function get_discount($code, $time = null) {
+			global $g_pdo;
+
+			$time_condition_str = '';
+			if ($time != null) {
+				$time_condition_str = 'AND expiration_t > '.$time;
+			}
+
+			$request = <<<EOF
+SELECT `id` FROM `discount`
+WHERE
+	`id_event`= :id
+	AND code = :code
+	$time_condition_str
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id, ":code" => $code));
+			if (($record = $pst->fetch()) != NULL) {
+				return Discount::get_from_id($record["id"]);
+			}
+			return NULL;
+		}
+
 		public function get_tickets() {
 			global $g_pdo;
 
@@ -637,6 +672,23 @@ EOF;
 			$result = array();
 			while (($record = $pst->fetch()) != NULL) {
 				$result[] = Ticket::get_from_id($record["id"]);
+			}
+			return $result;
+		}
+
+		public function get_discounts() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT `id` FROM `discount`
+WHERE `id_event`= :id
+EOF;
+			debug($request);
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(":id" => $this->id));
+			$result = array();
+			while (($record = $pst->fetch()) != NULL) {
+				$result[] = Discount::get_from_id($record["id"]);
 			}
 			return $result;
 		}

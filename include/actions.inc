@@ -619,6 +619,17 @@
 				$ticket->store();
 				$i++;
 			}
+
+			if (isset($_GET['discount_code_a'])) {
+				$i = 0;
+				foreach ($_GET['discount_code_a'] as $label) {
+					$discount = new Discount();
+					$discount->hydrate_from_form($i);
+					$discount->event_id = $event->id;
+					$discount->store();
+					$i++;
+				}
+			}
 			redirect_action("?action=retrieve&type=event&id=".$event->id);
 		} catch (Exception $e) {
 			message_set_error($e->getMessage());
@@ -697,6 +708,25 @@
 						$i++;
 					}
 					$event->delete_unused_tickets($_GET['ticket_name_a']);
+
+					if (isset($_GET['discount_code_a'])) {
+						$i = 0;
+						foreach ($_GET['discount_code_a'] as $name) {
+							$discount = $event->get_discount($name);
+							if ($discount != NULL) {
+								$discount->hydrate_from_form($i);
+								$discount->event_id = $event->id;
+								$discount->update();
+							} else {
+								$discount = new Discount();
+								$discount->hydrate_from_form($i);
+								$discount->event_id = $event->id;
+								$discount->store();
+							}
+							$i++;
+						}
+					}
+					$event->delete_unused_discounts($_GET['discount_code_a']);
 					redirect_action("?action=retrieve&type=event&id=".$event->id);
 				} else {
 					action_event_create();
@@ -762,6 +792,7 @@
 			$g_display["event"] = $event;
 			$g_display["user"] = $user;
 			$g_display["tickets"] = NULL;
+			$g_display["discounts"] = NULL;
 			$g_display["scenario"] = "create";
 			$g_display["form_action"] = "?action=create&amp;type=event";
 			$_SESSION["state"] = "event_form";
@@ -774,6 +805,7 @@
 			$g_display["event"] = $event;
 			$g_display["user"] = $user;
 			$g_display["tickets"] = $event->get_tickets();
+			$g_display["discounts"] = $event->get_discounts();
 			$g_display["scenario"] = "update";
 			$g_display["form_action"] = "?action=update&amp;type=event&amp;id=".$_GET["id"];
 			$_SESSION["state"] = "event_form";
