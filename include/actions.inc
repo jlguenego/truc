@@ -886,6 +886,10 @@
 		}
 		$event = Event::get_from_id($bill->event_id);
 
+		if (isset($_GET['format']) && $_GET['format'] == 'pdf') {
+			pdf_display($bill);
+		}
+
 		$g_display["bill"] = $bill;
 		$_SESSION["state"] = "bill_retrieve";
 	}

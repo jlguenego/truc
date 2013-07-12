@@ -1,5 +1,5 @@
 <?php
-	function print_bill($bill, $context = PRINT_BILL_CONTEXT_DEFAULT) {
+	function print_bill($bill, $context = PRINT_BILL_CONTEXT_DEFAULT, $format = PRINT_BILL_FORMAT_HTML) {
 		global $g_i18n;
 
 		$event = Event::get_from_id($bill->event_id);
@@ -13,44 +13,82 @@
 		if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
 ?>
 <div class="evt_title"><p>{{<?php echo strtoupper($bill_type); ?>}}</p></div>
+<br/>
+<?php
+		}
+		if ($format == PRINT_BILL_FORMAT_PDF) {
+?>
+<style>
+.evt_title {
+	width: 100%;
+	text-align: center;
+}
+
+.evt_stakeholder {
+	width: 100%;
+	font-size: 10px;
+	border: 1px solid black;
+}
+
+.evt_invoice_info {
+	font-size: 10px;
+}
+
+.evt_curr {
+	text-align: right;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 3px 5px;
+}
+
+.evt_table {
+	margin: 100px 0px;
+}
+</style>
+
 <?php
 		}
 ?>
-<p>
-	<table width="100%">
-		<tr valign="top">
-			<td width="50%">
-				<b>{{Provider identification}}</b><br/>
-				<br/>
-				<?php echo $bill->biller_name ; ?><br/>
-				<?php echo nl2br($biller_billing_address->address); ?><br/>
-			<?php
-				if (!is_null_or_empty($bill->biller_vat)) {
-			?>
-				{{VAT#}}: <?php echo $bill->biller_vat; ?>
-			<?php
-				}
-			?>
-			</td>
-			<td align="right">
-				<b>{{Client identification}}</b><br/>
-				<br/>
-				<?php echo $bill->client_name; ?><br/>
-				<?php echo nl2br($billing_address->address); ?><br/>
-			<?php
-				if ($bill->is_for_company()) {
-			?>
-				{{VAT#}}: <?php echo $bill->client_vat; ?>
-			<?php
-				}
-			?>
-			</td>
-		</tr>
-	</table>
-	<br/>
+<table class="evt_stakeholder" style="width:100%;">
+	<tr valign="top">
+		<td style="width:50%;">
+			<b>{{Provider identification}}</b><br/>
+			<br/>
+			<?php echo $bill->biller_name ; ?><br/>
+			<?php echo nl2br($biller_billing_address->address); ?><br/>
+		<?php
+			if (!is_null_or_empty($bill->biller_vat)) {
+		?>
+			{{VAT#}}: <?php echo $bill->biller_vat; ?>
+		<?php
+			}
+		?>
+		</td>
+		<td style="width:50%;" align="right">
+			<b>{{Client identification}}</b><br/>
+			<br/>
+			<?php echo $bill->client_name; ?><br/>
+			<?php echo nl2br($billing_address->address); ?><br/>
+		<?php
+			if ($bill->is_for_company()) {
+		?>
+			{{VAT#}}: <?php echo $bill->client_vat; ?>
+		<?php
+			}
+		?>
+		</td>
+	</tr>
+</table>
+<br/>
 <?php
 	if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
 ?>
+<div class="evt_invoice_info">
 	<b>{{<?php echo ucfirst($bill_type); ?> ID}}:</b> <?php echo $bill->label; ?><br/>
 	<b>{{<?php echo ucfirst($bill_type); ?> date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php
@@ -59,9 +97,13 @@
 	<b>{{Due date}}:</b> <?php echo format_date($bill->created_t, "timestamp"); ?><br/>
 <?php
 		}
+?>
+</div>
+<br/>
+<?php
 	}
 ?>
-	<table border="1px" class="evt_table">
+	<table border="1px" class="evt_table" align="center">
 		<tr>
 			<th>{{Description}}</th>
 			<th>{{Quantity}}</th>
@@ -94,27 +136,42 @@
 		$i++;
 	}
 ?>
-	</table>
-	<table border="1px" class="evt_table">
-		<tr>
-			<th class="th_left">{{Total (Tax excluded)}}</th>
-			<td class="evt_curr"><?php echo curr($bill->total_ht); ?>€</td>
-		</tr>
-		<tr>
-			<th class="th_left">{{Total taxes}}</th>
-			<td class="evt_curr"><?php echo curr($bill->total_tax); ?>€</td>
-		</tr>
-		<tr>
-			<th class="th_left">{{Total due}}</th>
-			<td class="evt_curr"><b><?php echo curr($bill->total_ttc); ?>€</b></td>
-		</tr>
-	</table>
+</table>
+<br/>
+<table border="1px" class="evt_table">
+	<tr>
+		<th class="th_left">{{Total (Tax excluded)}}</th>
+		<td class="evt_curr"><?php echo curr($bill->total_ht); ?>€</td>
+	</tr>
+	<tr>
+		<th class="th_left">{{Total taxes}}</th>
+		<td class="evt_curr"><?php echo curr($bill->total_tax); ?>€</td>
+	</tr>
+	<tr>
+		<th class="th_left">{{Total due}}</th>
+		<td class="evt_curr"><b><?php echo curr($bill->total_ttc); ?>€</b></td>
+	</tr>
+</table>
 <?php
 		if (!($context & PRINT_BILL_CONTEXT_CONFIRMATION)) {
-			require_once($g_i18n->filename(BASE_DIR."/etc/".$bill_type."_legal.html"));
+			if($format == PRINT_BILL_FORMAT_PDF) {
+?>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<?php
+			}
+?>
+<br/>
+<div class="evt_invoice_info">
+[[/etc/<?php echo $bill_type; ?>_legal.html]]
+</div>
+<?php
 		}
 ?>
-</p>
 <?php
 	}
 ?>

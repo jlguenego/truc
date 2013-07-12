@@ -15,16 +15,22 @@
 <?php
 	foreach ($g_display["participations"] as $participation) {
 		list($item, $bill) = $participation;
+		if ($item->class != '/item/ticket') {
+			continue;
+		}
 		$user = User::get_from_id($bill->user_id);
+		$rate_name = $item->event_rate_name;
+		$lastname = $item->attendee_lastname;
+		$firstname = $item->attendee_firstname;
 ?>
 	<tr>
 		<td><a href="<?php echo $bill->url(); ?>"><?php echo $bill->label; ?></a></td>
-		<td><?php echo $item->event_rate_name; ?></td>
+		<td><?php echo $rate_name; ?></td>
 		<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 		<td class="evt_curr"><?php echo $item->total_tax; ?>%</td>
 		<td class="evt_curr"><?php echo $item->total_ttc; ?>€</td>
-		<td><?php echo $item->attendee_lastname; ?></td>
-		<td><?php echo $item->attendee_firstname; ?></td>
+		<td><?php echo $lastname; ?></td>
+		<td><?php echo $firstname; ?></td>
 		<td><?php echo $user->email; ?></td>
 <?php
 	if (is_admin_logged() && !$bill->is_really_paid()) {

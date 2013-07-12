@@ -67,6 +67,8 @@
 
 	define('PRINT_BILL_CONTEXT_DEFAULT', 0);
 	define('PRINT_BILL_CONTEXT_CONFIRMATION', 1);
+	define('PRINT_BILL_FORMAT_HTML', 0);
+	define('PRINT_BILL_FORMAT_PDF', 1);
 
 	define('DISCOUNT_CLASS_FIXED', '/discount/fixed');
 	define('DISCOUNT_CLASS_PERCENTAGE', '/discount/percentage');

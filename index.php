@@ -21,6 +21,7 @@
 	require_once(BASE_DIR . "/include/bitcoin.inc");
 	require_once(BASE_DIR . "/include/google.inc");
 	require_once(BASE_DIR . "/include/deal.inc");
+	require_once(BASE_DIR . "/include/pdf.inc");
 
 	if (isset($_SERVER["HTTPS"])) {
 		$base_url = HTTPS_ACCESS ."/";
