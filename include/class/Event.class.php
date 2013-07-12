@@ -457,6 +457,31 @@ EOF;
 			$pst->execute($array);
 		}
 
+		public function get_organizer_invoice_id() {
+			global $g_pdo;
+
+			$request = <<<EOF
+SELECT b.id as id
+FROM
+  bill b,
+  item i
+WHERE
+  i.id_bill = b.id
+  AND i.class = '/item/service_fee'
+  AND b.id_event = :id_event
+EOF;
+			$pst = $g_pdo->prepare($request);
+			$pst->execute(array(
+				':id_event' => $this->id,
+			));
+			$record = $pst->fetch();
+			$result = null;
+			if (isset($record['id'])) {
+				$result = $record['id'];
+			}
+			return $result;
+		}
+
 		public function get_invoices() {
 			return $this->get_bill(BILL_TYPE_INVOICE);
 		}

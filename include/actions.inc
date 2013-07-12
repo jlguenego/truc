@@ -137,13 +137,11 @@
 		if (!$event->can_be_administrated()) {
 			throw new Exception(_t("You cannot access to this event."));
 		}
-
 		$report = deal_generate_report($event);
-		$bill = Bill::invoice_from_report($report, $event);
-		$bill->store();
+		$bill = Bill::invoice_from_report($report, $event);		$bill->store();
 		debug('bill='.sprint_r($bill));
 		$event->add_flag(EVENT_FLAG_INVOICE_ALREADY_CREATED);
-
+		$event->update();
 		$_GET['id'] = $bill->id;
 		action_bill_retrieve();
 	}

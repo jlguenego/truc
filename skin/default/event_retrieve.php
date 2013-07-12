@@ -15,8 +15,17 @@
 	<li>Organizer: <a href="?action=retrieve&amp;type=account&amp;id={$organizer->id}">{$organizer->email}</a></li>
 </ul><br/>
 <br/>
+EOF;
+		$bill_id = $event->get_organizer_invoice_id();
+		if ($bill_id != null) {
+			$content = <<<EOF
+<a href="?action=retrieve&amp;type=bill&amp;id=${bill_id}">{{Get Invoice}}</a>
+EOF;
+		} else {
+			$content = <<<EOF
 <a href="?action=generate&amp;type=invoice&amp;id={$event->id}"><button class="evt_button evt_btn_small">{{Generate Invoice}}</button></a>
 EOF;
+		}
 		$publish_button_grey = "";
 		if ($event->status == EVENT_STATUS_INACTIVATED
 			|| (!$event->is_ready_for_publication())) {

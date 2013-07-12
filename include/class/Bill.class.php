@@ -284,10 +284,10 @@ EOF;
 			$bill->label = $label."EVT-".sprintf("%06d", $event->id);
 
 			$tickets = $event->get_tickets();
-			$item = new Item();
+			$item = new Item('/item/service_fee');
 			$item->quantity = 1;
 			$sold_ticket_nbr = $report["ticket_quantity"];
-			$rate= deal_get_description($event->deal_name);
+			$rate = deal_get_description($event->deal_name);
 			$amount_ticket_sales = $report['total'];
 			$item->description = <<<EOF
 <b>{{Ticket sales fees}}</b><br/>
