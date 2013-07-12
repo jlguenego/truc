@@ -207,6 +207,10 @@ EOF;
 			return HOST . "/index.php?action=retrieve&type=bill&id=" . $this->id;
 		}
 
+		public function url_pdf() {
+			return $this->url().'&amp;format=pdf';
+		}
+
 		public function create_invoice() {
 			$invoice = clone $this;
 			$invoice->type = BILL_TYPE_INVOICE;

@@ -14,5 +14,6 @@
 </p>
 <p>
 	Cette facture respecte la loi de la République française (article L441-3 du Code du Commerce).<br/>
-	Vous pouvez accéder à cette facture via ce lien permanent : <a href="<?php echo $bill->url(); ?>"><?php echo $bill->url(); ?></a>
+	Vous pouvez accéder à cette facture via ce lien permanent : <a href="<?php echo $bill->url(); ?>"><?php echo $bill->url(); ?></a><br/>
+	Une version PDF est aussi disponible: <a href="<?php echo $bill->url_pdf(); ?>"><?php echo $bill->url_pdf(); ?></a>
 </p>

@@ -24,7 +24,7 @@
 		$firstname = $item->attendee_firstname;
 ?>
 	<tr>
-		<td><a href="<?php echo $bill->url(); ?>"><?php echo $bill->label; ?></a></td>
+		<td><a href="<?php echo $bill->url(); ?>" target="_blank"><?php echo $bill->label; ?></a></td>
 		<td><?php echo $rate_name; ?></td>
 		<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
 		<td class="evt_curr"><?php echo $item->total_tax; ?>%</td>

@@ -72,4 +72,6 @@
 
 	define('DISCOUNT_CLASS_FIXED', '/discount/fixed');
 	define('DISCOUNT_CLASS_PERCENTAGE', '/discount/percentage');
+
+	define('INVOICE_DIR', '/_invoice');
 ?>

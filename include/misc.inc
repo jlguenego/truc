@@ -29,6 +29,9 @@
 		if (!file_exists(TEMP_DIR)) {
 			mkdir(TEMP_DIR);
 		}
+		if (!file_exists(INVOICE_DIR)) {
+			mkdir(INVOICE_DIR);
+		}
 		if (!file_exists(SETTINGS_INI)) {
 			return false;
 		}
