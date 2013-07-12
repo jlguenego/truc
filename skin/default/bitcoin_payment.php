@@ -27,8 +27,8 @@
 	<tr>
 		<td>
 			<h2>{{Buyer Informations}}</h2>
-			<?php echo $bill->username; ?><br/>
-			<?php echo $bill->address; ?><br/>
+			<?php echo $bill->client_name; ?><br/>
+			<?php echo $bill->get_client_address(); ?><br/>
 		</td>
 	</tr>
 </table>

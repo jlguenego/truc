@@ -300,5 +300,10 @@ EOF;
 
 			return $bill;
 		}
+
+		public function get_client_address($b_google_addrs = false) {
+			$address = Address::get_from_id($this->biller_address_id);
+			return $address->to_string($b_google_addrs);
+		}
 	}
 ?>

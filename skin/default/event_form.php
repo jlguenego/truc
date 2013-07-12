@@ -321,7 +321,7 @@ EOF
 		</td>
 		<td>
 			<label>{{[discount]Rate}} (%)</label><br/>
-			<input class="evt_rate_qty" type="number" name="discount_value_a[]" value="10" min="0" max="100" />
+			<input class="evt_rate_qty" type="number" name="discount_value_a[]" value="10" step="1" min="0" max="100" />
 		</td>
 		<td>
 			<input type="hidden" name="discount_class_a[]" value="<?php echo DISCOUNT_CLASS_PERCENTAGE; ?>" />

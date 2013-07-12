@@ -10,8 +10,8 @@
 		public $total_ttc;
 		public $bill_id;
 
-		public function __construct() {
-			$this->class = '/item';
+		public function __construct($class = '/item') {
+			$this->class = $class;
 		}
 
 		public function hydrate($record) {

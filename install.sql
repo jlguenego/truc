@@ -122,7 +122,7 @@ CREATE TABLE item(
         class              Varchar (255) ,
         description        Varchar (255) ,
         quantity           Int NOT NULL ,
-        tax_rate           Decimal (25,2) NOT NULL ,
+        tax_rate           Decimal (25,2),
         total_ht           Decimal (25,2) NOT NULL ,
         total_tax          Decimal (25,2) NOT NULL ,
         total_ttc          Decimal (25,2) NOT NULL ,

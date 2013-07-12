@@ -77,10 +77,18 @@
 		<tr>
 			<td><?php echo $item->get_description(); ?></td>
 			<td align="center"><?php echo $item->quantity; ?></td>
-			<td class="evt_curr"><?php echo $item->total_ht; ?>€</td>
-			<td class="evt_curr"><?php echo $item->tax_rate; ?>%</td>
-			<td class="evt_curr"><?php echo $item->total_tax; ?>€</td>
-			<td class="evt_curr"><?php echo $item->total_ttc; ?>€</td>
+			<td class="evt_curr"><?php echo curr($item->total_ht); ?>€</td>
+			<td class="evt_curr">
+<?php
+	if ($item->tax_rate != null) {
+		echo curr($item->tax_rate).'%';
+	} else {
+		echo _t('N/A');
+	}
+?>
+			</td>
+			<td class="evt_curr"><?php echo curr($item->total_tax); ?>€</td>
+			<td class="evt_curr"><?php echo curr($item->total_ttc); ?>€</td>
 		</tr>
 <?php
 		$i++;
@@ -90,15 +98,15 @@
 	<table border="1px" class="evt_table">
 		<tr>
 			<th class="th_left">{{Total (Tax excluded)}}</th>
-			<td class="evt_curr"><?php echo $bill->total_ht; ?>€</td>
+			<td class="evt_curr"><?php echo curr($bill->total_ht); ?>€</td>
 		</tr>
 		<tr>
 			<th class="th_left">{{Total taxes}}</th>
-			<td class="evt_curr"><?php echo $bill->total_tax; ?>€</td>
+			<td class="evt_curr"><?php echo curr($bill->total_tax); ?>€</td>
 		</tr>
 		<tr>
 			<th class="th_left">{{Total due}}</th>
-			<td class="evt_curr"><b><?php echo $bill->total_ttc; ?>€</b></td>
+			<td class="evt_curr"><b><?php echo curr($bill->total_ttc); ?>€</b></td>
 		</tr>
 	</table>
 <?php

@@ -1097,6 +1097,30 @@
 				}
 				$bill->compute();
 
+				$discount = $event->get_discount($_GET['discount'], time());
+				if ($discount != null)  {
+					$percentage = 0;
+					$description = _t('Bill discount ');
+					if ($discount->class == DISCOUNT_CLASS_FIXED) {
+						$percentage = $discount->amount / $bill->total_ttc;
+						$description .= number_format(-$discount->amount, 0).'€';
+					} else {
+						$percentage = $discount->percentage / 100;
+						$description .= number_format(-$discount->percentage, 0).'%';
+					}
+
+					$discount_item = new Item('/item/discount');
+
+					$discount_item->quantity = 1;
+					$discount_item->tax_rate = null;
+					$discount_item->description = $description;
+					$discount_item->total_ht = curr(-($percentage * $bill->total_ht));
+					$discount_item->total_tax = curr(-($percentage * $bill->total_tax));
+					$discount_item->total_ttc = curr(-($percentage * $bill->total_ttc));
+					$bill->items[] = $discount_item;
+					$bill->compute();
+				}
+
 				$address = new Address();
 				$address->hydrate_from_form('billing_address');
 				$address->store();
@@ -1116,7 +1140,6 @@
 				$g_display["event_confirmed"] = $event->is_confirmed();
 				$_SESSION["state"] = "participation_recapitulation";
 			} else if ($_SESSION["state"] == "participation_recapitulation") {
-				debug('caca');
 				action_participate_recapitulation();
 			} else {
 				$_SESSION["state"] = "error";
