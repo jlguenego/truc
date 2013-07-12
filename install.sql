@@ -76,7 +76,7 @@ CREATE TABLE discount(
         mod_t        Varchar (25) NOT NULL ,
         class        Varchar (255) NOT NULL ,
         code         Varchar (255) NOT NULL ,
-        expiration_t Varchar (25),
+        expiration_t Bigint,
         amount       Decimal (25,2) ,
         percentage   Decimal (25,2) ,
         id_event     Int,

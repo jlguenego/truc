@@ -20,7 +20,11 @@
 		public function hydrate_from_form($i) {
 			$this->code = $_GET['discount_code_a'][$i];
 			$this->class = $_GET['discount_class_a'][$i];
-			$this->expiration_t = s2t($_GET['discount_date_a'][$i]);
+			if (!is_null_or_empty($_GET['discount_date_a'][$i])) {
+				$this->expiration_t = s2t($_GET['discount_date_a'][$i]);
+			} else {
+				$this->expiration_t = null;
+			}
 			if ($this->class == DISCOUNT_CLASS_FIXED) {
 				$this->amount = $_GET['discount_value_a'][$i];
 			} else {

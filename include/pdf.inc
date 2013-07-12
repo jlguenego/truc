@@ -4,7 +4,7 @@
 	function pdf_display($bill) {
 		global $g_i18n;
 
-		$filename = BASE_DIR.INVOICE_DIR.'/'.$bill->label.'_'.$g_i18n->locale.'.pdf';
+		$filename = INVOICE_DIR.'/'.$bill->label.'_'.$g_i18n->locale.'.pdf';
 
 		if (!file_exists($filename)) {
 			pdf_create($bill);
@@ -22,7 +22,7 @@
 	function pdf_create($bill) {
 		global $g_i18n;
 
-		$filename = BASE_DIR.INVOICE_DIR.'/'.$bill->label.'_'.$g_i18n->locale.'.pdf';
+		$filename = INVOICE_DIR.'/'.$bill->label.'_'.$g_i18n->locale.'.pdf';
 
 		ob_start();
 		print_bill($bill, PRINT_BILL_CONTEXT_DEFAULT, PRINT_BILL_FORMAT_PDF);

@@ -55,7 +55,7 @@
 	define('ADVERTISEMENT_STATUS_DEFAULT', 0);
 	define('ADVERTISEMENT_STATUS_SENT', 1);
 
-	define('TEMP_DIR', '_tmp');
+	define('TEMP_DIR', BASE_DIR.'/_tmp');
 	define('SYNC_LOCK_FILE', TEMP_DIR.'/_evt_lock.txt');
 
 
@@ -73,5 +73,5 @@
 	define('DISCOUNT_CLASS_FIXED', '/discount/fixed');
 	define('DISCOUNT_CLASS_PERCENTAGE', '/discount/percentage');
 
-	define('INVOICE_DIR', '/_invoice');
+	define('INVOICE_DIR', BASE_DIR.'/_invoice');
 ?>

@@ -639,7 +639,7 @@ EOF;
 
 			$time_condition_str = '';
 			if ($time != null) {
-				$time_condition_str = 'AND expiration_t > '.$time;
+				$time_condition_str = 'AND (expiration_t > '.$time.' OR expiration_t IS NULL)';
 			}
 
 			$request = <<<EOF
