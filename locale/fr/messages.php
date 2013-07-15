@@ -543,6 +543,23 @@ $this->array = array(
 	"You can access to this bill via this permalink:" =>
 			"vous pouvez accèder à ce reçu via ce lien permanent :",
 
+	"[discount]Amount" => "Quantité",
+	"[discount]Rate" => "Pourcentage",
+	"Add a fixed discount" => "Ajouter une réduction fixe",
+	"Add a percentage discount" => "Ajouter une réduction en pourcentage",
+	"Cannot load the discount with id=" => "Impossible de charger la réduction avec l'id=",
+	"Check discount code" => "Vérifier le code de réduction",
+	"Discount" => "Réduction",
+	"Discount code" => "Code de réduction",
+	"Discount help" => "Aide réduction",
+	"Enter promo code:" => "Entrer le code promotionnel :",
+	"Expiration date" => "Date d'expiration",
+	"Get Invoice" => "Obtenir la facture",
+	"Optional: Create discount" => "Optionel : Créer une réduction",
+	"Rule" => "Règle",
+
+
+
 //The End
 );
 ?>
