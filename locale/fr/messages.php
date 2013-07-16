@@ -557,6 +557,7 @@ $this->array = array(
 	"Get Invoice" => "Obtenir la facture",
 	"Optional: Create discount" => "Optionel : Créer une réduction",
 	"Rule" => "Règle",
+	"Create tickets" => "Créer des tickets",
 
 
 
